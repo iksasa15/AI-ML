@@ -78,6 +78,14 @@ style: |
 
   .two-cards .main-card { width: 48%; }
 
+  .small-card {
+    width: 40% !important;
+    min-height: 200px !important;
+    padding: 20px !important;
+  }
+  .small-card h3 { font-size: 20px !important; }
+  .small-card li { font-size: 18px !important; }
+
   table {
     border-collapse: collapse;
     margin: 20px auto;
@@ -738,11 +746,11 @@ style: |
 
 ---
 
-# تطبيق عملي
+# Hands-On
 
 <div class="container">
 
-  <div class="main-card">
+  <div class="main-card small-card">
     <h3>Hands-On Code</h3>
     <ul>
       <li>Data Preprocessing Template</li>
