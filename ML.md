@@ -75,6 +75,23 @@ style: |
     margin-top: auto;
     text-align: center;
   }
+
+  .two-cards .main-card { width: 48%; }
+
+  table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-size: 18px;
+  }
+  th, td {
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px 16px;
+    text-align: center;
+  }
+  th {
+    background: rgba(255,255,255,0.15);
+    color: #A5FFD6;
+  }
 ---
 
 # Machine Learning Algorithms and Applications
@@ -301,6 +318,133 @@ style: |
       <li>Each category gets its own column</li>
       <li>Model treats each category equally</li>
     </ul>
+  </div>
+
+</div>
+
+---
+
+# Categorical Data: How to Deal with It?
+
+## Dummy Encoding
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>Example</h3>
+    <ul>
+      <li>Region: North, South, East</li>
+      <li>North → [1, 0]</li>
+      <li>South → [0, 1]</li>
+      <li>East → [0, 0] (reference)</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Difference from One Hot</h3>
+    <ul>
+      <li>Drops one category as reference</li>
+      <li>Fewer columns (avoids multicollinearity)</li>
+      <li>Reference category = all zeros</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
+# Categorical Data: How to Deal with It?
+
+## Other Type Encoding
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>Label Encoding</h3>
+    <ul>
+      <li>Assigns a unique number to each category</li>
+      <li>No new columns created</li>
+      <li>May imply order (use with care)</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Target Encoding</h3>
+    <ul>
+      <li>Replaces category with mean of target</li>
+      <li>Useful for high-cardinality features</li>
+      <li>Risk of overfitting</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Frequency Encoding</h3>
+    <ul>
+      <li>Replaces category with its count in data</li>
+      <li>Captures category importance</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
+# Handling Missing Data
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>What is Missing Data?</h3>
+    <ul>
+      <li>Empty or incomplete values in the dataset</li>
+      <li>Can cause biased models or wrong predictions</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Types</h3>
+    <ul>
+      <li><strong>MCAR:</strong> Missing Completely at Random</li>
+      <li><strong>MAR:</strong> Missing at Random</li>
+      <li><strong>NMAR:</strong> Not Missing at Random</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Impact</h3>
+    <ul>
+      <li>Skews model results</li>
+      <li>Can lead to prediction errors</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
+# Handling Missing Data: MCAR
+
+<div class="container two-cards">
+
+  <div class="main-card">
+    <h3>Missing Completely at Random</h3>
+    <ul>
+      <li>Data is missing by chance</li>
+      <li>No link to other variables</li>
+      <li>No pattern in what is missing</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Example</h3>
+    <table style="font-size: 16px; margin: 0;">
+      <tr><th>ID</th><th>Age</th><th>Income</th><th>Resp</th></tr>
+      <tr><td>1</td><td>25</td><td>5000</td><td>Yes</td></tr>
+      <tr><td>2</td><td>30</td><td>?</td><td>No</td></tr>
+      <tr><td>3</td><td>?</td><td>7000</td><td>Yes</td></tr>
+      <tr><td>4</td><td>45</td><td>9000</td><td>?</td></tr>
+    </table>
+    <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">? appears randomly</p>
   </div>
 
 </div>
