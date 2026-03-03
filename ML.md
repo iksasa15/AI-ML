@@ -579,5 +579,136 @@ style: |
 
 ---
 
+# Miss Forest
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>What is Miss Forest?</h3>
+    <ul>
+      <li>Uses Random Forest to impute missing values</li>
+      <li>Iterative: fills missing, refits model, repeats</li>
+      <li>Works well with mixed data (numeric + categorical)</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>How It Works</h3>
+    <ul>
+      <li>1. Start with simple imputation (e.g., mean)</li>
+      <li>2. Train Random Forest on each feature with missing values</li>
+      <li>3. Predict and fill missing values</li>
+      <li>4. Repeat until convergence</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>When to Use</h3>
+    <ul>
+      <li>Non-linear relationships</li>
+      <li>Multiple missing features</li>
+      <li>Often outperforms kNN for complex data</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
+# Miss Forest: Example
+
+<div class="container two-cards">
+
+  <div class="main-card">
+    <h3>Before</h3>
+    <table style="font-size: 15px; margin: 0;">
+      <tr><th>ID</th><th>Age</th><th>Income</th><th>Score</th></tr>
+      <tr><td>1</td><td>25</td><td>5000</td><td>70</td></tr>
+      <tr><td>2</td><td>30</td><td>?</td><td>85</td></tr>
+      <tr><td>3</td><td>28</td><td>6000</td><td>?</td></tr>
+      <tr><td>4</td><td>32</td><td>5500</td><td>90</td></tr>
+    </table>
+    <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">Income & Score missing</p>
+  </div>
+
+  <div class="main-card">
+    <h3>After (Miss Forest)</h3>
+    <table style="font-size: 15px; margin: 0;">
+      <tr><th>ID</th><th>Age</th><th>Income</th><th>Score</th></tr>
+      <tr><td>1</td><td>25</td><td>5000</td><td>70</td></tr>
+      <tr><td>2</td><td>30</td><td>5650</td><td>85</td></tr>
+      <tr><td>3</td><td>28</td><td>6000</td><td>82</td></tr>
+      <tr><td>4</td><td>32</td><td>5500</td><td>90</td></tr>
+    </table>
+    <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">RF predicts from Age, Income, Score</p>
+  </div>
+
+</div>
+
+---
+
+# Handling Missing Data: MNAR
+
+<div class="container two-cards">
+
+  <div class="main-card">
+    <h3>Missing Not at Random</h3>
+    <ul>
+      <li>The hardest case of the three</li>
+      <li>Missingness is tied to the missing value itself</li>
+      <li>Or to features we did not collect</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Example</h3>
+    <table style="font-size: 16px; margin: 0;">
+      <tr><th>ID</th><th>Age</th><th>Salary</th></tr>
+      <tr><td>1</td><td>25</td><td>8000</td></tr>
+      <tr><td>2</td><td>30</td><td>?</td></tr>
+      <tr><td>3</td><td>28</td><td>7500</td></tr>
+      <tr><td>4</td><td>35</td><td>?</td></tr>
+    </table>
+    <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">Low salary → people skip (value itself causes ?)</p>
+  </div>
+
+</div>
+
+---
+
+# MNAR: Details & Approach
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>Key Difference</h3>
+    <ul>
+      <li>MCAR: no pattern</li>
+      <li>MAR: related to observed features</li>
+      <li>MNAR: tied to the missing variable itself</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Example</h3>
+    <ul>
+      <li>Health survey: people with high stress avoid reporting it</li>
+      <li>Stigma causes non-random missingness</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Challenge & Solution</h3>
+    <ul>
+      <li>Hard to fix without more data or domain knowledge</li>
+      <li>Add a binary flag: was this value imputed?</li>
+      <li>Model can learn from the missingness pattern</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
 &nbsp;
 
