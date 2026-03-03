@@ -746,7 +746,7 @@ style: |
 
 ---
 
-# Hands-On
+
 
 <div class="container">
 
