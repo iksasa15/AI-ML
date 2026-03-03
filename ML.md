@@ -710,5 +710,49 @@ style: |
 
 ---
 
+# Data Preprocessing Template
+
+<div class="container two-cards">
+
+  <div class="main-card">
+    <h3>Steps to Follow</h3>
+    <ul>
+      <li>1. Load the data</li>
+      <li>2. Check for missing data and handle it</li>
+      <li>3. Encode categorical data</li>
+      <li>4. Split into training and test sets</li>
+      <li>5. Feature scale numerical data</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Pipeline</h3>
+    <ul>
+      <li>Raw Data → Handle Missing → Encode Categories</li>
+      <li>→ Train/Test Split → Scale Features</li>
+      <li>→ ML Algorithm</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
+# تطبيق عملي
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>Hands-On Code</h3>
+    <ul>
+      <li>Data Preprocessing Template</li>
+      <li>Apply the steps we covered</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
 &nbsp;
 
