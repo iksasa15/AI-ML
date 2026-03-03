@@ -451,5 +451,133 @@ style: |
 
 ---
 
+# MCAR: Limitations & Practical Approach
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>Why MCAR Is Rare</h3>
+    <ul>
+      <li>Missing data often has causes (human behavior, survey errors, external events)</li>
+      <li>Some groups skip answers more than others</li>
+      <li>Patterns in missingness are common</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Before Assuming MCAR</h3>
+    <ul>
+      <li>Understand how the data was collected</li>
+      <li>Consult domain experts</li>
+      <li>Work with data engineers</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Practical Approach</h3>
+    <ul>
+      <li>If MCAR holds after analysis, use simple imputation</li>
+      <li>Otherwise, consider MAR or NMAR methods</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
+# Handling Missing Data: MAR
+
+<div class="container two-cards">
+
+  <div class="main-card">
+    <h3>Missing at Random</h3>
+    <ul>
+      <li>Missingness can be explained by other observed features</li>
+      <li>The probability of missing depends on what we already have in the data</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Example</h3>
+    <table style="font-size: 16px; margin: 0;">
+      <tr><th>ID</th><th>Age</th><th>Income</th><th>Resp</th></tr>
+      <tr><td>1</td><td>25</td><td>?</td><td>Yes</td></tr>
+      <tr><td>2</td><td>28</td><td>?</td><td>No</td></tr>
+      <tr><td>3</td><td>45</td><td>7000</td><td>Yes</td></tr>
+      <tr><td>4</td><td>50</td><td>9000</td><td>No</td></tr>
+    </table>
+    <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">Income ? when Age is low (pattern)</p>
+  </div>
+
+</div>
+
+---
+
+# MAR: Details & Imputation
+
+<div class="container">
+
+  <div class="main-card">
+    <h3>Key Points</h3>
+    <ul>
+      <li>Missingness depends on observed features, not the missing one</li>
+      <li>MAR is more common in real data than MCAR</li>
+      <li>Check if missingness changes with other variables</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Example</h3>
+    <ul>
+      <li>Survey: students with high grades skip reporting study hours</li>
+      <li>Grades (observed) explain why study hours are missing</li>
+    </ul>
+  </div>
+
+  <div class="main-card">
+    <h3>Imputation for MAR</h3>
+    <ul>
+      <li>kNN Imputation</li>
+      <li>Miss Forest</li>
+      <li>Use observed features to fill missing values</li>
+    </ul>
+  </div>
+
+</div>
+
+---
+
+# kNN Imputation: Before & After
+
+<div class="container two-cards">
+
+  <div class="main-card">
+    <h3>Before</h3>
+    <table style="font-size: 15px; margin: 0;">
+      <tr><th>ID</th><th>Age</th><th>Income</th></tr>
+      <tr><td>1</td><td>25</td><td>5000</td></tr>
+      <tr><td>2</td><td>30</td><td>?</td></tr>
+      <tr><td>3</td><td>28</td><td>6000</td></tr>
+      <tr><td>4</td><td>32</td><td>5500</td></tr>
+    </table>
+    <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">ID 2: Income missing</p>
+  </div>
+
+  <div class="main-card">
+    <h3>After (k=2)</h3>
+    <table style="font-size: 15px; margin: 0;">
+      <tr><th>ID</th><th>Age</th><th>Income</th></tr>
+      <tr><td>1</td><td>25</td><td>5000</td></tr>
+      <tr><td>2</td><td>30</td><td>5750</td></tr>
+      <tr><td>3</td><td>28</td><td>6000</td></tr>
+      <tr><td>4</td><td>32</td><td>5500</td></tr>
+    </table>
+    <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">ID 2: (6000+5500)/2 = 5750</p>
+  </div>
+
+</div>
+
+---
+
 &nbsp;
 
