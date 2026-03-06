@@ -36,6 +36,7 @@
           <span id="theme-icon" aria-hidden="true">🌙</span>
           <span id="theme-label">الوضع: ليلي</span>
         </button>
+        <button id="show-template-btn" class="nav-btn topbar-btn" type="button">نموذج المنهج</button>
         <button id="download-pdf-btn" class="nav-btn topbar-btn" type="button">تحميل PDF</button>
       </div>
     </header>
@@ -57,6 +58,17 @@
       <button id="next-btn" class="nav-btn" type="button">التالي</button>
     </footer>
   </div>
+
+  <div id="template-modal" class="template-modal" aria-hidden="true">
+    <div class="template-modal-card" role="dialog" aria-modal="true" aria-labelledby="template-modal-title">
+      <div class="template-modal-head">
+        <h2 id="template-modal-title">نموذج المنهج التدريبي (معبأ)</h2>
+        <button id="close-template-btn" class="nav-btn topbar-btn" type="button">إغلاق</button>
+      </div>
+      <div id="template-content" class="template-content"></div>
+    </div>
+  </div>
+
   <div id="print-container" class="print-deck" aria-hidden="true"></div>
 
   <script src="script.js"></script>
