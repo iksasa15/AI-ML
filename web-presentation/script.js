@@ -1868,6 +1868,169 @@ const presentationData = {
       ],
       note: "Combining PCA with clustering often improves interpretability and runtime on high-dimensional data.",
     },
+    {
+      title: "Deep Learning Overview",
+      subtitle: "From Feature Engineering to Representation Learning",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
+      ],
+      bullets: [
+        "Deep learning is a subfield of machine learning based on layered neural networks.",
+        "It learns hierarchical representations directly from raw data.",
+        "It becomes especially effective with high-dimensional data and large datasets.",
+      ],
+      note: "Compared with classical ML, deep learning reduces dependence on manual feature engineering.",
+    },
+    {
+      title: "When Deep Learning Is a Good Choice",
+      table: {
+        headers: ["Scenario", "Why DL Helps", "Typical Alternatives"],
+        rows: [
+          ["Images, audio, text", "Learns rich hierarchical patterns", "Manual features + classical models"],
+          ["Very large training sets", "Scales with data and model capacity", "Tree ensembles on tabular data"],
+          ["Complex non-linear relations", "Multiple layers model high-order interactions", "Kernel methods / shallow nets"],
+          ["Mostly tabular, small data", "Often not ideal without heavy tuning", "XGBoost, Random Forest, linear models"],
+        ],
+      },
+      note: "Model selection should be driven by data modality, dataset size, and deployment constraints.",
+    },
+    {
+      title: "Single Neuron (Perceptron) Basics",
+      formula: "z = w^\\top x + b,\\quad \\hat{y} = f(z)",
+      bullets: [
+        "Inputs are weighted and shifted by a bias term.",
+        "An activation function maps the affine score to an output.",
+        "A single perceptron is a linear classifier in feature space.",
+      ],
+      table: {
+        headers: ["Component", "Role"],
+        rows: [
+          ["Weights (w)", "Importance of each input feature"],
+          ["Bias (b)", "Shifts the decision boundary"],
+          ["Activation f(.)", "Adds non-linearity and output mapping"],
+        ],
+      },
+    },
+    {
+      title: "Activation Functions in Practice",
+      table: {
+        headers: ["Activation", "Formula", "Typical Use"],
+        rows: [
+          ["Sigmoid", "\\sigma(z)=1/(1+e^{-z})", "Binary output probabilities"],
+          ["ReLU", "max(0, z)", "Default for hidden layers in many networks"],
+          ["Tanh", "tanh(z)", "Centered activation in some recurrent setups"],
+          ["Softmax", "exp(z_k)/sum_j exp(z_j)", "Multi-class output probabilities"],
+        ],
+      },
+      note: "ReLU usually speeds optimization, while sigmoid/softmax are common in output layers.",
+    },
+    {
+      title: "Why XOR Matters",
+      subtitle: "A Classic Failure Case for Linear Models",
+      bullets: [
+        "XOR labels points as positive when inputs differ, and negative when they match.",
+        "No single linear decision boundary can separate XOR classes.",
+        "Adding a hidden layer with non-linear activation solves the problem.",
+      ],
+      table: {
+        headers: ["Input x1", "Input x2", "XOR Output"],
+        rows: [
+          ["0", "0", "0"],
+          ["0", "1", "1"],
+          ["1", "0", "1"],
+          ["1", "1", "0"],
+        ],
+      },
+      note: "XOR demonstrates why depth + non-linearity are essential in neural networks.",
+    },
+    {
+      title: "From Single-Layer to Multi-Layer Networks",
+      formula: "h = \\phi(W_1 x + b_1),\\quad \\hat{y} = \\tau(W_2 h + b_2)",
+      bullets: [
+        "Hidden layers transform features into more separable representations.",
+        "Each layer applies affine transformation followed by non-linear activation.",
+        "Deeper feed-forward networks model increasingly abstract patterns.",
+      ],
+      note: "Without non-linear activations, stacking layers collapses into one linear transformation.",
+    },
+    {
+      title: "Multi-Class Classification with Softmax",
+      subtitle: "Output Probabilities over K Classes",
+      formula: "p_k = \\frac{e^{z_k}}{\\sum_{j=1}^{K} e^{z_j}}",
+      bullets: [
+        "Use one output neuron per class.",
+        "Softmax converts logits into a normalized probability distribution.",
+        "Predicted class is the index with highest probability.",
+      ],
+      note: "This is the standard output design for single-label multi-class problems.",
+    },
+    {
+      title: "Cross-Entropy Loss",
+      formula: "\\mathcal{L} = -\\sum_{k=1}^{K} y_k \\log(p_k)",
+      bullets: [
+        "Cross-entropy penalizes low probability assigned to the true class.",
+        "It is better aligned with probabilistic classification than squared error.",
+        "Combined with softmax, it yields stable gradients for training.",
+      ],
+      note: "Minimizing cross-entropy encourages calibrated and discriminative class probabilities.",
+    },
+    {
+      title: "Convolutional Neural Networks (CNNs)",
+      subtitle: "Spatial Feature Learning for Vision Tasks",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png",
+      ],
+      bullets: [
+        "Convolutions learn local filters (edges, textures, shapes).",
+        "Pooling layers reduce spatial resolution while keeping key signals.",
+        "Deep CNN stacks build from low-level cues to object-level concepts.",
+      ],
+      table: {
+        headers: ["Layer", "Main Function"],
+        rows: [
+          ["Convolution", "Detect local patterns via learnable kernels"],
+          ["Pooling", "Downsample feature maps and improve robustness"],
+          ["Fully Connected / Head", "Map learned features to final predictions"],
+        ],
+      },
+    },
+    {
+      title: "RNNs, LSTMs, and GRUs",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/6/63/Long_Short-Term_Memory.svg",
+      ],
+      bullets: [
+        "RNNs process sequences by carrying hidden state over time.",
+        "LSTMs and GRUs mitigate vanishing gradients and capture longer dependencies.",
+        "Common use cases include language modeling, speech, and time-series forecasting.",
+      ],
+      note: "GRUs are often a lighter alternative to LSTMs with fewer parameters.",
+    },
+    {
+      title: "Deep Learning Training Pitfalls and Remedies",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/1/1f/Overfitting_svg.svg",
+      ],
+      sections: [
+        {
+          heading: "Overfitting vs Underfitting",
+          bullets: [
+            "Overfitting: high training performance, weak generalization.",
+            "Underfitting: model too simple, poor train and test performance.",
+          ],
+        },
+        {
+          heading: "Practical Remedies",
+          bullets: [
+            "Early stopping, dropout, and L2 regularization.",
+            "Data augmentation and better validation strategy.",
+            "Hyperparameter tuning (learning rate, depth, batch size).",
+          ],
+        },
+      ],
+      note: "Monitor validation curves continuously to detect overtraining early.",
+    },
   ],
 };
 
@@ -1891,6 +2054,7 @@ function addPresentationStructure() {
       "Naive Bayes, Decision Trees, and Random Forest",
       "SVM and Kernel Methods",
       "Clustering and PCA",
+      "Deep Learning and Neural Networks",
     ],
     note: "Use the slide dots below to quickly jump across sections.",
   });
@@ -1931,6 +2095,12 @@ function addPresentationStructure() {
     subtitle: "Clustering and PCA",
   });
 
+  insertSlideBeforeTitle("Deep Learning Overview", {
+    type: "section-divider",
+    title: "Section 7",
+    subtitle: "Deep Learning and Neural Networks",
+  });
+
   presentationData.slides.push({
     title: "Conclusion",
     subtitle: "Key Takeaways",
@@ -1939,6 +2109,7 @@ function addPresentationStructure() {
       "Model choice depends on data structure, interpretability needs, and scale.",
       "For classification, evaluate with confusion matrix, precision, recall, and F1.",
       "For unsupervised tasks, combine clustering diagnostics with PCA-based interpretation.",
+      "For deep learning, balance architecture power with regularization and validation discipline.",
       "Use cross-validation and hyperparameter tuning for robust generalization.",
     ],
     note: "Thank you. Questions and discussion are welcome.",
