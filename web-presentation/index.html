@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>عرض تقديمي</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="presentation">
+    <header class="topbar">
+      <h1 id="deck-title">عنوان العرض</h1>
+      <div class="topbar-actions">
+        <div class="slide-count">
+          <span id="current-slide">1</span>
+          <span>/</span>
+          <span id="total-slides">1</span>
+        </div>
+        <button id="download-pdf-btn" class="nav-btn topbar-btn" type="button">تحميل PDF</button>
+      </div>
+    </header>
+
+    <main class="stage">
+      <section id="slide-container" class="slide"></section>
+    </main>
+
+    <footer class="controls">
+      <button id="prev-btn" class="nav-btn" type="button">السابق</button>
+      <div id="dots" class="dots"></div>
+      <button id="next-btn" class="nav-btn" type="button">التالي</button>
+    </footer>
+  </div>
+  <div id="print-container" class="print-deck" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

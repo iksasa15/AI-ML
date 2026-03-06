@@ -1,0 +1,255 @@
+:root {
+  --bg: #0f1221;
+  --card: #171a2f;
+  --text: #eef1ff;
+  --muted: #b6bde0;
+  --accent: #6f8bff;
+  --accent-2: #4f6ff0;
+  --border: #2a3058;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  background: radial-gradient(circle at top, #1a1f3f, var(--bg));
+  color: var(--text);
+}
+
+.presentation {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  gap: 1rem;
+  padding: 1.2rem;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.8rem 1rem;
+}
+
+#deck-title {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.slide-count {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.stage {
+  display: grid;
+  place-items: center;
+}
+
+.slide {
+  width: min(100%, 1000px);
+  min-height: 60vh;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.slide h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+}
+
+.slide p {
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+}
+
+.slide ul {
+  margin: 1rem 0 0;
+  padding: 0 0 0 1.1rem;
+}
+
+.slide li {
+  margin-bottom: 0.7rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.steps-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.step-card {
+  background: #1e2342;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem;
+}
+
+.step-card h3 {
+  margin: 0;
+  color: #d6ddff;
+  font-size: 1rem;
+}
+
+.step-card ul {
+  margin-top: 0.7rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background: var(--accent);
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.7rem 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.topbar-btn {
+  padding: 0.55rem 0.95rem;
+  font-size: 0.9rem;
+}
+
+.nav-btn:hover {
+  background: var(--accent-2);
+}
+
+.nav-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #4b5177;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: var(--accent);
+}
+
+.print-deck {
+  display: none;
+}
+
+@media (max-width: 680px) {
+  .presentation {
+    padding: 0.8rem;
+  }
+
+  .slide {
+    min-height: 66vh;
+    padding: 1.2rem;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    background: radial-gradient(circle at top, #1a1f3f, var(--bg));
+    color: var(--text);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .presentation {
+    display: none;
+  }
+
+  .print-deck {
+    display: grid;
+    gap: 10mm;
+  }
+
+  .print-slide {
+    width: 100%;
+    min-height: 180mm;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 2rem;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-slide:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .print-slide h2,
+  .print-slide h3,
+  .print-slide li {
+    color: var(--text);
+  }
+
+  .print-slide p {
+    color: var(--muted);
+  }
+
+  .print-slide .step-card {
+    background: #1e2342;
+    border: 1px solid var(--border);
+  }
+}
