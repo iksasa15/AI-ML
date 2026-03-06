@@ -3355,6 +3355,37 @@ function addPresentationStructure() {
     note: "Use the slide dots below to quickly jump across sections.",
   });
 
+  presentationData.slides.splice(1, 0, {
+    title: "Bootcamp Timeline (4 Weeks)",
+    subtitle: "Month Plan Overview",
+    table: {
+      headers: ["Week", "Main Topics", "Output / Milestone"],
+      rows: [
+        [
+          "Week 1",
+          "ML foundations, data preprocessing, feature engineering, regression basics",
+          "Clean data workflow + baseline regression models",
+        ],
+        [
+          "Week 2",
+          "Classification methods, evaluation metrics, Naive Bayes, Trees, Random Forest, SVM",
+          "End-to-end classification pipeline and model comparison",
+        ],
+        [
+          "Week 3",
+          "Clustering, PCA, deep learning fundamentals, perceptron, activations, CNN/RNN intro",
+          "Dimensionality reduction + first neural network experiments",
+        ],
+        [
+          "Week 4",
+          "NLP (Day 1-5), Seq2Seq, attention, BERT/T5/GPT/LLMs, transfer learning in GenAI",
+          "Mini GenAI project + final presentation readiness",
+        ],
+      ],
+    },
+    note: "Suggested pacing: concept session + guided lab + practice task each day.",
+  });
+
   insertSlideBeforeTitle("The Machine Learning Process", {
     type: "section-divider",
     title: "Section 1",
