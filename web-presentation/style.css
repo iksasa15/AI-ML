@@ -61,19 +61,18 @@ body {
 
 .stage {
   display: grid;
-  place-items: center;
+  place-items: start center;
 }
 
 .slide {
   width: var(--slide-w);
-  min-height: 60vh;
-  height: min(72vh, var(--slide-h));
+  min-height: min(72vh, var(--slide-h));
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 2rem;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
-  overflow: auto;
+  overflow: visible;
 }
 
 .slide h2 {
@@ -126,11 +125,11 @@ body {
   border-radius: 12px;
   padding: 0.9rem;
   min-height: var(--card-box-h);
-  height: var(--card-box-h);
-  max-height: var(--card-box-h);
+  height: auto;
+  max-height: none;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: visible;
 }
 
 .step-card h3 {
@@ -157,11 +156,11 @@ body {
   border-radius: 12px;
   padding: 0.9rem;
   min-height: var(--card-box-h);
-  height: var(--card-box-h);
-  max-height: var(--card-box-h);
+  height: auto;
+  max-height: none;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: visible;
 }
 
 .content-card h3 {
@@ -169,14 +168,13 @@ body {
 }
 
 .formula {
-  margin: 0.7rem 0;
+  margin: 0.8rem 0;
   padding: 0.65rem;
   background: #10142b;
   border: 1px solid var(--border);
   border-radius: 8px;
   color: #d6ddff;
-  white-space: pre-wrap;
-  font-family: Consolas, Menlo, Monaco, monospace;
+  overflow-x: auto;
 }
 
 .table-wrap {

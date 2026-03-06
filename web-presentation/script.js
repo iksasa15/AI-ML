@@ -76,7 +76,7 @@ const presentationData = {
         {
           heading: "1) Normalization (Min-Max Scaling)",
           body: "Normalization transforms each value to a range between 0 and 1.",
-          formula: "x_norm = (x - x_min) / (x_max - x_min)",
+          formula: "x_{\\text{norm}} = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}",
           bullets: [
             "Useful for models that depend on distances or absolute magnitudes.",
             "Common choice for algorithms such as KNN and K-Means.",
@@ -85,7 +85,7 @@ const presentationData = {
         {
           heading: "2) Standardization (Z-score Scaling)",
           body: "Standardization centers data around 0 with a standard deviation of 1.",
-          formula: "z = (x - mu) / sigma",
+          formula: "z = \\frac{x - \\mu}{\\sigma}",
           bullets: [
             "mu = mean of the feature, sigma = standard deviation of the feature.",
             "Preferred when features are close to a Gaussian distribution.",
@@ -95,12 +95,33 @@ const presentationData = {
       ],
     },
     {
+      title: "Choosing the Right Scaling Method",
+      sections: [
+        {
+          heading: "Normalization",
+          body: "Use Normalization when feature values have very different ranges and you want all values mapped to [0, 1].",
+          bullets: [
+            "Typical method: Min-Max Scaling.",
+            "Good for distance-based models where magnitude differences strongly affect results.",
+          ],
+        },
+        {
+          heading: "Standardization",
+          body: "Use Standardization when features are expected to follow (or be close to) a Gaussian distribution, or when the dataset contains outliers.",
+          bullets: [
+            "It keeps the data centered around 0 and scales variability to 1.",
+            "Often preferred for linear models and optimization-based algorithms.",
+          ],
+        },
+      ],
+    },
+    {
       title: "Feature Scaling Example (Normalization)",
       body: "Given feature values: [20, 40, 60, 80, 100]",
+      formula: "x_{\\text{norm}} = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}",
       bullets: [
         "x_min = 20",
         "x_max = 100",
-        "Formula: x_norm = (x - x_min) / (x_max - x_min)",
       ],
       table: {
         title: "Before vs After Normalization",
@@ -114,6 +135,1162 @@ const presentationData = {
         ],
       },
       note: "This table shows how all values are scaled to the range [0, 1].",
+    },
+    {
+      title: "Feature Scaling Example (Standardization)",
+      body: "Given feature values: [20, 40, 60, 80, 100]",
+      formula: "z = \\frac{x - \\mu}{\\sigma}",
+      bullets: [
+        "Mean: \\(\\mu = 60\\)",
+        "Standard deviation: \\(\\sigma = 28.28\\)",
+      ],
+      table: {
+        title: "Before vs After Standardization",
+        headers: ["Original Value (x)", "Standardized Value (z)"],
+        rows: [
+          ["20", "-1.41"],
+          ["40", "-0.71"],
+          ["60", "0.00"],
+          ["80", "0.71"],
+          ["100", "1.41"],
+        ],
+      },
+      note: "This table shows that standardized values are centered around 0 and measured in units of standard deviation.",
+    },
+    {
+      title: "Categorical Data",
+      subtitle: "What is Categorical Data?",
+      body: "Categorical data describes values that belong to named groups rather than continuous numbers.",
+      table: {
+        title: "Category Types",
+        headers: ["Type", "Description", "Example"],
+        rows: [
+          [
+            "Ordinal",
+            "Categories have a meaningful order.",
+            "Education Level: High School < Bachelor's < Master's < PhD",
+          ],
+          [
+            "Nominal",
+            "Categories have no natural order.",
+            "Payment Method: Cash, Card, Bank Transfer",
+          ],
+        ],
+      },
+      note: "Most machine learning algorithms work with numerical inputs only, so categorical values must be converted into numbers.",
+      tables: [
+        {
+          title: "Example 1: Label Encoding",
+          headers: ["Raw Category", "Encoded Value"],
+          rows: [
+            ["Cash", "0"],
+            ["Card", "1"],
+            ["Bank Transfer", "2"],
+          ],
+        },
+        {
+          title: "Example 2: One-Hot Encoding",
+          headers: ["Raw Category", "Cash", "Card", "Bank Transfer"],
+          rows: [
+            ["Cash", "1", "0", "0"],
+            ["Card", "0", "1", "0"],
+            ["Bank Transfer", "0", "0", "1"],
+          ],
+        },
+      ],
+    },
+    {
+      title: "How to Deal with Categorical Data (Ordinal Encoding)",
+      subtitle: "What is Ordinal Encoding?",
+      body: "Ordinal Encoding converts ordered categories into integers that preserve their ranking.",
+      bullets: [
+        "Use Ordinal Encoding only when categories have a true order.",
+        "Step 1: Identify the correct category order.",
+        "Step 2: Assign an integer to each level based on that order.",
+        "Step 3: Replace the original text values with encoded numbers.",
+      ],
+      table: {
+        title: "Example",
+        headers: ["Satisfaction Level", "Encoded Value"],
+        rows: [
+          ["Low", "1"],
+          ["Medium", "2"],
+          ["High", "3"],
+        ],
+      },
+      note: "This method keeps the order information, which is important for many machine learning models.",
+    },
+    {
+      title: "How to Deal with Categorical Data (One-Hot Encoding)",
+      subtitle: "What is One-Hot Encoding?",
+      body: "One-Hot Encoding converts each category into a separate binary column (0 or 1).",
+      bullets: [
+        "Use One-Hot Encoding for nominal categories (no natural order).",
+        "Step 1: List all unique categories.",
+        "Step 2: Create one column for each category.",
+        "Step 3: Put 1 in the matching category column and 0 in all others.",
+      ],
+      table: {
+        title: "Example",
+        headers: ["Payment Method", "Cash", "Card", "Bank Transfer"],
+        rows: [
+          ["Cash", "1", "0", "0"],
+          ["Card", "0", "1", "0"],
+          ["Bank Transfer", "0", "0", "1"],
+        ],
+      },
+      note: "This method avoids creating a false ranking between categories.",
+    },
+    {
+      title: "How to Deal with Categorical Data (Dummy Encoding)",
+      subtitle: "What is Dummy Encoding?",
+      body: "Dummy Encoding is similar to One-Hot Encoding, but it removes one category column to avoid redundancy.",
+      bullets: [
+        "It helps prevent the dummy variable trap (perfect multicollinearity), especially in linear models.",
+        "Step 1: Start with One-Hot encoded columns.",
+        "Step 2: Drop one category as a reference (baseline).",
+        "Step 3: Keep the remaining binary columns.",
+        "Original categories: Payment Method = [Cash, Card, Bank Transfer].",
+        "Reference category (dropped): Cash.",
+      ],
+      table: {
+        title: "Example",
+        headers: ["Payment Method", "Card", "Bank Transfer"],
+        rows: [
+          ["Cash", "0", "0"],
+          ["Card", "1", "0"],
+          ["Bank Transfer", "0", "1"],
+        ],
+      },
+      note: "In this setup, Cash is represented when all remaining columns are 0.",
+    },
+    {
+      title: "How to Deal with Categorical Data (Other Encoding Types)",
+      body: "Besides Ordinal, One-Hot, and Dummy Encoding, there are other useful methods.",
+      table: {
+        title: "Encoding Methods Overview",
+        headers: ["Encoding Type", "Idea", "Best Use Case"],
+        rows: [
+          [
+            "Frequency Encoding",
+            "Replace each category with how often it appears.",
+            "Large datasets with many categories",
+          ],
+          [
+            "Count Encoding",
+            "Similar to frequency, but uses raw counts directly.",
+            "Tree-based models with high-cardinality features",
+          ],
+          [
+            "Target Encoding",
+            "Replace category with target mean for that category.",
+            "Supervised tasks (use with care to avoid leakage)",
+          ],
+          [
+            "Binary Encoding",
+            "Convert category index to binary digits across columns.",
+            "High-cardinality data with fewer columns than one-hot",
+          ],
+          [
+            "Hash Encoding",
+            "Use a hash function to map categories into fixed columns.",
+            "Very large and dynamic category sets",
+          ],
+        ],
+      },
+      tables: [
+        {
+          title: "1) Frequency Encoding (City)",
+          headers: ["City", "Frequency"],
+          rows: [
+            ["Riyadh", "0.50"],
+            ["Jeddah", "0.33"],
+            ["Dammam", "0.17"],
+          ],
+        },
+        {
+          title: "2) Count Encoding (City)",
+          headers: ["City", "Count"],
+          rows: [
+            ["Riyadh", "3"],
+            ["Jeddah", "2"],
+            ["Dammam", "1"],
+          ],
+        },
+        {
+          title: "3) Target Encoding (City)",
+          headers: ["City", "Mean Target"],
+          rows: [
+            ["Riyadh", "0.80"],
+            ["Jeddah", "0.40"],
+            ["Dammam", "0.20"],
+          ],
+        },
+        {
+          title: "4) Binary Encoding (City)",
+          headers: ["City", "Category ID", "Binary Code"],
+          rows: [
+            ["Riyadh", "1", "01"],
+            ["Jeddah", "2", "10"],
+            ["Dammam", "3", "11"],
+          ],
+        },
+        {
+          title: "5) Hash Encoding (4 Buckets)",
+          headers: ["City", "Hash Bucket"],
+          rows: [
+            ["Riyadh", "2"],
+            ["Jeddah", "0"],
+            ["Dammam", "3"],
+          ],
+        },
+      ],
+      note: "Choose the encoding method based on category order, cardinality, model type, and risk of data leakage.",
+    },
+    {
+      title: "Handling Missing Data",
+      subtitle: "What is Missing Data?",
+      body: "Missing data refers to values that are absent or incomplete in one or more features of a dataset.",
+      table: {
+        title: "Types of Missing Data",
+        headers: ["Type", "Meaning"],
+        rows: [
+          [
+            "MCAR (Missing Completely at Random)",
+            "Missingness happens randomly and is unrelated to any variable in the dataset.",
+          ],
+          [
+            "MAR (Missing at Random)",
+            "Missingness depends on other observed variables, but not on the missing value itself.",
+          ],
+          [
+            "NMAR (Not Missing at Random)",
+            "Missingness depends on the missing value itself or unobserved factors.",
+          ],
+        ],
+      },
+      bullets: [
+        "It can introduce bias into model training.",
+        "It may reduce prediction accuracy.",
+        "It can cause errors in analysis if not handled properly.",
+      ],
+    },
+    {
+      title: "Handling Missing Data - Why Do We Have Missing Data?",
+      body: "Missing values can appear for many practical reasons during data collection and processing.",
+      table: {
+        title: "Common Causes",
+        headers: ["Cause", "Description", "Example"],
+        rows: [
+          [
+            "Human Error",
+            "Data is skipped, entered incorrectly, or forgotten.",
+            "A user leaves the Age field empty in a form.",
+          ],
+          [
+            "Device/Sensor Failure",
+            "Measurement tools fail or disconnect.",
+            "A medical sensor stops recording heart rate temporarily.",
+          ],
+          [
+            "Data Integration Issues",
+            "Missing fields appear when combining data from multiple sources.",
+            "One database has salary, another does not.",
+          ],
+          [
+            "Privacy or Refusal",
+            "Participants choose not to share sensitive information.",
+            "A customer does not provide income details.",
+          ],
+          [
+            "System/Transmission Errors",
+            "Data is lost during storage, transfer, or export.",
+            "Network interruption causes missing rows in logs.",
+          ],
+          [
+            "Conditional Missingness",
+            "Some fields are only relevant for specific groups.",
+            "Pregnancy_Status is empty for male patients.",
+          ],
+        ],
+      },
+      note: "Understanding why data is missing helps us choose the right treatment method (deletion, imputation, or advanced modeling).",
+    },
+    {
+      title: "Handling Missing Data - MCAR",
+      subtitle: "Missing Completely at Random (MCAR)",
+      body: "MCAR means missing values occur randomly and are independent of both observed and unobserved variables.",
+      bullets: [
+        "MCAR has no systematic pattern.",
+        "In practice, MCAR is often an unrealistic assumption in real-world datasets.",
+        "Before assuming MCAR, review data collection workflow and consult domain experts.",
+        "If MCAR is reasonable, simple imputation (mean/median/mode) can work.",
+      ],
+      table: {
+        title: "Illustrative Data Example",
+        headers: ["Student ID", "Age", "Score"],
+        rows: [
+          ["101", "20", "85"],
+          ["102", "Missing", "88"],
+          ["103", "21", "Missing"],
+          ["104", "23", "91"],
+          ["105", "Missing", "76"],
+          ["106", "22", "Missing"],
+        ],
+      },
+      note: "Missing values appear across different rows and columns with no clear pattern, which is consistent with MCAR.",
+    },
+    {
+      title: "Handling Missing Data - MAR",
+      subtitle: "Missing at Random (MAR)",
+      body: "MAR means missingness is related to observed features in the dataset, but not to the missing feature itself.",
+      table: {
+        title: "Example (Table)",
+        headers: ["Student", "Grade (Observed)", "Study Hours"],
+        rows: [
+          ["1", "95", "Missing"],
+          ["2", "92", "Missing"],
+          ["3", "88", "4"],
+          ["4", "75", "6"],
+          ["5", "70", "7"],
+        ],
+      },
+      sections: [
+        {
+          heading: "Imputation Techniques for MAR",
+          table: {
+            headers: ["Method", "Idea", "Why It Works for MAR"],
+            rows: [
+              [
+                "kNN Imputation",
+                "Fills missing values using the nearest similar records.",
+                "Uses observed features to find similar patterns.",
+              ],
+              [
+                "MissForest",
+                "Uses random-forest models iteratively to predict missing values.",
+                "Captures non-linear relationships from observed data effectively.",
+              ],
+            ],
+          },
+        },
+        {
+          heading: "Example: kNN Imputation (k = 2)",
+          body: "For student C, the two nearest students based on Grade and Attendance are A and B.",
+          formula: "\\text{Study Hours}_C = \\frac{8 + 7}{2} = 7.5",
+          table: {
+            headers: ["Student", "Grade", "Attendance (%)", "Study Hours"],
+            rows: [
+              ["A", "90", "95", "8"],
+              ["B", "88", "92", "7"],
+              ["C", "91", "96", "Missing"],
+              ["D", "70", "75", "3"],
+            ],
+          },
+        },
+        {
+          heading: "Example: MissForest",
+          body: "MissForest trains a Random Forest model using known rows to predict the missing value for student C.",
+          formula: "\\text{Study Hours}_C \\approx 7.6",
+        },
+      ],
+      note: "MAR is common in practice because missingness can often be explained by available variables.",
+    },
+    {
+      title: "Handling Missing Data - MNAR",
+      subtitle: "Missing Not at Random (MNAR)",
+      body: "MNAR is usually the most complex type because missingness depends on the missing value itself or unobserved variables.",
+      bullets: [
+        "Standard imputation can be unreliable without additional data or strong domain assumptions.",
+        "MNAR has a systematic pattern tied to hidden information.",
+      ],
+      table: {
+        title: "Example (Table)",
+        headers: ["Participant", "Reported Stress Level"],
+        rows: [
+          ["1", "2"],
+          ["2", "Missing"],
+          ["3", "3"],
+          ["4", "Missing"],
+          ["5", "1"],
+        ],
+      },
+      tables: [
+        {
+          title: "Practical Tip: Preserve Missingness Pattern",
+          headers: ["Participant", "Stress (Imputed)", "Stress_Was_Missing"],
+          rows: [
+            ["1", "2.0", "0"],
+            ["2", "4.1", "1"],
+            ["3", "3.0", "0"],
+            ["4", "4.3", "1"],
+            ["5", "1.0", "0"],
+          ],
+        },
+      ],
+    },
+    {
+      title: "Data Preprocessing Template",
+      subtitle: "Standard Workflow",
+      bullets: [
+        "Load the dataset.",
+        "Detect and handle missing values.",
+        "Encode categorical features into numerical form.",
+        "Split the dataset into training and test sets.",
+        "Scale numerical features when needed.",
+      ],
+      note: "Pipeline: Raw Data -> Missing Data Treatment -> Categorical Encoding -> Train/Test Split -> Feature Scaling -> ML Model.",
+    },
+    {
+      title: "Regression - Simple Linear Regression",
+      subtitle: "What is Simple Linear Regression?",
+      body: "Simple Linear Regression models the relationship between one independent variable x and one dependent variable y using a straight line.",
+      formula: "y = b_0 + b_1 x",
+      table: {
+        title: "Meaning of Each Symbol",
+        headers: ["Symbol", "Meaning"],
+        rows: [
+          ["y", "Predicted output (dependent variable)."],
+          ["x", "Input feature (independent variable)."],
+          ["b_0", "Intercept: predicted value of y when x = 0."],
+          ["b_1", "Slope: expected change in y when x increases by 1 unit."],
+        ],
+      },
+      sections: [
+        {
+          heading: "Practical Example",
+          body: "Suppose x = Hours of Study and y = Exam Score.",
+          formula: "y = 40 + 5x",
+          bullets: [
+            "Slope (b_1 = 5): each extra study hour increases predicted score by 5 points.",
+            "Intercept (b_0 = 40): if study hours are 0, predicted score is 40.",
+          ],
+        },
+      ],
+      note: "The regression line is the best-fit line that minimizes prediction errors.",
+    },
+    {
+      title: "Ordinary Least Squares (OLS)",
+      subtitle: "What is OLS?",
+      body: "Ordinary Least Squares is the most common method to fit a linear regression line by minimizing prediction errors.",
+      bullets: [
+        "Actual value: y_i",
+        "Predicted value: \\(\\hat{y}_i\\)",
+        "Residual error: \\(e_i = y_i - \\hat{y}_i\\)",
+      ],
+      formula: "\\min \\sum_{i=1}^{n} (y_i - \\hat{y}_i)^2",
+      note: "Squared errors make all errors positive, penalize large errors, and provide a clear optimization objective.",
+    },
+    {
+      title: "Multiple Linear Regression",
+      subtitle: "Definition",
+      body: "Multiple Linear Regression describes the relationship between one dependent variable y and two or more independent variables.",
+      formula: "y = b_0 + b_1x_1 + b_2x_2 + \\cdots + b_nx_n",
+      bullets: [
+        "Purpose: predict the target variable y using multiple input factors.",
+        "Compared with simple regression, it models more realistic multi-factor scenarios.",
+      ],
+      sections: [
+        {
+          heading: "Example",
+          body: "Suppose we want to predict house price using house size and number of bedrooms.",
+          formula: "y = 50 + 2.5x_1 + 15x_2",
+          bullets: [
+            "For each additional 1 m^2, price increases by 2.5 (holding other variables constant).",
+            "For each additional bedroom, price increases by 15 (holding other variables constant).",
+          ],
+        },
+      ],
+      table: {
+        title: "Table for Clarification",
+        headers: [
+          "House",
+          "Size (x_1) m^2",
+          "Bedrooms (x_2)",
+          "Predicted Price (y in $1000)",
+        ],
+        rows: [
+          ["A", "100", "2", "50 + 2.5(100) + 15(2) = 330"],
+          ["B", "120", "3", "50 + 2.5(120) + 15(3) = 395"],
+          ["C", "80", "1", "50 + 2.5(80) + 15(1) = 265"],
+        ],
+      },
+    },
+    {
+      title: "R-Squared (R^2)",
+      subtitle: "Definition",
+      body: "R^2 is a goodness-of-fit metric in regression. It measures how much variation in y is explained by model inputs.",
+      formula: "R^2 = 1 - \\frac{SS_{res}}{SS_{tot}}",
+      sections: [
+        {
+          heading: "Formulas",
+          formula: "SS_{res} = \\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2",
+        },
+        {
+          heading: "Formulas (continued)",
+          formula: "SS_{tot} = \\sum_{i=1}^{n}(y_i - \\bar{y})^2",
+        },
+      ],
+      table: {
+        title: "What Do These Terms Mean?",
+        headers: ["Term", "Description"],
+        rows: [
+          [
+            "SS_res",
+            "Residual Sum of Squares: squared distance between actual values and predictions.",
+          ],
+          [
+            "SS_tot",
+            "Total Sum of Squares: squared distance between actual values and the mean of y.",
+          ],
+        ],
+      },
+      bullets: [
+        "Larger R^2 means better explanatory power.",
+        "R^2 = 1 means perfect fit; R^2 = 0 means mean-level prediction performance.",
+      ],
+    },
+    {
+      title: "Adjusted R-Squared",
+      subtitle: "Why R^2 Alone Is Not Enough",
+      body: "In multiple regression, adding predictors often increases R^2 even when new variables are not useful.",
+      formula: "\\bar{R}^2 = 1 - (1 - R^2)\\frac{n-1}{n-p-1}",
+      bullets: [
+        "Adjusted R^2 penalizes unnecessary predictors.",
+        "It is usually a better metric for comparing models with different numbers of predictors.",
+      ],
+      table: {
+        title: "Quick Example",
+        headers: ["Model", "Predictors", "R^2", "Adjusted R^2", "Interpretation"],
+        rows: [
+          ["A", "x_1, x_2", "0.82", "0.81", "Strong and efficient model"],
+          [
+            "B",
+            "x_1, x_2, x_3, x_4",
+            "0.83",
+            "0.79",
+            "Higher R^2, but worse after penalty",
+          ],
+        ],
+      },
+      note: "Model B looks better by R^2, but Adjusted R^2 shows extra variables are likely not helpful.",
+    },
+    {
+      title: "Assumptions of Linear Regression (Overview)",
+      body: "Linear regression is most reliable when core assumptions are approximately satisfied.",
+      table: {
+        headers: ["Assumption", "Meaning", "If Violated"],
+        rows: [
+          ["Linearity", "Relationship between y and each x is roughly linear.", "Biased predictions"],
+          [
+            "Homoscedasticity",
+            "Error variance is roughly constant across fitted values.",
+            "Unstable standard errors",
+          ],
+          [
+            "Normality of Errors",
+            "Residuals are approximately normal.",
+            "Inference becomes less reliable",
+          ],
+          ["Independence", "Observations/errors are independent.", "Biased significance tests"],
+          [
+            "No Severe Multicollinearity",
+            "Predictors are not highly redundant.",
+            "Coefficients become unstable",
+          ],
+          [
+            "Limited Outlier Influence",
+            "Extreme points do not dominate the fit.",
+            "Distorted regression line",
+          ],
+        ],
+      },
+    },
+    {
+      title: "Assumptions with Practical Examples",
+      table: {
+        headers: ["Assumption", "Simple Example", "Practical Check"],
+        rows: [
+          [
+            "Linearity",
+            "Sales increase approximately linearly with ad spend.",
+            "Scatter plot / residual plot",
+          ],
+          [
+            "Homoscedasticity",
+            "Prediction errors are similar for low and high sales values.",
+            "Residuals vs fitted values",
+          ],
+          [
+            "Normal Errors",
+            "Most residuals are near zero, few at extremes.",
+            "Histogram / Q-Q plot of residuals",
+          ],
+          [
+            "Independence",
+            "Customer records are independent.",
+            "Study design / Durbin-Watson for time data",
+          ],
+          [
+            "Low Multicollinearity",
+            "TV_ads and radio_ads are not near-duplicates.",
+            "Correlation matrix / VIF",
+          ],
+          [
+            "Outlier Control",
+            "One extreme house price should not define the whole model.",
+            "Cook's distance / leverage diagnostics",
+          ],
+        ],
+      },
+      note: "If one assumption is violated, use transformations, robust methods, feature engineering, or a different model.",
+    },
+    {
+      title: "Dummy Variables and Dummy Variable Trap",
+      subtitle: "Dummy Variables",
+      body: "Categorical variables are converted into binary columns (0/1).",
+      table: {
+        title: "Example: State",
+        headers: ["State", "D_1 (New York)", "D_2 (California)"],
+        rows: [
+          ["New York", "1", "0"],
+          ["California", "0", "1"],
+        ],
+      },
+      sections: [
+        {
+          heading: "Dummy Variable Trap",
+          body: "If all dummy columns are included with an intercept, perfect multicollinearity appears.",
+          formula: "D_2 = 1 - D_1",
+          bullets: [
+            "Coefficients become unstable.",
+            "Interpretation becomes unreliable.",
+            "Statistical tests may be misleading.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Solving Dummy Variable Trap",
+      subtitle: "Solution",
+      body: "Drop one dummy column and keep it as the baseline category.",
+      formula: "\\text{Profit} = b_0 + b_1x_1 + b_2x_2 + b_3x_3 + b_4D_1",
+      bullets: [
+        "If we drop California, then D_1 = 1 means New York and D_1 = 0 means California baseline.",
+        "This keeps category information while avoiding multicollinearity.",
+      ],
+      table: {
+        title: "Interpretation Example",
+        headers: ["Case", "D_1", "State Meaning"],
+        rows: [
+          ["A", "1", "New York"],
+          ["B", "0", "California (reference)"],
+        ],
+      },
+    },
+    {
+      title: "Building a Regression Model",
+      subtitle: "Goal",
+      body: "Model-building methods select the most relevant predictors to balance simplicity, interpretability, and predictive accuracy.",
+      table: {
+        headers: ["Method", "Core Idea", "Best Use Case"],
+        rows: [
+          [
+            "All-in",
+            "Use all predictors directly.",
+            "Strong prior knowledge that all variables matter",
+          ],
+          [
+            "Backward Elimination",
+            "Start full and remove least significant variables.",
+            "Many candidate predictors",
+          ],
+          [
+            "Forward Selection",
+            "Start empty and add most significant variables.",
+            "Need a compact model from scratch",
+          ],
+          [
+            "Bidirectional (Stepwise)",
+            "Add and remove dynamically.",
+            "Flexible search for balanced model",
+          ],
+        ],
+      },
+    },
+    {
+      title: "Model-Building Methods (Steps + Example)",
+      sections: [
+        {
+          heading: "1) Backward Elimination",
+          bullets: [
+            "Set significance level (e.g., SL = 0.05).",
+            "Fit model with all predictors.",
+            "Remove highest p-value if p > SL.",
+            "Refit and repeat.",
+          ],
+        },
+        {
+          heading: "2) Forward Selection",
+          bullets: [
+            "Start with no predictors.",
+            "Add variable with lowest p-value below SL.",
+            "Continue one-by-one.",
+            "Stop when no variable qualifies.",
+          ],
+        },
+        {
+          heading: "3) Bidirectional (Stepwise)",
+          bullets: ["Add significant variables and remove non-significant ones each iteration."],
+        },
+      ],
+      table: {
+        title: "Mini Example",
+        headers: ["Iteration", "Candidate Predictors", "Selected Action"],
+        rows: [
+          ["Start", "x_1, x_2, x_3, x_4", "Full model"],
+          ["1", "highest p-value: x_4 = 0.42", "Remove x_4"],
+          ["2", "highest p-value: x_3 = 0.11", "Remove x_3"],
+          ["Final", "x_1, x_2 with p < 0.05", "Keep final model"],
+        ],
+      },
+    },
+    {
+      title: "Significance Level and p-value",
+      table: {
+        headers: ["Concept", "Meaning"],
+        rows: [
+          ["Null Hypothesis (H_0)", "No effect / no relationship"],
+          [
+            "p-value",
+            "Probability of observing current result (or more extreme) if H_0 is true",
+          ],
+          ["Significance Level (alpha)", "Maximum tolerated Type I error probability"],
+        ],
+      },
+      bullets: [
+        "If p < alpha: reject H_0 (statistically significant).",
+        "If p >= alpha: fail to reject H_0.",
+      ],
+      formula: "0.03 < 0.05 \\Rightarrow \\text{Reject } H_0",
+      note: "So the predictor is considered significant at the 5% level.",
+    },
+    {
+      title: "Why Is SL = 0.05 Common?",
+      subtitle: "Standard Choice",
+      body: "SL = 0.05 is widely used because it balances sensitivity and false-positive risk.",
+      formula: "SL = 1 - \\text{Confidence Level}",
+      tables: [
+        {
+          headers: ["SL", "Confidence Level", "Strictness"],
+          rows: [
+            ["0.10", "90%", "Less strict"],
+            ["0.05", "95%", "Standard"],
+            ["0.01", "99%", "More strict"],
+          ],
+        },
+        {
+          title: "How to Choose in Practice",
+          headers: ["Scenario", "Suggested SL"],
+          rows: [
+            ["High-stakes decisions (medicine, safety, finance)", "0.01"],
+            ["General modeling and reporting", "0.05"],
+            ["Exploratory analysis", "0.10"],
+          ],
+        },
+      ],
+      note: "Start with SL = 0.05, then adjust based on domain risk, dataset size, and model purpose.",
+    },
+    {
+      title: "Polynomial Regression",
+      subtitle: "Definition",
+      body: "Polynomial Regression extends linear regression to model non-linear relationships by adding polynomial terms.",
+      bullets: [
+        "Linear regression: y = b_0 + b_1x",
+        "Polynomial regression: y = b_0 + b_1x + b_2x^2 + b_3x^3 + ...",
+        "It is still linear in parameters because coefficients remain linear.",
+      ],
+    },
+    {
+      title: "Why Polynomial Regression?",
+      body: "Simple linear regression fits only straight lines, but many real-world relationships are curved.",
+      bullets: [
+        "Population growth over time",
+        "Disease progression",
+        "Sales and economic trends",
+        "Rainfall vs crop yield relationships",
+        "Curved or U-shaped data is often underfit by a straight line.",
+      ],
+    },
+    {
+      title: "How Polynomial Regression Works",
+      table: {
+        headers: ["Step", "Description"],
+        rows: [
+          ["1", "Start with input feature x"],
+          ["2", "Create transformed terms: x^2, x^3, ..."],
+          ["3", "Fit linear regression on transformed features"],
+          ["4", "Estimate coefficients (b_0, b_1, b_2, ...)"],
+          ["5", "Use the fitted equation to predict y"],
+        ],
+      },
+      formula: "y = b_0 + b_1x + b_2x^2 + \\cdots + b_dx^d",
+      note: "d is the polynomial degree.",
+    },
+    {
+      title: "Choosing the Polynomial Degree",
+      body: "The polynomial degree controls model complexity.",
+      table: {
+        headers: ["Degree Choice", "Effect"],
+        rows: [
+          ["Too low", "Underfitting (model too simple)"],
+          ["Too high", "Overfitting (fits noise, weak generalization)"],
+          ["Balanced degree", "Better bias-variance trade-off"],
+        ],
+      },
+      bullets: ["Use cross-validation.", "Compare adjusted R^2.", "Compare validation/test error."],
+    },
+    {
+      title: "When to Use Polynomial Regression",
+      subtitle: "Good Use Cases",
+      bullets: [
+        "Data shows clear curved trends.",
+        "You need more flexibility than a straight line.",
+        "You still want interpretable behavior.",
+      ],
+      sections: [
+        {
+          heading: "Applications",
+          bullets: [
+            "Forecasting demand and sales trends",
+            "Environmental modeling (rainfall vs yield)",
+            "Medical progression patterns",
+            "Engineering curves (stress-strain relationships)",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Limitations of Polynomial Regression",
+      table: {
+        headers: ["Limitation", "Explanation"],
+        rows: [
+          ["Overfitting risk", "High-degree models may memorize noise"],
+          ["Outlier sensitivity", "Extreme points can shift the curve strongly"],
+          ["Extrapolation weakness", "Predictions outside training range can be unreliable"],
+          [
+            "Limited flexibility for very complex patterns",
+            "Some tasks are better handled by tree-based or neural models",
+          ],
+        ],
+      },
+      note: "Use polynomial regression as a baseline, then compare with alternatives as complexity grows.",
+    },
+    {
+      title: "Polynomial Regression Visual Explanation",
+      body: "This section compares linear and polynomial fits, and shows how model behavior changes with polynomial degree.",
+      note: "If you want, I can add actual comparison plots as images in this slide.",
+    },
+    {
+      title: "Support Vector Machine (SVM) and SVR",
+      subtitle: "What is SVR?",
+      body: "Support Vector Regression (SVR) is the regression version of SVM. It predicts a continuous target with a flat function and a tolerance margin.",
+      bullets: [
+        "Used in disease progression prediction",
+        "Used in engineering curves (e.g., stress-strain)",
+        "Used in demand and trend forecasting",
+        "SVR uses an epsilon-insensitive zone where small errors are ignored.",
+      ],
+    },
+    {
+      title: "SVR Formulation and Equations",
+      formula: "f(x)=w^T\\phi(x)+b",
+      bullets: [
+        "\\(\\phi(x)\\) maps input to a (possibly) higher-dimensional space.",
+        "With kernels, we avoid computing \\(\\phi(x)\\) explicitly.",
+      ],
+      sections: [
+        {
+          heading: "Optimization Objective (Soft-Margin SVR)",
+          formula:
+            "\\min_{w,b,\\xi_i,\\xi_i^*} \\; \\frac{1}{2}\\|w\\|^2 + C\\sum_{i=1}^{n}(\\xi_i+\\xi_i^*)",
+        },
+        {
+          heading: "Constraints",
+          formula: "y_i - (w^T\\phi(x_i)+b) \\le \\varepsilon + \\xi_i",
+        },
+        {
+          heading: "Constraints (continued)",
+          formula: "(w^T\\phi(x_i)+b) - y_i \\le \\varepsilon + \\xi_i^*",
+          bullets: ["\\(\\xi_i, \\xi_i^* \\ge 0\\)"],
+        },
+      ],
+      table: {
+        title: "Hyperparameters",
+        headers: ["Hyperparameter", "Role"],
+        rows: [
+          ["epsilon", "Width of the no-penalty tube around prediction"],
+          ["C", "Penalty strength for points outside the tube"],
+          ["Kernel", "Controls curve shape (linear, RBF, polynomial)"],
+        ],
+      },
+    },
+    {
+      title: "Why SVR?",
+      table: {
+        headers: ["Aspect", "Traditional Regression", "SVR"],
+        rows: [
+          [
+            "Error handling",
+            "Minimizes all residuals",
+            "Ignores errors inside epsilon-tube",
+          ],
+          ["Outlier sensitivity", "Can be sensitive", "More robust when tube and C are tuned"],
+          [
+            "Non-linear handling",
+            "Needs explicit feature engineering",
+            "Uses kernels directly",
+          ],
+          [
+            "Large datasets",
+            "Usually faster for very large data",
+            "Can become expensive for very large sample sizes",
+          ],
+        ],
+      },
+      bullets: [
+        "Use feature scaling before SVR.",
+        "Start with RBF kernel, then tune C, epsilon, and kernel parameters.",
+      ],
+    },
+    {
+      title: "Decision Tree Regression (CART)",
+      subtitle: "What is Decision Tree Regressor?",
+      body: "Decision Tree Regressor predicts continuous values by splitting feature space into rule-based regions and assigning a constant value in each region.",
+      bullets: [
+        "Captures non-linear relationships.",
+        "Easy to interpret if tree depth is controlled.",
+        "Handles complex feature interactions.",
+      ],
+    },
+    {
+      title: "Core Concept of Regression Trees",
+      bullets: [
+        "Internal node: decision rule (e.g., x <= 4.5).",
+        "Branch: outcome of the rule.",
+        "Leaf node: predicted value (usually region mean).",
+      ],
+      table: {
+        title: "CART Perspective",
+        headers: ["Tree Type", "Target Type", "Typical Criterion"],
+        rows: [
+          ["Classification Tree", "Categorical target", "Gini / Entropy"],
+          ["Regression Tree", "Continuous target", "MSE (or MAE)"],
+        ],
+      },
+      note: "This section focuses on the Regression Tree part of CART.",
+    },
+    {
+      title: "How Splitting Happens (MSE Criterion)",
+      sections: [
+        {
+          heading: "Node MSE",
+          formula: "\\text{MSE}(S)=\\frac{1}{|S|}\\sum_{i \\in S}(y_i-\\bar{y}_S)^2",
+        },
+        {
+          heading: "Split Score",
+          formula:
+            "\\text{MSE}_{\\text{split}}=\\frac{|S_L|}{|S|}\\text{MSE}(S_L)+\\frac{|S_R|}{|S|}\\text{MSE}(S_R)",
+        },
+        {
+          heading: "Prediction at Leaf",
+          formula: "\\hat{y}_{\\text{leaf}} = \\frac{1}{|S_{leaf}|}\\sum_{i\\in S_{leaf}} y_i",
+        },
+      ],
+      note: "Choose the split with the minimum weighted MSE.",
+    },
+    {
+      title: "Decision Tree Regression Algorithm (Simple Steps)",
+      bullets: [
+        "Start with all data at the root node.",
+        "Evaluate candidate splits across features.",
+        "Compute weighted MSE for each split.",
+        "Select the split with minimum error.",
+        "Repeat recursively on child nodes.",
+        "Stop based on rules (max depth, min samples).",
+        "Predict using leaf mean value.",
+      ],
+      table: {
+        title: "Important Hyperparameters",
+        headers: ["Hyperparameter", "Effect"],
+        rows: [
+          ["max_depth", "Controls model complexity"],
+          ["min_samples_split", "Minimum samples required to split a node"],
+          ["min_samples_leaf", "Minimum samples in each leaf"],
+          ["max_leaf_nodes", "Limits number of terminal regions"],
+        ],
+      },
+      note: "These settings reduce overfitting and improve generalization.",
+    },
+    {
+      title: "Random Forest Regression",
+      subtitle: "What is Random Forest Regressor?",
+      body: "Random Forest Regression is an ensemble method that combines many decision trees and averages their predictions.",
+      bullets: [
+        "Sample training data with bootstrap.",
+        "Build many trees on different samples.",
+        "Predict with all trees and average outputs.",
+      ],
+      formula: "\\hat{y}_{RF}(x)=\\frac{1}{N_{trees}}\\sum_{t=1}^{N_{trees}}\\hat{y}_t(x)",
+      note: "Averaging reduces variance and usually improves generalization.",
+    },
+    {
+      title: "Decision Tree vs Random Forest (Regression)",
+      table: {
+        headers: ["Aspect", "Decision Tree Regressor", "Random Forest Regressor"],
+        rows: [
+          ["Model type", "Single tree", "Ensemble of many trees"],
+          ["Split criterion", "MSE per split", "Trees split by MSE, then averaged"],
+          ["Overfitting risk", "Higher", "Lower (variance reduction)"],
+          ["Stability", "Sensitive to data changes", "More stable"],
+          ["Final prediction", "Output of one tree", "Mean of all tree outputs"],
+          ["Interpretability", "High", "Medium"],
+        ],
+      },
+      note: "Use a single tree for interpretability; use random forest for stronger performance.",
+    },
+    {
+      title: "Evaluating Regression Models",
+      table: {
+        title: "Key Performance Metrics",
+        headers: ["Metric", "Formula", "What It Tells Us"],
+        rows: [
+          ["MAE", "\\(\\frac{1}{n}\\sum |y_i-\\hat{y}_i|\\)", "Average prediction error magnitude"],
+          ["MSE", "\\(\\frac{1}{n}\\sum (y_i-\\hat{y}_i)^2\\)", "Penalizes large errors more"],
+          ["RMSE", "\\(\\sqrt{\\frac{1}{n}\\sum (y_i-\\hat{y}_i)^2}\\)", "Error in original target scale"],
+          ["R^2", "\\(1-\\frac{SS_{res}}{SS_{tot}}\\)", "Fraction of variance explained"],
+        ],
+      },
+      note: "Evaluate using more than one metric (e.g., RMSE with R^2) for balanced judgment.",
+    },
+    {
+      title: "Regularization Methods (Why Needed?)",
+      subtitle: "Overfitting Problem",
+      body: "When a model is too flexible, it may fit noise instead of true patterns.",
+      bullets: [
+        "Very low training error",
+        "Weak test performance",
+        "High variance and unstable predictions",
+      ],
+      formula:
+        "\\min_{\\beta} \\; \\underbrace{\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2}_{\\text{data loss}} + \\lambda \\cdot \\underbrace{\\Omega(\\beta)}_{\\text{penalty}}",
+      note: "Regularization controls complexity by penalizing large coefficients.",
+    },
+    {
+      title: "Ridge, Lasso, and Elastic Net",
+      sections: [
+        {
+          heading: "Without Regularization",
+          formula: "\\min_{\\beta} \\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2",
+        },
+        {
+          heading: "Ridge Regression (L2)",
+          formula:
+            "\\min_{\\beta} \\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2 + \\lambda\\sum_{j=1}^{m}\\beta_j^2",
+        },
+        {
+          heading: "Lasso Regression (L1)",
+          formula:
+            "\\min_{\\beta} \\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2 + \\lambda\\sum_{j=1}^{m}|\\beta_j|",
+        },
+        {
+          heading: "Elastic Net (L1 + L2)",
+          formula:
+            "\\min_{\\beta} \\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2 + \\lambda_1\\sum_{j=1}^{m}|\\beta_j| + \\lambda_2\\sum_{j=1}^{m}\\beta_j^2",
+        },
+      ],
+    },
+    {
+      title: "Regularization Comparison Table",
+      table: {
+        headers: ["Method", "Penalty Type", "Main Behavior", "Feature Selection"],
+        rows: [
+          ["Ridge", "L2 (sum beta_j^2)", "Shrinks coefficients smoothly", "No"],
+          [
+            "Lasso",
+            "L1 (sum |beta_j|)",
+            "Shrinks and can set some coefficients to zero",
+            "Yes",
+          ],
+          ["Elastic Net", "L1 + L2", "Combines shrinkage + selection", "Yes"],
+        ],
+      },
+      bullets: [
+        "Ridge: many small/medium useful features.",
+        "Lasso: only few important features expected.",
+        "Elastic Net: correlated features and need both stability and sparsity.",
+      ],
+    },
+    {
+      title: "Regression Models - Advantages and Disadvantages",
+      table: {
+        headers: ["Model", "Advantages", "Disadvantages"],
+        rows: [
+          [
+            "Linear Regression",
+            "Simple, fast, easy to interpret, works well for linear patterns.",
+            "Assumes linear relationship and is sensitive to outliers.",
+          ],
+          [
+            "Polynomial Regression",
+            "Captures curved/non-linear relationships better than linear regression.",
+            "Choosing degree is sensitive; high degrees may overfit.",
+          ],
+          [
+            "SVR",
+            "Handles non-linear patterns with kernels and can be robust to noise with proper tuning.",
+            "Requires feature scaling and careful hyperparameter tuning; slower on large datasets.",
+          ],
+          [
+            "Decision Tree Regression",
+            "Interpretable rules, captures non-linear interactions, no feature scaling required.",
+            "Can overfit easily and may be unstable with small data changes.",
+          ],
+          [
+            "Random Forest Regression",
+            "Higher accuracy and stability, reduces overfitting by averaging many trees.",
+            "Less interpretable and can be computationally heavier.",
+          ],
+        ],
+      },
+      tables: [
+        {
+          title: "Model Summary (Name + Equation)",
+          headers: ["Model", "Core Equation"],
+          rows: [
+            ["Linear Regression", "\\(\\hat{y} = b_0 + b_1x\\)"],
+            [
+              "Polynomial Regression",
+              "\\(\\hat{y} = b_0 + b_1x + b_2x^2 + \\cdots + b_dx^d\\)",
+            ],
+            ["SVR", "\\(f(x)=w^T\\phi(x)+b\\)"],
+            [
+              "Decision Tree Regression",
+              "\\(\\hat{y}_{leaf}=\\frac{1}{|S_{leaf}|}\\sum_{i\\in S_{leaf}} y_i\\)",
+            ],
+            [
+              "Random Forest Regression",
+              "\\(\\hat{y}_{RF}(x)=\\frac{1}{N_{trees}}\\sum_{t=1}^{N_{trees}}\\hat{y}_t(x)\\)",
+            ],
+          ],
+        },
+      ],
+      note: "If interpretability is priority: Linear Regression or Decision Tree. If predictive performance is priority: Random Forest.",
+    },
+    {
+      title: "Visual Comparison of Regression Models",
+      body: "This slide compares model behavior on the same dataset: Linear Regression, Polynomial Regression, SVR, Decision Tree Regression, and Random Forest Regression.",
+      note: "If you want, I can add the actual visual plots as images for each model here.",
     },
   ],
 };
@@ -137,6 +1314,39 @@ function escapeHTML(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function typesetMath(targetElement) {
+  if (!targetElement) return;
+  if (!window.MathJax || !window.MathJax.typesetPromise) return;
+  window.MathJax.typesetClear([targetElement]);
+  window.MathJax.typesetPromise([targetElement]).catch(() => {});
+}
+
+function buildTableMarkup(table) {
+  if (!table) return "";
+  return `
+    <div class="table-wrap">
+      ${table.title ? `<h3>${escapeHTML(table.title)}</h3>` : ""}
+      <table>
+        <thead>
+          <tr>
+            ${(table.headers || [])
+              .map((header) => `<th>${escapeHTML(header)}</th>`)
+              .join("")}
+          </tr>
+        </thead>
+        <tbody>
+          ${(table.rows || [])
+            .map(
+              (row) =>
+                `<tr>${row.map((cell) => `<td>${escapeHTML(cell)}</td>`).join("")}</tr>`
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
 function buildSlideMarkup(slide) {
@@ -175,37 +1385,16 @@ function buildSlideMarkup(slide) {
         <article class="content-card">
           <h3>${escapeHTML(section.heading || "")}</h3>
           ${section.body ? `<p>${escapeHTML(section.body)}</p>` : ""}
-          ${section.formula ? `<pre class="formula">${escapeHTML(section.formula)}</pre>` : ""}
+          ${section.formula ? `<div class="formula">\\[${escapeHTML(section.formula)}\\]</div>` : ""}
           ${sectionBullets ? `<ul>${sectionBullets}</ul>` : ""}
+          ${buildTableMarkup(section.table)}
         </article>
       `;
     })
     .join("");
 
-  const tableHTML = slide.table
-    ? `
-      <div class="table-wrap">
-        ${slide.table.title ? `<h3>${escapeHTML(slide.table.title)}</h3>` : ""}
-        <table>
-          <thead>
-            <tr>
-              ${(slide.table.headers || [])
-                .map((header) => `<th>${escapeHTML(header)}</th>`)
-                .join("")}
-            </tr>
-          </thead>
-          <tbody>
-            ${(slide.table.rows || [])
-              .map(
-                (row) =>
-                  `<tr>${row.map((cell) => `<td>${escapeHTML(cell)}</td>`).join("")}</tr>`
-              )
-              .join("")}
-          </tbody>
-        </table>
-      </div>
-    `
-    : "";
+  const tableHTML = buildTableMarkup(slide.table);
+  const tablesHTML = (slide.tables || []).map((table) => buildTableMarkup(table)).join("");
 
   const imageHTML = slide.imageUrl
     ? `
@@ -219,10 +1408,12 @@ function buildSlideMarkup(slide) {
     <h2>${escapeHTML(slide.title)}</h2>
     ${slide.subtitle ? `<p>${escapeHTML(slide.subtitle)}</p>` : ""}
     ${slide.body ? `<p>${escapeHTML(slide.body)}</p>` : ""}
+    ${slide.formula ? `<div class="formula">\\[${escapeHTML(slide.formula)}\\]</div>` : ""}
     ${imageHTML}
     ${bulletsHTML ? `<ul>${bulletsHTML}</ul>` : ""}
     ${sectionsHTML ? `<div class="content-sections">${sectionsHTML}</div>` : ""}
     ${tableHTML}
+    ${tablesHTML}
     ${slide.note ? `<p class="note-box">${escapeHTML(slide.note)}</p>` : ""}
   `;
 }
@@ -235,11 +1426,13 @@ function renderPrintDeck() {
     .join("");
 
   printContainer.innerHTML = allSlidesHTML;
+  typesetMath(printContainer);
 }
 
 function renderSlide() {
   const slide = presentationData.slides[currentIndex];
   slideContainer.innerHTML = buildSlideMarkup(slide);
+  typesetMath(slideContainer);
 
   currentSlideEl.textContent = String(currentIndex + 1);
   prevBtn.disabled = currentIndex === 0;
@@ -296,6 +1489,9 @@ function init() {
   window.addEventListener("beforeprint", renderPrintDeck);
   window.addEventListener("afterprint", () => {
     printContainer.innerHTML = "";
+  });
+  window.addEventListener("load", () => {
+    typesetMath(slideContainer);
   });
 
   document.addEventListener("keydown", (event) => {
