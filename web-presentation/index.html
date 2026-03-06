@@ -23,20 +23,15 @@
   ></script>
 </head>
 <body>
-  <div class="floating-nav" aria-label="quick top navigation">
-    <button id="top-prev-btn" class="nav-btn floating-nav-btn" type="button">↑ السابق</button>
-    <button id="top-next-btn" class="nav-btn floating-nav-btn" type="button">التالي ↑</button>
-  </div>
-
   <div class="presentation">
     <header class="topbar">
       <h1 id="deck-title">عنوان العرض</h1>
       <div class="topbar-actions">
-        <div class="slide-count">
+        <button id="slide-jump-btn" class="slide-count slide-jump-btn" type="button" title="الانتقال إلى رقم شريحة">
           <span id="current-slide">1</span>
           <span>/</span>
           <span id="total-slides">1</span>
-        </div>
+        </button>
         <button id="theme-toggle-btn" class="nav-btn topbar-btn theme-btn" type="button">
           <span id="theme-icon" aria-hidden="true">🌙</span>
           <span id="theme-label">الوضع: ليلي</span>

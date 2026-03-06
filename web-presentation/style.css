@@ -59,27 +59,6 @@ body {
   padding: 1.2rem;
 }
 
-.floating-nav {
-  position: fixed;
-  top: 0.85rem;
-  inset-inline-end: 0.95rem;
-  z-index: 1200;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--card);
-  backdrop-filter: blur(6px);
-  box-shadow: var(--shadow-soft);
-}
-
-.floating-nav-btn {
-  padding: 0.46rem 0.78rem;
-  font-size: 0.84rem;
-}
-
 .topbar {
   display: flex;
   align-items: center;
@@ -145,6 +124,19 @@ body {
 .slide-count {
   color: var(--muted);
   font-weight: 700;
+}
+
+.slide-jump-btn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.slide-jump-btn:hover {
+  color: var(--text);
+  border-color: var(--border);
 }
 
 .stage {
@@ -475,12 +467,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .floating-nav {
-    top: auto;
-    bottom: 0.9rem;
-    inset-inline: 0.8rem;
-    justify-content: center;
-  }
 }
 
 @media print {
@@ -498,10 +484,6 @@ body {
   }
 
   .presentation {
-    display: none;
-  }
-
-  .floating-nav {
     display: none;
   }
 

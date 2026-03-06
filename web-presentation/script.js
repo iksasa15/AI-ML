@@ -3488,10 +3488,9 @@ const deckTitle = document.getElementById("deck-title");
 const slideContainer = document.getElementById("slide-container");
 const currentSlideEl = document.getElementById("current-slide");
 const totalSlidesEl = document.getElementById("total-slides");
+const slideJumpBtn = document.getElementById("slide-jump-btn");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
-const topPrevBtn = document.getElementById("top-prev-btn");
-const topNextBtn = document.getElementById("top-next-btn");
 const dotsContainer = document.getElementById("dots");
 const themeToggleBtn = document.getElementById("theme-toggle-btn");
 const themeIcon = document.getElementById("theme-icon");
@@ -3722,12 +3721,6 @@ function renderSlide() {
   currentSlideEl.textContent = String(currentIndex + 1);
   prevBtn.disabled = currentIndex === 0;
   nextBtn.disabled = currentIndex === presentationData.slides.length - 1;
-  if (topPrevBtn) {
-    topPrevBtn.disabled = currentIndex === 0;
-  }
-  if (topNextBtn) {
-    topNextBtn.disabled = currentIndex === presentationData.slides.length - 1;
-  }
 
   const dots = dotsContainer.querySelectorAll(".dot");
   dots.forEach((dot, index) => {
@@ -3774,6 +3767,21 @@ function goPrev() {
   }
 }
 
+function goToSlideByNumber() {
+  const total = presentationData.slides.length;
+  const input = window.prompt(`اكتب رقم الشريحة (1 - ${total})`, String(currentIndex + 1));
+  if (input === null) return;
+
+  const target = Number.parseInt(input.trim(), 10);
+  if (Number.isNaN(target) || target < 1 || target > total) {
+    window.alert(`رقم غير صحيح. اختر رقم بين 1 و ${total}.`);
+    return;
+  }
+
+  currentIndex = target - 1;
+  renderSlide();
+}
+
 function init() {
   addPresentationStructure();
   applyTheme(loadSavedTheme());
@@ -3784,11 +3792,8 @@ function init() {
 
   nextBtn.addEventListener("click", goNext);
   prevBtn.addEventListener("click", goPrev);
-  if (topNextBtn) {
-    topNextBtn.addEventListener("click", goNext);
-  }
-  if (topPrevBtn) {
-    topPrevBtn.addEventListener("click", goPrev);
+  if (slideJumpBtn) {
+    slideJumpBtn.addEventListener("click", goToSlideByNumber);
   }
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener("click", toggleTheme);
