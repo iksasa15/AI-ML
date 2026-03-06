@@ -3346,11 +3346,8 @@ function addPresentationStructure() {
       "Clustering and PCA",
       "Deep Learning and Neural Networks",
       "Natural Language Processing (NLP)",
-      "NLP Day 2: Tokenization Workshop",
-      "NLP Day 3: Language Modeling",
-      "NLP Day 4: Contextual Embeddings and RNNs",
-      "NLP Day 5: Seq2Seq and NMT Evaluation",
-      "Week 9 GenAI: BERT, T5, GPT, Attention",
+      "NLP Advanced Topics",
+      "Generative AI Foundations",
     ],
     note: "Use the slide dots below to quickly jump across sections.",
   });
