@@ -103,6 +103,34 @@ body {
   font-size: clamp(1.5rem, 2.2vw, 2.2rem);
 }
 
+.media-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  vertical-align: middle;
+}
+
+.media-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.media-badge-static {
+  background: rgba(79, 111, 240, 0.16);
+  color: var(--text);
+}
+
+.media-badge-animated {
+  background: rgba(111, 139, 255, 0.28);
+  color: var(--text);
+}
+
 .slide p {
   color: var(--muted);
   line-height: 1.8;
