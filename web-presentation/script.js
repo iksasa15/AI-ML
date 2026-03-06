@@ -1869,71 +1869,143 @@ const presentationData = {
       note: "Combining PCA with clustering often improves interpretability and runtime on high-dimensional data.",
     },
     {
-      title: "Deep Learning Overview",
-      subtitle: "From Feature Engineering to Representation Learning",
+      title: "Deep Learning: Motivation",
+      subtitle: "From Classical ML to Hierarchical Representation Learning",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
       ],
       bullets: [
-        "Deep learning is a subfield of machine learning based on layered neural networks.",
-        "It learns hierarchical representations directly from raw data.",
-        "It becomes especially effective with high-dimensional data and large datasets.",
+        "Classical ML often struggles with raw, high-dimensional, and unstructured inputs.",
+        "Deep learning reduces manual feature engineering by learning features directly from data.",
+        "Layered models learn abstraction levels: edges -> parts -> objects -> semantics.",
       ],
-      note: "Compared with classical ML, deep learning reduces dependence on manual feature engineering.",
+      note: "This shift enables practical learning on images, speech, text, and multimodal data.",
     },
     {
-      title: "When Deep Learning Is a Good Choice",
+      title: "Why Classical ML Can Fail on Complex Data",
       table: {
-        headers: ["Scenario", "Why DL Helps", "Typical Alternatives"],
+        headers: ["Challenge", "Impact", "Why DL Helps"],
         rows: [
-          ["Images, audio, text", "Learns rich hierarchical patterns", "Manual features + classical models"],
-          ["Very large training sets", "Scales with data and model capacity", "Tree ensembles on tabular data"],
-          ["Complex non-linear relations", "Multiple layers model high-order interactions", "Kernel methods / shallow nets"],
-          ["Mostly tabular, small data", "Often not ideal without heavy tuning", "XGBoost, Random Forest, linear models"],
+          ["Scalability", "Training becomes inefficient on very large datasets", "GPU-friendly optimization and mini-batch learning"],
+          ["Manual feature design", "Domain expertise bottleneck", "Automated feature extraction in hidden layers"],
+          ["Unstructured modalities", "Hard to handcraft robust descriptors", "Architectures specialized for images/text/audio"],
+          ["Hierarchical patterns", "Shallow models miss compositional structure", "Depth builds rich compositional representations"],
         ],
       },
-      note: "Model selection should be driven by data modality, dataset size, and deployment constraints.",
+      note: "Deep learning is not always superior for small tabular datasets with limited samples.",
     },
     {
-      title: "Single Neuron (Perceptron) Basics",
-      formula: "z = w^\\top x + b,\\quad \\hat{y} = f(z)",
+      title: "Deep Learning as a Subset of ML",
       bullets: [
-        "Inputs are weighted and shifted by a bias term.",
-        "An activation function maps the affine score to an output.",
-        "A single perceptron is a linear classifier in feature space.",
+        "AI is the broad field; ML is a subset focused on learning from data.",
+        "Deep learning is a subset of ML using deep neural network architectures.",
+        "Neural networks existed for decades, but modern compute and data unlocked their full potential.",
       ],
+      note: "Historical progress accelerated when ReLU, better optimization, and GPUs became mainstream.",
+    },
+    {
+      title: "Use-Case Fit for Deep Learning",
       table: {
-        headers: ["Component", "Role"],
+        headers: ["Data Context", "Recommended Direction", "Rationale"],
         rows: [
-          ["Weights (w)", "Importance of each input feature"],
-          ["Bias (b)", "Shifts the decision boundary"],
-          ["Activation f(.)", "Adds non-linearity and output mapping"],
+          ["Images, speech, text", "Deep learning first", "High-dimensional, local and hierarchical patterns"],
+          ["Huge datasets", "Deep learning scales well", "Capacity increases with data and compute"],
+          ["Small/medium tabular data", "Try tree ensembles first", "Strong baselines with lower tuning cost"],
+          ["Categoricals with many levels", "DL embeddings can help", "Dense learned representations of sparse categories"],
         ],
       },
     },
     {
-      title: "Activation Functions in Practice",
-      table: {
-        headers: ["Activation", "Formula", "Typical Use"],
-        rows: [
-          ["Sigmoid", "\\sigma(z)=1/(1+e^{-z})", "Binary output probabilities"],
-          ["ReLU", "max(0, z)", "Default for hidden layers in many networks"],
-          ["Tanh", "tanh(z)", "Centered activation in some recurrent setups"],
-          ["Softmax", "exp(z_k)/sum_j exp(z_j)", "Multi-class output probabilities"],
-        ],
-      },
-      note: "ReLU usually speeds optimization, while sigmoid/softmax are common in output layers.",
-    },
-    {
-      title: "Why XOR Matters",
-      subtitle: "A Classic Failure Case for Linear Models",
+      title: "Image Data Intuition",
+      subtitle: "From Pixels to Semantics",
       bullets: [
-        "XOR labels points as positive when inputs differ, and negative when they match.",
-        "No single linear decision boundary can separate XOR classes.",
-        "Adding a hidden layer with non-linear activation solves the problem.",
+        "A color image of size 100x100 contains 30,000 values (RGB channels).",
+        "Individual pixels are weak signals; neighborhoods encode edges and textures.",
+        "Deep layers combine local patterns into object-level understanding.",
+      ],
+      note: "CNNs are designed to exploit local spatial structure in image tensors.",
+    },
+    {
+      title: "How CNNs Process Images",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png",
+      ],
+      sections: [
+        {
+          heading: "Feature Hierarchy",
+          bullets: [
+            "Early layers detect simple patterns (edges, corners).",
+            "Middle layers capture parts and motifs (textures, components).",
+            "Late layers encode semantic object concepts for classification.",
+          ],
+        },
+        {
+          heading: "Pipeline",
+          bullets: [
+            "Input -> convolution -> activation -> pooling -> repeated blocks -> classifier head.",
+            "Softmax output yields class probabilities for final prediction.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Computer Vision Tasks with Deep Learning",
+      table: {
+        headers: ["Task", "Output Type", "Typical Models"],
+        rows: [
+          ["Image classification", "Single label per image", "ResNet, EfficientNet, ViT"],
+          ["Object detection", "Bounding boxes + class labels", "Faster R-CNN, YOLO family"],
+          ["Semantic segmentation", "Class label per pixel", "U-Net, DeepLab"],
+          ["Instance segmentation", "Per-object masks", "Mask R-CNN"],
+        ],
+      },
+      note: "Task definition determines architecture and loss function design.",
+    },
+    {
+      title: "Single Neuron (Perceptron): Math and Components",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/8/8a/Perceptron_example.svg",
+      ],
+      formula: "z = w^\\top x + b,\\quad \\hat{y}=f(z)",
+      bullets: [
+        "The affine part scores inputs via weighted sum and bias shift.",
+        "Activation maps score to decision output.",
+        "A single perceptron can represent only linear decision boundaries.",
       ],
       table: {
-        headers: ["Input x1", "Input x2", "XOR Output"],
+        headers: ["Component", "Meaning"],
+        rows: [
+          ["x", "Input feature vector"],
+          ["w", "Learned importance weights"],
+          ["b", "Bias (threshold shift)"],
+          ["f(.)", "Activation function"],
+        ],
+      },
+    },
+    {
+      title: "Activation Functions: Practical Comparison",
+      table: {
+        headers: ["Activation", "Formula", "Strengths", "Limitations"],
+        rows: [
+          ["Sigmoid", "1/(1+e^{-z})", "Probabilistic output in (0,1)", "Vanishing gradients in deep stacks"],
+          ["Tanh", "tanh(z)", "Zero-centered activations", "Still vulnerable to vanishing gradients"],
+          ["ReLU", "max(0, z)", "Fast, sparse activations, stable in depth", "Dying ReLU for persistently negative inputs"],
+          ["Softmax", "exp(z_k)/sum_j exp(z_j)", "Normalized multi-class probabilities", "Can be overconfident without calibration"],
+        ],
+      },
+    },
+    {
+      title: "XOR Problem: Why One Neuron Is Not Enough",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/1/1f/Perceptron_XOR_task.svg",
+      ],
+      bullets: [
+        "XOR is not linearly separable in the original input space.",
+        "Linear models (single neuron / logistic regression) cannot fit XOR perfectly.",
+        "A hidden layer with non-linear activation transforms data into separable space.",
+      ],
+      table: {
+        headers: ["x1", "x2", "XOR(x1,x2)"],
         rows: [
           ["0", "0", "0"],
           ["0", "1", "1"],
@@ -1941,95 +2013,258 @@ const presentationData = {
           ["1", "1", "0"],
         ],
       },
-      note: "XOR demonstrates why depth + non-linearity are essential in neural networks.",
     },
     {
-      title: "From Single-Layer to Multi-Layer Networks",
-      formula: "h = \\phi(W_1 x + b_1),\\quad \\hat{y} = \\tau(W_2 h + b_2)",
-      bullets: [
-        "Hidden layers transform features into more separable representations.",
-        "Each layer applies affine transformation followed by non-linear activation.",
-        "Deeper feed-forward networks model increasingly abstract patterns.",
+      title: "From Perceptron to Single Hidden Layer Networks",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/4/46/Multilayer_Perceptron_with_one_hidden_layer.svg",
       ],
-      note: "Without non-linear activations, stacking layers collapses into one linear transformation.",
+      formula: "h = \\phi(W_1x+b_1),\\quad \\hat{y}=\\tau(W_2h+b_2)",
+      bullets: [
+        "Each hidden neuron performs affine transform + activation.",
+        "Combining hidden neurons creates richer hypothesis spaces.",
+        "This architecture solves tasks that linear boundaries cannot.",
+      ],
+      note: "Feature transformation is learned jointly with the final decision rule.",
     },
     {
-      title: "Multi-Class Classification with Softmax",
-      subtitle: "Output Probabilities over K Classes",
+      title: "Multi-Class Neural Classification",
+      subtitle: "Output Layer Design",
       formula: "p_k = \\frac{e^{z_k}}{\\sum_{j=1}^{K} e^{z_j}}",
       bullets: [
-        "Use one output neuron per class.",
-        "Softmax converts logits into a normalized probability distribution.",
-        "Predicted class is the index with highest probability.",
-      ],
-      note: "This is the standard output design for single-label multi-class problems.",
-    },
-    {
-      title: "Cross-Entropy Loss",
-      formula: "\\mathcal{L} = -\\sum_{k=1}^{K} y_k \\log(p_k)",
-      bullets: [
-        "Cross-entropy penalizes low probability assigned to the true class.",
-        "It is better aligned with probabilistic classification than squared error.",
-        "Combined with softmax, it yields stable gradients for training.",
-      ],
-      note: "Minimizing cross-entropy encourages calibrated and discriminative class probabilities.",
-    },
-    {
-      title: "Convolutional Neural Networks (CNNs)",
-      subtitle: "Spatial Feature Learning for Vision Tasks",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png",
-      ],
-      bullets: [
-        "Convolutions learn local filters (edges, textures, shapes).",
-        "Pooling layers reduce spatial resolution while keeping key signals.",
-        "Deep CNN stacks build from low-level cues to object-level concepts.",
+        "Set number of output neurons equal to number of classes.",
+        "Use softmax to convert logits into class probabilities.",
+        "Prediction is the class with maximum posterior probability.",
       ],
       table: {
-        headers: ["Layer", "Main Function"],
+        headers: ["Stage", "Operation"],
         rows: [
-          ["Convolution", "Detect local patterns via learnable kernels"],
-          ["Pooling", "Downsample feature maps and improve robustness"],
-          ["Fully Connected / Head", "Map learned features to final predictions"],
+          ["Hidden layer", "Extract discriminative latent features"],
+          ["Output logits", "Produce one raw score per class"],
+          ["Softmax", "Normalize scores into a probability simplex"],
         ],
       },
     },
     {
-      title: "RNNs, LSTMs, and GRUs",
+      title: "Cross-Entropy vs Squared Error for Classification",
+      formula: "\\mathcal{L}_{CE}=-\\sum_{k=1}^{K}y_k\\log(p_k)",
+      bullets: [
+        "Squared error can be suboptimal for probability-based class learning.",
+        "Cross-entropy directly rewards high probability on the true class.",
+        "It produces stronger gradients for misclassified examples.",
+      ],
+      table: {
+        headers: ["Loss", "Typical Use", "Behavior"],
+        rows: [
+          ["MSE", "Regression", "Penalizes magnitude error in continuous outputs"],
+          ["Cross-Entropy", "Classification", "Penalizes confident wrong probabilities"],
+        ],
+      },
+    },
+    {
+      title: "Deep Feedforward Networks",
+      subtitle: "Why Add More Layers?",
+      bullets: [
+        "Deeper stacks create increasingly abstract and reusable representations.",
+        "Each extra non-linear layer increases expressive power substantially.",
+        "Depth can improve performance when data, regularization, and optimization are adequate.",
+      ],
+      note: "Without non-linear activations, multiple layers reduce to one linear map.",
+    },
+    {
+      title: "Practical Enablers of Modern Deep Learning",
+      table: {
+        headers: ["Enabler", "Why It Matters"],
+        rows: [
+          ["ReLU and improved activations", "Reduced vanishing gradients and faster convergence"],
+          ["GPU/TPU acceleration", "Order-of-magnitude speedups in training"],
+          ["Large labeled datasets", "Allow high-capacity models to generalize"],
+          ["Regularization and better optimizers", "Improve stability and robustness of training"],
+        ],
+      },
+      note: "Depth alone is not enough; training recipe quality is critical.",
+    },
+    {
+      title: "Convolution Operation and Edge Filters",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/SobelImageY.png",
+      ],
+      formula: "G_x = S_x * A",
+      bullets: [
+        "Convolution applies a kernel over local image patches.",
+        "Sobel filters approximate intensity gradients and highlight edges.",
+        "Feature maps from early filters are foundational for deeper representations.",
+      ],
+      note: "In CNNs, filters are learned from data rather than manually fixed.",
+    },
+    {
+      title: "CNN Architecture Blocks",
+      table: {
+        headers: ["Block", "Function", "Effect"],
+        rows: [
+          ["Convolution + ReLU", "Pattern extraction", "Creates local feature maps"],
+          ["Pooling", "Spatial downsampling", "Reduces computation and noise sensitivity"],
+          ["Stacked feature blocks", "Hierarchical abstraction", "Captures complex visual concepts"],
+          ["Classification head", "Decision mapping", "Outputs class scores/probabilities"],
+        ],
+      },
+    },
+    {
+      title: "CNN Application Examples",
+      sections: [
+        {
+          heading: "Vision Use Cases",
+          bullets: [
+            "Autonomous driving perception (detection, lane understanding).",
+            "Medical imaging support (screening and localization).",
+            "Image enhancement tasks (denoising, colorization, super-resolution).",
+          ],
+        },
+        {
+          heading: "Beyond Vision",
+          bullets: [
+            "1D convolutions for audio and time-series pattern extraction.",
+            "Text CNN variants for sentence-level classification tasks.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Sequential Modeling with RNNs",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg",
+      ],
+      bullets: [
+        "RNNs process tokens/steps sequentially while carrying hidden state.",
+        "Output at time t depends on current input and prior context.",
+        "Suitable for language, speech, and temporal forecasting tasks.",
+      ],
+      note: "Long sequence learning is difficult with vanilla RNNs due to gradient decay.",
+    },
+    {
+      title: "Vanishing Gradients and Memory Limits",
+      bullets: [
+        "Backpropagation through long chains can shrink gradients toward zero.",
+        "Earlier timesteps receive weak updates, harming long-range dependency learning.",
+        "This motivates gated recurrent architectures such as LSTM and GRU.",
+      ],
+      note: "Gradient clipping and careful initialization help but do not fully solve the issue.",
+    },
+    {
+      title: "LSTM Architecture",
+      imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/6/63/Long_Short-Term_Memory.svg",
       ],
       bullets: [
-        "RNNs process sequences by carrying hidden state over time.",
-        "LSTMs and GRUs mitigate vanishing gradients and capture longer dependencies.",
-        "Common use cases include language modeling, speech, and time-series forecasting.",
+        "Forget gate controls retained past information.",
+        "Input gate controls how new information updates cell state.",
+        "Output gate controls what part of memory is exposed to next layers.",
       ],
-      note: "GRUs are often a lighter alternative to LSTMs with fewer parameters.",
+      note: "LSTMs improve long-term dependency handling via explicit memory cell dynamics.",
     },
     {
-      title: "Deep Learning Training Pitfalls and Remedies",
+      title: "GRU Architecture",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg",
+      ],
+      bullets: [
+        "GRU merges some LSTM gates to reduce parameter count.",
+        "Update and reset gates provide efficient memory control.",
+        "Often competitive with LSTM while being computationally lighter.",
+      ],
+      note: "GRU is a strong default when latency and model size matter.",
+    },
+    {
+      title: "Encoder-Decoder Pattern",
+      subtitle: "Compress, Transform, Reconstruct",
+      bullets: [
+        "Encoder maps input to a compact latent representation.",
+        "Decoder reconstructs or generates target output from latent state.",
+        "Used in translation, summarization, denoising, and image-to-image tasks.",
+      ],
+      table: {
+        headers: ["Component", "Role", "Typical Layers"],
+        rows: [
+          ["Encoder", "Representation extraction", "CNN/RNN/Transformer blocks"],
+          ["Latent state", "Information bottleneck", "Dense or sequence memory"],
+          ["Decoder", "Target generation", "Transposed conv / autoregressive blocks"],
+        ],
+      },
+    },
+    {
+      title: "Training Diagnostics: Overfitting, Underfitting, Optimal Fit",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/1/1f/Overfitting_svg.svg",
       ],
+      table: {
+        headers: ["Regime", "Training Behavior", "Validation Behavior"],
+        rows: [
+          ["Underfitting", "High error", "High error"],
+          ["Good fit", "Low and stable error", "Low and stable error"],
+          ["Overfitting", "Error keeps decreasing", "Error starts increasing"],
+        ],
+      },
+      note: "Validation curves are essential for stopping decisions and architecture tuning.",
+    },
+    {
+      title: "Overtraining and Early Stopping",
+      bullets: [
+        "Overtraining appears when performance on validation data degrades across epochs.",
+        "Early stopping halts training after no validation improvement for a patience window.",
+        "This reduces overfitting risk and saves compute time.",
+      ],
+      table: {
+        headers: ["Signal", "Action"],
+        rows: [
+          ["Validation loss plateaus", "Lower learning rate or apply scheduler"],
+          ["Validation loss increases", "Stop training and restore best checkpoint"],
+          ["Large train-val gap", "Increase regularization or data augmentation"],
+        ],
+      },
+    },
+    {
+      title: "Regularization and Generalization Toolkit",
       sections: [
         {
-          heading: "Overfitting vs Underfitting",
+          heading: "Core Techniques",
           bullets: [
-            "Overfitting: high training performance, weak generalization.",
-            "Underfitting: model too simple, poor train and test performance.",
+            "Dropout to reduce neuron co-adaptation.",
+            "L2 weight decay to discourage overly large parameters.",
+            "Data augmentation to improve invariance and robustness.",
           ],
         },
         {
-          heading: "Practical Remedies",
+          heading: "Model/Training Controls",
           bullets: [
-            "Early stopping, dropout, and L2 regularization.",
-            "Data augmentation and better validation strategy.",
-            "Hyperparameter tuning (learning rate, depth, batch size).",
+            "Reduce unnecessary depth/width when data is limited.",
+            "Tune learning rate, batch size, epochs, and optimizer settings.",
+            "Use robust validation splits and repeated evaluation.",
           ],
         },
       ],
-      note: "Monitor validation curves continuously to detect overtraining early.",
+    },
+    {
+      title: "Hyperparameter Tuning in Deep Learning",
+      table: {
+        headers: ["Hyperparameter", "Effect", "Search Guidance"],
+        rows: [
+          ["Learning rate", "Convergence speed and stability", "Log-scale sweep, then refine"],
+          ["Batch size", "Gradient noise vs throughput", "Balance memory and generalization"],
+          ["Depth/width", "Model capacity", "Increase progressively with regularization"],
+          ["Dropout / weight decay", "Generalization control", "Tune with validation curves"],
+        ],
+      },
+      note: "Random search and Bayesian optimization are usually more efficient than full grid search.",
+    },
+    {
+      title: "Deep Learning Practical Checklist",
+      bullets: [
+        "Start with a strong baseline architecture and reproducible preprocessing.",
+        "Track train/validation metrics, confusion matrix, and failure cases.",
+        "Use checkpoints, early stopping, and learning-rate schedules.",
+        "Document model version, hyperparameters, and data split strategy.",
+      ],
+      note: "Reliable experimentation workflow is as important as architecture choice.",
     },
   ],
 };
