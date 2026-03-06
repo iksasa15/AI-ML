@@ -545,6 +545,7 @@ const presentationData = {
       title: "Regression - Simple Linear Regression",
       subtitle: "What is Simple Linear Regression?",
       body: "Simple Linear Regression models the relationship between one independent variable x and one dependent variable y using a straight line.",
+      imageUrls: ["./assets/plots/slide-19-1.png"],
       formula: "y = b_0 + b_1 x",
       table: {
         title: "Meaning of Each Symbol",
@@ -620,6 +621,7 @@ const presentationData = {
       title: "R-Squared (R^2)",
       subtitle: "Definition",
       body: "R^2 is a goodness-of-fit metric in regression. It measures how much variation in y is explained by model inputs.",
+      imageUrls: ["./assets/plots/slide-22-1.png", "./assets/plots/slide-22-2.png"],
       formula: "R^2 = 1 - \\frac{SS_{res}}{SS_{tot}}",
       sections: [
         {
@@ -708,6 +710,7 @@ const presentationData = {
     },
     {
       title: "Assumptions with Practical Examples",
+      imageUrls: ["./assets/plots/slide-25-1.png"],
       table: {
         headers: ["Assumption", "Simple Example", "Practical Check"],
         rows: [
@@ -989,7 +992,8 @@ const presentationData = {
     {
       title: "Polynomial Regression Visual Explanation",
       body: "This section compares linear and polynomial fits, and shows how model behavior changes with polynomial degree.",
-      note: "If you want, I can add actual comparison plots as images in this slide.",
+      imageUrls: ["./assets/plots/slide-39-1.png", "./assets/plots/slide-39-2.png"],
+      note: "Comparison plots are shown below.",
     },
     {
       title: "Support Vector Machine (SVM) and SVR",
@@ -1037,6 +1041,7 @@ const presentationData = {
     },
     {
       title: "Why SVR?",
+      imageUrls: ["./assets/plots/slide-42-1.png", "./assets/plots/slide-42-2.png"],
       table: {
         headers: ["Aspect", "Traditional Regression", "SVR"],
         rows: [
@@ -1111,6 +1116,11 @@ const presentationData = {
     },
     {
       title: "Decision Tree Regression Algorithm (Simple Steps)",
+      imageUrls: [
+        "./assets/plots/slide-46-1.png",
+        "./assets/plots/slide-46-2.png",
+        "./assets/plots/slide-46-3.png",
+      ],
       bullets: [
         "Start with all data at the root node.",
         "Evaluate candidate splits across features.",
@@ -1146,6 +1156,7 @@ const presentationData = {
     },
     {
       title: "Decision Tree vs Random Forest (Regression)",
+      imageUrls: ["./assets/plots/slide-48-1.png"],
       table: {
         headers: ["Aspect", "Decision Tree Regressor", "Random Forest Regressor"],
         rows: [
@@ -1212,6 +1223,11 @@ const presentationData = {
     },
     {
       title: "Regularization Comparison Table",
+      imageUrls: [
+        "./assets/plots/slide-52-1.png",
+        "./assets/plots/slide-52-2.png",
+        "./assets/plots/slide-52-3.png",
+      ],
       table: {
         headers: ["Method", "Penalty Type", "Main Behavior", "Feature Selection"],
         rows: [
@@ -1290,7 +1306,8 @@ const presentationData = {
     {
       title: "Visual Comparison of Regression Models",
       body: "This slide compares model behavior on the same dataset: Linear Regression, Polynomial Regression, SVR, Decision Tree Regression, and Random Forest Regression.",
-      note: "If you want, I can add the actual visual plots as images for each model here.",
+      imageUrls: ["./assets/plots/slide-54-1.png"],
+      note: "Visual output from Python code is shown below.",
     },
   ],
 };
@@ -1396,13 +1413,20 @@ function buildSlideMarkup(slide) {
   const tableHTML = buildTableMarkup(slide.table);
   const tablesHTML = (slide.tables || []).map((table) => buildTableMarkup(table)).join("");
 
-  const imageHTML = slide.imageUrl
-    ? `
+  const imageSources = Array.isArray(slide.imageUrls)
+    ? slide.imageUrls
+    : slide.imageUrl
+      ? [slide.imageUrl]
+      : [];
+  const imageHTML = imageSources
+    .map(
+      (src, index) => `
       <figure class="slide-image">
-        <img src="${escapeHTML(slide.imageUrl)}" alt="${escapeHTML(slide.imageAlt || "slide image")}" />
+        <img src="${escapeHTML(src)}" alt="${escapeHTML(slide.imageAlt || `slide image ${index + 1}`)}" />
       </figure>
     `
-    : "";
+    )
+    .join("");
 
   return `
     <h2>${escapeHTML(slide.title)}</h2>
