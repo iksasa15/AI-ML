@@ -3490,6 +3490,8 @@ const currentSlideEl = document.getElementById("current-slide");
 const totalSlidesEl = document.getElementById("total-slides");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
+const topPrevBtn = document.getElementById("top-prev-btn");
+const topNextBtn = document.getElementById("top-next-btn");
 const dotsContainer = document.getElementById("dots");
 const themeToggleBtn = document.getElementById("theme-toggle-btn");
 const themeIcon = document.getElementById("theme-icon");
@@ -3710,12 +3712,22 @@ function renderPrintDeck() {
 
 function renderSlide() {
   const slide = presentationData.slides[currentIndex];
+  slideContainer.classList.add("is-entering");
   slideContainer.innerHTML = buildSlideMarkup(slide);
+  requestAnimationFrame(() => {
+    slideContainer.classList.remove("is-entering");
+  });
   typesetMath(slideContainer);
 
   currentSlideEl.textContent = String(currentIndex + 1);
   prevBtn.disabled = currentIndex === 0;
   nextBtn.disabled = currentIndex === presentationData.slides.length - 1;
+  if (topPrevBtn) {
+    topPrevBtn.disabled = currentIndex === 0;
+  }
+  if (topNextBtn) {
+    topNextBtn.disabled = currentIndex === presentationData.slides.length - 1;
+  }
 
   const dots = dotsContainer.querySelectorAll(".dot");
   dots.forEach((dot, index) => {
@@ -3772,6 +3784,12 @@ function init() {
 
   nextBtn.addEventListener("click", goNext);
   prevBtn.addEventListener("click", goPrev);
+  if (topNextBtn) {
+    topNextBtn.addEventListener("click", goNext);
+  }
+  if (topPrevBtn) {
+    topPrevBtn.addEventListener("click", goPrev);
+  }
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener("click", toggleTheme);
   }

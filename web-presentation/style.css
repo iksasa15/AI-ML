@@ -17,6 +17,9 @@
   --print-slide-w: 277mm;
   --print-slide-h: calc(277mm * 0.64);
   --card-box-h: 210px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 html[data-theme="light"] {
@@ -45,6 +48,7 @@ body {
   font-family: "Segoe UI", Tahoma, Arial, sans-serif;
   background: radial-gradient(circle at top, var(--bg-top), var(--bg));
   color: var(--text);
+  line-height: 1.55;
 }
 
 .presentation {
@@ -55,14 +59,36 @@ body {
   padding: 1.2rem;
 }
 
+.floating-nav {
+  position: fixed;
+  top: 0.85rem;
+  inset-inline-end: 0.95rem;
+  z-index: 1200;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-soft);
+}
+
+.floating-nav-btn {
+  padding: 0.46rem 0.78rem;
+  font-size: 0.84rem;
+}
+
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   padding: 0.8rem 1rem;
+  box-shadow: var(--shadow-soft);
 }
 
 #deck-title {
@@ -83,7 +109,7 @@ body {
   gap: 0.8rem;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 0.55rem 0.8rem;
 }
 
@@ -131,20 +157,27 @@ body {
   min-height: min(72vh, var(--slide-h));
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 2rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 2.1rem;
+  box-shadow: var(--shadow-soft);
   overflow: visible;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.slide.is-entering {
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 .slide h2 {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   font-size: clamp(1.5rem, 2.2vw, 2.2rem);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
+  line-height: 1.25;
 }
 
 .media-badges {
@@ -182,7 +215,8 @@ body {
 }
 
 .slide-subtitle {
-  margin-top: -0.5rem;
+  margin-top: -0.25rem;
+  margin-bottom: 0.3rem;
   font-weight: 700;
   color: var(--accent);
 }
@@ -192,21 +226,21 @@ body {
 }
 
 .slide ul {
-  margin: 1rem 0 0;
+  margin: 0.9rem 0 0;
   padding: 0 0 0 1.1rem;
 }
 
 .slide li {
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.55rem;
   color: var(--text);
   line-height: 1.7;
 }
 
 .slide-image {
   margin: 1rem 0;
-  padding: 0.45rem;
+  padding: 0.5rem;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--card-3);
 }
 
@@ -229,7 +263,7 @@ body {
 .step-card {
   background: var(--card-2);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 0.9rem;
   min-height: var(--card-box-h);
   height: auto;
@@ -260,7 +294,7 @@ body {
 .content-card {
   background: var(--card-2);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 0.9rem;
   min-height: var(--card-box-h);
   height: auto;
@@ -276,11 +310,11 @@ body {
 
 .formula {
   margin: 0.8rem 0;
-  padding: 0.65rem;
+  padding: 0.75rem;
   background: var(--card-3);
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text);
   overflow-x: auto;
 }
@@ -297,7 +331,7 @@ body {
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--border);
 }
 
@@ -318,9 +352,9 @@ body {
 
 .note-box {
   margin-top: 1rem;
-  padding: 0.8rem;
+  padding: 0.9rem;
   border: 1px dashed var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   color: var(--text);
   background: var(--note-bg);
 }
@@ -356,11 +390,11 @@ body {
   background: var(--accent);
   color: white;
   border: 0;
-  border-radius: 10px;
+  border-radius: 11px;
   padding: 0.7rem 1.3rem;
   font-weight: 700;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: transform 0.15s ease, background 0.2s ease;
 }
 
 .topbar-btn {
@@ -376,6 +410,7 @@ body {
 
 .nav-btn:hover {
   background: var(--accent-2);
+  transform: translateY(-1px);
 }
 
 .nav-btn:disabled {
@@ -439,6 +474,13 @@ body {
   .content-sections {
     grid-template-columns: 1fr;
   }
+
+  .floating-nav {
+    top: auto;
+    bottom: 0.9rem;
+    inset-inline: 0.8rem;
+    justify-content: center;
+  }
 }
 
 @media print {
@@ -456,6 +498,10 @@ body {
   }
 
   .presentation {
+    display: none;
+  }
+
+  .floating-nav {
     display: none;
   }
 
