@@ -1614,6 +1614,130 @@ const presentationData = {
       note: "Use F1 especially when class distribution is imbalanced.",
       imageUrls: ["https://upload.wikimedia.org/wikipedia/commons/2/26/Precisionrecall.svg"],
     },
+    {
+      title: "Support Vector Machine (SVM): Core Idea",
+      body: "SVM is a supervised method that finds the best separating boundary (hyperplane) between classes.",
+      bullets: [
+        "It maximizes the margin between classes.",
+        "Only support vectors (closest points) determine the boundary.",
+        "A larger margin usually improves generalization.",
+      ],
+      imageUrls: ["https://upload.wikimedia.org/wikipedia/commons/f/fd/SVM_margins.png"],
+    },
+    {
+      title: "How SVM Classification Works",
+      bullets: [
+        "New points are classified by the side of the hyperplane they fall on.",
+        "Hard margin: no misclassification allowed (strict separation).",
+        "Soft margin: allows violations for better robustness with overlap/noise.",
+      ],
+      formula: "f(x)=w^Tx+b,\\quad \\hat{y}=\\operatorname{sign}(f(x))",
+      note: "Soft-margin SVM adds penalty C to control margin-violation tradeoff.",
+    },
+    {
+      title: "Why SVM Is Powerful",
+      table: {
+        headers: ["Capability", "Why It Matters"],
+        rows: [
+          ["Maximum-margin principle", "Better robustness to small perturbations."],
+          ["Kernel support", "Handles non-linear class boundaries."],
+          ["High-dimensional performance", "Works well in text and sparse feature spaces."],
+        ],
+      },
+      bullets: [
+        "Common in text classification and image-related features.",
+        "Often effective on small-to-medium datasets.",
+      ],
+    },
+    {
+      title: "Kernel Trick: From Non-Linear to Linear Separation",
+      body: "When data is not linearly separable in original space, SVM uses kernel functions to separate it in a transformed feature space.",
+      bullets: [
+        "Avoids explicit high-dimensional mapping in many cases.",
+        "Computes similarity using kernel function K(x_i, x_j).",
+      ],
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/f/fe/Kernel_Machine.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/5/57/Nonlinear_SVM_example_illustration.svg",
+      ],
+    },
+    {
+      title: "RBF Kernel in SVM",
+      formula: "K(x,l_i)=\\exp\\left(-\\frac{\\|x-l_i\\|^2}{2\\sigma^2}\\right)",
+      bullets: [
+        "If x is close to landmark l_i, similarity is near 1.",
+        "If x is far, similarity approaches 0.",
+        "RBF is a common default for non-linear SVM.",
+      ],
+      sections: [
+        {
+          heading: "Effect of sigma",
+          bullets: [
+            "Large sigma: smoother, wider decision boundary (higher bias).",
+            "Small sigma: tighter, complex boundary (higher variance/overfitting risk).",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Common SVM Kernels",
+      table: {
+        headers: ["Kernel", "Typical Use", "Notes"],
+        rows: [
+          ["Linear", "High-dimensional sparse data", "Fast and interpretable margin."],
+          ["RBF (Gaussian)", "General non-linear patterns", "Strong baseline in many tasks."],
+          ["Polynomial", "Polynomial-like interactions", "Degree controls complexity."],
+          ["Sigmoid", "Neural-style boundary behavior", "Less common in practice."],
+        ],
+      },
+    },
+    {
+      title: "When to Use SVM / When Not",
+      sections: [
+        {
+          heading: "Use SVM When",
+          bullets: [
+            "Data is high-dimensional or moderately sized.",
+            "Classes are reasonably separable.",
+            "You need non-linear boundaries via kernels.",
+          ],
+        },
+        {
+          heading: "Avoid SVM When",
+          bullets: [
+            "Dataset is very large (training can be expensive).",
+            "Data is extremely noisy with weak class structure.",
+            "Feature count and sample size make kernel matrix too costly.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "SVM vs Logistic Regression vs K-NN",
+      table: {
+        headers: ["Aspect", "SVM", "Logistic Regression", "K-NN"],
+        rows: [
+          ["Primary task", "Classification (and SVR)", "Classification", "Classification"],
+          ["Non-linearity", "Yes, with kernels", "Limited in linear form", "Yes (distance-based)"],
+          ["Compute profile", "Can be heavy on large data", "Usually efficient", "Heavy at prediction"],
+          ["Best for", "Complex margins, high-dimensional spaces", "Fast interpretable baseline", "Local neighborhood patterns"],
+        ],
+      },
+      note: "Model choice should be validated with cross-validation and error tradeoff metrics.",
+    },
+    {
+      title: "SVM Practical Hyperparameters",
+      table: {
+        headers: ["Parameter", "Role", "Typical Tuning Direction"],
+        rows: [
+          ["C", "Penalty for margin violations", "Higher C -> stricter fit, lower C -> smoother margin"],
+          ["Kernel", "Similarity function", "Start with RBF, compare with linear/polynomial"],
+          ["gamma (RBF)", "Locality of influence", "Higher gamma -> tighter boundary"],
+          ["degree (poly)", "Polynomial complexity", "Increase only when needed"],
+        ],
+      },
+      note: "Scale features before SVM, especially for RBF/polynomial kernels.",
+    },
   ],
 };
 
