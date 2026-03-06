@@ -2526,6 +2526,578 @@ const presentationData = {
       ],
       note: "Attention mechanisms reduce reliance on recurrence for sequence modeling.",
     },
+    {
+      title: "NLP Day 2: Tokenization Masterclass",
+      subtitle: "From Word Splits to Subword Modeling",
+      bullets: [
+        "This module focuses on practical tokenization design choices in NLP pipelines.",
+        "We compare space-based, character-based, and subword tokenization strategies.",
+        "Goal: handle rare words while controlling vocabulary growth.",
+      ],
+      note: "Tokenization quality strongly affects downstream embedding and model performance.",
+    },
+    {
+      title: "Space-Based vs Subword Tokenization",
+      table: {
+        headers: ["Method", "How It Splits", "Best Use", "Limitation"],
+        rows: [
+          ["Whitespace", "Split by spaces", "Simple corpora and fast baselines", "Weak handling of rare/morphologically rich words"],
+          ["Character", "Each char is a token", "No OOV failures", "Very long token sequences"],
+          ["Subword", "Word pieces learned from corpus", "Modern NLP/LLMs", "Requires tokenizer training and tuning"],
+        ],
+      },
+      note: "Subword tokenization is usually the best compromise for modern production NLP.",
+    },
+    {
+      title: "Subword Algorithms Comparison (Day 2 Focus)",
+      table: {
+        headers: ["Algorithm", "Core Idea", "Needs Pre-tokenization?", "Common Models"],
+        rows: [
+          ["Unigram LM", "Probabilistic token inventory", "No", "XLNet, T5"],
+          ["WordPiece", "Likelihood-based merge scoring", "Yes", "BERT family"],
+          ["BPE", "Frequent-pair iterative merges", "Yes", "GPT, RoBERTa style pipelines"],
+          ["SentencePiece", "Raw text tokenization framework", "No", "mBART, multilingual setups"],
+        ],
+      },
+    },
+    {
+      title: "Unigram LM Example: Choosing Best Segmentation",
+      body: "Input word: basketball",
+      table: {
+        headers: ["Candidate Tokenization", "Probability", "Decision"],
+        rows: [
+          ["basket + ball", "0.30", "Possible"],
+          ["basketball", "0.40", "Selected (highest likelihood)"],
+          ["bask + etball", "0.06", "Rejected"],
+        ],
+      },
+      bullets: [
+        "Unigram LM keeps multiple candidates and scores them probabilistically.",
+        "EM training refines token probabilities and prunes weak tokens over time.",
+      ],
+    },
+    {
+      title: "BPE Walkthrough: low, lowest, lower",
+      table: {
+        headers: ["Step", "Action", "Result"],
+        rows: [
+          ["1", "Start with characters", "l, o, w, e, s, t, r"],
+          ["2", "Merge most frequent pair l+o", "lo"],
+          ["3", "Merge lo+w", "low"],
+          ["4", "Continue frequent merges", "lower, lowest become compact tokens"],
+        ],
+      },
+      note: "BPE repeatedly merges frequent adjacent units until target vocabulary size is reached.",
+    },
+    {
+      title: "BPE Tokenization Inference Example",
+      body: "Given sentence: lowered the lowest curtain",
+      table: {
+        headers: ["Word", "Subword Output"],
+        rows: [
+          ["lowered", "low + er + ed"],
+          ["the", "the"],
+          ["lowest", "low + est"],
+          ["curtain", "curtain (or further split if unseen)"],
+        ],
+      },
+      bullets: [
+        "Subword decomposition reduces out-of-vocabulary failures.",
+        "Frequent morphemes become reusable building blocks across words.",
+      ],
+    },
+    {
+      title: "Why Subword Tokenization Matters in Practice",
+      sections: [
+        {
+          heading: "Operational Benefits",
+          bullets: [
+            "Handles rare and unseen words gracefully.",
+            "Keeps vocabulary compact without losing compositional meaning.",
+            "Improves transfer across domains and noisy user text.",
+          ],
+        },
+        {
+          heading: "Bootcamp Takeaway",
+          bullets: [
+            "Tokenizer choice is a model-design decision, not just preprocessing.",
+            "Always validate tokenization behavior on your real domain samples.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Day 2 Practice Exercise",
+      subtitle: "Manual Tokenization Drill",
+      body: 'Corpus: "go going gone goals"',
+      bullets: [
+        'Task: tokenize sentence "the goat is going to the goal" using a subword strategy.',
+        "Compare outputs under whitespace, BPE-style merges, and Unigram-style choices.",
+        "Discuss which strategy gives better reuse and fewer unknown tokens.",
+      ],
+      note: "Practice builds intuition for tokenizer behavior before model training.",
+    },
+    {
+      title: "NLP Day 3: Language Modeling with N-grams",
+      subtitle: "From Count-Based Prediction to Evaluation",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/c/c2/Google_Ngram.png",
+      ],
+      bullets: [
+        "Language models estimate probabilities over word sequences.",
+        "N-gram models predict the next token from a limited context window.",
+        "This module connects N-gram intuition to modern LLM generation.",
+      ],
+    },
+    {
+      title: "What Is an N-gram?",
+      table: {
+        headers: ["Model", "Context Used", "Example Prediction"],
+        rows: [
+          ["Unigram", "No context", "Predict based on global word frequency"],
+          ["Bigram", "Previous 1 word", "P(w_t | w_{t-1})"],
+          ["Trigram", "Previous 2 words", "P(w_t | w_{t-2}, w_{t-1})"],
+          ["5-gram", "Previous 4 words", "P(w_t | w_{t-4}, ..., w_{t-1})"],
+        ],
+      },
+      note: "Higher n gives richer local context but increases sparsity and data requirements.",
+    },
+    {
+      title: "Why Next-Word Prediction Matters",
+      sections: [
+        {
+          heading: "Classic NLP Uses",
+          bullets: [
+            "Grammar/spell checking via low-probability sequence detection.",
+            "Search auto-complete and query continuation.",
+            "Speech recognition disambiguation for phonetically similar outputs.",
+          ],
+        },
+        {
+          heading: "Modern Connection",
+          bullets: [
+            "Autoregressive LLMs generate text by repeated next-token prediction.",
+            "The core objective extends N-gram intuition with neural representations.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Formal Language Modeling Objective",
+      formula:
+        "P(w_1,\\ldots,w_T)=\\prod_{t=1}^{T} P(w_t \\mid w_1,\\ldots,w_{t-1})",
+      bullets: [
+        "A language model can score full sentences or predict the next word.",
+        "Exact estimation over full histories is intractable for real corpora.",
+        "Approximation strategies include N-grams, smoothing, and neural LMs.",
+      ],
+    },
+    {
+      title: "Chain Rule and Markov Assumption",
+      table: {
+        headers: ["Approach", "Assumption", "Tradeoff"],
+        rows: [
+          ["Full chain rule", "Condition on full history", "Accurate but data/computation heavy"],
+          ["1st-order Markov (bigram)", "Condition on previous word only", "Practical but ignores long dependencies"],
+          ["(n-1)-order Markov", "Condition on last n-1 words", "Better local context with higher sparsity"],
+        ],
+      },
+      note: "Markov assumptions make count-based language modeling operationally feasible.",
+    },
+    {
+      title: "Unigram vs Bigram Intuition",
+      bullets: [
+        "Unigram models often generate incoherent sentences due to independence assumptions.",
+        "Bigrams and trigrams recover local fluency but still miss distant structure.",
+        "Long-distance syntax/semantics motivates neural context modeling.",
+      ],
+      table: {
+        headers: ["Model", "Fluency", "Long-Range Handling"],
+        rows: [
+          ["Unigram", "Low", "None"],
+          ["Bigram", "Moderate local fluency", "Weak"],
+          ["Trigram+", "Better local coherence", "Still limited"],
+        ],
+      },
+    },
+    {
+      title: "Key Weaknesses of N-gram Models",
+      table: {
+        headers: ["Limitation", "Example", "Impact"],
+        rows: [
+          ["Long-distance dependency failure", "Subject-verb agreement far apart", "Grammar inconsistencies"],
+          ["Sparse exact matching", "Seen 'delicious meal' but not 'tasty dish'", "Poor synonym generalization"],
+          ["Data sparsity", "Rare sequences unseen", "Zero probabilities without smoothing"],
+        ],
+      },
+    },
+    {
+      title: "Why LLMs Outperform N-grams",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/5/51/Full_GPT_architecture.svg",
+      ],
+      table: {
+        headers: ["Capability", "N-gram", "LLM"],
+        rows: [
+          ["Context length", "Short fixed window", "Long contextual modeling"],
+          ["Semantic understanding", "Exact surface co-occurrence", "Embedding-based representations"],
+          ["Synonym/generalization", "Weak", "Strong"],
+          ["Novel generation quality", "Limited", "Substantially better"],
+        ],
+      },
+      note: "LLMs replace count tables with learned distributed representations and deep context integration.",
+    },
+    {
+      title: "Estimating N-gram Probabilities (MLE)",
+      formula:
+        "P(w_t\\mid w_{t-n+1}^{t-1})=\\frac{C(w_{t-n+1}^{t})}{C(w_{t-n+1}^{t-1})}",
+      bullets: [
+        "Maximum Likelihood Estimation uses corpus frequency counts.",
+        "For bigrams: divide count of word pair by count of prefix word.",
+        "Simple and interpretable, but brittle for unseen combinations.",
+      ],
+    },
+    {
+      title: "Worked Bigram Example",
+      body: 'Given counts: C("want to") = 608, C("want") = 927',
+      formula: 'P("to"\\mid"want")=\\frac{608}{927}\\approx0.656',
+      bullets: [
+        'Interpretation: in this corpus, "to" follows "want" about 65.6% of the time.',
+        "Count quality depends strongly on corpus domain and size.",
+      ],
+    },
+    {
+      title: "Why Use Log Probabilities",
+      bullets: [
+        "Multiplying many small probabilities causes numerical underflow.",
+        "Log transform converts multiplication into stable addition.",
+        "Sequence scoring becomes computationally robust and efficient.",
+      ],
+      table: {
+        headers: ["Original Space", "Log Space"],
+        rows: [
+          ["P = p1 * p2 * ... * pk", "log P = log p1 + log p2 + ... + log pk"],
+          ["Very small numbers", "Numerically stable sums"],
+        ],
+      },
+    },
+    {
+      title: "Evaluating Language Models",
+      sections: [
+        {
+          heading: "Extrinsic Evaluation",
+          bullets: [
+            "Measure downstream task impact (ASR, MT, etc.).",
+            "Most realistic but expensive and slow.",
+          ],
+        },
+        {
+          heading: "Intrinsic Evaluation",
+          bullets: [
+            "Use perplexity on held-out text as a proxy for predictive quality.",
+            "Fast model comparison during iteration.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Perplexity (PP): Interpretation",
+      formula:
+        "\\mathrm{PP}(W)=P(w_1,\\ldots,w_T)^{-\\frac{1}{T}}=\\exp\\left(-\\frac{1}{T}\\sum_{t=1}^{T}\\log P(w_t\\mid h_t)\\right)",
+      bullets: [
+        "Perplexity is the average branching uncertainty of the model.",
+        "Lower PP means better predictive confidence on unseen text.",
+        "Use identical test sets when comparing models.",
+      ],
+      note: "Raw sentence probabilities are length-sensitive; perplexity normalizes by token count.",
+    },
+    {
+      title: "Perplexity Across N-gram Orders",
+      table: {
+        headers: ["N-gram Order", "Example PP (WSJ-style)", "Takeaway"],
+        rows: [
+          ["Unigram", "962", "Very weak due to no context"],
+          ["Bigram", "170", "Large improvement with local context"],
+          ["Trigram", "109", "Further gain from longer local history"],
+        ],
+      },
+      note: "Increasing n generally lowers PP until sparsity and data limits dominate.",
+    },
+    {
+      title: "Day 3 Summary and Practice",
+      subtitle: "N-gram LM Core Checklist",
+      bullets: [
+        "Understand chain rule factorization and Markov approximations.",
+        "Compute MLE-based N-gram probabilities from counts.",
+        "Use log probabilities for stable sequence scoring.",
+        "Evaluate with perplexity and compare models on the same test set.",
+      ],
+      note: "Next step in practice: add smoothing (Laplace/Kneser-Ney) to handle unseen n-grams.",
+    },
+    {
+      title: "NLP Day 4: Contextualized Embeddings and RNNs",
+      subtitle: "From Static Vectors to Context-Aware Sequence Models",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png",
+      ],
+      bullets: [
+        "Contextual embeddings assign different vectors to the same word in different contexts.",
+        "This shift improved disambiguation, semantics, and downstream NLP performance.",
+        "Day 4 links contextual representation learning with recurrent sequence modeling.",
+      ],
+    },
+    {
+      title: "Static vs Contextualized Word Representations",
+      table: {
+        headers: ["Property", "Static Embeddings (Word2Vec/GloVe)", "Contextualized Embeddings (ELMo/BERT/GPT)"],
+        rows: [
+          ["Vector per word", "One fixed vector", "Different vectors per context"],
+          ["Polysemy handling", "Weak", "Strong"],
+          ["Context direction", "Usually local/global corpus only", "Bidirectional or autoregressive sequence context"],
+          ["Task transfer", "Moderate", "High with pretraining + fine-tuning"],
+        ],
+      },
+      note: "Contextualization is a core enabler for modern LLM quality.",
+    },
+    {
+      title: "How Contextualized Embeddings Work",
+      sections: [
+        {
+          heading: "Architecture Layers",
+          bullets: [
+            "Token/base embedding layer maps input ids to dense vectors.",
+            "Context encoder layers (often Transformer blocks) enrich each token with sequence context.",
+            "Task head uses contextual features for prediction.",
+          ],
+        },
+        {
+          heading: "Layer Semantics",
+          bullets: [
+            "Lower layers capture local syntax/patterns.",
+            "Middle layers improve sense disambiguation.",
+            "Upper layers capture richer semantics and task-specific signals.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Impact of Contextual Embeddings on LLMs",
+      bullets: [
+        "Better understanding of ambiguous queries and nuanced language.",
+        "Strong transfer learning via pretrain-then-finetune workflows.",
+        "Improved scalability for large vocabularies and unseen contexts.",
+      ],
+      table: {
+        headers: ["Benefit", "Practical Outcome"],
+        rows: [
+          ["Disambiguation", "Fewer semantic errors in QA/NER/sentiment tasks"],
+          ["Transfer learning", "Less task-specific labeled data required"],
+          ["Generalization", "Better robustness on new domains"],
+        ],
+      },
+    },
+    {
+      title: "From Traditional LMs to Recurrent Models",
+      bullets: [
+        "N-gram models struggle with long-distance dependencies and memory cost.",
+        "RNNs process full sequences by propagating hidden state through time.",
+        "Shared parameters across time steps keep model size manageable.",
+      ],
+      note: "RNNs were an important step beyond count-based language modeling.",
+    },
+    {
+      title: "RNN Mechanism and Weight Sharing",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg",
+      ],
+      bullets: [
+        "At time t, the RNN consumes current input and previous hidden state.",
+        "The same cell and weights are reused at every time step.",
+        "This recurrence captures sequential information in variable-length text.",
+      ],
+      formula: "h_t = f(W_x x_t + W_h h_{t-1} + b)",
+    },
+    {
+      title: "Common RNN Input/Output Patterns",
+      table: {
+        headers: ["Pattern", "Mapping", "Example Task"],
+        rows: [
+          ["One-to-One", "single input -> single output", "basic regression/classification"],
+          ["One-to-Many", "single input -> sequence output", "image captioning"],
+          ["Many-to-One", "sequence input -> single output", "sentiment classification"],
+          ["Many-to-Many", "sequence input -> sequence output", "machine translation"],
+        ],
+      },
+      note: "Sequence-aware patterns are where recurrent models provide clear value.",
+    },
+    {
+      title: "RNN Family: Vanilla, GRU, BiRNN, LSTM",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg",
+      ],
+      table: {
+        headers: ["Model", "Vanishing Gradient Risk", "Key Strength", "Typical Limitation"],
+        rows: [
+          ["Vanilla RNN", "High", "Simple architecture", "Poor long-range memory"],
+          ["GRU", "Lower", "Efficient gating with fewer parameters", "Can still degrade on very long contexts"],
+          ["BiRNN", "Medium", "Uses past and future context", "Higher compute and memory"],
+          ["LSTM", "Low (relative)", "Strong long-term dependency handling", "Heavier than GRU"],
+        ],
+      },
+    },
+    {
+      title: "Activation Functions in Recurrent/Deep Models",
+      table: {
+        headers: ["Activation", "Range", "Typical Use", "Note"],
+        rows: [
+          ["tanh", "(-1, 1)", "RNN hidden states", "Smooth and zero-centered"],
+          ["sigmoid", "(0, 1)", "gates and binary outputs", "Interpretable as probability"],
+          ["ReLU", "[0, inf)", "deep feedforward/CNN layers", "Fast but can produce dead units"],
+          ["softmax", "(0,1) distribution", "multiclass output layer", "Probabilities sum to 1"],
+        ],
+      },
+    },
+    {
+      title: "Day 4 Summary",
+      bullets: [
+        "Contextualized embeddings replaced one-vector-per-word limitations.",
+        "RNNs introduced sequence-aware state propagation over time.",
+        "GRU/LSTM mitigate gradient issues and improve long-context learning.",
+        "These ideas paved the path toward stronger seq2seq and transformer systems.",
+      ],
+    },
+    {
+      title: "NLP Day 5: Seq2Seq for Neural Machine Translation",
+      subtitle: "Encoder-Decoder Modeling, Decoding Strategies, and Evaluation",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/3/37/Seq2seq_with_RNN_and_attention_mechanism.gif",
+      ],
+      bullets: [
+        "Seq2Seq maps variable-length input sequences to variable-length outputs.",
+        "Encoder-decoder models were foundational for neural machine translation.",
+        "Day 5 covers training, decoding, bottlenecks, attention, and metrics.",
+      ],
+    },
+    {
+      title: "Seq2Seq Core Architecture (NMT)",
+      sections: [
+        {
+          heading: "Encoder",
+          bullets: [
+            "Consumes token embeddings and updates hidden states over source sequence.",
+            "Final state or state set summarizes source sentence information.",
+          ],
+        },
+        {
+          heading: "Decoder",
+          bullets: [
+            "Starts with <SOS>/<BOS> and generates target tokens autoregressively.",
+            "Stops when <EOS> is produced.",
+          ],
+        },
+      ],
+      note: "LSTM/GRU were widely used to reduce vanishing/exploding gradient issues in seq2seq.",
+    },
+    {
+      title: "Seq2Seq Step-by-Step Generation",
+      table: {
+        headers: ["Step", "Decoder Input", "Predicted Output", "Comment"],
+        rows: [
+          ["1", "<bos>", "I", "Initialization from encoder context"],
+          ["2", "I", "saw", "Uses prior token and hidden state"],
+          ["3", "saw", "a", "Autoregressive continuation"],
+          ["4", "a", "cat", "Context accumulates over steps"],
+          ["5", "mat", "<eos>", "Termination token stops decoding"],
+        ],
+      },
+      note: "At each step, the decoder outputs a full vocabulary probability distribution.",
+    },
+    {
+      title: "Training Seq2Seq with Cross-Entropy",
+      formula: "\\mathcal{L} = -\\sum_{t=1}^{T} \\log P(y_t^* \\mid y_{<t}, x)",
+      bullets: [
+        "At each step, compare predicted distribution against the gold next token.",
+        "Higher probability on correct token yields lower loss.",
+        "Sentence loss is the sum (or mean) across time steps.",
+      ],
+      table: {
+        headers: ["Example p(correct token)", "Loss -log(p)", "Interpretation"],
+        rows: [
+          ["0.85", "0.16", "Good confident prediction"],
+          ["0.05", "3.00", "Poor uncertain/wrong prediction"],
+        ],
+      },
+    },
+    {
+      title: "Inference: Greedy Decoding vs Beam Search",
+      table: {
+        headers: ["Method", "Decision Rule", "Strength", "Risk"],
+        rows: [
+          ["Greedy", "Pick top token each step", "Fast and simple", "May miss globally better sequence"],
+          ["Beam Search", "Track top-k hypotheses each step", "Better global sequence quality", "Higher compute; can become generic/bland"],
+        ],
+      },
+      note: "Typical beam sizes are moderate (e.g., 4-10) to balance quality and cost.",
+    },
+    {
+      title: "Information Bottleneck in Basic Seq2Seq",
+      bullets: [
+        "Compressing a full source sentence into one fixed vector can lose detail.",
+        "Longer/complex inputs worsen the bottleneck effect.",
+        "Decoder needs different source details at different output steps.",
+      ],
+      note: "This motivates attention over all encoder hidden states.",
+    },
+    {
+      title: "Attention as the Bottleneck Solution",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/4/49/Attention_Is_All_You_Need_-_Encoder-decoder_Architecture.png",
+      ],
+      bullets: [
+        "Decoder attends to relevant encoder positions at each generation step.",
+        "Dynamic alignment improves translation adequacy and fluency.",
+        "Attention laid the foundation for transformer-dominant NMT systems.",
+      ],
+    },
+    {
+      title: "NMT Evaluation Metrics: BLEU and ROUGE",
+      table: {
+        headers: ["Metric", "Orientation", "What It Measures", "Common Limitation"],
+        rows: [
+          ["BLEU", "Precision-oriented", "n-gram overlap from candidate to reference", "Weak semantic/syntactic sensitivity"],
+          ["ROUGE-N", "Recall-oriented", "n-gram overlap from reference to candidate", "Can reward lexical overlap over meaning"],
+          ["F1 (with overlap metrics)", "Balance precision/recall", "Harmonic tradeoff view", "Still limited on deep semantics"],
+        ],
+      },
+    },
+    {
+      title: "BLEU Nuance: Modified Precision",
+      bullets: [
+        "Raw overlap can over-reward repeated common words.",
+        "Modified BLEU caps token matches by reference token counts.",
+        "This prevents unrealistic gains from repetition-heavy outputs.",
+      ],
+      note: 'Example: candidate "I I am I" should not receive full credit for repeated "I".',
+    },
+    {
+      title: "Metric Caveat and Practical Evaluation",
+      bullets: [
+        "High BLEU/ROUGE does not guarantee semantic correctness.",
+        "Use metric scores alongside human or task-specific qualitative checks.",
+        "Inspect adequacy, fluency, and faithfulness on representative examples.",
+      ],
+      note: 'A syntactically broken sentence can still receive non-zero n-gram overlap scores.',
+    },
+    {
+      title: "Day 5 Summary",
+      bullets: [
+        "Seq2Seq provides a general framework for sequence transduction.",
+        "Cross-entropy trains token-level next-step predictions.",
+        "Beam search improves sequence-level quality over greedy decoding.",
+        "Attention resolves fixed-vector bottlenecks and improves translation performance.",
+        "BLEU/ROUGE are useful but should be complemented with semantic evaluation.",
+      ],
+    },
   ],
 };
 
@@ -2551,6 +3123,10 @@ function addPresentationStructure() {
       "Clustering and PCA",
       "Deep Learning and Neural Networks",
       "Natural Language Processing (NLP)",
+      "NLP Day 2: Tokenization Workshop",
+      "NLP Day 3: Language Modeling",
+      "NLP Day 4: Contextual Embeddings and RNNs",
+      "NLP Day 5: Seq2Seq and NMT Evaluation",
     ],
     note: "Use the slide dots below to quickly jump across sections.",
   });
@@ -2603,6 +3179,30 @@ function addPresentationStructure() {
     subtitle: "Natural Language Processing (NLP)",
   });
 
+  insertSlideBeforeTitle("NLP Day 2: Tokenization Masterclass", {
+    type: "section-divider",
+    title: "Section 9",
+    subtitle: "NLP Day 2: Tokenization Workshop",
+  });
+
+  insertSlideBeforeTitle("NLP Day 3: Language Modeling with N-grams", {
+    type: "section-divider",
+    title: "Section 10",
+    subtitle: "NLP Day 3: Language Modeling",
+  });
+
+  insertSlideBeforeTitle("NLP Day 4: Contextualized Embeddings and RNNs", {
+    type: "section-divider",
+    title: "Section 11",
+    subtitle: "NLP Day 4: Contextual Embeddings and RNNs",
+  });
+
+  insertSlideBeforeTitle("NLP Day 5: Seq2Seq for Neural Machine Translation", {
+    type: "section-divider",
+    title: "Section 12",
+    subtitle: "NLP Day 5: Seq2Seq and NMT Evaluation",
+  });
+
   presentationData.slides.push({
     title: "Conclusion",
     subtitle: "Key Takeaways",
@@ -2613,6 +3213,10 @@ function addPresentationStructure() {
       "For unsupervised tasks, combine clustering diagnostics with PCA-based interpretation.",
       "For deep learning, balance architecture power with regularization and validation discipline.",
       "For NLP, robust preprocessing and tokenization choices strongly shape model outcomes.",
+      "Tokenizer design directly impacts OOV handling, sequence length, and model quality in NLP.",
+      "For language modeling, probability estimation quality and perplexity tracking are critical.",
+      "For sequence tasks, contextual representations and attention mechanisms are key drivers of quality.",
+      "For MT/NLG, combine BLEU and ROUGE with qualitative semantic validation.",
       "Use cross-validation and hyperparameter tuning for robust generalization.",
     ],
     note: "Thank you. Questions and discussion are welcome.",
