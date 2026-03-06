@@ -4,6 +4,9 @@ const presentationData = {
     {
       title: "The Machine Learning Process",
       subtitle: "The 3 Main Steps",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png",
+      ],
       type: "three-columns",
       columns: [
         {
@@ -1072,6 +1075,9 @@ const presentationData = {
       title: "Decision Tree Regression (CART)",
       subtitle: "What is Decision Tree Regressor?",
       body: "Decision Tree Regressor predicts continuous values by splitting feature space into rule-based regions and assigning a constant value in each region.",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/f/ff/Decision_tree_model.png",
+      ],
       bullets: [
         "Captures non-linear relationships.",
         "Easy to interpret if tree depth is controlled.",
@@ -1146,6 +1152,9 @@ const presentationData = {
       title: "Random Forest Regression",
       subtitle: "What is Random Forest Regressor?",
       body: "Random Forest Regression is an ensemble method that combines many decision trees and averages their predictions.",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/4/4e/Random_forest_explain.png",
+      ],
       bullets: [
         "Sample training data with bootstrap.",
         "Build many trees on different samples.",
