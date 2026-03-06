@@ -1,5 +1,5 @@
 const presentationData = {
-  title: "Machine Learning Course",
+  title: "AI & Machine Learning Bootcamp",
   slides: [
     {
       title: "The Machine Learning Process",
