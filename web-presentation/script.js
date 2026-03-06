@@ -3496,6 +3496,8 @@ const themeIcon = document.getElementById("theme-icon");
 const themeLabel = document.getElementById("theme-label");
 const downloadPdfBtn = document.getElementById("download-pdf-btn");
 const printContainer = document.getElementById("print-container");
+const sectionLabelEl = document.getElementById("section-label");
+const progressFillEl = document.getElementById("progress-fill");
 
 let currentIndex = 0;
 const THEME_STORAGE_KEY = "ml-presentation-theme";
@@ -3630,7 +3632,7 @@ function buildSlideMarkup(slide) {
     const mediaBadgeHTML = buildMediaBadgeMarkup(slide);
     return `
       <h2>${escapeHTML(slide.title)}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}</h2>
-      ${slide.subtitle ? `<p>${escapeHTML(slide.subtitle)}</p>` : ""}
+      ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(slide.subtitle)}</p>` : ""}
       <div class="steps-grid">${columnsHTML}</div>
     `;
   }
@@ -3672,8 +3674,8 @@ function buildSlideMarkup(slide) {
 
   return `
     <h2>${escapeHTML(slide.title)}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}</h2>
-    ${slide.subtitle ? `<p>${escapeHTML(slide.subtitle)}</p>` : ""}
-    ${slide.body ? `<p>${escapeHTML(slide.body)}</p>` : ""}
+    ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(slide.subtitle)}</p>` : ""}
+    ${slide.body ? `<p class="slide-body">${escapeHTML(slide.body)}</p>` : ""}
     ${slide.formula ? `<div class="formula">\\[${escapeHTML(slide.formula)}\\]</div>` : ""}
     ${imageHTML}
     ${bulletsHTML ? `<ul>${bulletsHTML}</ul>` : ""}
@@ -3682,6 +3684,17 @@ function buildSlideMarkup(slide) {
     ${tablesHTML}
     ${slide.note ? `<p class="note-box">${escapeHTML(slide.note)}</p>` : ""}
   `;
+}
+
+function getActiveSectionLabel(slideIndex) {
+  const allSlides = presentationData.slides;
+  for (let i = slideIndex; i >= 0; i -= 1) {
+    const slide = allSlides[i];
+    if (slide && slide.type === "section-divider") {
+      return slide.subtitle || slide.title || "Overview";
+    }
+  }
+  return "Overview";
 }
 
 function renderPrintDeck() {
@@ -3708,6 +3721,16 @@ function renderSlide() {
   dots.forEach((dot, index) => {
     dot.classList.toggle("active", index === currentIndex);
   });
+
+  const progressPercent = Math.round(((currentIndex + 1) / presentationData.slides.length) * 100);
+  if (progressFillEl) {
+    progressFillEl.style.width = `${progressPercent}%`;
+    const track = progressFillEl.parentElement;
+    if (track) track.setAttribute("aria-valuenow", String(progressPercent));
+  }
+  if (sectionLabelEl) {
+    sectionLabelEl.textContent = getActiveSectionLabel(currentIndex);
+  }
 }
 
 function buildDots() {
