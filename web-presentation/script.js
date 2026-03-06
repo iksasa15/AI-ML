@@ -2527,7 +2527,7 @@ const presentationData = {
       note: "Attention mechanisms reduce reliance on recurrence for sequence modeling.",
     },
     {
-      title: "NLP Day 2: Tokenization Masterclass",
+      title: "NLP Tokenization Masterclass",
       subtitle: "From Word Splits to Subword Modeling",
       bullets: [
         "This module focuses on practical tokenization design choices in NLP pipelines.",
@@ -2549,7 +2549,7 @@ const presentationData = {
       note: "Subword tokenization is usually the best compromise for modern production NLP.",
     },
     {
-      title: "Subword Algorithms Comparison (Day 2 Focus)",
+      title: "Subword Algorithms Comparison",
       table: {
         headers: ["Algorithm", "Core Idea", "Needs Pre-tokenization?", "Common Models"],
         rows: [
@@ -2627,7 +2627,7 @@ const presentationData = {
       ],
     },
     {
-      title: "Day 2 Practice Exercise",
+      title: "Tokenization Practice Exercise",
       subtitle: "Manual Tokenization Drill",
       body: 'Corpus: "go going gone goals"',
       bullets: [
@@ -2638,7 +2638,7 @@ const presentationData = {
       note: "Practice builds intuition for tokenizer behavior before model training.",
     },
     {
-      title: "NLP Day 3: Language Modeling with N-grams",
+      title: "NLP Language Modeling with N-grams",
       subtitle: "From Count-Based Prediction to Evaluation",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/c/c2/Google_Ngram.png",
@@ -2824,7 +2824,7 @@ const presentationData = {
       note: "Increasing n generally lowers PP until sparsity and data limits dominate.",
     },
     {
-      title: "Day 3 Summary and Practice",
+      title: "Language Modeling Summary and Practice",
       subtitle: "N-gram LM Core Checklist",
       bullets: [
         "Understand chain rule factorization and Markov approximations.",
@@ -2835,7 +2835,7 @@ const presentationData = {
       note: "Next step in practice: add smoothing (Laplace/Kneser-Ney) to handle unseen n-grams.",
     },
     {
-      title: "NLP Day 4: Contextualized Embeddings and RNNs",
+      title: "NLP Contextualized Embeddings and RNNs",
       subtitle: "From Static Vectors to Context-Aware Sequence Models",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png",
@@ -2843,7 +2843,7 @@ const presentationData = {
       bullets: [
         "Contextual embeddings assign different vectors to the same word in different contexts.",
         "This shift improved disambiguation, semantics, and downstream NLP performance.",
-        "Day 4 links contextual representation learning with recurrent sequence modeling.",
+        "This module links contextual representation learning with recurrent sequence modeling.",
       ],
     },
     {
@@ -2958,7 +2958,7 @@ const presentationData = {
       },
     },
     {
-      title: "Day 4 Summary",
+      title: "Contextual Embeddings and RNNs Summary",
       bullets: [
         "Contextualized embeddings replaced one-vector-per-word limitations.",
         "RNNs introduced sequence-aware state propagation over time.",
@@ -2967,7 +2967,7 @@ const presentationData = {
       ],
     },
     {
-      title: "NLP Day 5: Seq2Seq for Neural Machine Translation",
+      title: "NLP Seq2Seq for Neural Machine Translation",
       subtitle: "Encoder-Decoder Modeling, Decoding Strategies, and Evaluation",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/3/37/Seq2seq_with_RNN_and_attention_mechanism.gif",
@@ -2975,7 +2975,7 @@ const presentationData = {
       bullets: [
         "Seq2Seq maps variable-length input sequences to variable-length outputs.",
         "Encoder-decoder models were foundational for neural machine translation.",
-        "Day 5 covers training, decoding, bottlenecks, attention, and metrics.",
+        "This module covers training, decoding, bottlenecks, attention, and metrics.",
       ],
     },
     {
@@ -3089,7 +3089,7 @@ const presentationData = {
       note: 'A syntactically broken sentence can still receive non-zero n-gram overlap scores.',
     },
     {
-      title: "Day 5 Summary",
+      title: "Seq2Seq and NMT Summary",
       bullets: [
         "Seq2Seq provides a general framework for sequence transduction.",
         "Cross-entropy trains token-level next-step predictions.",
@@ -3099,10 +3099,10 @@ const presentationData = {
       ],
     },
     {
-      title: "Week 9 Generative AI: Core Concepts",
+      title: "Generative AI: Core Concepts",
       subtitle: "BERT, T5, GPT, LLMs, and Attention (Focused Edition)",
       bullets: [
-        "This section extracts the most important ideas from Week 9 into a compact teaching flow.",
+        "This section extracts the most important ideas into a compact teaching flow.",
         "Focus areas: transfer learning, model families, attention mechanics, scaling, and practical deployment.",
         "Designed for bootcamp delivery within roughly 20 slides.",
       ],
@@ -3311,7 +3311,7 @@ const presentationData = {
       },
     },
     {
-      title: "Week 9 Practical Takeaways",
+      title: "Generative AI Practical Takeaways",
       bullets: [
         "Choose architecture by task type: encoder-only, encoder-decoder, or decoder-only.",
         "Prefer transfer learning and fine-tuning over training from scratch when possible.",
@@ -3375,7 +3375,7 @@ function addPresentationStructure() {
         ],
         [
           "Week 4",
-          "NLP (Day 1-5), Seq2Seq, attention, BERT/T5/GPT/LLMs, transfer learning in GenAI",
+          "NLP core and advanced topics, Seq2Seq, attention, BERT/T5/GPT/LLMs, transfer learning in GenAI",
           "Mini GenAI project + final presentation readiness",
         ],
       ],
@@ -3431,34 +3431,34 @@ function addPresentationStructure() {
     subtitle: "Natural Language Processing (NLP)",
   });
 
-  insertSlideBeforeTitle("NLP Day 2: Tokenization Masterclass", {
+  insertSlideBeforeTitle("NLP Tokenization Masterclass", {
     type: "section-divider",
     title: "Section 9",
-    subtitle: "NLP Day 2: Tokenization Workshop",
+    subtitle: "NLP Tokenization Workshop",
   });
 
-  insertSlideBeforeTitle("NLP Day 3: Language Modeling with N-grams", {
+  insertSlideBeforeTitle("NLP Language Modeling with N-grams", {
     type: "section-divider",
     title: "Section 10",
-    subtitle: "NLP Day 3: Language Modeling",
+    subtitle: "NLP Language Modeling",
   });
 
-  insertSlideBeforeTitle("NLP Day 4: Contextualized Embeddings and RNNs", {
+  insertSlideBeforeTitle("NLP Contextualized Embeddings and RNNs", {
     type: "section-divider",
     title: "Section 11",
-    subtitle: "NLP Day 4: Contextual Embeddings and RNNs",
+    subtitle: "NLP Contextual Embeddings and RNNs",
   });
 
-  insertSlideBeforeTitle("NLP Day 5: Seq2Seq for Neural Machine Translation", {
+  insertSlideBeforeTitle("NLP Seq2Seq for Neural Machine Translation", {
     type: "section-divider",
     title: "Section 12",
-    subtitle: "NLP Day 5: Seq2Seq and NMT Evaluation",
+    subtitle: "NLP Seq2Seq and NMT Evaluation",
   });
 
-  insertSlideBeforeTitle("Week 9 Generative AI: Core Concepts", {
+  insertSlideBeforeTitle("Generative AI: Core Concepts", {
     type: "section-divider",
     title: "Section 13",
-    subtitle: "Week 9 GenAI: BERT, T5, GPT, Attention",
+    subtitle: "GenAI: BERT, T5, GPT, Attention",
   });
 
   presentationData.slides.push({
