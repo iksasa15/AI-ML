@@ -1,16 +1,38 @@
 :root {
   --bg: #0f1221;
+  --bg-top: #1a1f3f;
   --card: #171a2f;
+  --card-2: #1e2342;
+  --card-3: #10142b;
+  --card-4: #21274a;
   --text: #eef1ff;
   --muted: #b6bde0;
   --accent: #6f8bff;
   --accent-2: #4f6ff0;
   --border: #2a3058;
+  --note-bg: rgba(111, 139, 255, 0.08);
+  --dot-bg: #4b5177;
   --slide-w: min(100%, 1000px);
   --slide-h: 640px;
   --print-slide-w: 277mm;
   --print-slide-h: calc(277mm * 0.64);
   --card-box-h: 210px;
+}
+
+html[data-theme="light"] {
+  --bg: #edf2ff;
+  --bg-top: #f8faff;
+  --card: #ffffff;
+  --card-2: #f4f7ff;
+  --card-3: #edf2ff;
+  --card-4: #e7edff;
+  --text: #19233f;
+  --muted: #4a587e;
+  --accent: #4969f0;
+  --accent-2: #3653d0;
+  --border: #ccd7ff;
+  --note-bg: rgba(73, 105, 240, 0.1);
+  --dot-bg: #b8c4ef;
 }
 
 * {
@@ -21,7 +43,7 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-  background: radial-gradient(circle at top, #1a1f3f, var(--bg));
+  background: radial-gradient(circle at top, var(--bg-top), var(--bg));
   color: var(--text);
 }
 
@@ -108,7 +130,7 @@ body {
   object-fit: contain;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #10142b;
+  background: var(--card-3);
 }
 
 .steps-grid {
@@ -120,7 +142,7 @@ body {
 }
 
 .step-card {
-  background: #1e2342;
+  background: var(--card-2);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.9rem;
@@ -134,7 +156,7 @@ body {
 
 .step-card h3 {
   margin: 0;
-  color: #d6ddff;
+  color: var(--text);
   font-size: 1rem;
 }
 
@@ -151,7 +173,7 @@ body {
 }
 
 .content-card {
-  background: #1e2342;
+  background: var(--card-2);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.9rem;
@@ -170,10 +192,10 @@ body {
 .formula {
   margin: 0.8rem 0;
   padding: 0.65rem;
-  background: #10142b;
+  background: var(--card-3);
   border: 1px solid var(--border);
   border-radius: 8px;
-  color: #d6ddff;
+  color: var(--text);
   overflow-x: auto;
 }
 
@@ -201,7 +223,7 @@ body {
 }
 
 .table-wrap th {
-  background: #21274a;
+  background: var(--card-4);
 }
 
 .note-box {
@@ -209,8 +231,8 @@ body {
   padding: 0.8rem;
   border: 1px dashed var(--border);
   border-radius: 10px;
-  color: #dce3ff;
-  background: rgba(111, 139, 255, 0.08);
+  color: var(--text);
+  background: var(--note-bg);
 }
 
 .controls {
@@ -236,6 +258,12 @@ body {
   font-size: 0.9rem;
 }
 
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .nav-btn:hover {
   background: var(--accent-2);
 }
@@ -258,7 +286,7 @@ body {
   height: 12px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #4b5177;
+  background: var(--dot-bg);
   cursor: pointer;
 }
 
@@ -307,7 +335,7 @@ body {
 
   html,
   body {
-    background: radial-gradient(circle at top, #1a1f3f, var(--bg));
+    background: radial-gradient(circle at top, var(--bg-top), var(--bg));
     color: var(--text);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -370,19 +398,19 @@ body {
   }
 
   .print-slide .step-card {
-    background: #1e2342;
+    background: var(--card-2);
     border: 1px solid var(--border);
   }
 
   .print-slide .content-card {
-    background: #1e2342;
+    background: var(--card-2);
     border: 1px solid var(--border);
   }
 
   .print-slide .formula {
-    background: #10142b;
+    background: var(--card-3);
     border: 1px solid var(--border);
-    color: #d6ddff;
+    color: var(--text);
   }
 
   .print-slide .table-wrap table,
@@ -396,12 +424,12 @@ body {
   }
 
   .print-slide .table-wrap th {
-    background: #21274a;
+    background: var(--card-4);
   }
 
   .print-slide .note-box {
-    background: rgba(111, 139, 255, 0.08);
+    background: var(--note-bg);
     border: 1px dashed var(--border);
-    color: #dce3ff;
+    color: var(--text);
   }
 }

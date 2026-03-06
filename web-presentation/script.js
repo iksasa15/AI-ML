@@ -1319,10 +1319,14 @@ const totalSlidesEl = document.getElementById("total-slides");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
 const dotsContainer = document.getElementById("dots");
+const themeToggleBtn = document.getElementById("theme-toggle-btn");
+const themeIcon = document.getElementById("theme-icon");
+const themeLabel = document.getElementById("theme-label");
 const downloadPdfBtn = document.getElementById("download-pdf-btn");
 const printContainer = document.getElementById("print-container");
 
 let currentIndex = 0;
+const THEME_STORAGE_KEY = "ml-presentation-theme";
 
 function escapeHTML(value) {
   return String(value)
@@ -1338,6 +1342,38 @@ function typesetMath(targetElement) {
   if (!window.MathJax || !window.MathJax.typesetPromise) return;
   window.MathJax.typesetClear([targetElement]);
   window.MathJax.typesetPromise([targetElement]).catch(() => {});
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  if (themeToggleBtn) {
+    const isLight = theme === "light";
+    if (themeIcon) {
+      themeIcon.textContent = isLight ? "☀️" : "🌙";
+    }
+    if (themeLabel) {
+      themeLabel.textContent = isLight ? "الوضع: نهاري" : "الوضع: ليلي";
+    }
+    themeToggleBtn.setAttribute(
+      "aria-label",
+      isLight ? "تفعيل الوضع الليلي" : "تفعيل الوضع النهاري"
+    );
+  }
+}
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  if (savedTheme === "light" || savedTheme === "dark") {
+    return savedTheme;
+  }
+  return "dark";
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+  const nextTheme = currentTheme === "dark" ? "light" : "dark";
+  applyTheme(nextTheme);
+  localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
 }
 
 function buildTableMarkup(table) {
@@ -1498,6 +1534,7 @@ function goPrev() {
 }
 
 function init() {
+  applyTheme(loadSavedTheme());
   deckTitle.textContent = presentationData.title;
   totalSlidesEl.textContent = String(presentationData.slides.length);
   buildDots();
@@ -1505,6 +1542,9 @@ function init() {
 
   nextBtn.addEventListener("click", goNext);
   prevBtn.addEventListener("click", goPrev);
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", toggleTheme);
+  }
   downloadPdfBtn.addEventListener("click", () => {
     renderPrintDeck();
     window.print();
