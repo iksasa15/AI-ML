@@ -6,6 +6,11 @@
   --accent: #6f8bff;
   --accent-2: #4f6ff0;
   --border: #2a3058;
+  --slide-w: min(100%, 1000px);
+  --slide-h: 640px;
+  --print-slide-w: 277mm;
+  --print-slide-h: calc(277mm * 0.64);
+  --card-box-h: 210px;
 }
 
 * {
@@ -60,13 +65,15 @@ body {
 }
 
 .slide {
-  width: min(100%, 1000px);
+  width: var(--slide-w);
   min-height: 60vh;
+  height: min(72vh, var(--slide-h));
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 2rem;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  overflow: auto;
 }
 
 .slide h2 {
@@ -92,11 +99,25 @@ body {
   line-height: 1.7;
 }
 
+.slide-image {
+  margin: 1rem 0;
+}
+
+.slide-image img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #10142b;
+}
+
 .steps-grid {
   margin-top: 1rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+  align-items: stretch;
 }
 
 .step-card {
@@ -104,6 +125,12 @@ body {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.9rem;
+  min-height: var(--card-box-h);
+  height: var(--card-box-h);
+  max-height: var(--card-box-h);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 
 .step-card h3 {
@@ -114,6 +141,78 @@ body {
 
 .step-card ul {
   margin-top: 0.7rem;
+}
+
+.content-sections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: stretch;
+}
+
+.content-card {
+  background: #1e2342;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem;
+  min-height: var(--card-box-h);
+  height: var(--card-box-h);
+  max-height: var(--card-box-h);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.content-card h3 {
+  margin-top: 0;
+}
+
+.formula {
+  margin: 0.7rem 0;
+  padding: 0.65rem;
+  background: #10142b;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #d6ddff;
+  white-space: pre-wrap;
+  font-family: Consolas, Menlo, Monaco, monospace;
+}
+
+.table-wrap {
+  margin-top: 1rem;
+}
+
+.table-wrap h3 {
+  margin: 0 0 0.6rem;
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.table-wrap th,
+.table-wrap td {
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+}
+
+.table-wrap th {
+  background: #21274a;
+}
+
+.note-box {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: #dce3ff;
+  background: rgba(111, 139, 255, 0.08);
 }
 
 .controls {
@@ -196,6 +295,10 @@ body {
   .steps-grid {
     grid-template-columns: 1fr;
   }
+
+  .content-sections {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media print {
@@ -222,8 +325,8 @@ body {
   }
 
   .print-slide {
-    width: 100%;
-    min-height: 180mm;
+    width: var(--print-slide-w);
+    min-height: var(--print-slide-h);
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -231,11 +334,31 @@ body {
     box-shadow: none;
     break-after: page;
     page-break-after: always;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .print-slide + .print-slide {
+    break-before: page;
+    page-break-before: always;
   }
 
   .print-slide:last-child {
     break-after: auto;
     page-break-after: auto;
+  }
+
+  .print-slide img,
+  .print-slide table,
+  .print-slide thead,
+  .print-slide tbody,
+  .print-slide tr,
+  .print-slide .step-card,
+  .print-slide .content-card,
+  .print-slide .formula,
+  .print-slide .note-box {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .print-slide h2,
@@ -251,5 +374,36 @@ body {
   .print-slide .step-card {
     background: #1e2342;
     border: 1px solid var(--border);
+  }
+
+  .print-slide .content-card {
+    background: #1e2342;
+    border: 1px solid var(--border);
+  }
+
+  .print-slide .formula {
+    background: #10142b;
+    border: 1px solid var(--border);
+    color: #d6ddff;
+  }
+
+  .print-slide .table-wrap table,
+  .print-slide .table-wrap th,
+  .print-slide .table-wrap td {
+    border-color: var(--border);
+  }
+
+  .print-slide .table-wrap thead {
+    display: table-header-group;
+  }
+
+  .print-slide .table-wrap th {
+    background: #21274a;
+  }
+
+  .print-slide .note-box {
+    background: rgba(111, 139, 255, 0.08);
+    border: 1px dashed var(--border);
+    color: #dce3ff;
   }
 }
