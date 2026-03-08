@@ -1987,10 +1987,10 @@ const presentationData = {
       table: {
         headers: ["Activation", "Formula", "Strengths", "Limitations"],
         rows: [
-          ["Sigmoid", "1/(1+e^{-z})", "Probabilistic output in (0,1)", "Vanishing gradients in deep stacks"],
-          ["Tanh", "tanh(z)", "Zero-centered activations", "Still vulnerable to vanishing gradients"],
-          ["ReLU", "max(0, z)", "Fast, sparse activations, stable in depth", "Dying ReLU for persistently negative inputs"],
-          ["Softmax", "exp(z_k)/sum_j exp(z_j)", "Normalized multi-class probabilities", "Can be overconfident without calibration"],
+          ["Sigmoid", "\\(\\sigma(z)=\\frac{1}{1+e^{-z}}\\)", "Probabilistic output in (0,1)", "Vanishing gradients in deep stacks"],
+          ["Tanh", "\\(\\tanh(z)\\)", "Zero-centered activations", "Still vulnerable to vanishing gradients"],
+          ["ReLU", "\\(\\max(0, z)\\)", "Fast, sparse activations, stable in depth", "Dying ReLU for persistently negative inputs"],
+          ["Softmax", "\\(\\mathrm{softmax}(z_k)=\\frac{e^{z_k}}{\\sum_j e^{z_j}}\\)", "Normalized multi-class probabilities", "Can be overconfident without calibration"],
         ],
       },
     },
