@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI & Machine Learning Bootcamp</title>
-    <script type="module" crossorigin src="/assets/index-De04RKQV.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-RFatjWcT.css">
+    <script>
+      (function () {
+        try {
+          var v = localStorage.getItem("ml-presentation-ui-lang");
+          if (v === "en") {
+            document.documentElement.setAttribute("lang", "en");
+            document.documentElement.setAttribute("dir", "ltr");
+          } else {
+            document.documentElement.setAttribute("lang", "ar");
+            document.documentElement.setAttribute("dir", "rtl");
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-BfIakQ7d.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-TfoPBPzw.css">
   </head>
   <body>
     <div id="root"></div>

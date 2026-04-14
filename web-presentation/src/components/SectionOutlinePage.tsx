@@ -1,4 +1,5 @@
 import type { SectionJump } from "../lib/sectionNav";
+import { getUiStrings, type UiLang } from "../lib/uiStrings";
 
 type Props = {
   deckTitle: string;
@@ -6,33 +7,55 @@ type Props = {
   activeJumpId: string | null;
   onJump: (slideIndex: number) => void;
   onBack: () => void;
+  uiLang: UiLang;
+  onOpenSettings?: () => void;
 };
 
-export function SectionOutlinePage({ deckTitle, jumps, activeJumpId, onJump, onBack }: Props) {
+export function SectionOutlinePage({
+  deckTitle,
+  jumps,
+  activeJumpId,
+  onJump,
+  onBack,
+  uiLang,
+  onOpenSettings,
+}: Props) {
+  const strings = getUiStrings(uiLang);
+  const t = strings.outlinePage;
+  const dir = uiLang === "ar" ? "rtl" : "ltr";
+  const lang = uiLang === "ar" ? "ar" : "en";
+
   return (
-    <div className="outline-page" dir="rtl">
+    <div className="outline-page" dir={dir} lang={lang}>
       <header className="outline-header">
         <div className="outline-header-text">
-          <h1 className="outline-title">جدول الأقسام</h1>
+          <h1 className="outline-title">{t.title}</h1>
           <p className="outline-subtitle">
             <span dir="ltr" lang="en">
               {deckTitle}
             </span>
           </p>
         </div>
-        <button type="button" className="nav-btn topbar-btn outline-back-btn" onClick={onBack}>
-          العودة للعرض
-        </button>
+        <div className="outline-header-actions">
+          <button type="button" className="nav-btn topbar-btn outline-back-btn" onClick={onBack}>
+            {t.back}
+          </button>
+          {onOpenSettings ? (
+            <button type="button" className="nav-btn topbar-btn" onClick={onOpenSettings}>
+              {strings.settings}
+            </button>
+          ) : null}
+        </div>
       </header>
 
       <div className="outline-table-wrap table-wrap">
         <table className="outline-table">
           <thead>
             <tr>
-              <th scope="col">رقم الشريحة</th>
-              <th scope="col">القسم</th>
-              <th scope="col">الموضوع</th>
-              <th scope="col">انتقال</th>
+              <th scope="col">{t.colSlide}</th>
+              <th scope="col">{t.colSection}</th>
+              <th scope="col">{t.colTopic}</th>
+              <th scope="col">{t.colGo}</th>
             </tr>
           </thead>
           <tbody>
@@ -49,7 +72,7 @@ export function SectionOutlinePage({ deckTitle, jumps, activeJumpId, onJump, onB
                       className="nav-btn topbar-btn outline-go-btn"
                       onClick={() => onJump(j.slideIndex)}
                     >
-                      انتقال
+                      {t.go}
                     </button>
                   </td>
                 </tr>

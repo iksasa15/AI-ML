@@ -7,6 +7,13 @@ import { renderSlideMath } from "./lib/renderMath";
 import { buildSectionJumps, getActiveSectionJumpId } from "./lib/sectionNav";
 import { initGoogleTranslateElement, loadGoogleTranslateScript } from "./lib/googleTranslate";
 import { buildSlideMarkup, getActiveSectionLabel, type SlideRecord } from "./lib/slideMarkup";
+import {
+  applyDocumentUiLang,
+  getUiStrings,
+  readStoredUiLang,
+  UI_LANG_STORAGE_KEY,
+  type UiLang,
+} from "./lib/uiStrings";
 
 const THEME_STORAGE_KEY = "ml-presentation-theme";
 
@@ -23,6 +30,8 @@ export default function App() {
   const [view, setView] = useState<"slides" | "outline">("slides");
   const [translateMounted, setTranslateMounted] = useState(false);
   const [translatePanelOpen, setTranslatePanelOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [uiLang, setUiLang] = useState<UiLang>(() => readStoredUiLang());
 
   const slideRef = useRef<HTMLElement>(null);
   const printRef = useRef<HTMLDivElement>(null);
@@ -42,6 +51,7 @@ export default function App() {
     [sectionJumps, currentIndex]
   );
   const progressPercent = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
+  const ui = useMemo(() => getUiStrings(uiLang), [uiLang]);
 
   useEffect(() => {
     addPresentationStructure();
@@ -51,6 +61,15 @@ export default function App() {
     applyThemeToDocument(initial);
     setBooted(true);
   }, []);
+
+  useEffect(() => {
+    applyDocumentUiLang(uiLang);
+    try {
+      localStorage.setItem(UI_LANG_STORAGE_KEY, uiLang);
+    } catch {
+      /* ignore */
+    }
+  }, [uiLang]);
 
   useLayoutEffect(() => {
     if (!booted) return;
@@ -93,15 +112,15 @@ export default function App() {
   }, []);
 
   const goToSlideByNumber = useCallback(() => {
-    const input = window.prompt(`اكتب رقم الشريحة (1 - ${total})`, String(currentIndex + 1));
+    const input = window.prompt(ui.promptSlideNumber(total, currentIndex + 1), String(currentIndex + 1));
     if (input === null) return;
     const target = Number.parseInt(input.trim(), 10);
     if (Number.isNaN(target) || target < 1 || target > total) {
-      window.alert(`رقم غير صحيح. اختر رقم بين 1 و ${total}.`);
+      window.alert(ui.invalidSlide(total));
       return;
     }
     setCurrentIndex(target - 1);
-  }, [currentIndex, total]);
+  }, [currentIndex, total, ui]);
 
   const toggleTheme = useCallback(() => {
     setTheme((t) => {
@@ -145,7 +164,13 @@ export default function App() {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (templateOpen) {
-        if (event.key === "Escape") setTemplateOpen(false);
+        if (event.key === "Escape") {
+          setTemplateOpen(false);
+        }
+        return;
+      }
+      if (settingsOpen) {
+        if (event.key === "Escape") setSettingsOpen(false);
         return;
       }
       if (translatePanelOpen && event.key === "Escape") {
@@ -156,12 +181,17 @@ export default function App() {
         if (event.key === "Escape") setView("slides");
         return;
       }
-      if (event.key === "ArrowRight") goNext();
-      if (event.key === "ArrowLeft") goPrev();
+      const rtlNav = uiLang === "ar";
+      if (event.key === "ArrowRight") {
+        rtlNav ? goPrev() : goNext();
+      }
+      if (event.key === "ArrowLeft") {
+        rtlNav ? goNext() : goPrev();
+      }
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [goNext, goPrev, templateOpen, view, translatePanelOpen]);
+  }, [goNext, goPrev, templateOpen, settingsOpen, view, translatePanelOpen, uiLang]);
 
   const goToSectionFromOutline = useCallback((slideIndex: number) => {
     setCurrentIndex(slideIndex);
@@ -170,6 +200,7 @@ export default function App() {
 
   const toggleTranslatePanel = useCallback(() => {
     setTranslateMounted(true);
+    setSettingsOpen(false);
     setTranslatePanelOpen((o) => !o);
   }, []);
 
@@ -188,9 +219,14 @@ export default function App() {
           activeJumpId={activeSectionJumpId}
           onJump={goToSectionFromOutline}
           onBack={() => setView("slides")}
+          uiLang={uiLang}
+          onOpenSettings={() => {
+            setSettingsOpen(true);
+            setTranslatePanelOpen(false);
+          }}
         />
       ) : (
-        <div className="presentation" dir="rtl" lang="ar">
+        <div className="presentation" dir={ui.direction} lang={ui.docLang}>
           <header className="topbar">
             <h1 id="deck-title" dir="ltr" lang="en">
               {presentationData.title}
@@ -200,7 +236,7 @@ export default function App() {
                 id="slide-jump-btn"
                 className="slide-count slide-jump-btn"
                 type="button"
-                title="الانتقال إلى رقم شريحة"
+                title={ui.slideJumpTitle}
                 onClick={goToSlideByNumber}
               >
                 <span id="current-slide">{currentIndex + 1}</span>
@@ -213,12 +249,12 @@ export default function App() {
                   className="nav-btn topbar-btn theme-btn"
                   type="button"
                   onClick={toggleTheme}
-                  aria-label={isLight ? "تفعيل الوضع الليلي" : "تفعيل الوضع النهاري"}
+                  aria-label={isLight ? ui.themeAriaLight : ui.themeAriaDark}
                 >
                   <span id="theme-icon" aria-hidden="true">
                     {isLight ? "☀️" : "🌙"}
                   </span>
-                  <span id="theme-label">{isLight ? "الوضع: نهاري" : "الوضع: ليلي"}</span>
+                  <span id="theme-label">{isLight ? ui.themeLabelLight : ui.themeLabelDark}</span>
                 </button>
                 {sectionJumps.length > 0 ? (
                   <button
@@ -226,20 +262,36 @@ export default function App() {
                     className="nav-btn topbar-btn"
                     onClick={() => setView("outline")}
                   >
-                    جدول الأقسام
+                    {ui.outline}
                   </button>
                 ) : null}
               </div>
               <button
+                type="button"
+                className="nav-btn topbar-btn"
+                onClick={() => {
+                  setSettingsOpen(true);
+                  setTranslatePanelOpen(false);
+                }}
+                aria-haspopup="dialog"
+                aria-expanded={settingsOpen}
+                aria-controls="settings-modal-card"
+              >
+                {ui.settings}
+              </button>
+              <button
                 id="show-template-btn"
                 className="nav-btn topbar-btn"
                 type="button"
-                onClick={() => setTemplateOpen(true)}
+                onClick={() => {
+                  setTemplateOpen(true);
+                  setSettingsOpen(false);
+                }}
               >
-                نموذج المنهج
+                {ui.curriculum}
               </button>
               <button id="download-pdf-btn" className="nav-btn topbar-btn" type="button" onClick={handleDownloadPdf}>
-                تحميل PDF
+                {ui.downloadPdf}
               </button>
               <button
                 id="translate-slides-btn"
@@ -248,14 +300,14 @@ export default function App() {
                 onClick={toggleTranslatePanel}
                 aria-expanded={translatePanelOpen}
                 aria-controls="google_translate_element_slot"
-                title="ترجمة محتوى الشرائح عبر Google (الصيغ الرياضية مُستثناة قدر الإمكان)"
+                title={ui.translateTooltip}
               >
-                ترجمة الشرائح
+                {ui.translateSlides}
               </button>
             </div>
           </header>
 
-          <section className="status-row" aria-label="presentation progress">
+          <section className="status-row" aria-label={ui.sectionProgress}>
           <span id="section-label" className="section-chip" dir="auto">
             {sectionLabel}
           </span>
@@ -284,7 +336,7 @@ export default function App() {
 
         <footer className="controls">
           <button id="prev-btn" className="nav-btn" type="button" disabled={currentIndex === 0} onClick={goPrev}>
-            السابق
+            {ui.previous}
           </button>
           <div id="dots" className="dots">
             {slides.map((_, index) => (
@@ -292,7 +344,7 @@ export default function App() {
                 key={index}
                 type="button"
                 className={`dot${index === currentIndex ? " active" : ""}`}
-                aria-label={`اذهب للشريحة ${index + 1}`}
+                aria-label={ui.dotAria(index + 1)}
                 onClick={() => setCurrentIndex(index)}
               />
             ))}
@@ -304,7 +356,7 @@ export default function App() {
             disabled={currentIndex >= total - 1}
             onClick={goNext}
           >
-            التالي
+            {ui.next}
           </button>
         </footer>
         </div>
@@ -323,22 +375,76 @@ export default function App() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="template-modal-title"
-          dir="rtl"
-          lang="ar"
+          dir={ui.direction}
+          lang={ui.docLang}
         >
           <div className="template-modal-head">
-            <h2 id="template-modal-title">نموذج المنهج التدريبي (معبأ)</h2>
+            <h2 id="template-modal-title">{ui.templateTitle}</h2>
             <button
               id="close-template-btn"
               className="nav-btn topbar-btn"
               type="button"
               onClick={() => setTemplateOpen(false)}
             >
-              إغلاق
+              {ui.close}
             </button>
           </div>
           <div id="template-content" className="template-content" dir="ltr" lang="en">
             <MentorshipTemplate />
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="settings-modal"
+        className={`template-modal${settingsOpen ? " is-open" : ""}`}
+        aria-hidden={!settingsOpen}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setSettingsOpen(false);
+        }}
+      >
+        <div
+          id="settings-modal-card"
+          className="template-modal-card settings-modal-card"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="settings-modal-title"
+          dir={ui.direction}
+          lang={ui.docLang}
+        >
+          <div className="template-modal-head">
+            <h2 id="settings-modal-title">{ui.settingsTitle}</h2>
+            <button
+              type="button"
+              className="nav-btn topbar-btn"
+              onClick={() => setSettingsOpen(false)}
+            >
+              {ui.close}
+            </button>
+          </div>
+          <div className="settings-modal-body">
+            <p className="settings-modal-desc">{ui.settingsDescription}</p>
+            <fieldset className="settings-fieldset">
+              <legend>{ui.uiLanguageLabel}</legend>
+              <label className="settings-radio">
+                <input
+                  type="radio"
+                  name="ml-ui-lang"
+                  checked={uiLang === "ar"}
+                  onChange={() => setUiLang("ar")}
+                />
+                <span>{ui.uiLangArabic}</span>
+              </label>
+              <label className="settings-radio">
+                <input
+                  type="radio"
+                  name="ml-ui-lang"
+                  checked={uiLang === "en"}
+                  onChange={() => setUiLang("en")}
+                />
+                <span>{ui.uiLangEnglish}</span>
+              </label>
+            </fieldset>
           </div>
         </div>
       </div>
@@ -348,17 +454,14 @@ export default function App() {
       {booted && translateMounted ? (
         <div
           className={`translate-dropdown-panel${translatePanelOpen ? " is-open" : ""}`}
-          dir="rtl"
-          lang="ar"
+          dir={ui.direction}
+          lang={ui.docLang}
           aria-hidden={!translatePanelOpen}
         >
           <div className="google-translate-slot-wrap" dir="ltr">
             <div id="google_translate_element_slot" className="google-translate-slot" />
           </div>
-          <p className="translate-hint">
-            اختر اللغة — تُترجم الصفحة بالكامل. الصيغ داخل KaTeX تُستثنى قدر الإمكان؛ بعد تغيير الشريحة قد تحتاج
-            لإعادة اختيار اللغة.
-          </p>
+          <p className="translate-hint">{ui.translateHint}</p>
         </div>
       ) : null}
 
@@ -369,9 +472,9 @@ export default function App() {
           onClick={toggleTranslatePanel}
           aria-expanded={translatePanelOpen}
           aria-controls="google_translate_element_slot"
-          title="ترجمة المحتوى"
+          title={ui.translateFabTitle}
         >
-          ترجمة
+          {ui.translateFab}
         </button>
       ) : null}
     </>

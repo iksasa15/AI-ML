@@ -66,17 +66,21 @@
   --muted: #b6bde0;
   --accent: #6f8bff;
   --accent-2: #4f6ff0;
+  --accent-glow: rgba(111, 139, 255, 0.35);
   --border: #2a3058;
   --note-bg: rgba(111, 139, 255, 0.08);
   --dot-bg: #4b5177;
   --slide-w: min(100%, 1000px);
   --slide-h: 640px;
+  --slide-min-h: clamp(360px, min(70vh, var(--slide-h)), 82vh);
   --print-slide-w: 277mm;
   --print-slide-h: calc(277mm * 0.64);
   --card-box-h: 210px;
   --radius-lg: 18px;
   --radius-md: 12px;
   --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.2);
+  --shadow-slide: 0 12px 40px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(111, 139, 255, 0.12);
+  --topbar-accent-line: linear-gradient(90deg, transparent, var(--accent) 20%, var(--accent-2) 50%, var(--accent) 80%, transparent);
 }
 
 html[data-theme="light"] {
@@ -90,9 +94,12 @@ html[data-theme="light"] {
   --muted: #4a587e;
   --accent: #4969f0;
   --accent-2: #3653d0;
+  --accent-glow: rgba(73, 105, 240, 0.25);
   --border: #ccd7ff;
   --note-bg: rgba(73, 105, 240, 0.1);
   --dot-bg: #b8c4ef;
+  --shadow-slide: 0 12px 36px rgba(25, 35, 63, 0.08), 0 0 0 1px rgba(73, 105, 240, 0.12);
+  --topbar-accent-line: linear-gradient(90deg, transparent, var(--accent) 22%, var(--accent-2) 50%, var(--accent) 78%, transparent);
 }
 
 * {
@@ -114,6 +121,14 @@ body {
   background: radial-gradient(circle at top, var(--bg-top), var(--bg));
   color: var(--text);
   line-height: 1.55;
+}
+
+/* اتجاه: الواجهة RTL؛ محتوى الشريحة الإنجليزي معزول بـ LTR */
+#slide-container.slide,
+.print-deck .slide {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: start;
 }
 
 .presentation {
@@ -167,6 +182,14 @@ body {
   flex-shrink: 0;
 }
 
+.outline-header-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
 .outline-table-wrap {
   margin-top: 0;
   flex: 1;
@@ -201,11 +224,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0.8rem 1rem;
   box-shadow: var(--shadow-soft);
+}
+
+.topbar::after {
+  content: "";
+  position: absolute;
+  inset-inline: 1rem;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--topbar-accent-line);
+  opacity: 0.85;
+  pointer-events: none;
 }
 
 #deck-title {
@@ -236,11 +272,25 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-slide), 0 0 24px var(--accent-glow);
   opacity: 0;
   pointer-events: none;
   transform: translateY(-6px);
   transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.translate-dropdown-panel .goog-te-gadget-simple {
+  font-size: 0.85rem !important;
+}
+
+.translate-dropdown-panel .goog-te-combo {
+  max-width: 100%;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-2);
+  color: var(--text);
+  font-family: inherit;
 }
 
 .translate-dropdown-panel.is-open {
@@ -254,6 +304,10 @@ body {
   font-size: 0.72rem;
   color: var(--muted);
   line-height: 1.4;
+}
+
+.google-translate-slot-wrap {
+  min-height: 42px;
 }
 
 .google-translate-slot {
@@ -271,12 +325,6 @@ body {
   bottom: 1rem;
   z-index: 44;
   box-shadow: var(--shadow-soft);
-}
-
-@media print {
-  .translate-fab {
-    display: none !important;
-  }
 }
 
 .status-row {
@@ -340,18 +388,30 @@ body {
 .stage {
   display: grid;
   place-items: start center;
+  min-height: 0;
+  align-self: stretch;
 }
 
 .slide {
   width: var(--slide-w);
-  min-height: min(72vh, var(--slide-h));
+  min-height: var(--slide-min-h);
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 2.1rem;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-slide);
   overflow: visible;
   transition: opacity 180ms ease, transform 180ms ease;
+}
+
+@media (max-height: 780px), (max-width: 680px) {
+  .slide {
+    max-height: min(82vh, 880px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
+  }
 }
 
 .slide.is-entering {
@@ -699,6 +759,49 @@ body {
   color: var(--text);
 }
 
+.settings-modal-card {
+  width: min(480px, 100%);
+  max-height: min(88vh, 560px);
+  grid-template-rows: auto 1fr;
+}
+
+.settings-modal-body {
+  padding: 0 1rem 1.05rem;
+  overflow: auto;
+}
+
+.settings-modal-desc {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.settings-fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.95rem;
+  margin: 0;
+}
+
+.settings-fieldset legend {
+  padding: 0 0.35rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.settings-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+  cursor: pointer;
+}
+
+.settings-radio:first-of-type {
+  margin-top: 0.25rem;
+}
+
 .template-meta {
   display: flex;
   align-items: center;
@@ -813,7 +916,7 @@ body {
   }
 
   .slide {
-    min-height: 66vh;
+    min-height: min(66vh, var(--slide-min-h));
     padding: 1.2rem;
   }
 
@@ -851,9 +954,26 @@ body {
     margin: 10mm;
   }
 
+  /* ورق فاتح للقراءة والحبر — مستقل عن ثيم الشاشة */
+  :root {
+    --bg: #ffffff;
+    --bg-top: #f8faff;
+    --card: #ffffff;
+    --card-2: #f4f7ff;
+    --card-3: #edf2ff;
+    --card-4: #e7edff;
+    --text: #19233f;
+    --muted: #4a587e;
+    --accent: #4969f0;
+    --accent-2: #3653d0;
+    --border: #ccd7ff;
+    --note-bg: rgba(73, 105, 240, 0.1);
+    --dot-bg: #b8c4ef;
+  }
+
   html,
   body {
-    background: radial-gradient(circle at top, var(--bg-top), var(--bg));
+    background: #fff !important;
     color: var(--text);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -868,6 +988,10 @@ body {
   }
 
   .translate-dropdown-panel {
+    display: none !important;
+  }
+
+  .translate-fab {
     display: none !important;
   }
 
@@ -919,6 +1043,12 @@ body {
   .print-slide .note-box {
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  .print-slide h2,
+  .print-slide h3 {
+    orphans: 3;
+    widows: 3;
   }
 
   .print-slide h2,
