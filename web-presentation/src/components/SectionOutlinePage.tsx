@@ -14,7 +14,11 @@ export function SectionOutlinePage({ deckTitle, jumps, activeJumpId, onJump, onB
       <header className="outline-header">
         <div className="outline-header-text">
           <h1 className="outline-title">جدول الأقسام</h1>
-          <p className="outline-subtitle">{deckTitle}</p>
+          <p className="outline-subtitle">
+            <span dir="ltr" lang="en">
+              {deckTitle}
+            </span>
+          </p>
         </div>
         <button type="button" className="nav-btn topbar-btn outline-back-btn" onClick={onBack}>
           العودة للعرض

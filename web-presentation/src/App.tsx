@@ -116,7 +116,10 @@ export default function App() {
     const el = printRef.current;
     if (!el) return;
     el.innerHTML = slides
-      .map((s) => `<section class="slide print-slide">${buildSlideMarkup(s)}</section>`)
+      .map(
+        (s) =>
+          `<section class="slide print-slide" dir="ltr" lang="en">${buildSlideMarkup(s)}</section>`
+      )
       .join("");
     renderSlideMath(el);
   }, [slides]);
@@ -187,9 +190,11 @@ export default function App() {
           onBack={() => setView("slides")}
         />
       ) : (
-        <div className="presentation">
+        <div className="presentation" dir="rtl" lang="ar">
           <header className="topbar">
-            <h1 id="deck-title">{presentationData.title}</h1>
+            <h1 id="deck-title" dir="ltr" lang="en">
+              {presentationData.title}
+            </h1>
             <div className="topbar-actions">
               <button
                 id="slide-jump-btn"
@@ -251,11 +256,12 @@ export default function App() {
           </header>
 
           <section className="status-row" aria-label="presentation progress">
-          <span id="section-label" className="section-chip">
+          <span id="section-label" className="section-chip" dir="auto">
             {sectionLabel}
           </span>
           <div
             className="progress-track"
+            dir="ltr"
             role="progressbar"
             aria-valuemin={0}
             aria-valuemax={100}
@@ -270,6 +276,8 @@ export default function App() {
             ref={slideRef}
             id="slide-container"
             className={`slide${slideEntering ? " is-entering" : ""}`}
+            dir="ltr"
+            lang="en"
             dangerouslySetInnerHTML={{ __html: slideHtml }}
           />
         </main>
@@ -310,7 +318,14 @@ export default function App() {
           if (e.target === e.currentTarget) setTemplateOpen(false);
         }}
       >
-        <div className="template-modal-card" role="dialog" aria-modal="true" aria-labelledby="template-modal-title">
+        <div
+          className="template-modal-card"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="template-modal-title"
+          dir="rtl"
+          lang="ar"
+        >
           <div className="template-modal-head">
             <h2 id="template-modal-title">نموذج المنهج التدريبي (معبأ)</h2>
             <button
@@ -322,7 +337,7 @@ export default function App() {
               إغلاق
             </button>
           </div>
-          <div id="template-content" className="template-content">
+          <div id="template-content" className="template-content" dir="ltr" lang="en">
             <MentorshipTemplate />
           </div>
         </div>
@@ -333,10 +348,13 @@ export default function App() {
       {booted && translateMounted ? (
         <div
           className={`translate-dropdown-panel${translatePanelOpen ? " is-open" : ""}`}
-          dir="ltr"
+          dir="rtl"
+          lang="ar"
           aria-hidden={!translatePanelOpen}
         >
-          <div id="google_translate_element_slot" className="google-translate-slot" />
+          <div className="google-translate-slot-wrap" dir="ltr">
+            <div id="google_translate_element_slot" className="google-translate-slot" />
+          </div>
           <p className="translate-hint">
             اختر اللغة — تُترجم الصفحة بالكامل. الصيغ داخل KaTeX تُستثنى قدر الإمكان؛ بعد تغيير الشريحة قد تحتاج
             لإعادة اختيار اللغة.
