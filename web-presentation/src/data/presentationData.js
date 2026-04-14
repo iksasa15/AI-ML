@@ -1869,17 +1869,43 @@ export const presentationData = {
       note: "Combining PCA with clustering often improves interpretability and runtime on high-dimensional data.",
     },
     {
-      title: "Deep Learning: Motivation",
-      subtitle: "From Classical ML to Hierarchical Representation Learning",
+      title: "Deep Learning: Introduction",
+      subtitle: "What It Is, Core Ideas, and Why It Matters",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
       ],
-      bullets: [
-        "Classical ML often struggles with raw, high-dimensional, and unstructured inputs.",
-        "Deep learning reduces manual feature engineering by learning features directly from data.",
-        "Layered models learn abstraction levels: edges -> parts -> objects -> semantics.",
+      body: "Deep learning (DL) is a branch of machine learning built on deep neural networks: models with many stacked layers that learn hierarchical representations from data. Instead of hand-designing features, the network discovers useful patterns—edges in images, phonemes in speech, or subword units in text—through supervised, unsupervised, or self-supervised training.",
+      sections: [
+        {
+          heading: "What is Deep Learning?",
+          bullets: [
+            "A subset of machine learning that uses neural networks with multiple hidden layers (“depth”).",
+            "Learns mappings from inputs to outputs (or representations) by adjusting millions of parameters via optimization.",
+            "Closely tied to representation learning: each layer can capture increasingly abstract features.",
+          ],
+        },
+        {
+          heading: "Basics You Should Know",
+          bullets: [
+            "Building blocks: neurons, layers, activation functions (non-linearity), loss functions, backpropagation.",
+            "Training loop: forward pass → compute loss → backward pass → update weights (typically with variants of gradient descent).",
+            "Key resources: data (quality + scale), model capacity (architecture + depth/width), compute (often GPUs/TPUs), and regularization to generalize.",
+          ],
+        },
+        {
+          heading: "Why DL vs Classical ML?",
+          bullets: [
+            "Strong on high-dimensional unstructured data: images, audio, video, text.",
+            "Reduces reliance on manual feature engineering; features emerge from data.",
+            "Depth enables compositionality: simple patterns combine into complex concepts (e.g., edges → shapes → objects).",
+          ],
+        },
       ],
-      note: "This shift enables practical learning on images, speech, text, and multimodal data.",
+      bullets: [
+        "For university study: master linear algebra, calculus (gradients), probability, and programming—then specialize in CNNs, RNNs/Transformers, and training practice.",
+        "DL is powerful but not universal: small tabular datasets or strict interpretability needs may favor simpler or classical models.",
+      ],
+      note: "This slide sets the frame for the section: we move from shallow models to deep networks that learn layered representations—essential context for labs and exams.",
     },
     {
       title: "Why Classical ML Can Fail on Complex Data",
