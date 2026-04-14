@@ -1870,37 +1870,16 @@ export const presentationData = {
     },
     {
       title: "Deep Learning: Introduction",
-      subtitle: "Four-Phase Track: Foundations → Optimization → Architectures → Advanced",
+      subtitle: "Foundations → Optimization → Architectures → Advanced Topics",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
       ],
-      table: {
-        title: "Curriculum map (new track)",
-        headers: ["Phase", "Focus", "Core topics"],
-        rows: [
-          [
-            "1 — Foundations & Neural Core",
-            "Why DL works; math of one neuron → MLP",
-            "Definition & history, curse of dimensionality, AI/ML/DL, use-cases, perceptron, init (Xavier/He), activations, XOR, forward/loss/backprop",
-          ],
-          [
-            "2 — Optimization & Training",
-            "Stable, efficient training",
-            "Diagnostics, vanishing/exploding grads, Adam/AdamW, Batch/Layer norm, dropout & L1/L2, schedules & tuning",
-          ],
-          [
-            "3 — Specialized Architectures",
-            "Images & sequences",
-            "CNNs (evolution, detection, segmentation, transfer), RNNs, LSTM/GRU, encoder–decoder",
-          ],
-          [
-            "4 — Generative & Deployment",
-            "Creative models & production",
-            "Autoencoders & VAEs, GANs, quantization, pruning, edge inference",
-          ],
-        ],
-      },
-      note: "Follow phases in order for lectures and labs; each phase assumes the previous one.",
+      body: "This section moves from the basics of neural computation to training practice, specialized architectures for vision and sequences, and finally generative models and deployment considerations.",
+    },
+    {
+      type: "section-divider",
+      title: "Phase 1",
+      subtitle: "Foundations & Neural Core",
     },
     {
       title: "Deep Learning: Definition and Brief History",
@@ -2248,24 +2227,48 @@ export const presentationData = {
       ],
     },
     {
+      title: "Sequential Data: Why Order Matters",
+      subtitle: "Intuition Before RNNs",
+      bullets: [
+        "Many signals are sequences: words in a sentence, frames in video, samples in audio, time steps in sensors.",
+        "Shuffling destroys meaning: prediction depends on context and temporal structure.",
+        "Models must carry information across positions—hence recurrence, convolutions over time, or attention.",
+      ],
+    },
+    {
       title: "Sequential Modeling with RNNs",
+      subtitle: "Basic RNNs, Hidden State, and Memory Limits",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg",
       ],
       bullets: [
-        "RNNs maintain hidden state across time steps; ideal for ordered sequences (text, speech, time series).",
-        "Vanilla RNNs struggle with long dependencies—gates (LSTM/GRU) or attention mitigate.",
+        "RNNs apply the same transition at each step: hidden state summarizes past context and combines with the current input.",
+        "Unfolding over time shows weight sharing across steps—compact but deep in time.",
+        "Vanilla RNNs lose signal over long horizons (vanishing gradients)—limited effective memory without gates or skip paths.",
       ],
     },
     {
-      title: "LSTM and GRU: Gated Memory for Long Sequences",
+      title: "LSTM and GRU: Gated Mechanisms for Long Sequences",
+      subtitle: "Deep Dive on Forget / Input / Output vs Update / Reset",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/6/63/Long_Short-Term_Memory.svg",
         "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg",
       ],
-      bullets: [
-        "LSTM: explicit cell state with forget/input/output gates to regulate information flow.",
-        "GRU: fewer gates, often similar quality with lower parameter count and faster runtime.",
+      sections: [
+        {
+          heading: "LSTM (Long Short-Term Memory)",
+          bullets: [
+            "Cell state carries long-term memory; gates decide what to erase, write, and expose.",
+            "Forget gate reduces catastrophic retention of irrelevant past context.",
+          ],
+        },
+        {
+          heading: "GRU (Gated Recurrent Unit)",
+          bullets: [
+            "Combines update and reset gates with fewer parameters than LSTM—often similar quality.",
+            "Good when latency or model size matters on sequence tasks.",
+          ],
+        },
       ],
     },
     {

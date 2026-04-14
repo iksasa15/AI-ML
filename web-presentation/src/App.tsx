@@ -166,27 +166,29 @@ export default function App() {
                 <span>/</span>
                 <span id="total-slides">{total}</span>
               </button>
-              {sectionJumps.length > 0 ? (
+              <div className="topbar-theme-outline-group">
                 <button
+                  id="theme-toggle-btn"
+                  className="nav-btn topbar-btn theme-btn"
                   type="button"
-                  className="nav-btn topbar-btn"
-                  onClick={() => setView("outline")}
+                  onClick={toggleTheme}
+                  aria-label={isLight ? "تفعيل الوضع الليلي" : "تفعيل الوضع النهاري"}
                 >
-                  جدول الأقسام
+                  <span id="theme-icon" aria-hidden="true">
+                    {isLight ? "☀️" : "🌙"}
+                  </span>
+                  <span id="theme-label">{isLight ? "الوضع: نهاري" : "الوضع: ليلي"}</span>
                 </button>
-              ) : null}
-              <button
-                id="theme-toggle-btn"
-                className="nav-btn topbar-btn theme-btn"
-                type="button"
-                onClick={toggleTheme}
-                aria-label={isLight ? "تفعيل الوضع الليلي" : "تفعيل الوضع النهاري"}
-              >
-                <span id="theme-icon" aria-hidden="true">
-                  {isLight ? "☀️" : "🌙"}
-                </span>
-                <span id="theme-label">{isLight ? "الوضع: نهاري" : "الوضع: ليلي"}</span>
-              </button>
+                {sectionJumps.length > 0 ? (
+                  <button
+                    type="button"
+                    className="nav-btn topbar-btn"
+                    onClick={() => setView("outline")}
+                  >
+                    جدول الأقسام
+                  </button>
+                ) : null}
+              </div>
               <button
                 id="show-template-btn"
                 className="nav-btn topbar-btn"

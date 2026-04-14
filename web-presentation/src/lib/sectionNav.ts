@@ -8,10 +8,17 @@ export type SectionJump = {
   slideIndex: number;
 };
 
-/** فهرس الأقسام: مقدمة (قبل أول فاصل) + كل شريحة section-divider */
+/** فواصل فرعية داخل قسم Deep Learning — تُعرض كشرائح لكن لا تُدرَج في جدول الأقسام */
+const OUTLINE_EXCLUDED_DIVIDER_TITLES = new Set(["Phase 1", "Phase 2", "Phase 3", "Phase 4"]);
+
+/** فهرس الأقسام: مقدمة (قبل أول فاصل) + كل شريحة section-divider (ما عدا الفواصل المستبعدة) */
 export function buildSectionJumps(slides: SlideRecord[]): SectionJump[] {
   const jumps: SectionJump[] = [];
-  const firstDividerIdx = slides.findIndex((s) => s.type === "section-divider");
+  const firstDividerIdx = slides.findIndex((s) => {
+    if (s.type !== "section-divider") return false;
+    const t = String(s.title || "");
+    return !OUTLINE_EXCLUDED_DIVIDER_TITLES.has(t);
+  });
 
   if (firstDividerIdx > 0) {
     jumps.push({
@@ -23,14 +30,15 @@ export function buildSectionJumps(slides: SlideRecord[]): SectionJump[] {
   }
 
   slides.forEach((s, i) => {
-    if (s.type === "section-divider") {
-      jumps.push({
-        id: `section-${i}`,
-        label: String(s.subtitle || s.title || `قسم ${jumps.length + 1}`),
-        tag: String(s.title || ""),
-        slideIndex: i,
-      });
-    }
+    if (s.type !== "section-divider") return;
+    const t = String(s.title || "");
+    if (OUTLINE_EXCLUDED_DIVIDER_TITLES.has(t)) return;
+    jumps.push({
+      id: `section-${i}`,
+      label: String(s.subtitle || s.title || `قسم ${jumps.length + 1}`),
+      tag: String(s.title || ""),
+      slideIndex: i,
+    });
   });
 
   return jumps;
