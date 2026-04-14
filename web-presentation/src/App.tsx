@@ -5,6 +5,7 @@ import { presentationData } from "./data/presentationData.js";
 import { addPresentationStructure } from "./lib/addPresentationStructure";
 import { renderSlideMath } from "./lib/renderMath";
 import { buildSectionJumps, getActiveSectionJumpId } from "./lib/sectionNav";
+import { initGoogleTranslateElement, loadGoogleTranslateScript } from "./lib/googleTranslate";
 import { buildSlideMarkup, getActiveSectionLabel, type SlideRecord } from "./lib/slideMarkup";
 
 const THEME_STORAGE_KEY = "ml-presentation-theme";
@@ -20,6 +21,8 @@ export default function App() {
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
   const [view, setView] = useState<"slides" | "outline">("slides");
+  const [translateMounted, setTranslateMounted] = useState(false);
+  const [translatePanelOpen, setTranslatePanelOpen] = useState(false);
 
   const slideRef = useRef<HTMLElement>(null);
   const printRef = useRef<HTMLDivElement>(null);
@@ -58,8 +61,28 @@ export default function App() {
 
   useLayoutEffect(() => {
     if (!booted || view !== "slides") return;
-    renderSlideMath(slideRef.current);
+    const root = slideRef.current;
+    if (!root) return;
+    renderSlideMath(root);
+    root.querySelectorAll(".katex, .katex-display").forEach((node) => {
+      node.classList.add("notranslate");
+      node.setAttribute("translate", "no");
+    });
   }, [slideHtml, booted, view]);
+
+  useEffect(() => {
+    if (!translateMounted || !booted) return;
+    let cancelled = false;
+    loadGoogleTranslateScript()
+      .then(() => {
+        if (cancelled) return;
+        requestAnimationFrame(() => initGoogleTranslateElement("google_translate_element_slot"));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [translateMounted, booted]);
 
   const goNext = useCallback(() => {
     setCurrentIndex((i) => Math.min(i + 1, total - 1));
@@ -122,6 +145,10 @@ export default function App() {
         if (event.key === "Escape") setTemplateOpen(false);
         return;
       }
+      if (translatePanelOpen && event.key === "Escape") {
+        setTranslatePanelOpen(false);
+        return;
+      }
       if (view === "outline") {
         if (event.key === "Escape") setView("slides");
         return;
@@ -131,11 +158,16 @@ export default function App() {
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [goNext, goPrev, templateOpen, view]);
+  }, [goNext, goPrev, templateOpen, view, translatePanelOpen]);
 
   const goToSectionFromOutline = useCallback((slideIndex: number) => {
     setCurrentIndex(slideIndex);
     setView("slides");
+  }, []);
+
+  const toggleTranslatePanel = useCallback(() => {
+    setTranslateMounted(true);
+    setTranslatePanelOpen((o) => !o);
   }, []);
 
   const isLight = theme === "light";
@@ -203,6 +235,17 @@ export default function App() {
               </button>
               <button id="download-pdf-btn" className="nav-btn topbar-btn" type="button" onClick={handleDownloadPdf}>
                 تحميل PDF
+              </button>
+              <button
+                id="translate-slides-btn"
+                className="nav-btn topbar-btn"
+                type="button"
+                onClick={toggleTranslatePanel}
+                aria-expanded={translatePanelOpen}
+                aria-controls="google_translate_element_slot"
+                title="ترجمة محتوى الشرائح عبر Google (الصيغ الرياضية مُستثناة قدر الإمكان)"
+              >
+                ترجمة الشرائح
               </button>
             </div>
           </header>
@@ -286,6 +329,33 @@ export default function App() {
       </div>
 
       <div id="print-container" ref={printRef} className="print-deck" aria-hidden="true" />
+
+      {booted && translateMounted ? (
+        <div
+          className={`translate-dropdown-panel${translatePanelOpen ? " is-open" : ""}`}
+          dir="ltr"
+          aria-hidden={!translatePanelOpen}
+        >
+          <div id="google_translate_element_slot" className="google-translate-slot" />
+          <p className="translate-hint">
+            اختر اللغة — تُترجم الصفحة بالكامل. الصيغ داخل KaTeX تُستثنى قدر الإمكان؛ بعد تغيير الشريحة قد تحتاج
+            لإعادة اختيار اللغة.
+          </p>
+        </div>
+      ) : null}
+
+      {booted && view === "outline" ? (
+        <button
+          type="button"
+          className="translate-fab nav-btn"
+          onClick={toggleTranslatePanel}
+          aria-expanded={translatePanelOpen}
+          aria-controls="google_translate_element_slot"
+          title="ترجمة المحتوى"
+        >
+          ترجمة
+        </button>
+      ) : null}
     </>
   );
 }

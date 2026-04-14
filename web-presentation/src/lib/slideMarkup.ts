@@ -139,7 +139,7 @@ export function buildSlideMarkup(slide: SlideRecord) {
         <article class="content-card">
           <h3>${escapeHTML(section.heading || "")}</h3>
           ${section.body ? `<p>${escapeHTML(section.body)}</p>` : ""}
-          ${section.formula ? `<div class="formula">${renderDisplayFormula(String(section.formula))}</div>` : ""}
+          ${section.formula ? `<div class="formula notranslate" translate="no">${renderDisplayFormula(String(section.formula))}</div>` : ""}
           ${sectionBullets ? `<ul>${sectionBullets}</ul>` : ""}
           ${buildTableMarkup(section.table || {})}
         </article>
@@ -167,7 +167,7 @@ export function buildSlideMarkup(slide: SlideRecord) {
     <h2>${escapeHTML(String(slide.title))}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}</h2>
     ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
     ${slide.body ? `<p class="slide-body">${escapeHTML(String(slide.body))}</p>` : ""}
-    ${slide.formula ? `<div class="formula">${renderDisplayFormula(String(slide.formula))}</div>` : ""}
+    ${slide.formula ? `<div class="formula notranslate" translate="no">${renderDisplayFormula(String(slide.formula))}</div>` : ""}
     ${imageHTML}
     ${bulletsHTML ? `<ul>${bulletsHTML}</ul>` : ""}
     ${sectionsHTML ? `<div class="content-sections">${sectionsHTML}</div>` : ""}
