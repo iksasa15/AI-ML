@@ -1870,168 +1870,153 @@ export const presentationData = {
     },
     {
       title: "Deep Learning: Introduction",
-      subtitle: "What It Is, Core Ideas, and Why It Matters",
+      subtitle: "Four-Phase Track: Foundations → Optimization → Architectures → Advanced",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
       ],
-      body: "Deep learning (DL) is a branch of machine learning built on deep neural networks: models with many stacked layers that learn hierarchical representations from data. Instead of hand-designing features, the network discovers useful patterns—edges in images, phonemes in speech, or subword units in text—through supervised, unsupervised, or self-supervised training.",
-      sections: [
-        {
-          heading: "What is Deep Learning?",
-          bullets: [
-            "A subset of machine learning that uses neural networks with multiple hidden layers (“depth”).",
-            "Learns mappings from inputs to outputs (or representations) by adjusting millions of parameters via optimization.",
-            "Closely tied to representation learning: each layer can capture increasingly abstract features.",
-          ],
-        },
-        {
-          heading: "Basics You Should Know",
-          bullets: [
-            "Building blocks: neurons, layers, activation functions (non-linearity), loss functions, backpropagation.",
-            "Training loop: forward pass → compute loss → backward pass → update weights (typically with variants of gradient descent).",
-            "Key resources: data (quality + scale), model capacity (architecture + depth/width), compute (often GPUs/TPUs), and regularization to generalize.",
-          ],
-        },
-        {
-          heading: "Why DL vs Classical ML?",
-          bullets: [
-            "Strong on high-dimensional unstructured data: images, audio, video, text.",
-            "Reduces reliance on manual feature engineering; features emerge from data.",
-            "Depth enables compositionality: simple patterns combine into complex concepts (e.g., edges → shapes → objects).",
-          ],
-        },
-      ],
-      bullets: [
-        "For university study: master linear algebra, calculus (gradients), probability, and programming—then specialize in CNNs, RNNs/Transformers, and training practice.",
-        "DL is powerful but not universal: small tabular datasets or strict interpretability needs may favor simpler or classical models.",
-      ],
-      note: "This slide sets the frame for the section: we move from shallow models to deep networks that learn layered representations—essential context for labs and exams.",
-    },
-    {
-      title: "Why Classical ML Can Fail on Complex Data",
       table: {
-        headers: ["Challenge", "Impact", "Why DL Helps"],
+        title: "Curriculum map (new track)",
+        headers: ["Phase", "Focus", "Core topics"],
         rows: [
-          ["Scalability", "Training becomes inefficient on very large datasets", "GPU-friendly optimization and mini-batch learning"],
-          ["Manual feature design", "Domain expertise bottleneck", "Automated feature extraction in hidden layers"],
-          ["Unstructured modalities", "Hard to handcraft robust descriptors", "Architectures specialized for images/text/audio"],
-          ["Hierarchical patterns", "Shallow models miss compositional structure", "Depth builds rich compositional representations"],
+          [
+            "1 — Foundations & Neural Core",
+            "Why DL works; math of one neuron → MLP",
+            "Definition & history, curse of dimensionality, AI/ML/DL, use-cases, perceptron, init (Xavier/He), activations, XOR, forward/loss/backprop",
+          ],
+          [
+            "2 — Optimization & Training",
+            "Stable, efficient training",
+            "Diagnostics, vanishing/exploding grads, Adam/AdamW, Batch/Layer norm, dropout & L1/L2, schedules & tuning",
+          ],
+          [
+            "3 — Specialized Architectures",
+            "Images & sequences",
+            "CNNs (evolution, detection, segmentation, transfer), RNNs, LSTM/GRU, encoder–decoder",
+          ],
+          [
+            "4 — Generative & Deployment",
+            "Creative models & production",
+            "Autoencoders & VAEs, GANs, quantization, pruning, edge inference",
+          ],
         ],
       },
-      note: "Deep learning is not always superior for small tabular datasets with limited samples.",
+      note: "Follow phases in order for lectures and labs; each phase assumes the previous one.",
     },
     {
-      title: "Deep Learning as a Subset of ML",
-      bullets: [
-        "AI is the broad field; ML is a subset focused on learning from data.",
-        "Deep learning is a subset of ML using deep neural network architectures.",
-        "Neural networks existed for decades, but modern compute and data unlocked their full potential.",
-      ],
-      note: "Historical progress accelerated when ReLU, better optimization, and GPUs became mainstream.",
-    },
-    {
-      title: "Use-Case Fit for Deep Learning",
-      table: {
-        headers: ["Data Context", "Recommended Direction", "Rationale"],
-        rows: [
-          ["Images, speech, text", "Deep learning first", "High-dimensional, local and hierarchical patterns"],
-          ["Huge datasets", "Deep learning scales well", "Capacity increases with data and compute"],
-          ["Small/medium tabular data", "Try tree ensembles first", "Strong baselines with lower tuning cost"],
-          ["Categoricals with many levels", "DL embeddings can help", "Dense learned representations of sparse categories"],
-        ],
-      },
-    },
-    {
-      title: "Image Data Intuition",
-      subtitle: "From Pixels to Semantics",
-      bullets: [
-        "A color image of size 100x100 contains 30,000 values (RGB channels).",
-        "Individual pixels are weak signals; neighborhoods encode edges and textures.",
-        "Deep layers combine local patterns into object-level understanding.",
-      ],
-      note: "CNNs are designed to exploit local spatial structure in image tensors.",
-    },
-    {
-      title: "How CNNs Process Images",
+      title: "Deep Learning: Definition and Brief History",
       imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png",
+        "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
       ],
-      sections: [
-        {
-          heading: "Feature Hierarchy",
-          bullets: [
-            "Early layers detect simple patterns (edges, corners).",
-            "Middle layers capture parts and motifs (textures, components).",
-            "Late layers encode semantic object concepts for classification.",
-          ],
-        },
-        {
-          heading: "Pipeline",
-          bullets: [
-            "Input -> convolution -> activation -> pooling -> repeated blocks -> classifier head.",
-            "Softmax output yields class probabilities for final prediction.",
-          ],
-        },
+      bullets: [
+        "Definition: learning hierarchical representations with deep (multi-layer) neural networks from data.",
+        "Key eras: perceptrons (1950s–60s) → backprop & MLPs (1980s–90s) → deep CNN breakthroughs (2012–) fueled by data + GPUs.",
+        "Modern DL spans vision, speech, NLP, RL, and generative models; transformers extended sequence modeling at scale.",
       ],
+      note: "History matters: many ideas are old; scale (data, compute, algorithms) made them practical.",
     },
     {
-      title: "Computer Vision Tasks with Deep Learning",
+      title: "Why Classical ML Struggles: High Dimensions & Complexity",
+      subtitle: "Curse of Dimensionality Intuition",
+      bullets: [
+        "As feature dimension grows, data become sparse in space: fixed-size datasets cover an exponentially smaller fraction of the input volume.",
+        "Distance metrics and density estimates become less meaningful without huge samples.",
+        "Handcrafted features for raw images/audio/text do not scale; DL learns task-relevant representations end-to-end.",
+      ],
       table: {
-        headers: ["Task", "Output Type", "Typical Models"],
+        headers: ["Phenomenon", "Effect on classical ML", "How DL responds"],
         rows: [
-          ["Image classification", "Single label per image", "ResNet, EfficientNet, ViT"],
-          ["Object detection", "Bounding boxes + class labels", "Faster R-CNN, YOLO family"],
-          ["Semantic segmentation", "Class label per pixel", "U-Net, DeepLab"],
-          ["Instance segmentation", "Per-object masks", "Mask R-CNN"],
+          ["Sparse coverage in high-D", "Poor generalization with fixed n", "Shared compositional structure in layers"],
+          ["Unstructured inputs", "Hard to engineer descriptors", "Architectures matched to modality (CNN/RNN/Transformer)"],
+          ["Compositional patterns", "Shallow models miss hierarchy", "Depth builds abstractions level by level"],
         ],
       },
-      note: "Task definition determines architecture and loss function design.",
     },
     {
-      title: "Single Neuron (Perceptron): Math and Components",
+      title: "Deep Learning as a Subset of ML (and AI)",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
+      ],
+      bullets: [
+        "AI: broad goal of intelligent behavior (rules, search, learning, reasoning).",
+        "Machine learning: systems that improve from data via optimization (SVMs, trees, shallow nets, DL).",
+        "Deep learning: ML with deep neural networks—representation learning is the centerpiece.",
+      ],
+      note: "Not every ML problem needs deep nets; tabular baselines and classical models remain essential.",
+    },
+    {
+      title: "Use-Case Fit: When to Use DL — and When to Avoid It",
+      table: {
+        headers: ["Context", "Typical recommendation", "Rationale"],
+        rows: [
+          ["Large image/speech/text corpora", "Deep learning strong default", "High-D, compositional structure; benefits from capacity"],
+          ["Tiny tabular datasets", "Often trees/linear models first", "Lower variance, simpler validation, interpretability"],
+          ["Strict regulatory interpretability", "Caution with large black-box nets", "May need simpler models or post-hoc analysis"],
+          ["Plenty of labels + GPU budget", "DL can shine", "Optimization at scale is feasible"],
+        ],
+      },
+    },
+    {
+      title: "Single Neuron (Perceptron): Weights, Bias, and Decisions",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/8/8a/Perceptron_example.svg",
       ],
       formula: "z = w^\\top x + b,\\quad \\hat{y}=f(z)",
       bullets: [
-        "The affine part scores inputs via weighted sum and bias shift.",
-        "Activation maps score to decision output.",
-        "A single perceptron can represent only linear decision boundaries.",
+        "Affine map scores how strongly inputs align with weight vector; bias shifts the decision surface.",
+        "Without hidden layers, decision boundaries stay linear in input space (for common activations).",
+        "Training adjusts (w, b) to reduce loss on labeled examples.",
       ],
       table: {
-        headers: ["Component", "Meaning"],
+        headers: ["Symbol", "Role"],
         rows: [
-          ["x", "Input feature vector"],
-          ["w", "Learned importance weights"],
-          ["b", "Bias (threshold shift)"],
-          ["f(.)", "Activation function"],
+          ["x", "Input vector"],
+          ["w, b", "Learned weights and bias"],
+          ["f", "Activation (non-linearity when not identity)"],
         ],
       },
+    },
+    {
+      title: "Weight Initialization: Why Zeros Fail — Xavier and He",
+      bullets: [
+        "All-zero weights: every neuron in a layer behaves identically; symmetry never breaks during training.",
+        "Xavier/Glorot: scale init by fan-in/fan-out to keep activation variance stable across layers (good for tanh/sigmoid-like).",
+        "He init: designed for ReLU families—scales by fan-in to reduce vanishing/exploding signal early in training.",
+      ],
+      table: {
+        headers: ["Method", "Typical use"],
+        rows: [
+          ["Xavier / Glorot uniform/normal", "Linear, tanh, sigmoid activations"],
+          ["He normal / uniform", "ReLU, leaky ReLU, variants"],
+        ],
+      },
+      note: "Initialization interacts with activation, normalization, and depth—always validate on your architecture.",
     },
     {
       title: "Activation Functions: Practical Comparison",
       table: {
-        headers: ["Activation", "Formula", "Strengths", "Limitations"],
+        headers: ["Activation", "Idea", "Typical use"],
         rows: [
-          ["Sigmoid", "\\(\\sigma(z)=\\frac{1}{1+e^{-z}}\\)", "Probabilistic output in (0,1)", "Vanishing gradients in deep stacks"],
-          ["Tanh", "\\(\\tanh(z)\\)", "Zero-centered activations", "Still vulnerable to vanishing gradients"],
-          ["ReLU", "\\(\\max(0, z)\\)", "Fast, sparse activations, stable in depth", "Dying ReLU for persistently negative inputs"],
-          ["Softmax", "\\(\\mathrm{softmax}(z_k)=\\frac{e^{z_k}}{\\sum_j e^{z_j}}\\)", "Normalized multi-class probabilities", "Can be overconfident without calibration"],
+          ["Sigmoid / Tanh", "Saturate to bounded ranges", "Gates, historic nets; watch vanishing gradients"],
+          ["ReLU / leaky ReLU", "Sparse, fast", "Default for many conv/MLP stacks"],
+          ["Swish / SiLU", "Smooth, non-monotonic", "Often competitive with ReLU in deep nets"],
+          ["GELU", "Probabilistic smoothing", "Common in Transformers and modern NLP/CV backbones"],
+          ["Softmax (vector)", "Probability simplex", "Multi-class output layer"],
         ],
       },
+      note: "Depth + nonlinearity is what makes stacking layers meaningful; linear stacks collapse to a single linear map.",
     },
     {
-      title: "XOR Problem: Why One Neuron Is Not Enough",
+      title: "XOR: Why Hidden Layers Are Necessary",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/1/1f/Perceptron_XOR_task.svg",
       ],
       bullets: [
-        "XOR is not linearly separable in the original input space.",
-        "Linear models (single neuron / logistic regression) cannot fit XOR perfectly.",
-        "A hidden layer with non-linear activation transforms data into separable space.",
+        "XOR is not linearly separable in the original 2D input space.",
+        "A hidden layer with nonlinearity can fold space so XOR becomes linearly separable in feature space.",
+        "This is the logical minimum argument for depth (even one hidden layer unlocks non-linear boundaries).",
       ],
       table: {
-        headers: ["x1", "x2", "XOR(x1,x2)"],
+        headers: ["x1", "x2", "XOR"],
         rows: [
           ["0", "0", "0"],
           ["0", "1", "1"],
@@ -2041,118 +2026,225 @@ export const presentationData = {
       },
     },
     {
-      title: "From Perceptron to Single Hidden Layer Networks",
+      title: "From Perceptron to MLP (Multi-Layer Perceptron)",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/4/46/Multilayer_Perceptron_with_one_hidden_layer.svg",
       ],
       formula: "h = \\phi(W_1x+b_1),\\quad \\hat{y}=\\tau(W_2h+b_2)",
       bullets: [
-        "Each hidden neuron performs affine transform + activation.",
-        "Combining hidden neurons creates richer hypothesis spaces.",
-        "This architecture solves tasks that linear boundaries cannot.",
+        "Hidden units learn intermediate features; width and depth trade off capacity vs data and compute.",
+        "Universal approximation: even one wide hidden layer can approximate continuous functions on compact sets (practical training still hard).",
       ],
-      note: "Feature transformation is learned jointly with the final decision rule.",
     },
     {
-      title: "Multi-Class Neural Classification",
-      subtitle: "Output Layer Design",
-      formula: "p_k = \\frac{e^{z_k}}{\\sum_{j=1}^{K} e^{z_j}}",
-      bullets: [
-        "Set number of output neurons equal to number of classes.",
-        "Use softmax to convert logits into class probabilities.",
-        "Prediction is the class with maximum posterior probability.",
-      ],
-      table: {
-        headers: ["Stage", "Operation"],
-        rows: [
-          ["Hidden layer", "Extract discriminative latent features"],
-          ["Output logits", "Produce one raw score per class"],
-          ["Softmax", "Normalize scores into a probability simplex"],
-        ],
-      },
-    },
-    {
-      title: "Cross-Entropy vs Squared Error for Classification",
-      formula: "\\mathcal{L}_{CE}=-\\sum_{k=1}^{K}y_k\\log(p_k)",
-      bullets: [
-        "Squared error can be suboptimal for probability-based class learning.",
-        "Cross-entropy directly rewards high probability on the true class.",
-        "It produces stronger gradients for misclassified examples.",
-      ],
-      table: {
-        headers: ["Loss", "Typical Use", "Behavior"],
-        rows: [
-          ["MSE", "Regression", "Penalizes magnitude error in continuous outputs"],
-          ["Cross-Entropy", "Classification", "Penalizes confident wrong probabilities"],
-        ],
-      },
-    },
-    {
-      title: "Deep Feedforward Networks",
-      subtitle: "Why Add More Layers?",
-      bullets: [
-        "Deeper stacks create increasingly abstract and reusable representations.",
-        "Each extra non-linear layer increases expressive power substantially.",
-        "Depth can improve performance when data, regularization, and optimization are adequate.",
-      ],
-      note: "Without non-linear activations, multiple layers reduce to one linear map.",
-    },
-    {
-      title: "Practical Enablers of Modern Deep Learning",
-      table: {
-        headers: ["Enabler", "Why It Matters"],
-        rows: [
-          ["ReLU and improved activations", "Reduced vanishing gradients and faster convergence"],
-          ["GPU/TPU acceleration", "Order-of-magnitude speedups in training"],
-          ["Large labeled datasets", "Allow high-capacity models to generalize"],
-          ["Regularization and better optimizers", "Improve stability and robustness of training"],
-        ],
-      },
-      note: "Depth alone is not enough; training recipe quality is critical.",
-    },
-    {
-      title: "Convolution Operation and Edge Filters",
+      title: "Forward Pass, Loss Functions, and Backpropagation",
       imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/7/7a/SobelImageY.png",
+        "https://upload.wikimedia.org/wikipedia/commons/4/46/Multilayer_Perceptron_with_one_hidden_layer.svg",
       ],
-      formula: "G_x = S_x * A",
-      bullets: [
-        "Convolution applies a kernel over local image patches.",
-        "Sobel filters approximate intensity gradients and highlight edges.",
-        "Feature maps from early filters are foundational for deeper representations.",
-      ],
-      note: "In CNNs, filters are learned from data rather than manually fixed.",
-    },
-    {
-      title: "CNN Architecture Blocks",
-      table: {
-        headers: ["Block", "Function", "Effect"],
-        rows: [
-          ["Convolution + ReLU", "Pattern extraction", "Creates local feature maps"],
-          ["Pooling", "Spatial downsampling", "Reduces computation and noise sensitivity"],
-          ["Stacked feature blocks", "Hierarchical abstraction", "Captures complex visual concepts"],
-          ["Classification head", "Decision mapping", "Outputs class scores/probabilities"],
-        ],
-      },
-    },
-    {
-      title: "CNN Application Examples",
       sections: [
         {
-          heading: "Vision Use Cases",
+          heading: "Forward pass",
           bullets: [
-            "Autonomous driving perception (detection, lane understanding).",
-            "Medical imaging support (screening and localization).",
-            "Image enhancement tasks (denoising, colorization, super-resolution).",
+            "Propagate inputs layer by layer: affine transforms, activations, and (for classifiers) softmax/logits.",
           ],
         },
         {
-          heading: "Beyond Vision",
+          heading: "Loss",
           bullets: [
-            "1D convolutions for audio and time-series pattern extraction.",
-            "Text CNN variants for sentence-level classification tasks.",
+            "Regression: often MSE or Huber on continuous targets.",
+            "Classification: cross-entropy aligns predicted probabilities with one-hot (or soft) labels.",
           ],
         },
+        {
+          heading: "Backpropagation",
+          bullets: [
+            "Apply the chain rule to compute gradients ∂L/∂w layer by layer (reverse mode AD).",
+            "Gradients flow backward; implementation uses efficient dynamic programming over the graph.",
+          ],
+        },
+      ],
+      note: "Automatic differentiation frameworks (PyTorch, JAX, TensorFlow) implement this reliably—still understand shapes and vanishing gradients.",
+    },
+    {
+      type: "section-divider",
+      title: "Phase 2",
+      subtitle: "Optimization & Training Strategy",
+    },
+    {
+      title: "Training Diagnostics: Overfitting, Underfitting, and Optimal Fit",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/1/1f/Overfitting_svg.svg",
+      ],
+      table: {
+        headers: ["Regime", "Train", "Validation"],
+        rows: [
+          ["Underfitting", "High error", "High error"],
+          ["Good fit", "Low, stable", "Low, stable"],
+          ["Overfitting", "Very low", "Degrades / gap grows"],
+        ],
+      },
+    },
+    {
+      title: "Vanishing and Exploding Gradients",
+      bullets: [
+        "Vanishing: repeated multiplications by small derivatives shrink gradients in early layers—slow or no learning deep in the network.",
+        "Exploding: large weights or derivatives cause unstable updates and loss spikes.",
+        "Mitigations: better init (He/Xavier), ReLU family, residual connections, gradient clipping, normalization layers, smaller effective depth per step.",
+      ],
+    },
+    {
+      title: "Optimizers Beyond SGD: RMSProp, Adam, AdamW",
+      table: {
+        headers: ["Optimizer", "Idea", "When it helps"],
+        rows: [
+          ["SGD + momentum", "Velocity-smoothed updates", "Simple baseline; tune LR"],
+          ["RMSProp", "Per-parameter adaptive LR via moving avg of squared grads", "Non-stationary objectives, RNNs historically"],
+          ["Adam", "Momentum + adaptive second moments", "Default for many experiments; robust LR sensitivity"],
+          ["AdamW", "Adam with decoupled weight decay", "Often better generalization than L2-in-Adam confusion"],
+        ],
+      },
+      note: "There is no single best optimizer—match optimizer, LR schedule, and wd to your task and codebase defaults.",
+    },
+    {
+      title: "Normalization: Batch Norm and Layer Norm",
+      bullets: [
+        "Batch Norm: normalize activations across the batch per channel; learn scale/shift; acts as regularizer; batch statistics at train vs running at eval.",
+        "Layer Norm: normalize across features per token/example—popular in RNNs/Transformers where batch independence matters.",
+        "Goal: stabilize activations and gradients so deeper networks train reliably.",
+      ],
+      table: {
+        headers: ["Method", "Axis normalized", "Typical stacks"],
+        rows: [
+          ["Batch Norm", "Batch × spatial for each channel", "CNNs, older ResNet training recipes"],
+          ["Layer Norm", "Features per example", "Transformers, many sequence models"],
+        ],
+      },
+    },
+    {
+      title: "Regularization Toolkit: Dropout, L1/L2, Early Stopping",
+      sections: [
+        {
+          heading: "Dropout & weight decay",
+          bullets: [
+            "Dropout randomly zeros activations during training to reduce co-adaptation; scaled at inference.",
+            "L2 weight decay penalizes large weights; L1 encourages sparsity (less common in large DL than in linear models).",
+          ],
+        },
+        {
+          heading: "Early stopping",
+          bullets: [
+            "Monitor validation loss; stop when it worsens for a patience window; restore best checkpoint.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Learning-Rate Schedules, Warm-up, and Batch Size",
+      bullets: [
+        "Warm-up: small LR early to stabilize training in large-batch or Transformer settings.",
+        "Decay: step, cosine, or exponential schedules reduce LR as training progresses.",
+        "Batch size trades gradient noise vs throughput; interacts with LR (linear scaling rule is a common heuristic, not universal).",
+      ],
+      table: {
+        headers: ["Knob", "Effect"],
+        rows: [
+          ["Learning rate", "Largest driver of convergence speed/stability"],
+          ["Batch size", "Noise in gradient estimate; memory constraints"],
+          ["Epochs + patience", "How long to train with early stopping"],
+        ],
+      },
+    },
+    {
+      title: "Hyperparameter Tuning: Practical Search",
+      table: {
+        headers: ["Hyperparameter", "Guidance"],
+        rows: [
+          ["LR (log scale)", "Wide search first, then narrow"],
+          ["Weight decay / dropout", "Tune with validation curves"],
+          ["Width/depth", "Grow with data and regularization"],
+          ["Schedules", "Cosine with restarts vs step decay—task dependent"],
+        ],
+      },
+      note: "Random search or Bayesian optimization often beats exhaustive grids.",
+    },
+    {
+      type: "section-divider",
+      title: "Phase 3",
+      subtitle: "Specialized Architectures (Vision & Sequences)",
+    },
+    {
+      title: "Image Data Intuition: How Models See Pixels",
+      subtitle: "From Pixels to Semantics",
+      bullets: [
+        "An image is a 3D tensor (H×W×channels); local neighborhoods carry edges and textures.",
+        "Global semantics emerge from composing local patterns—CNNs exploit spatial locality and translation structure.",
+      ],
+      note: "Always respect preprocessing: resizing, normalization, and augmentation policies.",
+    },
+    {
+      title: "Convolution: Kernels, Feature Maps, and Hierarchies",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png",
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/SobelImageY.png",
+      ],
+      bullets: [
+        "Convolution slides learnable filters over the input to detect local patterns.",
+        "Stacking conv layers increases receptive field and abstraction: edges → textures → parts → objects.",
+      ],
+    },
+    {
+      title: "CNN Evolution: From AlexNet to Residual Learning",
+      bullets: [
+        "AlexNet (2012): showed large-scale supervised CNN training on GPU with ReLU + dropout.",
+        "Deeper nets (VGG-style) increased depth with small kernels; more parameters and training care needed.",
+        "ResNet: residual (skip) connections ease optimization of very deep models by learning residual mappings F(x)+x.",
+      ],
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png",
+      ],
+    },
+    {
+      title: "Computer Vision Tasks and Typical Heads",
+      table: {
+        headers: ["Task", "Output", "Examples"],
+        rows: [
+          ["Classification", "Class label(s)", "ResNet, EfficientNet, ViT"],
+          ["Object detection", "Boxes + classes", "Faster R-CNN, YOLO, SSD"],
+          ["Instance / semantic segmentation", "Masks or per-pixel labels", "Mask R-CNN, U-Net, DeepLab"],
+        ],
+      },
+    },
+    {
+      title: "Object Detection: Bounding Boxes, IoU, YOLO vs Two-Stage",
+      bullets: [
+        "Bounding box: (x, y, w, h) or corners in image coordinates; predicts object location + class.",
+        "IoU (Intersection over Union) scores overlap between predicted and ground-truth boxes—used in matching and losses.",
+        "YOLO-style: dense grid predictions, very fast inference; Faster R-CNN: region proposal network + refined boxes (two-stage, often more accurate).",
+      ],
+      table: {
+        headers: ["Family", "Idea"],
+        rows: [
+          ["YOLO / single-shot", "Direct regression/classification on a grid"],
+          ["Faster R-CNN", "Propose regions, then classify and refine"],
+        ],
+      },
+    },
+    {
+      title: "Segmentation and the U-Net Architecture",
+      imageUrls: [
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png",
+      ],
+      bullets: [
+        "Semantic segmentation: classify every pixel (often with skip connections to preserve spatial detail).",
+        "U-Net: encoder–decoder with skip connections—strong baseline for medical imaging and dense prediction.",
+      ],
+    },
+    {
+      title: "Transfer Learning with ImageNet-Scale Pretraining",
+      bullets: [
+        "Pretrain on large supervised (or self-supervised) datasets; fine-tune head or full network on your task.",
+        "Common pattern: replace classifier layer, train with smaller LR on target data.",
+        "Benefits: sample efficiency, faster convergence, strong features for downstream vision tasks.",
       ],
     },
     {
@@ -2161,136 +2253,84 @@ export const presentationData = {
         "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg",
       ],
       bullets: [
-        "RNNs process tokens/steps sequentially while carrying hidden state.",
-        "Output at time t depends on current input and prior context.",
-        "Suitable for language, speech, and temporal forecasting tasks.",
+        "RNNs maintain hidden state across time steps; ideal for ordered sequences (text, speech, time series).",
+        "Vanilla RNNs struggle with long dependencies—gates (LSTM/GRU) or attention mitigate.",
       ],
-      note: "Long sequence learning is difficult with vanilla RNNs due to gradient decay.",
     },
     {
-      title: "Vanishing Gradients and Memory Limits",
-      bullets: [
-        "Backpropagation through long chains can shrink gradients toward zero.",
-        "Earlier timesteps receive weak updates, harming long-range dependency learning.",
-        "This motivates gated recurrent architectures such as LSTM and GRU.",
-      ],
-      note: "Gradient clipping and careful initialization help but do not fully solve the issue.",
-    },
-    {
-      title: "LSTM Architecture",
+      title: "LSTM and GRU: Gated Memory for Long Sequences",
       imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/6/63/Long_Short-Term_Memory.svg",
-      ],
-      bullets: [
-        "Forget gate controls retained past information.",
-        "Input gate controls how new information updates cell state.",
-        "Output gate controls what part of memory is exposed to next layers.",
-      ],
-      note: "LSTMs improve long-term dependency handling via explicit memory cell dynamics.",
-    },
-    {
-      title: "GRU Architecture",
-      imageUrls: [
         "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg",
       ],
       bullets: [
-        "GRU merges some LSTM gates to reduce parameter count.",
-        "Update and reset gates provide efficient memory control.",
-        "Often competitive with LSTM while being computationally lighter.",
+        "LSTM: explicit cell state with forget/input/output gates to regulate information flow.",
+        "GRU: fewer gates, often similar quality with lower parameter count and faster runtime.",
       ],
-      note: "GRU is a strong default when latency and model size matter.",
     },
     {
-      title: "Encoder-Decoder Pattern",
-      subtitle: "Compress, Transform, Reconstruct",
+      title: "Encoder–Decoder for Sequences",
+      subtitle: "Translation, Summarization, and Seq2Seq",
       bullets: [
-        "Encoder maps input to a compact latent representation.",
-        "Decoder reconstructs or generates target output from latent state.",
-        "Used in translation, summarization, denoising, and image-to-image tasks.",
+        "Encoder maps source sequence to a representation; decoder generates target tokens step by step.",
+        "Foundation for machine translation before full attention-only models; still conceptually central.",
       ],
       table: {
-        headers: ["Component", "Role", "Typical Layers"],
+        headers: ["Part", "Role"],
         rows: [
-          ["Encoder", "Representation extraction", "CNN/RNN/Transformer blocks"],
-          ["Latent state", "Information bottleneck", "Dense or sequence memory"],
-          ["Decoder", "Target generation", "Transposed conv / autoregressive blocks"],
+          ["Encoder", "Compress source into memory / context"],
+          ["Decoder", "Autoregressive generation of target"],
         ],
       },
     },
     {
-      title: "Training Diagnostics: Overfitting, Underfitting, Optimal Fit",
+      type: "section-divider",
+      title: "Phase 4",
+      subtitle: "Generative Models & Deployment",
+    },
+    {
+      title: "Autoencoders and Variational Autoencoders (VAEs)",
+      bullets: [
+        "Autoencoder: encoder compresses to latent z; decoder reconstructs input—bottleneck forces compact codes.",
+        "VAE: treat z as random variable with learned approximate posterior—enables sampling and smooth latent space.",
+        "Uses: denoising, anomaly detection, generation (with limitations vs GANs/flow models).",
+      ],
+    },
+    {
+      title: "Generative Adversarial Networks (GANs)",
       imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/1/1f/Overfitting_svg.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
       ],
-      table: {
-        headers: ["Regime", "Training Behavior", "Validation Behavior"],
-        rows: [
-          ["Underfitting", "High error", "High error"],
-          ["Good fit", "Low and stable error", "Low and stable error"],
-          ["Overfitting", "Error keeps decreasing", "Error starts increasing"],
-        ],
-      },
-      note: "Validation curves are essential for stopping decisions and architecture tuning.",
-    },
-    {
-      title: "Overtraining and Early Stopping",
       bullets: [
-        "Overtraining appears when performance on validation data degrades across epochs.",
-        "Early stopping halts training after no validation improvement for a patience window.",
-        "This reduces overfitting risk and saves compute time.",
-      ],
-      table: {
-        headers: ["Signal", "Action"],
-        rows: [
-          ["Validation loss plateaus", "Lower learning rate or apply scheduler"],
-          ["Validation loss increases", "Stop training and restore best checkpoint"],
-          ["Large train-val gap", "Increase regularization or data augmentation"],
-        ],
-      },
-    },
-    {
-      title: "Regularization and Generalization Toolkit",
-      sections: [
-        {
-          heading: "Core Techniques",
-          bullets: [
-            "Dropout to reduce neuron co-adaptation.",
-            "L2 weight decay to discourage overly large parameters.",
-            "Data augmentation to improve invariance and robustness.",
-          ],
-        },
-        {
-          heading: "Model/Training Controls",
-          bullets: [
-            "Reduce unnecessary depth/width when data is limited.",
-            "Tune learning rate, batch size, epochs, and optimizer settings.",
-            "Use robust validation splits and repeated evaluation.",
-          ],
-        },
+        "Generator creates samples; discriminator distinguishes real vs fake—minimax game.",
+        "Training can be unstable (mode collapse); many variants (WGAN, spectral norm, etc.) improve stability.",
       ],
     },
     {
-      title: "Hyperparameter Tuning in Deep Learning",
-      table: {
-        headers: ["Hyperparameter", "Effect", "Search Guidance"],
-        rows: [
-          ["Learning rate", "Convergence speed and stability", "Log-scale sweep, then refine"],
-          ["Batch size", "Gradient noise vs throughput", "Balance memory and generalization"],
-          ["Depth/width", "Model capacity", "Increase progressively with regularization"],
-          ["Dropout / weight decay", "Generalization control", "Tune with validation curves"],
-        ],
-      },
-      note: "Random search and Bayesian optimization are usually more efficient than full grid search.",
+      title: "Model Efficiency: Quantization and Pruning",
+      bullets: [
+        "Quantization: represent weights/activations in lower precision (e.g., FP32 → INT8) for smaller size and faster inference.",
+        "Pruning: remove small or redundant weights/channels; often needs fine-tuning to recover accuracy.",
+        "Goal: deploy accurate models under latency, memory, and power constraints.",
+      ],
+    },
+    {
+      title: "Deployment and Edge Inference (DL-Ops)",
+      bullets: [
+        "Optimize graphs (operator fusion, kernel selection), use runtime engines (TensorRT, ONNX Runtime, Core ML, TFLite).",
+        "Edge AI: run on mobile/embedded—trade accuracy for latency and battery; may combine distillation + quantization.",
+        "Monitor drift, versioning, and A/B tests in production—training metrics ≠ live performance.",
+      ],
     },
     {
       title: "Deep Learning Practical Checklist",
       bullets: [
-        "Start with a strong baseline architecture and reproducible preprocessing.",
-        "Track train/validation metrics, confusion matrix, and failure cases.",
-        "Use checkpoints, early stopping, and learning-rate schedules.",
-        "Document model version, hyperparameters, and data split strategy.",
+        "Reproducible data splits, seeds, and environment pins (CUDA, library versions).",
+        "Track train/val/test metrics, calibration, and failure cases—not just average accuracy.",
+        "Version models and datasets; document preprocessing and augmentation.",
+        "Plan for deployment constraints early (latency, memory, precision).",
       ],
-      note: "Reliable experimentation workflow is as important as architecture choice.",
+      note: "Solid engineering around experiments often beats marginal architecture tweaks.",
     },
     {
       title: "NLP Fundamentals and Challenges",
