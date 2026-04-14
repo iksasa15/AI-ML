@@ -404,16 +404,6 @@ body {
   transition: opacity 180ms ease, transform 180ms ease;
 }
 
-@media (max-height: 780px), (max-width: 680px) {
-  .slide {
-    max-height: min(82vh, 880px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-gutter: stable;
-  }
-}
-
 .slide.is-entering {
   opacity: 0;
   transform: translateY(8px);
