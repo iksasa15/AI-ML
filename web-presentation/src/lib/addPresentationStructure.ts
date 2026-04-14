@@ -95,7 +95,7 @@ export function addPresentationStructure() {
     subtitle: "Clustering and PCA",
   });
 
-  insertSlideBeforeTitle("Deep Learning Overview", {
+  insertSlideBeforeTitle("Deep Learning: Introduction", {
     type: "section-divider",
     title: "Section 7",
     subtitle: "Deep Learning and Neural Networks",
