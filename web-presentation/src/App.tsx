@@ -28,8 +28,12 @@ export default function App() {
   const total = slides.length;
   const slide = slides[currentIndex];
   const slideHtml = useMemo(() => (slide ? buildSlideMarkup(slide) : ""), [slide]);
-  const sectionLabel = useMemo(() => getActiveSectionLabel(slides, currentIndex), [slides, currentIndex]);
-  const sectionJumps = useMemo(() => buildSectionJumps(slides), [slides]);
+  const sectionLabel = useMemo(
+    () => getActiveSectionLabel(slides, currentIndex),
+    [slides, currentIndex, booted]
+  );
+  /** `booted` في التبعيات: بعد `addPresentationStructure()` تتغير محتويات المصفوفة بنفس المرجع، فيجب إعادة بناء الفهرس حتى يظهر زر «جدول الأقسام». */
+  const sectionJumps = useMemo(() => buildSectionJumps(slides), [slides, booted]);
   const activeSectionJumpId = useMemo(
     () => getActiveSectionJumpId(sectionJumps, currentIndex),
     [sectionJumps, currentIndex]
