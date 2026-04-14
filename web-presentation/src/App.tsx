@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MentorshipTemplate } from "./components/MentorshipTemplate";
+import { SectionOutlinePage } from "./components/SectionOutlinePage";
 import { presentationData } from "./data/presentationData.js";
 import { addPresentationStructure } from "./lib/addPresentationStructure";
 import { renderSlideMath } from "./lib/renderMath";
+import { buildSectionJumps, getActiveSectionJumpId } from "./lib/sectionNav";
 import { buildSlideMarkup, getActiveSectionLabel, type SlideRecord } from "./lib/slideMarkup";
 
 const THEME_STORAGE_KEY = "ml-presentation-theme";
@@ -17,6 +19,7 @@ export default function App() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
+  const [view, setView] = useState<"slides" | "outline">("slides");
 
   const slideRef = useRef<HTMLElement>(null);
   const printRef = useRef<HTMLDivElement>(null);
@@ -26,6 +29,11 @@ export default function App() {
   const slide = slides[currentIndex];
   const slideHtml = useMemo(() => (slide ? buildSlideMarkup(slide) : ""), [slide]);
   const sectionLabel = useMemo(() => getActiveSectionLabel(slides, currentIndex), [slides, currentIndex]);
+  const sectionJumps = useMemo(() => buildSectionJumps(slides), [slides]);
+  const activeSectionJumpId = useMemo(
+    () => getActiveSectionJumpId(sectionJumps, currentIndex),
+    [sectionJumps, currentIndex]
+  );
   const progressPercent = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
 
   useEffect(() => {
@@ -45,9 +53,9 @@ export default function App() {
   }, [currentIndex, booted]);
 
   useLayoutEffect(() => {
-    if (!booted) return;
+    if (!booted || view !== "slides") return;
     renderSlideMath(slideRef.current);
-  }, [slideHtml, booted]);
+  }, [slideHtml, booted, view]);
 
   const goNext = useCallback(() => {
     setCurrentIndex((i) => Math.min(i + 1, total - 1));
@@ -110,12 +118,21 @@ export default function App() {
         if (event.key === "Escape") setTemplateOpen(false);
         return;
       }
+      if (view === "outline") {
+        if (event.key === "Escape") setView("slides");
+        return;
+      }
       if (event.key === "ArrowRight") goNext();
       if (event.key === "ArrowLeft") goPrev();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [goNext, goPrev, templateOpen]);
+  }, [goNext, goPrev, templateOpen, view]);
+
+  const goToSectionFromOutline = useCallback((slideIndex: number) => {
+    setCurrentIndex(slideIndex);
+    setView("slides");
+  }, []);
 
   const isLight = theme === "light";
 
@@ -125,48 +142,66 @@ export default function App() {
 
   return (
     <>
-      <div className="presentation">
-        <header className="topbar">
-          <h1 id="deck-title">{presentationData.title}</h1>
-          <div className="topbar-actions">
-            <button
-              id="slide-jump-btn"
-              className="slide-count slide-jump-btn"
-              type="button"
-              title="الانتقال إلى رقم شريحة"
-              onClick={goToSlideByNumber}
-            >
-              <span id="current-slide">{currentIndex + 1}</span>
-              <span>/</span>
-              <span id="total-slides">{total}</span>
-            </button>
-            <button
-              id="theme-toggle-btn"
-              className="nav-btn topbar-btn theme-btn"
-              type="button"
-              onClick={toggleTheme}
-              aria-label={isLight ? "تفعيل الوضع الليلي" : "تفعيل الوضع النهاري"}
-            >
-              <span id="theme-icon" aria-hidden="true">
-                {isLight ? "☀️" : "🌙"}
-              </span>
-              <span id="theme-label">{isLight ? "الوضع: نهاري" : "الوضع: ليلي"}</span>
-            </button>
-            <button
-              id="show-template-btn"
-              className="nav-btn topbar-btn"
-              type="button"
-              onClick={() => setTemplateOpen(true)}
-            >
-              نموذج المنهج
-            </button>
-            <button id="download-pdf-btn" className="nav-btn topbar-btn" type="button" onClick={handleDownloadPdf}>
-              تحميل PDF
-            </button>
-          </div>
-        </header>
+      {view === "outline" && sectionJumps.length > 0 ? (
+        <SectionOutlinePage
+          deckTitle={presentationData.title}
+          jumps={sectionJumps}
+          activeJumpId={activeSectionJumpId}
+          onJump={goToSectionFromOutline}
+          onBack={() => setView("slides")}
+        />
+      ) : (
+        <div className="presentation">
+          <header className="topbar">
+            <h1 id="deck-title">{presentationData.title}</h1>
+            <div className="topbar-actions">
+              <button
+                id="slide-jump-btn"
+                className="slide-count slide-jump-btn"
+                type="button"
+                title="الانتقال إلى رقم شريحة"
+                onClick={goToSlideByNumber}
+              >
+                <span id="current-slide">{currentIndex + 1}</span>
+                <span>/</span>
+                <span id="total-slides">{total}</span>
+              </button>
+              {sectionJumps.length > 0 ? (
+                <button
+                  type="button"
+                  className="nav-btn topbar-btn"
+                  onClick={() => setView("outline")}
+                >
+                  جدول الأقسام
+                </button>
+              ) : null}
+              <button
+                id="theme-toggle-btn"
+                className="nav-btn topbar-btn theme-btn"
+                type="button"
+                onClick={toggleTheme}
+                aria-label={isLight ? "تفعيل الوضع الليلي" : "تفعيل الوضع النهاري"}
+              >
+                <span id="theme-icon" aria-hidden="true">
+                  {isLight ? "☀️" : "🌙"}
+                </span>
+                <span id="theme-label">{isLight ? "الوضع: نهاري" : "الوضع: ليلي"}</span>
+              </button>
+              <button
+                id="show-template-btn"
+                className="nav-btn topbar-btn"
+                type="button"
+                onClick={() => setTemplateOpen(true)}
+              >
+                نموذج المنهج
+              </button>
+              <button id="download-pdf-btn" className="nav-btn topbar-btn" type="button" onClick={handleDownloadPdf}>
+                تحميل PDF
+              </button>
+            </div>
+          </header>
 
-        <section className="status-row" aria-label="presentation progress">
+          <section className="status-row" aria-label="presentation progress">
           <span id="section-label" className="section-chip">
             {sectionLabel}
           </span>
@@ -215,7 +250,8 @@ export default function App() {
             التالي
           </button>
         </footer>
-      </div>
+        </div>
+      )}
 
       <div
         id="template-modal"
