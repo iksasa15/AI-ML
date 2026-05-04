@@ -1,4 +1,5 @@
 import { presentationData } from "../data/presentationData.js";
+import { DAY01_FIRST_SLIDE_TITLE } from "./day01Anchor";
 
 function insertSlideBeforeTitle(targetTitle: string, newSlide: Record<string, unknown>) {
   const index = presentationData.slides.findIndex((slide) => slide.title === targetTitle);
@@ -24,6 +25,7 @@ export function addPresentationStructure() {
       "Natural Language Processing (NLP)",
       "NLP Advanced Topics",
       "Generative AI Foundations",
+      "Day 1 — Introduction to NLP (workshop slides)",
     ],
     note: "Use the slide dots below to quickly jump across sections.",
   });
@@ -135,6 +137,12 @@ export function addPresentationStructure() {
     type: "section-divider",
     title: "Section 13",
     subtitle: "GenAI: BERT, T5, GPT, Attention",
+  });
+
+  insertSlideBeforeTitle(DAY01_FIRST_SLIDE_TITLE, {
+    type: "section-divider",
+    title: "Section 14",
+    subtitle: "Day 1 — Introduction to NLP (Intensive)",
   });
 
   presentationData.slides.push({

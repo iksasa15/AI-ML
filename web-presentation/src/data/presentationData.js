@@ -11,6 +11,7 @@ import { slides as s10 } from "./slides/section10-nlp-language-modeling.js";
 import { slides as s11 } from "./slides/section11-nlp-contextual-rnn.js";
 import { slides as s12 } from "./slides/section12-nlp-seq2seq.js";
 import { slides as s13 } from "./slides/section13-generative-ai.js";
+import { slides as s14 } from "./slides/section14-day01-nlp-intro.js";
 
 export const presentationData = {
   title: "AI & Machine Learning Bootcamp",
@@ -28,5 +29,6 @@ export const presentationData = {
     ...s11,
     ...s12,
     ...s13,
+    ...s14,
   ],
 };

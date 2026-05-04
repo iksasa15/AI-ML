@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MentorshipTemplate } from "./components/MentorshipTemplate";
-import { BlankWorkspacePage } from "./components/BlankWorkspacePage";
 import { SectionOutlinePage } from "./components/SectionOutlinePage";
 import { presentationData } from "./data/presentationData.js";
 import { addPresentationStructure } from "./lib/addPresentationStructure";
+import { DAY01_FIRST_SLIDE_TITLE } from "./lib/day01Anchor";
 import { renderSlideMath } from "./lib/renderMath";
 import { buildSectionJumps, getActiveSectionJumpId } from "./lib/sectionNav";
 import { initGoogleTranslateElement, loadGoogleTranslateScript } from "./lib/googleTranslate";
@@ -28,7 +28,7 @@ export default function App() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
-  const [view, setView] = useState<"slides" | "outline" | "blank">("slides");
+  const [view, setView] = useState<"slides" | "outline">("slides");
   const [translateMounted, setTranslateMounted] = useState(false);
   const [translatePanelOpen, setTranslatePanelOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -51,6 +51,10 @@ export default function App() {
     () => getActiveSectionJumpId(sectionJumps, currentIndex),
     [sectionJumps, currentIndex]
   );
+  const day01SlideIndex = useMemo(() => {
+    if (!booted) return -1;
+    return slides.findIndex((s) => String(s.title || "") === DAY01_FIRST_SLIDE_TITLE);
+  }, [slides, booted]);
   const progressPercent = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
   const ui = useMemo(() => getUiStrings(uiLang), [uiLang]);
 
@@ -182,10 +186,6 @@ export default function App() {
         if (event.key === "Escape") setView("slides");
         return;
       }
-      if (view === "blank") {
-        if (event.key === "Escape") setView("slides");
-        return;
-      }
       const rtlNav = uiLang === "ar";
       if (event.key === "ArrowRight") {
         rtlNav ? goPrev() : goNext();
@@ -198,11 +198,13 @@ export default function App() {
     return () => document.removeEventListener("keydown", onKey);
   }, [goNext, goPrev, templateOpen, settingsOpen, view, translatePanelOpen, uiLang]);
 
-  const openBlankWorkspace = useCallback(() => {
-    setView("blank");
+  const jumpToDay01Slides = useCallback(() => {
+    const idx = slides.findIndex((s) => String(s.title || "") === DAY01_FIRST_SLIDE_TITLE);
+    if (idx < 0) return;
+    setCurrentIndex(idx);
     setSettingsOpen(false);
     setTranslatePanelOpen(false);
-  }, []);
+  }, [slides]);
 
   const goToSectionFromOutline = useCallback((slideIndex: number) => {
     setCurrentIndex(slideIndex);
@@ -236,15 +238,6 @@ export default function App() {
             setTranslatePanelOpen(false);
           }}
         />
-      ) : view === "blank" ? (
-        <BlankWorkspacePage
-          onBack={() => setView("slides")}
-          uiLang={uiLang}
-          onOpenSettings={() => {
-            setSettingsOpen(true);
-            setTranslatePanelOpen(false);
-          }}
-        />
       ) : (
         <div className="presentation" dir={ui.direction} lang={ui.docLang}>
           <header className="topbar">
@@ -252,13 +245,14 @@ export default function App() {
               {presentationData.title}
             </h1>
             <div className="topbar-actions">
-              {currentIndex === 0 ? (
+              {day01SlideIndex >= 0 ? (
                 <button
                   type="button"
-                  className="nav-btn topbar-btn blank-workspace-entry-btn"
-                  onClick={openBlankWorkspace}
+                  className="nav-btn topbar-btn day01-deck-btn"
+                  onClick={jumpToDay01Slides}
+                  title={ui.day01SlidesShortcutTitle}
                 >
-                  {ui.goToBlankWorkspace}
+                  {ui.day01SlidesShortcut}
                 </button>
               ) : null}
               <button
@@ -494,7 +488,7 @@ export default function App() {
         </div>
       ) : null}
 
-      {booted && (view === "outline" || view === "blank") ? (
+      {booted && view === "outline" ? (
         <button
           type="button"
           className="translate-fab nav-btn"

@@ -41,14 +41,8 @@ export type UiStrings = {
     colGo: string;
     go: string;
   };
-  goToBlankWorkspace: string;
-  blankWorkspacePage: {
-    title: string;
-    subtitle: string;
-    back: string;
-    hint: string;
-    canvasLabel: string;
-  };
+  day01SlidesShortcut: string;
+  day01SlidesShortcutTitle: string;
 };
 
 export function getUiStrings(lang: UiLang): UiStrings {
@@ -95,14 +89,8 @@ export function getUiStrings(lang: UiLang): UiStrings {
         colGo: "Go",
         go: "Go",
       },
-      goToBlankWorkspace: "New content (blank)",
-      blankWorkspacePage: {
-        title: "Blank workspace",
-        subtitle: "Add your new material here (placeholder page).",
-        back: "Back to slides",
-        hint: "This area is intentionally empty so you can extend the app or paste content while you work.",
-        canvasLabel: "Empty workspace",
-      },
+      day01SlidesShortcut: "Day 1 — NLP slides",
+      day01SlidesShortcutTitle: "Jump to Section 14 — Day 1 Introduction to NLP (same deck)",
     };
   }
 
@@ -148,14 +136,8 @@ export function getUiStrings(lang: UiLang): UiStrings {
       colGo: "انتقال",
       go: "انتقال",
     },
-    goToBlankWorkspace: "محتوى جديد (صفحة فارغة)",
-    blankWorkspacePage: {
-      title: "مساحة فارغة",
-      subtitle: "ضع هنا المحتوى الجديد أثناء العمل (صفحة مؤقتة).",
-      back: "العودة للشرائح",
-      hint: "هذه المساحة فارغة عمداً لتوسيع التطبيق أو لصق محتوى أثناء التعديل.",
-      canvasLabel: "مساحة عمل فارغة",
-    },
+    day01SlidesShortcut: "اليوم 1 — شرائح NLP",
+    day01SlidesShortcutTitle: "الانتقال للقسم 14 — مقدمة اليوم الأول لـ NLP (نفس العرض)",
   };
 }
 

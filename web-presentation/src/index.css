@@ -220,30 +220,27 @@ body {
   background: rgba(111, 139, 255, 0.12);
 }
 
-.blank-workspace-page .blank-workspace-canvas {
-  flex: 1;
-  min-height: min(70vh, 640px);
-  border-radius: var(--radius-md);
-  border: 2px dashed var(--border);
-  background: var(--card-3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  box-sizing: border-box;
+.day01-deck-btn {
+  flex-shrink: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border: 1px solid rgba(111, 139, 255, 0.55);
+  background: linear-gradient(145deg, rgba(111, 139, 255, 0.22), rgba(79, 111, 240, 0.12));
+  box-shadow: 0 0 0 1px rgba(111, 139, 255, 0.12);
 }
 
-.blank-workspace-hint {
-  margin: 0;
-  max-width: 36rem;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.55;
+.day01-deck-btn:hover {
+  border-color: var(--accent);
+  background: linear-gradient(145deg, rgba(111, 139, 255, 0.32), rgba(79, 111, 240, 0.18));
 }
 
-.blank-workspace-entry-btn {
-  font-size: 0.88rem;
+html[data-theme="light"] .day01-deck-btn {
+  border-color: rgba(73, 105, 240, 0.45);
+  background: linear-gradient(145deg, rgba(73, 105, 240, 0.18), rgba(73, 105, 240, 0.08));
+}
+
+html[data-theme="light"] .day01-deck-btn:hover {
+  border-color: var(--accent);
 }
 
 .topbar {
