@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MentorshipTemplate } from "./components/MentorshipTemplate";
+import { BlankWorkspacePage } from "./components/BlankWorkspacePage";
 import { SectionOutlinePage } from "./components/SectionOutlinePage";
 import { presentationData } from "./data/presentationData.js";
 import { addPresentationStructure } from "./lib/addPresentationStructure";
@@ -27,7 +28,7 @@ export default function App() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
-  const [view, setView] = useState<"slides" | "outline">("slides");
+  const [view, setView] = useState<"slides" | "outline" | "blank">("slides");
   const [translateMounted, setTranslateMounted] = useState(false);
   const [translatePanelOpen, setTranslatePanelOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -181,6 +182,10 @@ export default function App() {
         if (event.key === "Escape") setView("slides");
         return;
       }
+      if (view === "blank") {
+        if (event.key === "Escape") setView("slides");
+        return;
+      }
       const rtlNav = uiLang === "ar";
       if (event.key === "ArrowRight") {
         rtlNav ? goPrev() : goNext();
@@ -192,6 +197,12 @@ export default function App() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [goNext, goPrev, templateOpen, settingsOpen, view, translatePanelOpen, uiLang]);
+
+  const openBlankWorkspace = useCallback(() => {
+    setView("blank");
+    setSettingsOpen(false);
+    setTranslatePanelOpen(false);
+  }, []);
 
   const goToSectionFromOutline = useCallback((slideIndex: number) => {
     setCurrentIndex(slideIndex);
@@ -225,6 +236,15 @@ export default function App() {
             setTranslatePanelOpen(false);
           }}
         />
+      ) : view === "blank" ? (
+        <BlankWorkspacePage
+          onBack={() => setView("slides")}
+          uiLang={uiLang}
+          onOpenSettings={() => {
+            setSettingsOpen(true);
+            setTranslatePanelOpen(false);
+          }}
+        />
       ) : (
         <div className="presentation" dir={ui.direction} lang={ui.docLang}>
           <header className="topbar">
@@ -232,6 +252,15 @@ export default function App() {
               {presentationData.title}
             </h1>
             <div className="topbar-actions">
+              {currentIndex === 0 ? (
+                <button
+                  type="button"
+                  className="nav-btn topbar-btn blank-workspace-entry-btn"
+                  onClick={openBlankWorkspace}
+                >
+                  {ui.goToBlankWorkspace}
+                </button>
+              ) : null}
               <button
                 id="slide-jump-btn"
                 className="slide-count slide-jump-btn"
@@ -465,7 +494,7 @@ export default function App() {
         </div>
       ) : null}
 
-      {booted && view === "outline" ? (
+      {booted && (view === "outline" || view === "blank") ? (
         <button
           type="button"
           className="translate-fab nav-btn"

@@ -220,6 +220,32 @@ body {
   background: rgba(111, 139, 255, 0.12);
 }
 
+.blank-workspace-page .blank-workspace-canvas {
+  flex: 1;
+  min-height: min(70vh, 640px);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border);
+  background: var(--card-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.blank-workspace-hint {
+  margin: 0;
+  max-width: 36rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.blank-workspace-entry-btn {
+  font-size: 0.88rem;
+}
+
 .topbar {
   display: flex;
   align-items: center;

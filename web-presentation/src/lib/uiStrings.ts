@@ -41,6 +41,14 @@ export type UiStrings = {
     colGo: string;
     go: string;
   };
+  goToBlankWorkspace: string;
+  blankWorkspacePage: {
+    title: string;
+    subtitle: string;
+    back: string;
+    hint: string;
+    canvasLabel: string;
+  };
 };
 
 export function getUiStrings(lang: UiLang): UiStrings {
@@ -87,6 +95,14 @@ export function getUiStrings(lang: UiLang): UiStrings {
         colGo: "Go",
         go: "Go",
       },
+      goToBlankWorkspace: "New content (blank)",
+      blankWorkspacePage: {
+        title: "Blank workspace",
+        subtitle: "Add your new material here (placeholder page).",
+        back: "Back to slides",
+        hint: "This area is intentionally empty so you can extend the app or paste content while you work.",
+        canvasLabel: "Empty workspace",
+      },
     };
   }
 
@@ -131,6 +147,14 @@ export function getUiStrings(lang: UiLang): UiStrings {
       colTopic: "الموضوع",
       colGo: "انتقال",
       go: "انتقال",
+    },
+    goToBlankWorkspace: "محتوى جديد (صفحة فارغة)",
+    blankWorkspacePage: {
+      title: "مساحة فارغة",
+      subtitle: "ضع هنا المحتوى الجديد أثناء العمل (صفحة مؤقتة).",
+      back: "العودة للشرائح",
+      hint: "هذه المساحة فارغة عمداً لتوسيع التطبيق أو لصق محتوى أثناء التعديل.",
+      canvasLabel: "مساحة عمل فارغة",
     },
   };
 }
