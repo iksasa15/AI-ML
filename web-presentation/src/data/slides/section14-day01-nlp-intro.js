@@ -81,6 +81,69 @@ export const slides = [
     ],
   },
   {
+    title: "Text Cleaning Example — Raw Input",
+    body: 'Example text from the lesson before cleaning: <p>John said: "AI is amazing!!!! 🤖🔥"</p> ... https://example.com ... @tech_blog ... +1-800-000-0000',
+    bullets: [
+      "Contains HTML tags, URL, @mention, hashtag, phone number, and emoji.",
+      "Goal: keep the linguistic content and remove noisy formatting artifacts.",
+    ],
+  },
+  {
+    title: "Text Cleaning — Step-by-Step Transformation Table",
+    table: {
+      headers: ["Step", "What we remove / change", "Text snapshot"],
+      rows: [
+        [
+          "0 (raw)",
+          "Original text",
+          '<p>John said: "AI is amazing!!!! 🤖🔥"</p> Visit: https://ai.com @john #AI Contact: +1-800-000-0000',
+        ],
+        [
+          "1",
+          "Remove HTML tags",
+          'John said: "AI is amazing!!!! 🤖🔥" Visit: https://ai.com @john #AI Contact: +1-800-000-0000',
+        ],
+        ["2", "Remove URL", 'John said: "AI is amazing!!!! 🤖🔥" Visit:  @john #AI Contact: +1-800-000-0000'],
+        ["3", "Remove @mention and #hashtag", 'John said: "AI is amazing!!!! 🤖🔥" Visit:   Contact: +1-800-000-0000'],
+        ["4", "Remove phone number", 'John said: "AI is amazing!!!! 🤖🔥" Visit:   Contact: '],
+        ["5", "Remove emoji / non-ASCII", 'John said: "AI is amazing!!!! " Visit:   Contact: '],
+        ["6", "Normalize punctuation + spaces", "John said AI is amazing!!!! Visit Contact"],
+      ],
+    },
+    note: "Same sequence as the clean_text() example in the markdown lesson.",
+  },
+  {
+    title: "Text Cleaning — Python Function (Core)",
+    table: {
+      headers: ["Step", "Python line", "Purpose"],
+      rows: [
+        ["1", "text = html.unescape(text)", "Decode HTML entities"],
+        ["2", "text = re.sub(r'<[^>]+>', '', text)", "Remove HTML tags"],
+        ["3", "text = re.sub(r'https?://\\S+|www\\.\\S+', '', text)", "Remove URLs"],
+        ["4", "text = re.sub(r'\\S+@\\S+', '', text)", "Remove email addresses"],
+        ["5", "text = re.sub(r'\\+?[\\d\\-\\(\\)\\s]{9,}', '', text)", "Remove phone numbers"],
+        ["6", "text = re.sub(r'@\\w+|#\\w+', '', text)", "Remove mentions and hashtags"],
+        ["7", "text = text.encode('ascii', 'ignore').decode('ascii')", "Drop emoji / non-ASCII"],
+        ["8", "text = re.sub(r'[^\\w\\s\\.\\!\\?]', ' ', text)", "Keep letters/spaces/sentence punctuation"],
+        ["9", "text = re.sub(r'\\s+', ' ', text).strip()", "Normalize extra whitespace"],
+      ],
+    },
+    note: "This is the same clean_text() pipeline from Day01_NLP_Introduction_EN.md section 3.2.",
+  },
+  {
+    title: "Text Cleaning — Before / After Output",
+    table: {
+      headers: ["Case", "Value"],
+      rows: [
+        [
+          "Before",
+          '<p>John said: "AI is amazing!!!! " Visit: https://ai.com @john #AI Contact: +1-800-000-0000</p>',
+        ],
+        ["After", "John said AI is amazing!!!! Visit"],
+      ],
+    },
+  },
+  {
     title: "Cleaning Pipeline (Conceptual Steps)",
     table: {
       headers: ["Step", "Typical operation"],
@@ -102,6 +165,14 @@ export const slides = [
       "Risk: named-entity signal loss — \"Apple\" (company) vs \"apple\" (fruit).",
       "For NER and MT, preserve case until you have a tokenizer/model policy.",
     ],
+    table: {
+      headers: ["Python", "Example result"],
+      rows: [
+        ["normalize_case('Natural Language Processing')", "natural language processing"],
+        ["normalize_case('ARTIFICIAL INTELLIGENCE')", "artificial intelligence"],
+        ["normalize_case('NASA launched SpaceX')", "nasa launched spacex"],
+      ],
+    },
   },
   {
     title: "Tokenization Fundamentals",
