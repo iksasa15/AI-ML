@@ -17,6 +17,8 @@ import {
 } from "./lib/uiStrings";
 
 const THEME_STORAGE_KEY = "ml-presentation-theme";
+const DAY01_HASH = "#day1-nlp-slides";
+const CONCLUSION_TITLE = "Conclusion";
 
 function applyThemeToDocument(theme: "light" | "dark") {
   document.documentElement.setAttribute("data-theme", theme);
@@ -29,6 +31,7 @@ export default function App() {
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
   const [view, setView] = useState<"slides" | "outline">("slides");
+  const [deckScope, setDeckScope] = useState<"all" | "day1">("all");
   const [translateMounted, setTranslateMounted] = useState(false);
   const [translatePanelOpen, setTranslatePanelOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -37,7 +40,23 @@ export default function App() {
   const slideRef = useRef<HTMLElement>(null);
   const printRef = useRef<HTMLDivElement>(null);
 
-  const slides = presentationData.slides as SlideRecord[];
+  const allSlides = presentationData.slides as SlideRecord[];
+  const day01StartIndex = useMemo(() => {
+    if (!booted) return -1;
+    return allSlides.findIndex((s) => String(s.title || "") === DAY01_FIRST_SLIDE_TITLE);
+  }, [allSlides, booted]);
+  const day01EndExclusive = useMemo(() => {
+    if (!booted || day01StartIndex < 0) return -1;
+    const conclusionIdx = allSlides.findIndex(
+      (s, i) => i > day01StartIndex && String(s.title || "") === CONCLUSION_TITLE
+    );
+    return conclusionIdx >= 0 ? conclusionIdx : allSlides.length;
+  }, [allSlides, day01StartIndex, booted]);
+  const day01Slides = useMemo(() => {
+    if (day01StartIndex < 0 || day01EndExclusive <= day01StartIndex) return [] as SlideRecord[];
+    return allSlides.slice(day01StartIndex, day01EndExclusive);
+  }, [allSlides, day01StartIndex, day01EndExclusive]);
+  const slides = deckScope === "day1" ? day01Slides : allSlides;
   const total = slides.length;
   const slide = slides[currentIndex];
   const slideHtml = useMemo(() => (slide ? buildSlideMarkup(slide) : ""), [slide]);
@@ -51,10 +70,7 @@ export default function App() {
     () => getActiveSectionJumpId(sectionJumps, currentIndex),
     [sectionJumps, currentIndex]
   );
-  const day01SlideIndex = useMemo(() => {
-    if (!booted) return -1;
-    return slides.findIndex((s) => String(s.title || "") === DAY01_FIRST_SLIDE_TITLE);
-  }, [slides, booted]);
+  const day01SlidesLink = useMemo(() => `${window.location.pathname}${window.location.search}${DAY01_HASH}`, []);
   const progressPercent = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
   const ui = useMemo(() => getUiStrings(uiLang), [uiLang]);
 
@@ -93,6 +109,12 @@ export default function App() {
       node.setAttribute("translate", "no");
     });
   }, [slideHtml, booted, view]);
+
+  useEffect(() => {
+    if (currentIndex >= total) {
+      setCurrentIndex(Math.max(0, total - 1));
+    }
+  }, [currentIndex, total]);
 
   useEffect(() => {
     if (!translateMounted || !booted) return;
@@ -199,12 +221,32 @@ export default function App() {
   }, [goNext, goPrev, templateOpen, settingsOpen, view, translatePanelOpen, uiLang]);
 
   const jumpToDay01Slides = useCallback(() => {
-    const idx = slides.findIndex((s) => String(s.title || "") === DAY01_FIRST_SLIDE_TITLE);
-    if (idx < 0) return;
-    setCurrentIndex(idx);
+    if (day01Slides.length === 0) return;
+    setDeckScope("day1");
+    setCurrentIndex(0);
+    if (window.location.hash !== DAY01_HASH) {
+      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${DAY01_HASH}`);
+    }
     setSettingsOpen(false);
     setTranslatePanelOpen(false);
-  }, [slides]);
+  }, [day01Slides.length]);
+
+  useEffect(() => {
+    if (!booted) return;
+    const syncFromHash = () => {
+      const isDay01 = window.location.hash === DAY01_HASH;
+      setDeckScope(isDay01 ? "day1" : "all");
+      if (!isDay01) return;
+      if (day01Slides.length === 0) return;
+      setCurrentIndex(0);
+      setView("slides");
+      setSettingsOpen(false);
+      setTranslatePanelOpen(false);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, [booted, day01Slides.length]);
 
   const goToSectionFromOutline = useCallback((slideIndex: number) => {
     setCurrentIndex(slideIndex);
@@ -245,15 +287,18 @@ export default function App() {
               {presentationData.title}
             </h1>
             <div className="topbar-actions">
-              {day01SlideIndex >= 0 ? (
-                <button
-                  type="button"
+              {day01Slides.length > 0 ? (
+                <a
+                  href={day01SlidesLink}
                   className="nav-btn topbar-btn day01-deck-btn"
-                  onClick={jumpToDay01Slides}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    jumpToDay01Slides();
+                  }}
                   title={ui.day01SlidesShortcutTitle}
                 >
                   {ui.day01SlidesShortcut}
-                </button>
+                </a>
               ) : null}
               <button
                 id="slide-jump-btn"

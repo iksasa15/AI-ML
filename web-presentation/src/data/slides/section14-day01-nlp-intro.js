@@ -2,7 +2,6 @@
 export const slides = [
   {
     title: "Day 1 — Course Overview & Objectives",
-    subtitle: "Beginner → Intermediate · 4–6 hours · Python + basic data structures",
     bullets: [
       "Explain what NLP is and why it is hard.",
       "Apply a full NLP pipeline to raw text.",
