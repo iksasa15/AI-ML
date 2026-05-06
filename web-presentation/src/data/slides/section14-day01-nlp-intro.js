@@ -59,6 +59,18 @@ export const slides = [
     },
   },
   {
+    title: "Real-World Applications — Concrete Input/Output Examples",
+    table: {
+      headers: ["Use case", "Input", "Output"],
+      rows: [
+        ["Spam filtering", "Win a FREE iPhone now!!! Click here", "Label: spam (high confidence)"],
+        ["Sentiment analysis", "Battery life is great but camera is weak", "Mixed sentiment: +battery, -camera"],
+        ["Intent detection", "I want to reset my password", "Intent: account_password_reset"],
+        ["NER for finance", "Apple invested $1B in Texas", "ORG=Apple, MONEY=$1B, GPE=Texas"],
+      ],
+    },
+  },
+  {
     title: "The Full NLP Pipeline",
     subtitle: "From Raw Text to Structured Signals",
     bullets: [
@@ -278,6 +290,18 @@ export const slides = [
     ],
   },
   {
+    title: "Why Token Counts Matter — Practical Example",
+    table: {
+      headers: ["Text sample", "Approx token count", "Comment"],
+      rows: [
+        ["The cat sat on the mat.", "7", "Simple sentence, low cost"],
+        ["Transformers use multi-head self-attention.", "11", "Technical terms increase tokenization complexity"],
+        ["def hello_world(): print('Hello, World!')", "12", "Code usually splits into many sub-tokens"],
+      ],
+    },
+    note: "Exact count depends on tokenizer/version, but the cost pattern stays similar.",
+  },
+  {
     title: "Stop Words — Removing Low-Information Tokens",
     bullets: [
       "Function words (the, is, and) dominate counts but often carry little topic signal.",
@@ -300,6 +324,19 @@ export const slides = [
       "Add boilerplate from your genre: click, read more, subscribe, etc.",
       "Union standard + domain lists; cap size to avoid over-pruning.",
     ],
+  },
+  {
+    title: "Custom Stop Words — Before / After Example",
+    table: {
+      headers: ["Case", "Tokens"],
+      rows: [
+        [
+          "Before custom domain stop words",
+          "['please','read','this','article','about','nlp','model','performance']",
+        ],
+        ["After adding {'please','read','article'}", "['this','about','nlp','model','performance']"],
+      ],
+    },
   },
   {
     title: "When Not to Remove Stop Words",
@@ -378,6 +415,20 @@ export const slides = [
     ],
   },
   {
+    title: "POS/Dependency — Worked Example",
+    table: {
+      headers: ["Token", "POS", "Dependency role"],
+      rows: [
+        ["Apple", "PROPN", "nsubj"],
+        ["looking", "VERB", "ROOT"],
+        ["buying", "VERB", "xcomp/pcomp"],
+        ["startup", "NOUN", "dobj"],
+        ["for", "ADP", "prep"],
+      ],
+    },
+    note: "Sentence: Apple is looking at buying a U.K. startup for $1 billion.",
+  },
+  {
     title: "Named Entity Recognition (NER)",
     subtitle: "Typed Spans over Text",
     bullets: [
@@ -401,6 +452,21 @@ export const slides = [
       "Group by label with defaultdict(set) for quick corpus dashboards.",
       "Combine NER with dependency paths for lightweight relation tuples.",
     ],
+  },
+  {
+    title: "NER — Worked Example (News Snippet)",
+    table: {
+      headers: ["Extracted span", "Label"],
+      rows: [
+        ["Apple", "ORG"],
+        ["Tim Cook", "PERSON"],
+        ["Tuesday", "DATE"],
+        ["$430 billion", "MONEY"],
+        ["United States", "GPE"],
+        ["3.5%", "PERCENT"],
+      ],
+    },
+    note: "Use this output table right after running doc.ents in class.",
   },
   {
     title: "Evaluating NER Quality",
