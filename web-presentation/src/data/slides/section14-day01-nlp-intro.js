@@ -175,6 +175,19 @@ export const slides = [
     },
   },
   {
+    title: "Lowercase Normalization — Step-by-Step Examples",
+    table: {
+      headers: ["Step", "Input text", "Python operation", "Output text"],
+      rows: [
+        ["1", "Natural Language Processing", "normalize_case(text)", "natural language processing"],
+        ["2", "ARTIFICIAL INTELLIGENCE", "normalize_case(text)", "artificial intelligence"],
+        ["3", "iPhone vs Android", "normalize_case(text)", "iphone vs android"],
+        ["4", "NASA launched SpaceX", "normalize_case(text)", "nasa launched spacex"],
+      ],
+    },
+    note: "Use lowercasing carefully for NER tasks where capitalization carries meaning.",
+  },
+  {
     title: "Tokenization Fundamentals",
     subtitle: "Splitting Text into Tokens",
     bullets: [
@@ -192,6 +205,18 @@ export const slides = [
     },
   },
   {
+    title: "Tokenization — One Sentence, Multiple Views",
+    table: {
+      headers: ["Tokenizer type", "Python idea", "Result on \"I'm running to the store!\""],
+      rows: [
+        ["Word", "word_tokenize(text)", "['I', \"'m\", 'running', 'to', 'the', 'store', '!']"],
+        ["Character", "list(text)", "['I', \"'\", 'm', ' ', 'r', 'u', ... ]"],
+        ["Subword", "model_tokenizer.tokenize(text)", "['I', \"'m\", 'run', '##ning', 'to', 'the', 'store', '!']"],
+        ["Sentence", "sent_tokenize(text)", "[\"I'm running to the store!\"]"],
+      ],
+    },
+  },
+  {
     title: "NLTK Tokenization Essentials",
     bullets: [
       "word_tokenize handles contractions and punctuation boundaries.",
@@ -199,6 +224,18 @@ export const slides = [
       "TweetTokenizer preserves hashtags, mentions, and emoticon tokens.",
     ],
     note: "Download punkt (and punkt_tab where required) before first tokenize calls.",
+  },
+  {
+    title: "NLTK Tokenization — Practical Python Example",
+    table: {
+      headers: ["Step", "Code call", "Output (summary)"],
+      rows: [
+        ["1", "word_tokenize(text)", "Splits words + punctuation and contractions"],
+        ["2", "sent_tokenize(text)", "Returns sentence list"],
+        ["3", "TweetTokenizer().tokenize(tweet)", "Keeps @mentions, #hashtags, emoticons"],
+      ],
+    },
+    note: "This mirrors section 4.2 from the markdown file with concise outputs for slides.",
   },
   {
     title: "Subword Tokenization for Modern LLMs",
@@ -215,6 +252,30 @@ export const slides = [
         ["Unigram LM / SentencePiece", "T5, multilingual pipelines"],
       ],
     },
+  },
+  {
+    title: "Subword Tokenization (LLMs) — Why It Wins",
+    table: {
+      headers: ["Problem with pure word tokens", "Subword solution", "Example"],
+      rows: [
+        ["Huge vocabulary size", "Reuse frequent pieces", "unbelievably → un + ##believe + ##ably"],
+        ["New/OOV words", "Break unknown forms into known units", "GPT-4 → G + PT + - + 4"],
+        ["Morphology variants", "Shared roots reduce sparsity", "running/runs/runner share run"],
+      ],
+    },
+  },
+  {
+    title: "Subword Tokenization — BPE vs WordPiece (Example)",
+    table: {
+      headers: ["Word", "GPT-2 style (BPE)", "BERT style (WordPiece)"],
+      rows: [
+        ["running", "['running']", "['running']"],
+        ["unbelievably", "['unbelievably']", "['un', '##believe', '##ably']"],
+        ["ChatGPT", "['Chat', 'G', 'PT']", "['chat', '##g', '##pt']"],
+        ["COVID-19", "['COV', 'ID', '-', '19']", "['covid', '-', '19']"],
+      ],
+    },
+    note: "Exact tokens vary by vocabulary/version; the slide shows the same teaching intuition from the lesson.",
   },
   {
     title: "Why Token Counts Matter",
