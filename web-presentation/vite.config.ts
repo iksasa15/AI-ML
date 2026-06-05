@@ -2,8 +2,12 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
+const productionBase =
+  process.env.VITE_BASE ||
+  (process.env.CF_PAGES === "1" || process.env.CLOUDFLARE === "1" ? "/" : "/AI-ML/web-presentation/");
+
 export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? "/AI-ML/web-presentation/" : "/",
+  base: mode === "production" ? productionBase : "/",
   plugins: [
     react(),
     VitePWA({

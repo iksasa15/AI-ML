@@ -199,6 +199,21 @@ web-presentation/
 
 ---
 
+## النشر على Cloudflare Workers / Pages
+
+المستودع يتضمن `wrangler.jsonc` في الجذر لنشر العرض كـ **Worker ثابت** (مشروع `ai`).
+
+| الإعداد | القيمة |
+|---------|--------|
+| **أمر البناء** | `npm run build:cloudflare` |
+| **مجلد الإخراج** | `web-presentation/dist` |
+| **أمر النشر** | `npx wrangler deploy` |
+
+في لوحة Cloudflare → Workers → **ai** → Settings → Builds، تأكد أن أوامر البناء تطابق الجدول أعلاه.  
+على Cloudflare يُبنى العرض بـ `base: /` (على GitHub Pages يبقى `/AI-ML/web-presentation/`).
+
+إذا ظهرت فحوصات Cloudflare حمراء على `main` بدون `wrangler.jsonc`، ادمج إعدادات النشر من الجذر أو أغلق [PR #1](https://github.com/iksasa15/AI-ML/pull/1) بعد تحديثه.
+
 ## النشر على GitHub Pages
 
 عند الدمج في فرع `main` مع تغييرات داخل `web-presentation/`، يعمل workflow تلقائي (`.github/workflows/deploy-web-presentation.yml`) يبني المشروع وينشره على GitHub Pages.
