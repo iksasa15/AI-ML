@@ -9,15 +9,63 @@ export const slides = [
     "body": "Each phase answers a different question: Phase 1 — why depth and what a neuron actually computes; Phase 2 — how training stays stable and generalizes; Phase 3 — which architecture matches images vs sequences; Phase 4 — generation, compression, and deployment.",
     "note": "Phase 1 focus: understand the “why” and the mathematical mechanics of a single neuron before scaling to layers and data.",
     "speakerNote": "Phase 1 focus: understand the “why” and the mathematical mechanics of a single neuron before scaling to layers and data.",
-    "titleIcon": "neural-net"
+    "titleIcon": "neural-net",
+    "bullets": [
+      {
+        "text": "Four phases: foundations → optimization → architectures → deployment.",
+        "icon": "workflow"
+      },
+      {
+        "text": "Each phase has a lab-style checkpoint — pause at phase boundaries.",
+        "icon": "check"
+      },
+      {
+        "text": "Expect ~3 hours for Section 7 — phase breaks are intentional.",
+        "icon": "idea"
+      }
+    ]
   },
   {
-    "type": "section-divider",
-    "title": "Phase 1",
-    "subtitle": "Foundations & Neural Core",
-    "speakerNote": "Open Foundations & Neural Core: state learning goals, timing, and how it connects to prior sessions. Preview the 2–3 ideas trainees must leave with.",
+    "title": "Phase 1: Foundations & Neural Core",
+    "subtitle": "Why depth, neurons, and forward pass",
+    "speakerNote": "Phase 1 (~45 min): Set expectations — we build intuition before scale. Start with the perceptron diagram, then one forward-pass walkthrough on the board. Ask: 'Why can't a single linear layer solve XOR?' Pause after the loss slide for a 1-minute pair discussion.",
     "titleIcon": "neural-net",
-    "illustration": "ml-workflow"
+    "illustration": "neural-net",
+    "bullets": [
+      {
+        "text": "Goal: understand what a neuron computes and why stacking layers enables hierarchical features.",
+        "icon": "neural-net"
+      },
+      {
+        "text": "Topics: perceptron, activations, MLP, forward propagation, and loss functions.",
+        "icon": "formula"
+      },
+      {
+        "text": "Exit check: explain z = w·x + b and why nonlinearity is required between layers.",
+        "icon": "check"
+      }
+    ],
+    "table": {
+      "title": "Phase 1 roadmap",
+      "headers": [
+        "Block",
+        "Question it answers"
+      ],
+      "rows": [
+        [
+          "Perceptron & MLP",
+          "What does one layer compute?"
+        ],
+        [
+          "Forward pass",
+          "How does inference flow through the graph?"
+        ],
+        [
+          "Loss & gradients",
+          "What are we optimizing?"
+        ]
+      ]
+    }
   },
   {
     "title": "What Is Deep Learning?",
@@ -60,7 +108,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"What Is Deep Learning?\". Emphasize: Deep learning learns a parameterized mapping from inputs to outputs by stacking nonlinear transformations (layers). “Deep” means multiple such transformations—hierarchical features, not one giant linear rule.; then Training = pick a loss that measures mistakes, then adjust weights with gradients so average loss drops on data (generalization to unseen data is the real goal).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Deep learning learns a parameterized mapping from inputs to outputs by stacking  · Training = pick a loss that measures mistakes, then adjust weights with gradient. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "neural-net"
   },
   {
@@ -162,7 +210,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Why Classical ML Struggles: The Curse of Dimensionality\". Emphasize: Volume grows exponentially with dimension: a fixed number of samples fills an ever-smaller fraction of the input space—data look sparse even when n is large in absolute terms.; then Local methods (k-NN, kernel density) need enough neighbors in every direction; in high-D, “nearby” points may not exist unless n is enormous.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Volume grows exponentially with dimension: a fixed number of samples fills an ev · Local methods (k-NN, kernel density) need enough neighbors in every direction; i. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "pca"
   },
   {
@@ -203,7 +251,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Curse of Dimensionality: A Quantitative Glimpse\". Emphasize: Intuition: to maintain the same density of samples as dimension grows, required sample size can grow exponentially—unrealistic in raw pixel space.; then That is why reducing raw dimension (PCA), or learning compressed representations (deep nets), is central to practical learning.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Intuition: to maintain the same density of samples as dimension grows, required  · That is why reducing raw dimension (PCA), or learning compressed representations. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "pca"
   },
   {
@@ -302,7 +350,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Use-Case Fit: When Deep Learning Shines — and When to Skip It\". Emphasize: DL is strongest when: large data (or strong pre-training), high-dimensional raw inputs (images, text, speech), and compositionality you want learned end-to-end.; then Think twice when: tiny tabular datasets, strict interpretability requirements, tight latency on CPU without optimization, or simple baselines already solve the problem.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: DL is strongest when: large data (or strong pre-training), high-dimensional raw  · Think twice when: tiny tabular datasets, strict interpretability requirements, t. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "neural-net"
   },
   {
@@ -355,7 +403,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Single Neuron (Perceptron): Math, Weights, and Bias\". Emphasize: Affine part (see formula above): z is the weighted sum of inputs plus b—each x_i is multiplied by w_i. The bias b shifts the decision boundary (same orientation, normal w); it does not rotate the separating hyperplane.; then Weights encode which patterns excite the neuron; training adjusts w and b so that on labeled data the loss decreases.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Affine part (see formula above): z is the weighted sum of inputs plus b—each x_i · Weights encode which patterns excite the neuron; training adjusts w and b so tha. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -395,7 +443,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Weight Initialization: Why Zeros Break Training\". Emphasize: If all weights in a layer start equal (especially zero), every hidden unit receives the same gradient and stays identical forever—symmetry never breaks.; then Random initialization makes each unit walk a different path in parameter space so they can specialize as feature detectors.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: If all weights in a layer start equal (especially zero), every hidden unit recei · Random initialization makes each unit walk a different path in parameter space s. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -433,7 +481,21 @@ export const slides = [
     ],
     "note": "Frameworks differ slightly (uniform vs normal, fan-in vs fan-out only)—always read the docstring for your layer.",
     "speakerNote": "Frameworks differ slightly (uniform vs normal, fan-in vs fan-out only)—always read the docstring for your layer.",
-    "titleIcon": "formula"
+    "titleIcon": "formula",
+    "bullets": [
+      {
+        "text": "Xavier: scale for tanh/sigmoid — variance stays stable across layers.",
+        "icon": "formula"
+      },
+      {
+        "text": "He: scale for ReLU — accounts for half the activations being zero.",
+        "icon": "formula"
+      },
+      {
+        "text": "Poor init can stall or explode training before the first epoch completes.",
+        "icon": "warning"
+      }
+    ]
   },
   {
     "title": "Activation Functions: Classics — Sigmoid and Tanh",
@@ -476,7 +538,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Activation Functions: Classics — Sigmoid and Tanh\". Emphasize: Sigmoid (formula above) maps ℝ to (0, 1)—useful as a binary probability; when |z| is large the derivative is tiny (vanishing gradient).; then Tanh maps to (-1, 1) and is zero-centered—often nicer than sigmoid for hidden layers, still saturates.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Sigmoid (formula above) maps ℝ to (0, 1)—useful as a binary probability; when |z · Tanh maps to (-1, 1) and is zero-centered—often nicer than sigmoid for hidden la. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "neural-net",
     "conceptAnimation": "sigmoid-threshold"
   },
@@ -582,7 +644,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"The XOR Problem: Why Hidden Layers Are Logically Necessary\". Emphasize: XOR is not linearly separable in the 2D input plane: no single line separates class 1 from class 0 on the four corners.; then A single perceptron computes a half-space; XOR requires nonlinear mixing of inputs—exactly what a hidden layer provides.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: XOR is not linearly separable in the 2D input plane: no single line separates cl · A single perceptron computes a half-space; XOR requires nonlinear mixing of inpu. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -626,7 +688,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"From Perceptron to MLP (Multi-Layer Perceptron)\". Emphasize: Each hidden layer applies an affine map followed by a nonlinearity, producing new features \\(h\\) as functions of the original inputs.; then Width (units per layer) and depth (number of layers) trade off capacity, data needs, compute, and optimization difficulty.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Each hidden layer applies an affine map followed by a nonlinearity, producing ne · Width (units per layer) and depth (number of layers) trade off capacity, data ne. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "idea"
   },
   {
@@ -672,7 +734,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Forward Propagation: The Engine of Inference\". Emphasize: Forward pass: feed input \\(x\\) through each layer in order—compute logits or scores at the end (then softmax for class probabilities if needed).; then Implementation-wise this is a computational graph: each op (matmul, ReLU, …) knows how to propagate values forward.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Forward pass: feed input \\(x\\) through each layer in order—compute logits or sco · Implementation-wise this is a computational graph: each op (matmul, ReLU, …) kno. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "neural-net",
     "conceptAnimation": "neural-network"
   },
@@ -729,7 +791,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Loss Functions: MSE vs Cross-Entropy\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Penalizes large errors heavily (quadratic); differentiable everywhere—classic fo · Assumes Gaussian-like noise in a probabilistic story; outliers can dominate—Hube. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "formula"
   },
   {
@@ -777,15 +839,7 @@ export const slides = [
     "titleIcon": "neural-net"
   },
   {
-    "type": "section-divider",
-    "title": "Phase 2",
-    "subtitle": "Optimization & Training Strategy",
-    "speakerNote": "Open Optimization & Training Strategy: state learning goals, timing, and how it connects to prior sessions. Preview the 2–3 ideas trainees must leave with.",
-    "titleIcon": "train",
-    "illustration": "ml-workflow"
-  },
-  {
-    "title": "Phase 2 Focus: Training as an Engineering Discipline",
+    "title": "Phase 2: Optimization & Training Strategy",
     "subtitle": "Stable Optimization + Generalization",
     "bullets": [
       {
@@ -822,7 +876,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Phase 2 Focus: Training as an Engineering Discipline\". Emphasize: Phase 2 is about the art of training: diagnosing fit, controlling gradients, picking optimizers and normalization, regularizing sensibly, and scheduling learning rates.; then Good models are not only “big”—they match capacity to data, monitor validation faithfully, and fail visibly when something is wrong.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Phase 2 (~40 min): Optimization & Training Strategy. Use the table as your agenda. After the overview, dive into the first technical slide without a separate divider pause.",
     "titleIcon": "compare"
   },
   {
@@ -873,7 +927,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Training Diagnostics: Underfitting, Good Fit, and Overfitting\". Emphasize: Underfitting: both train and validation error stay high—the model is too simple, features are insufficient, or optimization is stuck (LR too low, wrong loss).; then Good fit: train and validation errors are both low and track each other; small gap is normal if train is slightly better.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Underfitting: both train and validation error stay high—the model is too simple, · Good fit: train and validation errors are both low and track each other; small g. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "evaluate"
   },
   {
@@ -913,7 +967,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Learning Curves: What They Tell You\". Emphasize: Smooth downward train loss with flat val loss early on often means you can still train longer or increase capacity.; then Train ↓ and val ↑ is the classic overfitting signature—freeze or regularize before wasting compute.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Smooth downward train loss with flat val loss early on often means you can still · Train ↓ and val ↑ is the classic overfitting signature—freeze or regularize befo. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "metric"
   },
   {
@@ -957,7 +1011,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Vanishing and Exploding Gradients\". Emphasize: Vanishing: backprop multiplies many factors \\(<1\\) (saturated sigmoid/tanh, poor init)—early layers get tiny updates and learn slowly.; then Exploding: repeated factors \\(>1\\) or large weights produce huge parameter updates—loss spikes, NaNs.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Vanishing: backprop multiplies many factors \\(<1\\) (saturated sigmoid/tanh, poor · Exploding: repeated factors \\(>1\\) or large weights produce huge parameter updat. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "formula"
   },
   {
@@ -1058,7 +1112,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Normalization: Batch Norm vs Layer Norm\". Emphasize: Batch Norm (BN): for each channel, normalize across batch and spatial dims, then learn scale γ and shift β—reduces internal covariate shift; uses batch statistics at train, moving averages at eval.; then Layer Norm (LN): normalize across features for each example independently—no batch dimension required; default in Transformers.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Batch Norm (BN): for each channel, normalize across batch and spatial dims, then · Layer Norm (LN): normalize across features for each example independently—no bat. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "scaling",
     "conceptAnimation": "feature-scaling"
   },
@@ -1125,7 +1179,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Regularization: Dropout, L1/L2, and Early Stopping\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Randomly zero hidden units during training so units cannot co-adapt; at inferenc · Strong implicit ensemble effect; typical rates 0.1–0.5 depending on layer width.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "regularization"
   },
   {
@@ -1174,7 +1228,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Learning-Rate Schedules, Warm-up, and Batch Size\". Emphasize: Warm-up: linearly increase LR from a small value—stabilizes Transformers and large-batch training before aggressive updates.; then Decay: step decay (piecewise), exponential, or cosine annealing—reduce LR as you approach a minimum; cosine with restarts can escape shallow minima.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Warm-up: linearly increase LR from a small value—stabilizes Transformers and lar · Decay: step decay (piecewise), exponential, or cosine annealing—reduce LR as you. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -1222,15 +1276,7 @@ export const slides = [
     "titleIcon": "idea"
   },
   {
-    "type": "section-divider",
-    "title": "Phase 3",
-    "subtitle": "Specialized Architectures (Vision & Sequences)",
-    "speakerNote": "Open Specialized Architectures (Vision & Sequences): state learning goals, timing, and how it connects to prior sessions. Preview the 2–3 ideas trainees must leave with.",
-    "titleIcon": "cnn",
-    "illustration": "ml-workflow"
-  },
-  {
-    "title": "Phase 3 Focus: Match Architecture to Data Type",
+    "title": "Phase 3: Specialized Architectures (Vision & Sequences)",
     "subtitle": "Images vs Ordered Sequences",
     "bullets": [
       {
@@ -1265,7 +1311,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Phase 3 Focus: Match Architecture to Data Type\". Emphasize: Images have 2D locality and translation symmetry—convolutions exploit shared weights across space.; then Sequences have order—recurrence, causal convolutions, or attention carry context across time or position.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Phase 3 (~40 min): Specialized Architectures (Vision & Sequences). Use the table as your agenda. After the overview, dive into the first technical slide without a separate divider pause.",
     "titleIcon": "data"
   },
   {
@@ -1308,7 +1354,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Image Data: How Computers “See” Pixels\". Emphasize: A color image is usually a tensor of shape H×W×3 (RGB); each entry is an intensity discretized into 8 bits (0–255) before normalization.; then Meaning lives in local neighborhoods: small patches reveal edges; larger contexts reveal objects—hierarchical composition.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: A color image is usually a tensor of shape H×W×3 (RGB); each entry is an intensi · Meaning lives in local neighborhoods: small patches reveal edges; larger context. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "data"
   },
   {
@@ -1356,7 +1402,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Convolution: Kernels, Edge Filters, and Feature Maps\". Emphasize: A kernel is a small learnable matrix (e.g., 3×3) that responds to local patterns; multiple kernels produce a stack of feature maps.; then Classical edge detectors (Sobel, shown) are fixed kernels; CNNs learn task-specific filters from data.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: A kernel is a small learnable matrix (e.g., 3×3) that responds to local patterns · Classical edge detectors (Sobel, shown) are fixed kernels; CNNs learn task-speci. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "svm"
   },
   {
@@ -1401,7 +1447,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"CNN Blocks: From AlexNet to ResNet\". Emphasize: AlexNet (2012): ReLU + dropout + GPU scale—proved CNNs dominate ImageNet with end-to-end learning.; then VGG-style: deep stacks of small 3×3 convolutions—simple pattern, many parameters, needs care (init, BN, WD).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: AlexNet (2012): ReLU + dropout + GPU scale—proved CNNs dominate ImageNet with en · VGG-style: deep stacks of small 3×3 convolutions—simple pattern, many parameters. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "cnn"
   },
   {
@@ -1450,7 +1496,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Computer Vision Tasks: Classification, Detection, Segmentation\". Emphasize: Classification: one label (or multi-label) per image—global pooling then linear classifier.; then Detection: objects as boxes + class scores—needs localization and handling many scales.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Classification: one label (or multi-label) per image—global pooling then linear  · Detection: objects as boxes + class scores—needs localization and handling many . Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "classification"
   },
   {
@@ -1492,7 +1538,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Object Detection: Boxes, IoU, YOLO vs Faster R-CNN\". Emphasize: Bounding box formats: center (cx, cy, w, h) or corners—must be consistent in loss and decoding.; then IoU = area(intersection) / area(union) between predicted and reference boxes—thresholds like 0.5 or 0.75 define positives in training and evaluation.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Bounding box formats: center (cx, cy, w, h) or corners—must be consistent in los · IoU = area(intersection) / area(union) between predicted and reference boxes—thr. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "cnn"
   },
   {
@@ -1535,7 +1581,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Image Segmentation and the U-Net Architecture\". Emphasize: Semantic segmentation assigns a class label to every pixel—output has the same H×W as input (possibly downsampled then upsampled).; then U-Net: encoder downsamples to capture context; decoder upsamples to recover resolution; skip connections concatenate fine encoder features to the decoder—sharp boundaries.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Semantic segmentation assigns a class label to every pixel—output has the same H · U-Net: encoder downsamples to capture context; decoder upsamples to recover reso. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "classification"
   },
   {
@@ -1575,7 +1621,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Transfer Learning with ImageNet-Scale Pretraining\". Emphasize: Pretraining on millions of labeled images learns general low/mid-level filters (edges, textures) transferable to new domains.; then Typical recipe: replace classifier head; optionally freeze early layers for small datasets; use smaller LR on pretrained layers.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Pretraining on millions of labeled images learns general low/mid-level filters ( · Typical recipe: replace classifier head; optionally freeze early layers for smal. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -1615,7 +1661,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Sequential Data: Why Order Matters\". Emphasize: Language, audio, time series, and video (frame order) are ordered; permuting tokens or frames usually destroys the label relationship.; then Models must summarize past context without seeing the future (in many online settings)—causal masking matters.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Language, audio, time series, and video (frame order) are ordered; permuting tok · Models must summarize past context without seeing the future (in many online set. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "data"
   },
   {
@@ -1655,7 +1701,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Vanilla RNNs: Architecture and Memory Limits\". Emphasize: The same weights are reused each timestep—parameter efficient and aligned with stationarity assumptions.; then Hidden state h_t is a lossy summary of the past; capacity is limited by hidden size and nonlinear squeezing.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: The same weights are reused each timestep—parameter efficient and aligned with s · Hidden state h_t is a lossy summary of the past; capacity is limited by hidden s. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "rnn"
   },
   {
@@ -1698,7 +1744,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"LSTM: Gates for Long-Term Memory\". Emphasize: Cell state c_t can accumulate information with an additive path—mitigates vanishing signal compared with plain tanh RNNs.; then Forget gate f_t decides how much past cell content to erase; input gate i_t and candidate g̃ control new information written.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Cell state c_t can accumulate information with an additive path—mitigates vanish · Forget gate f_t decides how much past cell content to erase; input gate i_t and . Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "rnn"
   },
   {
@@ -1737,7 +1783,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"GRU: Fewer Gates, Often Similar Quality\". Emphasize: GRU merges cell and hidden states compared with LSTM—fewer parameters per layer.; then Reset gate controls how much past state influences the candidate; update gate blends old and new.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: GRU merges cell and hidden states compared with LSTM—fewer parameters per layer. · Reset gate controls how much past state influences the candidate; update gate bl. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "rnn"
   },
   {
@@ -1780,20 +1826,12 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Encoder–Decoder (Seq2Seq) for Translation and Beyond\". Emphasize: Encoder reads the entire source (words, phonemes, frames) into a vector or sequence of states.; then Decoder is autoregressive: predicts next target token conditioned on previous predictions and the encoder context.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Encoder reads the entire source (words, phonemes, frames) into a vector or seque · Decoder is autoregressive: predicts next target token conditioned on previous pr. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
   },
   {
-    "type": "section-divider",
-    "title": "Phase 4",
-    "subtitle": "Generative Models & Deployment",
-    "speakerNote": "Open Generative Models & Deployment: state learning goals, timing, and how it connects to prior sessions. Preview the 2–3 ideas trainees must leave with.",
-    "titleIcon": "deploy",
-    "illustration": "ml-workflow"
-  },
-  {
-    "title": "Phase 4 Focus: Create, Compress, Ship",
+    "title": "Phase 4: Generative Models & Deployment",
     "subtitle": "Generative Models and Real-World Constraints",
     "bullets": [
       {
@@ -1829,7 +1867,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Phase 4 Focus: Create, Compress, Ship\". Emphasize: Phase 4 connects ideas to products: learn latent spaces (AE/VAE), adversarial generation (GANs), then shrink and accelerate models for phones, browsers, and embedded devices.; then A model that only trains well in the lab is incomplete—deployment constraints shape architecture, precision, and monitoring.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Phase 4 (~40 min): Generative Models & Deployment. Use the table as your agenda. After the overview, dive into the first technical slide without a separate divider pause.",
     "titleIcon": "llm"
   },
   {
@@ -1872,7 +1910,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Autoencoders (AE): Compression and Reconstruction\". Emphasize: Encoder f maps input x to a low-dimensional code z = f(x); decoder g maps z back to x̂ ≈ x.; then The bottleneck forces a compressed representation—useful for denoising (train on noisy→clean), anomaly detection (high recon error = abnormal).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Encoder f maps input x to a low-dimensional code z = f(x); decoder g maps z back · The bottleneck forces a compressed representation—useful for denoising (train on. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
   },
@@ -1910,7 +1948,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Variational Autoencoders (VAEs): A Latent Space You Can Sample\". Emphasize: Instead of a single code z, infer a distribution q(z|x) (often Gaussian with learned μ, σ); sample z to reconstruct—enables generation by sampling z ~ prior p(z).; then KL term regularizes the posterior to stay close to a simple prior (e.g., N(0,I)) so the latent space is smooth and interpolatable.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Instead of a single code z, infer a distribution q(z|x) (often Gaussian with lea · KL term regularizes the posterior to stay close to a simple prior (e.g., N(0,I)). Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
   },
@@ -1954,7 +1992,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Generative Adversarial Networks (GANs)\". Emphasize: Generator G maps noise z to fake samples; discriminator D assigns high score to real data and low to fakes.; then Training alternates (in practice) updating D and G toward this minimax—D provides a learned training signal for G.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Generator G maps noise z to fake samples; discriminator D assigns high score to  · Training alternates (in practice) updating D and G toward this minimax—D provide. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "llm"
   },
   {
@@ -1998,7 +2036,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Model Compression: Quantization (FP32 → INT8 and Beyond)\". Emphasize: Post-training quantization maps FP32 weights/activations to INT8 (or mixed FP16) using calibration on representative batches.; then Quantization-aware training (QAT) simulates low precision during training—usually recovers more accuracy than PTQ alone.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Post-training quantization maps FP32 weights/activations to INT8 (or mixed FP16) · Quantization-aware training (QAT) simulates low precision during training—usuall. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "model"
   },
   {
@@ -2042,7 +2080,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Model Compression: Pruning and Distillation\". Emphasize: Unstructured pruning: zero tiny weights—sparse matrices need hardware support to actually speed up.; then Structured pruning: drop whole channels/filters—compatible with dense kernels on GPUs after fine-tuning.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Unstructured pruning: zero tiny weights—sparse matrices need hardware support to · Structured pruning: drop whole channels/filters—compatible with dense kernels on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "model"
   },
   {
@@ -2086,7 +2124,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Inference Optimization and Edge AI (DL-Ops)\". Emphasize: Graph optimization: fuse ops (conv+bn+relu), pick kernels for target hardware, eliminate dead tensors.; then Runtimes: TensorRT, ONNX Runtime, OpenVINO, Core ML, TensorFlow Lite—same weights, different execution engines.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Graph optimization: fuse ops (conv+bn+relu), pick kernels for target hardware, e · Runtimes: TensorRT, ONNX Runtime, OpenVINO, Core ML, TensorFlow Lite—same weight. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {

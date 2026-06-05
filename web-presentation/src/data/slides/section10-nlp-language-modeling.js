@@ -20,7 +20,7 @@ export const slides = [
         "icon": "llm"
       }
     ],
-    "speakerNote": "Cover \"NLP Language Modeling with N-grams\". Emphasize: Language models estimate probabilities over word sequences.; then N-gram models predict the next token from a limited context window.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Language models estimate probabilities over word sequences. · N-gram models predict the next token from a limited context window.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "nlp"
   },
   {
@@ -92,8 +92,18 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Why Next-Word Prediction Matters\". Tie back to the section objective and invite one question before advancing.",
-    "titleIcon": "idea"
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Language modeling is the foundation for autocomplete, speech, and generative AI. · Better perplexity usually means better downstream performance.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
+    "titleIcon": "idea",
+    "bullets": [
+      {
+        "text": "Language modeling is the foundation for autocomplete, speech, and generative AI.",
+        "icon": "llm"
+      },
+      {
+        "text": "Better perplexity usually means better downstream performance.",
+        "icon": "metric"
+      }
+    ]
   },
   {
     "title": "Formal Language Modeling Objective",
@@ -112,7 +122,7 @@ export const slides = [
         "icon": "neural-net"
       }
     ],
-    "speakerNote": "Cover \"Formal Language Modeling Objective\". Emphasize: A language model can score full sentences or predict the next word.; then Exact estimation over full histories is intractable for real corpora.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: A language model can score full sentences or predict the next word. · Exact estimation over full histories is intractable for real corpora.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "model"
   },
   {
@@ -185,7 +195,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Unigram vs Bigram Intuition\". Emphasize: Unigram models often generate incoherent sentences due to independence assumptions.; then Bigrams and trigrams recover local fluency but still miss distant structure.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Unigram models often generate incoherent sentences due to independence assumptio · Bigrams and trigrams recover local fluency but still miss distant structure.. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -214,7 +224,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Key Weaknesses of N-gram Models\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "model"
   },
   {
@@ -272,7 +282,7 @@ export const slides = [
         "icon": "idea"
       }
     ],
-    "speakerNote": "Cover \"Estimating N-gram Probabilities (MLE)\". Emphasize: Maximum Likelihood Estimation uses corpus frequency counts.; then For bigrams: divide count of word pair by count of prefix word.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Maximum Likelihood Estimation uses corpus frequency counts. · For bigrams: divide count of word pair by count of prefix word.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "idea"
   },
   {
@@ -289,7 +299,7 @@ export const slides = [
         "icon": "idea"
       }
     ],
-    "speakerNote": "Cover \"Worked Bigram Example\". Emphasize: Interpretation: in this corpus, \"to\" follows \"want\" about 65.6% of the time.; then Count quality depends strongly on corpus domain and size.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Interpretation: in this corpus, \"to\" follows \"want\" about 65.6% of the time. · Count quality depends strongly on corpus domain and size.. Budget ~90 sec. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -324,7 +334,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Why Use Log Probabilities\". Emphasize: Multiplying many small probabilities causes numerical underflow.; then Log transform converts multiplication into stable addition.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Multiplying many small probabilities causes numerical underflow. · Log transform converts multiplication into stable addition.. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -357,8 +367,18 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Evaluating Language Models\". Tie back to the section objective and invite one question before advancing.",
-    "titleIcon": "model"
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Perplexity: intrinsic metric on held-out text. · BLEU/ROUGE: extrinsic metrics for generation tasks.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
+    "titleIcon": "model",
+    "bullets": [
+      {
+        "text": "Perplexity: intrinsic metric on held-out text.",
+        "icon": "metric"
+      },
+      {
+        "text": "BLEU/ROUGE: extrinsic metrics for generation tasks.",
+        "icon": "evaluate"
+      }
+    ]
   },
   {
     "title": "Perplexity (PP): Interpretation",

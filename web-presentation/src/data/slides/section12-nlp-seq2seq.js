@@ -20,7 +20,7 @@ export const slides = [
         "icon": "train"
       }
     ],
-    "speakerNote": "Cover \"NLP Seq2Seq for Neural Machine Translation\". Emphasize: Seq2Seq maps variable-length input sequences to variable-length outputs.; then Encoder-decoder models were foundational for neural machine translation.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Seq2Seq maps variable-length input sequences to variable-length outputs. · Encoder-decoder models were foundational for neural machine translation.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
   },
@@ -57,7 +57,21 @@ export const slides = [
     "note": "LSTM/GRU were widely used to reduce vanishing/exploding gradient issues in seq2seq.",
     "speakerNote": "LSTM/GRU were widely used to reduce vanishing/exploding gradient issues in seq2seq.",
     "titleIcon": "seq2seq",
-    "conceptAnimation": "seq2seq-attention"
+    "conceptAnimation": "seq2seq-attention",
+    "bullets": [
+      {
+        "text": "Encoder compresses source; decoder generates target token by token.",
+        "icon": "seq2seq"
+      },
+      {
+        "text": "Attention lets the decoder focus on relevant encoder states.",
+        "icon": "attention"
+      },
+      {
+        "text": "Teacher forcing during training; beam search often used at inference.",
+        "icon": "model"
+      }
+    ]
   },
   {
     "title": "Seq2Seq Step-by-Step Generation",
@@ -142,7 +156,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Training Seq2Seq with Cross-Entropy\". Emphasize: At each step, compare predicted distribution against the gold next token.; then Higher probability on correct token yields lower loss.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: At each step, compare predicted distribution against the gold next token. · Higher probability on correct token yields lower loss.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "seq2seq",
     "conceptAnimation": "seq2seq-attention"
   },
@@ -215,7 +229,7 @@ export const slides = [
         "icon": "attention"
       }
     ],
-    "speakerNote": "Cover \"Attention as the Bottleneck Solution\". Emphasize: Decoder attends to relevant encoder positions at each generation step.; then Dynamic alignment improves translation adequacy and fluency.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Decoder attends to relevant encoder positions at each generation step. · Dynamic alignment improves translation adequacy and fluency.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "attention"
   },
   {
@@ -248,7 +262,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"NMT Evaluation Metrics: BLEU and ROUGE\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "seq2seq"
   },
   {
@@ -315,7 +329,7 @@ export const slides = [
         "icon": "test"
       }
     ],
-    "speakerNote": "Cover \"Seq2Seq and NMT Summary\". Emphasize: Seq2Seq provides a general framework for sequence transduction.; then Cross-entropy trains token-level next-step predictions.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Seq2Seq provides a general framework for sequence transduction. · Cross-entropy trains token-level next-step predictions.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "seq2seq",
     "conceptAnimation": "seq2seq-attention"
   }

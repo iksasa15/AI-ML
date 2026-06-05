@@ -45,7 +45,7 @@ export const slides = [
         "icon": "regression"
       }
     ],
-    "speakerNote": "Cover \"What Is NLP?\". Emphasize: NLP is an AI subfield: computers understand, generate, and interact with human language.; then Language encodes meaning, context, intent, and sentiment — not just tokens.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: NLP is an AI subfield: computers understand, generate, and interact with human l · Language encodes meaning, context, intent, and sentiment — not just tokens.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "nlp"
   },
   {
@@ -94,7 +94,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Why Language Is Hard for Computers\". Emphasize: Example: \"I saw the man with the telescope\" — instrument vs modifier reading.; then Humans disambiguate instantly with world knowledge; models must learn or infer context.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Example: \"I saw the man with the telescope\" — instrument vs modifier reading. · Humans disambiguate instantly with world knowledge; models must learn or infer c. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -113,7 +113,7 @@ export const slides = [
         "icon": "missing-data"
       }
     ],
-    "speakerNote": "Cover \"More NLP Challenges\". Emphasize: Sarcasm, idioms, and figurative language invert or stretch literal meaning.; then Coreference: \"Sarah told Mary she was late\" — who is \"she\"?. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Sarcasm, idioms, and figurative language invert or stretch literal meaning. · Coreference: \"Sarah told Mary she was late\" — who is \"she\"?. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "nlp"
   },
   {
@@ -142,7 +142,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Real-World NLP Applications\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "nlp"
   },
   {
@@ -176,7 +176,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Real-World Applications — Concrete Input/Output Examples\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "idea"
   },
   {
@@ -233,7 +233,7 @@ export const slides = [
         "icon": "check"
       }
     ],
-    "speakerNote": "Cover \"Text Cleaning — Why Raw Text Is Messy\". Emphasize: Web text mixes markup, entities, URLs, handles, hashtags, emoji, and boilerplate.; then Downstream models and lexicons assume cleaner character sequences.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Web text mixes markup, entities, URLs, handles, hashtags, emoji, and boilerplate · Downstream models and lexicons assume cleaner character sequences.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "idea"
   },
   {
@@ -394,7 +394,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Text Cleaning — Step 4: Transformation Trace\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -482,8 +482,8 @@ export const slides = [
     "conceptAnimation": "feature-scaling"
   },
   {
-    "title": "Tokenization Fundamentals",
-    "subtitle": "Splitting Text into Tokens",
+    "title": "Day 1 Lab — Tokenization Fundamentals",
+    "subtitle": "Workshop view — complements Section 8 overview and Section 9 masterclass",
     "bullets": [
       {
         "text": "Word: fast and interpretable; brittle on OOV and morphology.",
@@ -522,12 +522,12 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Tokenization Fundamentals\". Emphasize: Word: fast and interpretable; brittle on OOV and morphology.; then Character: no unknown tokens; very long sequences.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Word: fast and interpretable; brittle on OOV and morphology. · Character: no unknown tokens; very long sequences.. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
   {
-    "title": "Tokenization — One Sentence, Multiple Views",
+    "title": "Day 1 Lab — Tokenization Views",
     "table": {
       "headers": [
         "Tokenizer type",
@@ -557,9 +557,10 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Tokenization — One Sentence, Multiple Views\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
+    "conceptAnimation": "tokenization-flow",
+    "subtitle": "Same sentence, word / char / subword splits side by side"
   },
   {
     "title": "NLTK Tokenization Essentials",
@@ -614,7 +615,7 @@ export const slides = [
     "conceptAnimation": "tokenization-flow"
   },
   {
-    "title": "Subword Tokenization for Modern LLMs",
+    "title": "Day 1 Lab — Subword Tokenization for LLMs",
     "bullets": [
       {
         "text": "Large word vocabularies miss typos, neologisms, and multi-lingual morphology.",
@@ -649,9 +650,10 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Subword Tokenization for Modern LLMs\". Emphasize: Large word vocabularies miss typos, neologisms, and multi-lingual morphology.; then Subwords reuse frequent pieces: \"unbelievably\" → learned merges.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Large word vocabularies miss typos, neologisms, and multi-lingual morphology. · Subwords reuse frequent pieces: \"unbelievably\" → learned merges.. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
+    "conceptAnimation": "tokenization-flow",
+    "subtitle": "BPE / WordPiece intuition for the Day 1 notebook"
   },
   {
     "title": "Subword Tokenization (LLMs) — Why It Wins",
@@ -679,7 +681,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Subword Tokenization (LLMs) — Why It Wins\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -735,7 +737,7 @@ export const slides = [
         "icon": "token"
       }
     ],
-    "speakerNote": "Cover \"Why Token Counts Matter\". Emphasize: API pricing and context windows are measured in tokens, not characters.; then Technical prose and code usually cost more tokens than simple narrative.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: API pricing and context windows are measured in tokens, not characters. · Technical prose and code usually cost more tokens than simple narrative.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -786,7 +788,7 @@ export const slides = [
         "icon": "test"
       }
     ],
-    "speakerNote": "Cover \"Stop Words — Removing Low-Information Tokens\". Emphasize: Function words (the, is, and) dominate counts but often carry little topic signal.; then Removing them tightens bag-of-words / TF-IDF and classic retrieval setups.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Function words (the, is, and) dominate counts but often carry little topic signa · Removing them tightens bag-of-words / TF-IDF and classic retrieval setups.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -806,7 +808,7 @@ export const slides = [
         "icon": "token"
       }
     ],
-    "speakerNote": "Cover \"NLTK Stop Words in Practice\". Emphasize: stopwords.words('english') provides a baseline English set.; then Filter after lowercasing and tokenization; often keep alphanumeric tokens only.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: stopwords.words('english') provides a baseline English set. · Filter after lowercasing and tokenization; often keep alphanumeric tokens only.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -825,7 +827,7 @@ export const slides = [
         "icon": "warning"
       }
     ],
-    "speakerNote": "Cover \"Custom and Domain Stop Words\". Emphasize: Sklearn TfidfVectorizer accepts custom stop word lists.; then Add boilerplate from your genre: click, read more, subscribe, etc.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Sklearn TfidfVectorizer accepts custom stop word lists. · Add boilerplate from your genre: click, read more, subscribe, etc.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "idea"
   },
   {
@@ -846,7 +848,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Custom Stop Words — Before / After Example\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -880,7 +882,7 @@ export const slides = [
     "titleIcon": "idea"
   },
   {
-    "title": "Stemming vs Lemmatization",
+    "title": "Day 1 Lab — Stemming vs Lemmatization",
     "table": {
       "headers": [
         "Aspect",
@@ -910,8 +912,9 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Stemming vs Lemmatization\". Tie back to the section objective and invite one question before advancing.",
-    "titleIcon": "idea"
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Anchor on the diagram or table before moving on. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
+    "titleIcon": "idea",
+    "subtitle": "Hands-on comparison in the Day 1 track"
   },
   {
     "title": "NLTK Stemmer Families",
@@ -949,7 +952,7 @@ export const slides = [
         "icon": "idea"
       }
     ],
-    "speakerNote": "Cover \"Lemmatization with SpaCy\". Emphasize: en_core_web_sm gives lemmas, POS, dependencies, and NER in one nlp() call.; then Handles irregulars: mice → mouse; ran → run (verb).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: en_core_web_sm gives lemmas, POS, dependencies, and NER in one nlp() call. · Handles irregulars: mice → mouse; ran → run (verb).. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -968,7 +971,7 @@ export const slides = [
         "icon": "idea"
       }
     ],
-    "speakerNote": "Cover \"Choosing Stemming vs Lemmatization\". Emphasize: Stemming: search-scale retrieval, rough clustering, strict latency budgets.; then Lemmatization: classification features, QA preprocessing, linguistic analytics.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Stemming: search-scale retrieval, rough clustering, strict latency budgets. · Lemmatization: classification features, QA preprocessing, linguistic analytics.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -1017,7 +1020,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Part-of-Speech (POS) Tagging\". Emphasize: Universal categories include NOUN, VERB, ADJ, ADV, DET, ADP, PROPN, NUM, …; then POS feeds lemmatization quality and downstream relation extraction.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Universal categories include NOUN, VERB, ADJ, ADV, DET, ADP, PROPN, NUM, … · POS feeds lemmatization quality and downstream relation extraction.. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -1037,7 +1040,7 @@ export const slides = [
         "icon": "idea"
       }
     ],
-    "speakerNote": "Cover \"POS and Dependency Highlights in SpaCy\". Emphasize: Apple is looking at buying a U.K. startup — PROPN vs common-noun readings matter.; then dep_ links heads and dependents (nsubj, dobj, prep) for shallow semantics.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Apple is looking at buying a U.K. startup — PROPN vs common-noun readings matter · dep_ links heads and dependents (nsubj, dobj, prep) for shallow semantics.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "idea"
   },
   {
@@ -1117,7 +1120,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Named Entity Recognition (NER)\". Emphasize: Labels include PERSON, ORG, GPE, DATE, MONEY, PERCENT, PRODUCT, EVENT, …; then Useful for indexing, compliance redaction, financial news graphs, and search facets.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Labels include PERSON, ORG, GPE, DATE, MONEY, PERCENT, PRODUCT, EVENT, … · Useful for indexing, compliance redaction, financial news graphs, and search fac. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "idea"
   },
   {
@@ -1136,7 +1139,7 @@ export const slides = [
         "icon": "idea"
       }
     ],
-    "speakerNote": "Cover \"NER with SpaCy — Basic Usage\". Emphasize: doc.ents yields (text, label_, start_char, end_char) for each span.; then Group by label with defaultdict(set) for quick corpus dashboards.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: doc.ents yields (text, label_, start_char, end_char) for each span. · Group by label with defaultdict(set) for quick corpus dashboards.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -1193,7 +1196,7 @@ export const slides = [
         "icon": "idea"
       }
     ],
-    "speakerNote": "Cover \"Evaluating NER Quality\". Emphasize: Gold spans with strict label match drive precision/recall/F1.; then Spacy Scorer + Example.from_dict supports batch evaluation scripts.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Gold spans with strict label match drive precision/recall/F1. · Spacy Scorer + Example.from_dict supports batch evaluation scripts.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "idea"
   },
   {
@@ -1212,7 +1215,7 @@ export const slides = [
         "icon": "pipeline"
       }
     ],
-    "speakerNote": "Cover \"Full SpaCy Pipeline Functionally\". Emphasize: One doc object: tokens, lemmas, POS, entities, noun_chunks, sents.; then Typical export: clean token list, lemma bag, entity list, POS histogram.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: One doc object: tokens, lemmas, POS, entities, noun_chunks, sents. · Typical export: clean token list, lemma bag, entity list, POS histogram.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "pipeline"
   },
   {
@@ -1251,7 +1254,7 @@ export const slides = [
         "icon": "feature"
       }
     ],
-    "speakerNote": "Cover \"End-to-End Flow (Conceptual)\". Emphasize: Raw marketing sentence → clean → tokenize → optional stop removal.; then Lemmatize → POS tags → NER spans.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Raw marketing sentence → clean → tokenize → optional stop removal. · Lemmatize → POS tags → NER spans.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "workflow"
   },
   {
@@ -1285,8 +1288,18 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Practice Track — Exercises\". Tie back to the section objective and invite one question before advancing.",
-    "titleIcon": "idea"
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Work in pairs — one drives the notebook, one reviews outputs. · Raise hand when blocked >3 minutes so we can unblock the room.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
+    "titleIcon": "idea",
+    "bullets": [
+      {
+        "text": "Work in pairs — one drives the notebook, one reviews outputs.",
+        "icon": "check"
+      },
+      {
+        "text": "Raise hand when blocked >3 minutes so we can unblock the room.",
+        "icon": "idea"
+      }
+    ]
   },
   {
     "title": "Curated Learning Resources",
@@ -1314,7 +1327,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Curated Learning Resources\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "idea"
   },
   {
@@ -1366,7 +1379,7 @@ export const slides = [
         "icon": "token"
       }
     ],
-    "speakerNote": "Cover \"Day 1 Closing\". Emphasize: You now have a concrete pipeline from characters to lemmas, POS, and entities.; then Next sessions connect these signals to BoW, TF-IDF, and dense embeddings.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: You now have a concrete pipeline from characters to lemmas, POS, and entities. · Next sessions connect these signals to BoW, TF-IDF, and dense embeddings.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "idea"
   }
 ];

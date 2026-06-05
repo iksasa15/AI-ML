@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "audit:content": "node scripts/audit-content.mjs",
+    "audit:math": "node scripts/audit-math.mjs",
+    "audit:images": "node scripts/check-wikimedia.mjs",
+    "audit:qa": "node scripts/prepublish-qa.mjs",
+    "polish:content": "node scripts/prepublish-polish.mjs",
+    "prepublish:check": "node scripts/prepublish-polish.mjs && npm run audit:content && npm run audit:math && npm run audit:qa && npm run audit:images && npm run build"
   },
   "dependencies": {
     "katex": "^0.16.45",

@@ -17,7 +17,7 @@ export const slides = [
         "icon": "attention"
       }
     ],
-    "speakerNote": "Cover \"Generative AI: Core Concepts\". Emphasize: This section extracts the most important ideas into a compact teaching flow.; then Focus areas: transfer learning, model families, attention mechanics, scaling, and practical deployment.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: This section extracts the most important ideas into a compact teaching flow. · Focus areas: transfer learning, model families, attention mechanics, scaling, an. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "attention"
   },
   {
@@ -74,7 +74,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Feature-Based Transfer vs Fine-Tuning\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "idea"
   },
   {
@@ -96,7 +96,7 @@ export const slides = [
         "icon": "train"
       }
     ],
-    "speakerNote": "Cover \"BERT: Encoder-Only Bidirectional Understanding\". Emphasize: BERT learns contextual token representations using both left and right context.; then Strong for understanding tasks: classification, NER, QA, and retrieval-oriented use cases.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: BERT learns contextual token representations using both left and right context. · Strong for understanding tasks: classification, NER, QA, and retrieval-oriented . Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
   },
@@ -182,7 +182,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Arabic Adaptation Example: AraBERT\". Emphasize: AraBERT follows BERT-base style architecture with Arabic-specific preprocessing.; then Segmentation and Arabic-tailored tokenization improve vocabulary coverage.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: AraBERT follows BERT-base style architecture with Arabic-specific preprocessing. · Segmentation and Arabic-tailored tokenization improve vocabulary coverage.. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "llm"
   },
   {
@@ -240,7 +240,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"T5 Pretraining Objective: Span Corruption\". Emphasize: Remove contiguous text spans from input and replace with sentinel tokens.; then Train model to reconstruct missing spans autoregressively.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Remove contiguous text spans from input and replace with sentinel tokens. · Train model to reconstruct missing spans autoregressively.. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -269,7 +269,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"T5 Attention Strategies (Encoder/Decoder)\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
   },
@@ -292,7 +292,7 @@ export const slides = [
         "icon": "llm"
       }
     ],
-    "speakerNote": "Cover \"GPT: Decoder-Only Autoregressive Generation\". Emphasize: GPT predicts next token from left context only (causal modeling).; then Uses masked self-attention in decoder stack for no-lookahead generation.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: GPT predicts next token from left context only (causal modeling). · Uses masked self-attention in decoder stack for no-lookahead generation.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "llm"
   },
   {
@@ -344,7 +344,7 @@ export const slides = [
         "icon": "attention"
       }
     ],
-    "speakerNote": "Cover \"Attention: Why It Was a Breakthrough\". Emphasize: Attention solves fixed-vector bottlenecks in sequence transduction.; then At each step, model dynamically focuses on most relevant source positions.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Attention solves fixed-vector bottlenecks in sequence transduction. · At each step, model dynamically focuses on most relevant source positions.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "attention"
   },
   {
@@ -364,7 +364,7 @@ export const slides = [
       }
     ],
     "formula": "\\mathrm{Attention}(Q,K,V)=\\mathrm{softmax}\\left(\\frac{QK^\\top}{\\sqrt{d_k}}\\right)V",
-    "speakerNote": "Cover \"Attention Computation Pipeline\". Emphasize: Compute relevance scores between query state and source states.; then Apply softmax to obtain attention weights (probability distribution).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Compute relevance scores between query state and source states. · Apply softmax to obtain attention weights (probability distribution).. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "attention"
   },
   {
@@ -429,7 +429,7 @@ export const slides = [
         "icon": "train"
       }
     ],
-    "speakerNote": "Cover \"Masked Self-Attention in Decoders\". Emphasize: Decoder cannot access future tokens during generation.; then Causal mask enforces left-to-right consistency and prevents information leakage.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Decoder cannot access future tokens during generation. · Causal mask enforces left-to-right consistency and prevents information leakage.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "attention",
     "illustration": "transformer-block"
   },
@@ -495,7 +495,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Scaling Laws and Compute-Optimal Training\". Emphasize: Performance improves with data, model size, and compute, but with diminishing returns.; then Compute-optimal training balances parameter count and token budget.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Performance improves with data, model size, and compute, but with diminishing re · Compute-optimal training balances parameter count and token budget.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "idea"
   },
   {

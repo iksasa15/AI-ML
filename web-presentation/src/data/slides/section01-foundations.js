@@ -61,7 +61,29 @@ export const slides = [
       }
     ],
     "speakerNote": "Walk through \"The Machine Learning Process\" column by column (Step 1: Data Pre-Processing and Step 2: Modelling). Keep pace — one minute per column unless discussion heats up.",
-    "titleIcon": "workflow"
+    "titleIcon": "workflow",
+    "note": "Use the three columns as your pacing guide — ~3 minutes per column.",
+    "table": {
+      "title": "End-to-end ML checklist",
+      "headers": [
+        "Stage",
+        "Deliverable"
+      ],
+      "rows": [
+        [
+          "Preprocess",
+          "Clean, scale, encode, split"
+        ],
+        [
+          "Model",
+          "Train and validate"
+        ],
+        [
+          "Evaluate",
+          "Metrics + deploy decision"
+        ]
+      ]
+    }
   },
   {
     "title": "Training Set & Test Set",
@@ -76,6 +98,14 @@ export const slides = [
       {
         "text": "Test Set: New, unseen data used to check model performance.",
         "icon": "test"
+      },
+      {
+        "text": "Never tune hyperparameters on the test set — it becomes part of training indirectly.",
+        "icon": "warning"
+      },
+      {
+        "text": "Stratified splits preserve class balance in classification tasks.",
+        "icon": "classification"
       }
     ],
     "note": "We train on one part of the data, then test on another part to make sure the model generalizes well.",
@@ -177,9 +207,23 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Feature Scaling Methods\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Normalization scales to [0, 1] using min–max — sensitive to outliers. · Standardization uses mean 0 and std 1 — preferred when features are roughly Gaus. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "scaling",
-    "conceptAnimation": "feature-scaling"
+    "conceptAnimation": "feature-scaling",
+    "bullets": [
+      {
+        "text": "Normalization scales to [0, 1] using min–max — sensitive to outliers.",
+        "icon": "scaling"
+      },
+      {
+        "text": "Standardization uses mean 0 and std 1 — preferred when features are roughly Gaussian.",
+        "icon": "scaling"
+      },
+      {
+        "text": "Robust scaling uses median and IQR when outliers dominate.",
+        "icon": "missing-data"
+      }
+    ]
   },
   {
     "title": "Choosing the Right Scaling Method",
@@ -213,8 +257,22 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Choosing the Right Scaling Method\". Tie back to the section objective and invite one question before advancing.",
-    "titleIcon": "idea"
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Use standardization for SVM, logistic regression, PCA, and gradient-based traini · Tree-based models are scale-invariant — scaling is optional.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
+    "titleIcon": "idea",
+    "bullets": [
+      {
+        "text": "Use standardization for SVM, logistic regression, PCA, and gradient-based training.",
+        "icon": "check"
+      },
+      {
+        "text": "Tree-based models are scale-invariant — scaling is optional.",
+        "icon": "tree"
+      },
+      {
+        "text": "When in doubt, fit the scaler on train only, then transform train and test.",
+        "icon": "train"
+      }
+    ]
   },
   {
     "title": "Feature Scaling Example (Normalization)",
@@ -749,7 +807,7 @@ export const slides = [
         "icon": "missing-data"
       }
     ],
-    "speakerNote": "Cover \"Handling Missing Data\". Emphasize: It can introduce bias into model training.; then It may reduce prediction accuracy.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: It can introduce bias into model training. · It may reduce prediction accuracy.. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "missing-data"
   },
   {
@@ -1056,7 +1114,7 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Cover \"Handling Missing Data - MNAR\". Emphasize: Standard imputation can be unreliable without additional data or strong domain assumptions.; then MNAR has a systematic pattern tied to hidden information.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Standard imputation can be unreliable without additional data or strong domain a · MNAR has a systematic pattern tied to hidden information.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "missing-data"
   },
   {

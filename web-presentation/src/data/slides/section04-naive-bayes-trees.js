@@ -112,7 +112,7 @@ export const slides = [
         "icon": "scaling"
       }
     ],
-    "speakerNote": "Cover \"Naive Bayes: Practical Notes\". Emphasize: Handle zero-frequency with smoothing (e.g., Laplace smoothing).; then Scale and preprocessing depend on feature type and variant.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Handle zero-frequency with smoothing (e.g., Laplace smoothing). · Scale and preprocessing depend on feature type and variant.. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "naive-bayes"
   },
   {
@@ -135,7 +135,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/f/ff/Decision_tree_model.png"
     ],
-    "speakerNote": "Cover \"Decision Tree Classification (CART)\". Emphasize: Internal nodes represent feature-based decisions.; then Branches represent decision outcomes.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Internal nodes represent feature-based decisions. · Branches represent decision outcomes.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "classification",
     "conceptAnimation": "decision-tree-split"
   },
@@ -149,6 +149,14 @@ export const slides = [
       {
         "text": "Stop splitting using rules like max depth or minimum samples.",
         "icon": "tree"
+      },
+      {
+        "text": "Gini impurity and entropy measure node purity — lower is better.",
+        "icon": "tree"
+      },
+      {
+        "text": "Splits are chosen greedily to maximize information gain.",
+        "icon": "idea"
       }
     ],
     "sections": [
@@ -217,7 +225,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/4/4e/Random_forest_explain.png"
     ],
-    "speakerNote": "Cover \"Random Forest Classification\". Emphasize: Sample bootstrap data and train many trees.; then Each tree predicts a class for the new sample.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Sample bootstrap data and train many trees. · Each tree predicts a class for the new sample.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "classification"
   },
   {
@@ -308,7 +316,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/6/6f/ConfusionMatrix.png"
     ],
-    "speakerNote": "Present \"Confusion Matrix and Accuracy\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "metric",
     "conceptAnimation": "confusion-matrix"
   },

@@ -357,17 +357,37 @@ export default function App() {
       .join("");
     renderSlideMath(el);
     paginatePrintDeck(el);
+    printReadyRef.current = true;
   }, [slides, deckScope, ensureAllForPrint]);
 
+  const printReadyRef = useRef(false);
+
   const handleDownloadPdf = useCallback(() => {
-    void renderPrintDeck().then(() => window.print());
+    void renderPrintDeck().then(() => {
+      printReadyRef.current = true;
+      window.print();
+    });
   }, [renderPrintDeck]);
 
   useEffect(() => {
+    if (!booted || view !== "slides") return;
+    const warmId = window.setTimeout(() => {
+      void renderPrintDeck().then(() => {
+        printReadyRef.current = true;
+      });
+    }, 2000);
+    return () => window.clearTimeout(warmId);
+  }, [booted, view, slides.length, deckScope, renderPrintDeck]);
+
+  useEffect(() => {
     const onBeforePrint = () => {
-      void renderPrintDeck();
+      if (printReadyRef.current) return;
+      void renderPrintDeck().then(() => {
+        printReadyRef.current = true;
+      });
     };
     const onAfterPrint = () => {
+      printReadyRef.current = false;
       if (printRef.current) printRef.current.innerHTML = "";
     };
     window.addEventListener("beforeprint", onBeforePrint);

@@ -20,7 +20,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/f/fd/SVM_margins.png"
     ],
-    "speakerNote": "Cover \"Support Vector Machine (SVM): Core Idea\". Emphasize: It maximizes the margin between classes.; then Only support vectors (closest points) determine the boundary.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: It maximizes the margin between classes. · Only support vectors (closest points) determine the boundary.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "svm",
     "conceptAnimation": "svm-margin"
   },
@@ -78,7 +78,7 @@ export const slides = [
         "icon": "data"
       }
     ],
-    "speakerNote": "Cover \"Why SVM Is Powerful\". Emphasize: Common in text classification and image-related features.; then Often effective on small-to-medium datasets.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Common in text classification and image-related features. · Often effective on small-to-medium datasets.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "svm",
     "conceptAnimation": "svm-margin"
   },
@@ -99,7 +99,7 @@ export const slides = [
       "https://upload.wikimedia.org/wikipedia/commons/f/fe/Kernel_Machine.svg",
       "https://upload.wikimedia.org/wikipedia/commons/5/57/Nonlinear_SVM_example_illustration.svg"
     ],
-    "speakerNote": "Cover \"Kernel Trick: From Non-Linear to Linear Separation\". Emphasize: Avoids explicit high-dimensional mapping in many cases.; then Computes similarity using kernel function K(x_i, x_j).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Avoids explicit high-dimensional mapping in many cases. · Computes similarity using kernel function K(x_i, x_j).. Budget ~90 sec. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "svm"
   },
   {
@@ -134,7 +134,7 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Cover \"RBF Kernel in SVM\". Emphasize: If x is close to landmark l_i, similarity is near 1.; then If x is far, similarity approaches 0.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: If x is close to landmark l_i, similarity is near 1. · If x is far, similarity approaches 0.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "svm",
     "conceptAnimation": "svm-margin"
   },
@@ -169,7 +169,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Common SVM Kernels\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "svm",
     "conceptAnimation": "svm-margin"
   },
@@ -211,9 +211,19 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"When to Use SVM / When Not\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Use: medium-sized data, clear margin, high-dimensional text. · Avoid: massive datasets, heavy noise without kernel tuning.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "svm",
-    "conceptAnimation": "svm-margin"
+    "conceptAnimation": "svm-margin",
+    "bullets": [
+      {
+        "text": "Use: medium-sized data, clear margin, high-dimensional text.",
+        "icon": "check"
+      },
+      {
+        "text": "Avoid: massive datasets, heavy noise without kernel tuning.",
+        "icon": "warning"
+      }
+    ]
   },
   {
     "title": "SVM vs Logistic Regression vs K-NN",

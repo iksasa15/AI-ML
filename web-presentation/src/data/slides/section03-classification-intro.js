@@ -16,7 +16,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png"
     ],
-    "speakerNote": "Cover \"Classification Overview\". Emphasize: Output is a class label (e.g., 0/1, Yes/No).; then Used in spam detection, medical diagnosis, fraud detection, and customer churn prediction.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Output is a class label (e.g., 0/1, Yes/No). · Used in spam detection, medical diagnosis, fraud detection, and customer churn p. Budget ~90 sec. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "classification"
   },
   {
@@ -36,7 +36,7 @@ export const slides = [
         "icon": "feature"
       }
     ],
-    "speakerNote": "Cover \"Logistic Regression: Definition\". Emphasize: Produces probabilities in the range [0, 1].; then Final class is determined using a threshold (commonly 0.5).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Produces probabilities in the range [0, 1]. · Final class is determined using a threshold (commonly 0.5).. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "regression",
     "conceptAnimation": "sigmoid-threshold"
   },
@@ -80,7 +80,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg"
     ],
-    "speakerNote": "Cover \"Sigmoid Mapping and Decision Threshold\". Emphasize: Sigmoid converts any real-valued score into a valid probability.; then If probability >= 0.5, predict class 1; otherwise class 0.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Sigmoid converts any real-valued score into a valid probability. · If probability >= 0.5, predict class 1; otherwise class 0.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "probability",
     "conceptAnimation": "sigmoid-threshold"
   },
@@ -101,7 +101,7 @@ export const slides = [
       }
     ],
     "formula": "\\text{Odds}=\\frac{p}{1-p},\\quad \\text{Logit}(p)=\\log\\left(\\frac{p}{1-p}\\right)",
-    "speakerNote": "Cover \"Key Assumptions for Logistic Regression\". Emphasize: Observations should be independent.; then Predictors should not have severe multicollinearity.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Observations should be independent. · Predictors should not have severe multicollinearity.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "regression",
     "conceptAnimation": "sigmoid-threshold"
   },
@@ -118,7 +118,7 @@ export const slides = [
         "icon": "formula"
       }
     ],
-    "speakerNote": "Cover \"Maximum Likelihood Estimation (MLE)\". Emphasize: Different curves correspond to different parameter values.; then The optimal model is the one with the highest likelihood (or lowest log-loss).. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Different curves correspond to different parameter values. · The optimal model is the one with the highest likelihood (or lowest log-loss).. Budget ~90 sec. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "regression"
   },
   {
@@ -151,9 +151,19 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Logistic Regression: Strengths and Limits\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Strength: calibrated probabilities and clear feature coefficients. · Limit: linear decision boundary in feature space (use polynomials or other model. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "regression",
-    "conceptAnimation": "sigmoid-threshold"
+    "conceptAnimation": "sigmoid-threshold",
+    "bullets": [
+      {
+        "text": "Strength: calibrated probabilities and clear feature coefficients.",
+        "icon": "check"
+      },
+      {
+        "text": "Limit: linear decision boundary in feature space (use polynomials or other models for complex boundaries).",
+        "icon": "warning"
+      }
+    ]
   },
   {
     "title": "Multiclass Extension of Logistic Regression",
@@ -174,7 +184,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/7/71/Multiclass_classification.png"
     ],
-    "speakerNote": "Cover \"Multiclass Extension of Logistic Regression\". Emphasize: Multinomial (Softmax) Logistic Regression directly handles multiple classes.; then One-vs-All (OvA) trains one binary classifier per class.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Multinomial (Softmax) Logistic Regression directly handles multiple classes. · One-vs-All (OvA) trains one binary classifier per class.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "regression",
     "conceptAnimation": "sigmoid-threshold"
   },
@@ -198,7 +208,7 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/e/e7/KnnClassification.svg"
     ],
-    "speakerNote": "Cover \"K-Nearest Neighbors (K-NN): Core Idea\". Emphasize: Choose K.; then Compute distance to all training points.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Choose K. · Compute distance to all training points.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "classification"
   },
   {
@@ -259,7 +269,17 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"K-NN: Strengths and Limitations\". Tie back to the section objective and invite one question before advancing.",
-    "titleIcon": "classification"
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Strength: no training phase — lazy learning, simple baseline. · Limit: slow inference, curse of dimensionality, needs feature scaling.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
+    "titleIcon": "classification",
+    "bullets": [
+      {
+        "text": "Strength: no training phase — lazy learning, simple baseline.",
+        "icon": "check"
+      },
+      {
+        "text": "Limit: slow inference, curse of dimensionality, needs feature scaling.",
+        "icon": "warning"
+      }
+    ]
   }
 ];

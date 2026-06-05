@@ -1,5 +1,5 @@
 /**
- * Content audit — classifies slides per section + visual coverage.
+ * Content audit — classifies slides per section + visual + speaker notes.
  * Run: node scripts/audit-content.mjs
  */
 import fs from "fs";
@@ -33,6 +33,30 @@ function bulletHasIcon(bullets) {
   return bullets.some((b) => typeof b === "object" && b !== null && b.icon);
 }
 
+function countAllBullets(slide) {
+  let n = Array.isArray(slide.bullets) ? slide.bullets.length : 0;
+  for (const col of slide.columns || []) {
+    n += Array.isArray(col.bullets) ? col.bullets.length : 0;
+  }
+  for (const sec of slide.sections || []) {
+    n += Array.isArray(sec.bullets) ? sec.bullets.length : 0;
+  }
+  return n;
+}
+
+function isTemplateSpeakerNote(note) {
+  if (!note || typeof note !== "string") return false;
+  return (
+    note.startsWith('Cover "') ||
+    note.startsWith('Present "') ||
+    note.startsWith("Open ") ||
+    note.includes("Pause for a quick check-in before moving on") ||
+    note.includes("Tie back to the section objective") ||
+    note.includes("Invite one trainee question or a 30-second think-pair-share") ||
+    (note.includes("Emphasize:") && note.includes("then advance"))
+  );
+}
+
 function slideHasVisual(slide) {
   if (slide.type === "section-divider") return true;
   if (slide.titleIcon) return true;
@@ -48,6 +72,7 @@ function slideHasVisual(slide) {
 function classifySlide(slide, titleCounts) {
   const title = String(slide.title || "Untitled");
   const bullets = Array.isArray(slide.bullets) ? slide.bullets : [];
+  const totalBullets = countAllBullets(slide);
   const hasRich =
     Boolean(slide.body) ||
     Boolean(slide.table) ||
@@ -56,7 +81,9 @@ function classifySlide(slide, titleCounts) {
     Boolean(slide.imageUrl) ||
     Boolean(slide.imageUrls?.length) ||
     Boolean(slide.columns?.length) ||
-    Boolean(slide.sections?.length);
+    Boolean(slide.sections?.length) ||
+    Boolean(slide.conceptAnimation) ||
+    Boolean(slide.illustration);
 
   if ((titleCounts.get(title) ?? 0) > 1) {
     return { rating: "red", reason: "Duplicate title in section" };
@@ -65,19 +92,31 @@ function classifySlide(slide, titleCounts) {
     return { rating: "red", reason: "Thin content — no bullets or rich blocks" };
   }
   const speaker = String(slide.speakerNote || "");
-  if (speaker.startsWith('Present "') && bullets.length <= 1 && !hasRich) {
+  if (speaker.startsWith('Present "') && totalBullets <= 1 && !hasRich) {
     return { rating: "red", reason: "Auto-generated placeholder note + weak body" };
   }
-  if (bullets.length <= 1 && !slide.table && !slide.code && !slide.formula) {
+  if (totalBullets <= 1 && !slide.table && !slide.code && !slide.formula && !hasRich) {
     return { rating: "yellow", reason: "Light content — consider richer layout" };
   }
-  if (String(slide.note || "").length > 0 && bullets.length < 3 && !slide.table) {
+  if (String(slide.note || "").length > 0 && totalBullets < 3 && !slide.table && !hasRich) {
     return { rating: "yellow", reason: "Trainer note present but slide visually thin" };
   }
   return { rating: "green", reason: "Adequate depth for delivery" };
 }
 
 const emoji = { red: "🔴", yellow: "🟡", green: "🟢" };
+const globalTitles = new Map();
+
+for (const [, file] of SECTION_FILES) {
+  const mod = await import(pathToFileURL(path.join(slidesDir, file)).href);
+  for (const s of mod.slides) {
+    const t = String(s.title || "");
+    globalTitles.set(t, (globalTitles.get(t) ?? 0) + 1);
+  }
+}
+
+const crossDupes = [...globalTitles.entries()].filter(([, n]) => n > 1).map(([t]) => t);
+
 let md = `# Content Audit — AI & ML Bootcamp\n\n`;
 md += `Generated: ${new Date().toISOString().slice(0, 10)}\n\n`;
 md += `| Rating | Meaning |\n|--------|--------|\n`;
@@ -90,6 +129,7 @@ md += `| ⬜ | No visual enrichment detected |\n\n`;
 
 const totals = { red: 0, yellow: 0, green: 0 };
 const visualTotals = { yes: 0, no: 0 };
+let templateNotes = 0;
 
 for (const [sectionLabel, file] of SECTION_FILES) {
   const mod = await import(pathToFileURL(path.join(slidesDir, file)).href);
@@ -106,12 +146,15 @@ for (const [sectionLabel, file] of SECTION_FILES) {
     const hasVisual = slideHasVisual(slide);
     if (hasVisual) visualTotals.yes += 1;
     else visualTotals.no += 1;
+    const noteQuality = isTemplateSpeakerNote(slide.speakerNote) ? "template" : "custom";
+    if (noteQuality === "template") templateNotes += 1;
     return {
       title: String(slide.title || "Untitled"),
       rating,
       reason,
       hasVisual,
       titleIcon: slide.titleIcon || "—",
+      noteQuality,
     };
   });
 
@@ -123,9 +166,9 @@ for (const [sectionLabel, file] of SECTION_FILES) {
   md += `## ${sectionLabel} (${file})\n\n`;
   md += `Summary: 🟢 ${sectionTotals.green} · 🟡 ${sectionTotals.yellow} · 🔴 ${sectionTotals.red} · **${slides.length} slides**\n\n`;
   md += `Visual coverage: **${visualPct}%** (${visualCount}/${slides.length} with hasVisual)\n\n`;
-  md += `| Slide | Rating | Visual | titleIcon | Note |\n|-------|--------|--------|-----------|------|\n`;
+  md += `| Slide | Rating | Visual | Notes | titleIcon | Note |\n|-------|--------|--------|-------|-----------|------|\n`;
   for (const r of rows) {
-    md += `| ${r.title.replace(/\|/g, "/")} | ${emoji[r.rating]} | ${r.hasVisual ? "✅" : "⬜"} | ${r.titleIcon} | ${r.reason} |\n`;
+    md += `| ${r.title.replace(/\|/g, "/")} | ${emoji[r.rating]} | ${r.hasVisual ? "✅" : "⬜"} | ${r.noteQuality} | ${r.titleIcon} | ${r.reason} |\n`;
   }
   md += `\n`;
 }
@@ -141,13 +184,24 @@ md += `- **${deckTotal}** content slides audited\n\n`;
 md += `### Visual enrichment\n\n`;
 md += `- ✅ hasVisual: **${visualTotals.yes}** (${deckVisualPct}%)\n`;
 md += `- ⬜ Missing: **${visualTotals.no}**\n\n`;
+md += `### Speaker notes\n\n`;
+md += `- Template notes remaining: **${templateNotes}**\n`;
+md += `- Custom notes: **${deckTotal - templateNotes}**\n\n`;
+if (crossDupes.length) {
+  md += `### Cross-section duplicate titles\n\n`;
+  for (const t of crossDupes) {
+    md += `- ${t} (${globalTitles.get(t)}×)\n`;
+  }
+  md += `\n`;
+}
 md += `### Recommended next passes\n\n`;
-md += `1. Rewrite 🔴 slides in Sections 7 (phase dividers), 13 (intro density), and any duplicate titles.\n`;
-md += `2. Apply 🟡 design pass: add tables/diagrams to single-bullet slides.\n`;
-md += `3. Big Picture + Takeaway bookends are injected automatically for all 16 sections.\n`;
+md += `1. Resolve any 🔴 slides and cross-section duplicate titles.\n`;
+md += `2. Apply 🟡 design pass only where rating remains yellow after enrichments.\n`;
+md += `3. Replace remaining template speaker notes with trainer-specific scripts.\n`;
 
 const outPath = path.join(__dirname, "../CONTENT_AUDIT.md");
 fs.writeFileSync(outPath, md, "utf8");
 console.log(`Wrote ${outPath}`);
 console.log(`Totals: green=${totals.green} yellow=${totals.yellow} red=${totals.red}`);
 console.log(`Visual: ${visualTotals.yes}/${deckTotal} (${deckVisualPct}%)`);
+console.log(`Template speaker notes: ${templateNotes}`);

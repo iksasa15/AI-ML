@@ -1,7 +1,7 @@
 import katex from "katex";
 import { formatAmpersandHTML } from "./ampersandText";
 import { normalizeBullets } from "./bulletItems";
-import { ILLUSTRATION_CAPTIONS, isSlideIllustrationId } from "./slideIllustrations";
+import { buildConceptPrintMarkup, buildIllustrationPrintMarkup } from "./printVisuals";
 import { isSlideIconId } from "./slideIconKeys";
 import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
 import { COURSE_WEEKS } from "./courseWeeks";
@@ -176,15 +176,13 @@ function buildBulletsMarkup(
   return `<ul class="${className}">${itemsHTML}</ul>`;
 }
 
-function buildIllustrationMarkup(illustrationId?: string) {
-  if (!illustrationId || !isSlideIllustrationId(illustrationId)) return "";
-  const caption = ILLUSTRATION_CAPTIONS[illustrationId];
-  return `
-    <figure class="illustration-slot illustration-slot--print" aria-label="${escapeHTML(caption)}">
-      <div class="illustration-slot-graphic" data-illustration="${escapeHTML(illustrationId)}"></div>
-      <figcaption class="illustration-slot-caption">${escapeHTML(caption)}</figcaption>
-    </figure>
-  `;
+function buildIllustrationMarkup(slide: SlideRecord) {
+  const id = typeof slide.illustration === "string" ? slide.illustration : undefined;
+  return buildIllustrationPrintMarkup(id);
+}
+
+function buildConceptMarkup(slide: SlideRecord) {
+  return buildConceptPrintMarkup(slide);
 }
 
 function buildFormulaMarkup(tex: string) {
@@ -373,14 +371,14 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
     const mediaBadgeHTML = buildMediaBadgeMarkup(slide);
 
     const titleIcon = typeof slide.titleIcon === "string" ? slide.titleIcon : undefined;
-    const illustrationHTML = buildIllustrationMarkup(
-      typeof slide.illustration === "string" ? slide.illustration : undefined
-    );
+    const illustrationHTML = buildIllustrationMarkup(slide);
+    const conceptHTML = buildConceptMarkup(slide);
 
     return `
       ${buildTitleBlock(String(slide.title || ""), mediaBadgeHTML, titleIcon)}
       ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
       ${illustrationHTML}
+      ${conceptHTML}
       <div class="slide-columns-three">${columnsHTML}</div>
     `;
   }
@@ -440,9 +438,8 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
     .join("");
 
   const titleIcon = typeof slide.titleIcon === "string" ? slide.titleIcon : undefined;
-  const illustrationHTML = buildIllustrationMarkup(
-    typeof slide.illustration === "string" ? slide.illustration : undefined
-  );
+  const illustrationHTML = buildIllustrationMarkup(slide);
+  const conceptHTML = buildConceptMarkup(slide);
 
   const subtitleHtml =
     typeof slide._subtitleHtml === "string"
@@ -474,6 +471,7 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
     ${subtitleHtml}
     ${bodyHtml}
     ${illustrationHTML}
+    ${conceptHTML}
     ${formulaHtml}
     ${imageHTML}
     ${buildBulletsMarkup(bullets, "slide-bullet-list", slide._bulletsHtml as string[] | undefined)}

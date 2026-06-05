@@ -139,7 +139,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Multiple Linear Regression\". Emphasize: Purpose: predict the target variable y using multiple input factors.; then Compared with simple regression, it models more realistic multi-factor scenarios.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Purpose: predict the target variable y using multiple input factors. · Compared with simple regression, it models more realistic multi-factor scenarios. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "regression"
   },
   {
@@ -188,7 +188,7 @@ export const slides = [
         "icon": "target"
       }
     ],
-    "speakerNote": "Cover \"R-Squared (R^2)\". Emphasize: Larger R^2 means better explanatory power.; then R^2 = 1 means perfect fit; R^2 = 0 means mean-level prediction performance.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Larger R^2 means better explanatory power. · R^2 = 1 means perfect fit; R^2 = 0 means mean-level prediction performance.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "regression"
   },
   {
@@ -413,7 +413,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Solving Dummy Variable Trap\". Emphasize: If we drop California, then D_1 = 1 means New York and D_1 = 0 means California baseline.; then This keeps category information while avoiding multicollinearity.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: If we drop California, then D_1 = 1 means New York and D_1 = 0 means California  · This keeps category information while avoiding multicollinearity.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
   },
@@ -538,7 +538,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Model-Building Methods (Steps + Example)\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Set significance level (e.g., SL = 0.05). · Fit model with all predictors.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "model"
   },
   {
@@ -632,7 +632,21 @@ export const slides = [
     ],
     "note": "Start with SL = 0.05, then adjust based on domain risk, dataset size, and model purpose.",
     "speakerNote": "Start with SL = 0.05, then adjust based on domain risk, dataset size, and model purpose.",
-    "titleIcon": "idea"
+    "titleIcon": "idea",
+    "bullets": [
+      {
+        "text": "α = 0.05 implies a 5% false-positive rate under the null hypothesis.",
+        "icon": "probability"
+      },
+      {
+        "text": "It is a convention, not a law — adjust for domain risk (medical vs A/B tests).",
+        "icon": "warning"
+      },
+      {
+        "text": "Report effect size and confidence intervals alongside p-values.",
+        "icon": "metric"
+      }
+    ]
   },
   {
     "title": "Polynomial Regression",
@@ -652,7 +666,7 @@ export const slides = [
         "icon": "regression"
       }
     ],
-    "speakerNote": "Cover \"Polynomial Regression\". Emphasize: Linear regression: y = b_0 + b_1x; then Polynomial regression: y = b_0 + b_1x + b_2x^2 + b_3x^3 + .... Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Linear regression: y = b_0 + b_1x · Polynomial regression: y = b_0 + b_1x + b_2x^2 + b_3x^3 + .... Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "regression"
   },
   {
@@ -680,7 +694,7 @@ export const slides = [
         "icon": "data"
       }
     ],
-    "speakerNote": "Cover \"Why Polynomial Regression?\". Emphasize: Population growth over time; then Disease progression. Pause for a quick check-in before moving on.",
+    "speakerNote": "Summarize the body paragraph, then expand each bullet. Land: Population growth over time · Disease progression. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "regression"
   },
   {
@@ -755,7 +769,7 @@ export const slides = [
         "icon": "test"
       }
     ],
-    "speakerNote": "Cover \"Choosing the Polynomial Degree\". Emphasize: Use cross-validation.; then Compare adjusted R^2.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Use cross-validation. · Compare adjusted R^2.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "regression"
   },
   {
@@ -798,7 +812,7 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Cover \"When to Use Polynomial Regression\". Emphasize: Data shows clear curved trends.; then You need more flexibility than a straight line.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Data shows clear curved trends. · You need more flexibility than a straight line.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "regression"
   },
   {
@@ -840,7 +854,21 @@ export const slides = [
     ],
     "note": "Comparison plots are shown below.",
     "speakerNote": "Comparison plots are shown below.",
-    "titleIcon": "regression"
+    "titleIcon": "regression",
+    "bullets": [
+      {
+        "text": "Underfitting: degree too low — high bias.",
+        "icon": "regression"
+      },
+      {
+        "text": "Overfitting: degree too high — high variance.",
+        "icon": "warning"
+      },
+      {
+        "text": "Use validation curves to pick degree — not training error alone.",
+        "icon": "evaluate"
+      }
+    ]
   },
   {
     "title": "Support Vector Machine (SVM) and SVR",
@@ -864,7 +892,7 @@ export const slides = [
         "icon": "regression"
       }
     ],
-    "speakerNote": "Cover \"Support Vector Machine (SVM) and SVR\". Emphasize: Used in disease progression prediction; then Used in engineering curves (e.g., stress-strain). Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Used in disease progression prediction · Used in engineering curves (e.g., stress-strain). Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "regression",
     "conceptAnimation": "svm-margin"
   },
@@ -922,7 +950,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"SVR Formulation and Equations\". Emphasize: \\(\\phi(x)\\) maps input to a (possibly) higher-dimensional space.; then With kernels, we avoid computing \\(\\phi(x)\\) explicitly.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: \\(\\phi(x)\\) maps input to a (possibly) higher-dimensional space. · With kernels, we avoid computing \\(\\phi(x)\\) explicitly.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "formula"
   },
   {
@@ -970,7 +998,7 @@ export const slides = [
         "icon": "svm"
       }
     ],
-    "speakerNote": "Cover \"Why SVR?\". Emphasize: Use feature scaling before SVR.; then Start with RBF kernel, then tune C, epsilon, and kernel parameters.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Use feature scaling before SVR. · Start with RBF kernel, then tune C, epsilon, and kernel parameters.. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "idea"
   },
   {
@@ -994,7 +1022,7 @@ export const slides = [
         "icon": "feature"
       }
     ],
-    "speakerNote": "Cover \"Decision Tree Regression (CART)\". Emphasize: Captures non-linear relationships.; then Easy to interpret if tree depth is controlled.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Captures non-linear relationships. · Easy to interpret if tree depth is controlled.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "regression",
     "conceptAnimation": "decision-tree-split"
   },
@@ -1056,7 +1084,21 @@ export const slides = [
     ],
     "note": "Choose the split with the minimum weighted MSE.",
     "speakerNote": "Choose the split with the minimum weighted MSE.",
-    "titleIcon": "idea"
+    "titleIcon": "idea",
+    "bullets": [
+      {
+        "text": "CART picks the split that maximally reduces MSE (regression) or Gini/entropy (classification).",
+        "icon": "tree"
+      },
+      {
+        "text": "Greedy splits are fast but not globally optimal.",
+        "icon": "idea"
+      },
+      {
+        "text": "Depth and min-samples-leaf control overfitting on small datasets.",
+        "icon": "regularization"
+      }
+    ]
   },
   {
     "title": "Decision Tree Regression Algorithm (Simple Steps)",
@@ -1280,9 +1322,23 @@ export const slides = [
         "formula": "\\min_{\\beta} \\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2 + \\lambda_1\\sum_{j=1}^{m}|\\beta_j| + \\lambda_2\\sum_{j=1}^{m}\\beta_j^2"
       }
     ],
-    "speakerNote": "Present \"Ridge, Lasso, and Elastic Net\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Ridge (L2): shrinks all coefficients — good when many features correlate. · Lasso (L1): can zero out coefficients — embedded feature selection.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "regression",
-    "illustration": "regularization-path"
+    "illustration": "regularization-path",
+    "bullets": [
+      {
+        "text": "Ridge (L2): shrinks all coefficients — good when many features correlate.",
+        "icon": "regression"
+      },
+      {
+        "text": "Lasso (L1): can zero out coefficients — embedded feature selection.",
+        "icon": "feature"
+      },
+      {
+        "text": "Elastic Net blends L1 + L2 for correlated sparse settings.",
+        "icon": "compare"
+      }
+    ]
   },
   {
     "title": "Regularization Comparison Table",
@@ -1333,7 +1389,7 @@ export const slides = [
         "icon": "feature"
       }
     ],
-    "speakerNote": "Cover \"Regularization Comparison Table\". Emphasize: Ridge: many small/medium useful features.; then Lasso: only few important features expected.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Ridge: many small/medium useful features. · Lasso: only few important features expected.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "regularization"
   },
   {
@@ -1415,6 +1471,31 @@ export const slides = [
     ],
     "note": "Visual output from Python code is shown below.",
     "speakerNote": "Visual output from Python code is shown below.",
-    "titleIcon": "regression"
+    "titleIcon": "regression",
+    "table": {
+      "title": "Model families at a glance",
+      "headers": [
+        "Model",
+        "Strength",
+        "Watch out"
+      ],
+      "rows": [
+        [
+          "Linear / Ridge",
+          "Interpretable, fast",
+          "Nonlinear patterns"
+        ],
+        [
+          "SVR",
+          "Margin-based, kernels",
+          "Slow on huge data"
+        ],
+        [
+          "Tree / RF",
+          "Nonlinear, little scaling",
+          "Extrapolation"
+        ]
+      ]
+    }
   }
 ];

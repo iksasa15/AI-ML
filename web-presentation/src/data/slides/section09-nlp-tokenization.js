@@ -93,7 +93,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Subword Algorithms Comparison\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "token"
   },
   {
@@ -133,7 +133,7 @@ export const slides = [
         "icon": "train"
       }
     ],
-    "speakerNote": "Cover \"Unigram LM Example: Choosing Best Segmentation\". Emphasize: Unigram LM keeps multiple candidates and scores them probabilistically.; then EM training refines token probabilities and prunes weak tokens over time.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Unigram LM keeps multiple candidates and scores them probabilistically. · EM training refines token probabilities and prunes weak tokens over time.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "idea"
   },
   {
@@ -209,7 +209,7 @@ export const slides = [
         "icon": "token"
       }
     ],
-    "speakerNote": "Cover \"BPE Tokenization Inference Example\". Emphasize: Subword decomposition reduces out-of-vocabulary failures.; then Frequent morphemes become reusable building blocks across words.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Subword decomposition reduces out-of-vocabulary failures. · Frequent morphemes become reusable building blocks across words.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -247,9 +247,19 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Why Subword Tokenization Matters in Practice\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Open vocabulary: rare words decompose into known subwords. · Balances character-level flexibility with word-level efficiency.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
+    "conceptAnimation": "tokenization-flow",
+    "bullets": [
+      {
+        "text": "Open vocabulary: rare words decompose into known subwords.",
+        "icon": "token"
+      },
+      {
+        "text": "Balances character-level flexibility with word-level efficiency.",
+        "icon": "compare"
+      }
+    ]
   },
   {
     "title": "Tokenization Practice Exercise",

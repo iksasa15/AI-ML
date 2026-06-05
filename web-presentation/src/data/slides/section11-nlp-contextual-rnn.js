@@ -20,7 +20,7 @@ export const slides = [
         "icon": "rnn"
       }
     ],
-    "speakerNote": "Cover \"NLP Contextualized Embeddings and RNNs\". Emphasize: Contextual embeddings assign different vectors to the same word in different contexts.; then This shift improved disambiguation, semantics, and downstream NLP performance.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Contextual embeddings assign different vectors to the same word in different con · This shift improved disambiguation, semantics, and downstream NLP performance.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "rnn"
   },
   {
@@ -96,9 +96,19 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"How Contextualized Embeddings Work\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Static embeddings: one vector per word type. · Contextual: vector depends on surrounding tokens (ELMo, BERT-style).. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "embedding",
-    "illustration": "embedding-space"
+    "illustration": "embedding-space",
+    "bullets": [
+      {
+        "text": "Static embeddings: one vector per word type.",
+        "icon": "embedding"
+      },
+      {
+        "text": "Contextual: vector depends on surrounding tokens (ELMo, BERT-style).",
+        "icon": "attention"
+      }
+    ]
   },
   {
     "title": "Impact of Contextual Embeddings on LLMs",
@@ -136,7 +146,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Impact of Contextual Embeddings on LLMs\". Emphasize: Better understanding of ambiguous queries and nuanced language.; then Strong transfer learning via pretrain-then-finetune workflows.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Better understanding of ambiguous queries and nuanced language. · Strong transfer learning via pretrain-then-finetune workflows.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "embedding",
     "illustration": "embedding-space"
   },
@@ -180,7 +190,7 @@ export const slides = [
       }
     ],
     "formula": "h_t = f(W_x x_t + W_h h_{t-1} + b)",
-    "speakerNote": "Cover \"RNN Mechanism and Weight Sharing\". Emphasize: At time t, the RNN consumes current input and previous hidden state.; then The same cell and weights are reused at every time step.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: At time t, the RNN consumes current input and previous hidden state. · The same cell and weights are reused at every time step.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "rnn"
   },
   {
@@ -257,7 +267,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"RNN Family: Vanilla, GRU, BiRNN, LSTM\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "rnn"
   },
   {
@@ -296,7 +306,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Activation Functions in Recurrent/Deep Models\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "neural-net"
   },
   {
@@ -319,7 +329,7 @@ export const slides = [
         "icon": "attention"
       }
     ],
-    "speakerNote": "Cover \"Contextual Embeddings and RNNs Summary\". Emphasize: Contextualized embeddings replaced one-vector-per-word limitations.; then RNNs introduced sequence-aware state propagation over time.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Contextualized embeddings replaced one-vector-per-word limitations. · RNNs introduced sequence-aware state propagation over time.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "rnn",
     "illustration": "embedding-space"
   }

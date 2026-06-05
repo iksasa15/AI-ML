@@ -21,7 +21,7 @@
 
 ## محتويات العرض (الأقسام)
 
-يُجمَع المحتوى من **14 ملفاً** داخل `src/data/slides/`، مع شرائح إضافية تُضاف تلقائياً عند التشغيل (جدول الأعمال، الجدول الزمني، فواصل الأقسام، والخاتمة).
+يُجمَع المحتوى من **16 ملفاً** داخل `src/data/slides/`، مع شرائح إضافية تُضاف تلقائياً عند التشغيل (جدول الأعمال، الجدول الزمني، فواصل الأقسام، والخاتمة).
 
 ### الشرائح الافتتاحية (تُضاف تلقائياً)
 
@@ -33,13 +33,13 @@
 
 | القسم | الملف | الموضوع | عدد الشرائح التقريبي |
 |-------|-------|---------|----------------------|
-| **1** | `section01-foundations.js` | أساسيات ML ومعالجة البيانات (تقسيم، تحجيم، ترميز، قيم مفقودة) | 39 |
-| **2** | `section02-regression.js` | الانحدار الخطي، OLS، R²، افتراضات النموذج، بناء النماذج | 48 |
+| **1** | `section01-foundations.js` | أساسيات ML ومعالجة البيانات (تقسيم، تحجيم، ترميز، قيم مفقودة) | 18 |
+| **2** | `section02-regression.js` | الانحدار الخطي، OLS، R²، افتراضات النموذج، بناء النماذج | 35 |
 | **3** | `section03-classification-intro.js` | مقدمة التصنيف، Logistic Regression، K-NN | 11 |
 | **4** | `section04-naive-bayes-trees.js` | Naive Bayes، أشجار القرار، Random Forest، التقييم | 12 |
 | **5** | `section05-svm.js` | SVM، الهامش، النواة (Kernel) | 9 |
 | **6** | `section06-clustering-pca.js` | التجميع (K-Means، Hierarchical) و PCA | 9 |
-| **7** | `section07-deep-learning.js` | التعلّم العميق، الشبكات العصبية، CNN، RNN | 56 |
+| **7** | `section07-deep-learning.js` | التعلّم العميق، الشبكات العصبية، CNN، RNN | 48 |
 | **8** | `section08-nlp-fundamentals.js` | أساسيات NLP والتحديات | 18 |
 | **9** | `section09-nlp-tokenization.js` | ورشة Tokenization (BPE، WordPiece، Unigram) | 8 |
 | **10** | `section10-nlp-language-modeling.js` | نمذجة اللغة بـ N-grams والتقييم | 15 |
@@ -185,7 +185,7 @@ web-presentation/
 │   │   └── SectionOutlinePage.tsx   # صفحة جدول الأقسام
 │   ├── data/
 │   │   ├── presentationData.js      # تجميع كل الأقسام
-│   │   └── slides/                  # ملفات الشرائح (14 قسماً)
+│   │   └── slides/                  # ملفات الشرائح (16 قسماً)
 │   └── lib/
 │       ├── addPresentationStructure.ts  # إضافة المقدمة والفواصل والخاتمة
 │       ├── slideMarkup.ts               # تحويل JSON إلى HTML
@@ -208,6 +208,20 @@ web-presentation/
 **إعداد مرة واحدة:** في إعدادات المستودع → **Pages** → اختر **Source: GitHub Actions**.
 
 البناء يستخدم `base: /AI-ML/web-presentation/` في الإنتاج حتى تعمل الروابط والأصول على Pages.
+
+## ما قبل النشر
+
+```powershell
+cd web-presentation
+npm run prepublish:check   # polish + audit:content + audit:math + build
+```
+
+| الأمر | الغرض |
+|-------|--------|
+| `npm run polish:content` | إثراء الشرائح الضعيفة وملاحظات المقدم |
+| `npm run audit:content` | تقرير `CONTENT_AUDIT.md` (تصنيف 🟢🟡🔴 + ملاحظات) |
+| `npm run audit:math` | فحص حقول LaTeX في بيانات الشرائح |
+| `npm run audit:images` | قائمة صور Wikimedia الخارجية (PDF يحتاج شبكة) |
 
 ## قائمة الاختبار
 

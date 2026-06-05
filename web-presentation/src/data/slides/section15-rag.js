@@ -17,7 +17,7 @@ export const slides = [
         "icon": "warning"
       }
     ],
-    "speakerNote": "Open with a failed pure-LLM answer on internal policy — then show the same question with retrieved docs.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: LLMs alone lack private, up-to-date, or domain-specific knowledge. · RAG retrieves relevant documents at query time and injects them into the prompt.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "llm",
     "conceptAnimation": "rag-pipeline"
   },

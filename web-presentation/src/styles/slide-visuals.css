@@ -120,12 +120,17 @@ html[data-theme="dark"] .slide-icon {
   background: var(--card-2);
 }
 
-.illustration-slot--print .illustration-slot-graphic::after {
-  content: attr(data-illustration);
+.illustration-slot--print .illustration-slot-graphic svg,
+.concept-card--print svg {
   display: block;
-  padding: 1rem;
-  text-align: center;
-  font-size: var(--text-xs);
-  color: var(--muted);
-  text-transform: capitalize;
+  width: 100%;
+  max-height: 220px;
+  margin-inline: auto;
+}
+
+.concept-card--print {
+  margin: var(--space-2) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }

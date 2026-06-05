@@ -84,8 +84,18 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"NLP Grand Goal and Core Applications\". Tie back to the section objective and invite one question before advancing.",
-    "titleIcon": "nlp"
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Goal: algorithms that understand, generate, and transform human language. · Applications span search, assistants, translation, and analytics.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
+    "titleIcon": "nlp",
+    "bullets": [
+      {
+        "text": "Goal: algorithms that understand, generate, and transform human language.",
+        "icon": "nlp"
+      },
+      {
+        "text": "Applications span search, assistants, translation, and analytics.",
+        "icon": "idea"
+      }
+    ]
   },
   {
     "title": "Regular Expressions (Regex): Core Idea",
@@ -132,7 +142,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Regular Expressions (Regex): Core Idea\". Emphasize: Regex is a compact pattern language for matching and transforming text.; then Typical uses include validation, extraction, and rule-based cleanup.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Regex is a compact pattern language for matching and transforming text. · Typical uses include validation, extraction, and rule-based cleanup.. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
@@ -215,7 +225,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Regex Refinement Workflow\". Emphasize: Initial pattern may under-match or over-match.; then Iteratively refine with case handling and boundaries.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Initial pattern may under-match or over-match. · Iteratively refine with case handling and boundaries.. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "idea"
   },
   {
@@ -253,7 +263,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Words and Corpora: Tokens vs Types\". Emphasize: Tokens are total observed word instances (with repetition).; then Types are unique vocabulary items in the corpus.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Tokens are total observed word instances (with repetition). · Types are unique vocabulary items in the corpus.. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -313,9 +323,19 @@ export const slides = [
         ]
       }
     ],
-    "speakerNote": "Present \"Text Normalization Pipeline\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Typical order: lowercase → punctuation → tokenize → stopwords → stem/lemma. · Order matters — document the pipeline for reproducibility.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
     "titleIcon": "scaling",
-    "conceptAnimation": "feature-scaling"
+    "conceptAnimation": "feature-scaling",
+    "bullets": [
+      {
+        "text": "Typical order: lowercase → punctuation → tokenize → stopwords → stem/lemma.",
+        "icon": "pipeline"
+      },
+      {
+        "text": "Order matters — document the pipeline for reproducibility.",
+        "icon": "check"
+      }
+    ]
   },
   {
     "title": "Text Preprocessing Techniques (Operational View)",
@@ -353,7 +373,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Present \"Text Preprocessing Techniques (Operational View)\". Tie back to the section objective and invite one question before advancing.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "pipeline",
     "illustration": "preprocessing-pipeline"
   },
@@ -397,7 +417,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"Tokenization Strategies\". Emphasize: Whitespace tokenization is simple and effective for many scripts.; then Character-level tokenization avoids OOV but can lengthen sequences.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Whitespace tokenization is simple and effective for many scripts. · Character-level tokenization avoids OOV but can lengthen sequences.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -522,7 +542,7 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Cover \"BPE Training Process\". Emphasize: Start from character-level symbols.; then Count adjacent symbol-pair frequencies.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Start from character-level symbols. · Count adjacent symbol-pair frequencies.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
@@ -601,7 +621,7 @@ export const slides = [
         "icon": "train"
       }
     ],
-    "speakerNote": "Cover \"Modern NLP Models: From Embeddings to Transformers\". Emphasize: Distributed embeddings (e.g., CBOW) map words into dense semantic vectors.; then Transformers model long-range dependencies via self-attention.. Pause for a quick check-in before moving on.",
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Distributed embeddings (e.g., CBOW) map words into dense semantic vectors. · Transformers model long-range dependencies via self-attention.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
     "titleIcon": "embedding"
   },
   {

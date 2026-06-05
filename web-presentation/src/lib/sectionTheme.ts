@@ -67,9 +67,18 @@ export function getSectionTheme(sectionId: number): SectionTheme {
 }
 
 export function parseSectionIdFromDivider(slide: SlideRecord): number | null {
+  if (typeof slide.sectionId === "number" && slide.sectionId > 0) {
+    return slide.sectionId;
+  }
+
   const title = String(slide.title || "");
-  const match = title.match(/Section\s+(\d+)/i);
-  return match ? Number.parseInt(match[1], 10) : null;
+  const sectionMatch = title.match(/Section\s+(\d+)/i);
+  if (sectionMatch) return Number.parseInt(sectionMatch[1], 10);
+
+  // Deep Learning in-deck phase dividers (Section 7)
+  if (/^Phase\s+\d+/i.test(title)) return 7;
+
+  return null;
 }
 
 export const SECTION_KEY_TOPICS: Record<number, string[]> = {
