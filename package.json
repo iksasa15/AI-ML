@@ -2,6 +2,7 @@
   "name": "ai-ml",
   "private": true,
   "scripts": {
+    "build": "npm run build:cloudflare",
     "build:cloudflare": "npm ci --prefix web-presentation && cross-env CLOUDFLARE=1 npm run build --prefix web-presentation",
     "deploy:cloudflare": "npm run build:cloudflare && npx wrangler deploy"
   },

@@ -201,18 +201,37 @@ web-presentation/
 
 ## النشر على Cloudflare Workers / Pages
 
-المستودع يتضمن `wrangler.jsonc` في الجذر لنشر العرض كـ **Worker ثابت** (مشروع `ai`).
+المستودع يتضمن [`wrangler.jsonc`](../wrangler.jsonc) في الجذر — يدعم **Workers** (`assets.directory`) و**Pages** (`pages_build_output_dir`) معاً.
 
-| الإعداد | القيمة |
-|---------|--------|
-| **أمر البناء** | `npm run build:cloudflare` |
-| **مجلد الإخراج** | `web-presentation/dist` |
-| **أمر النشر** | `npx wrangler deploy` |
-
-في لوحة Cloudflare → Workers → **ai** → Settings → Builds، تأكد أن أوامر البناء تطابق الجدول أعلاه.  
 على Cloudflare يُبنى العرض بـ `base: /` (على GitHub Pages يبقى `/AI-ML/web-presentation/`).
 
-إذا ظهرت فحوصات Cloudflare حمراء على `main` بدون `wrangler.jsonc`، ادمج إعدادات النشر من الجذر أو أغلق [PR #1](https://github.com/iksasa15/AI-ML/pull/1) بعد تحديثه.
+### Workers → مشروع **ai** → Settings → Builds
+
+| الحقل | القيمة |
+|-------|--------|
+| Root directory | `/` |
+| **Build command** | `npm run build:cloudflare` |
+| **Deploy command** | `npx wrangler deploy` |
+
+بديل: `npm run deploy:cloudflare` (بناء + نشر في أمر واحد).
+
+### Cloudflare Pages (نفس المستودع)
+
+| الحقل | القيمة |
+|-------|--------|
+| Root directory | `/` |
+| **Build command** | `npm run build:cloudflare` |
+| **Build output directory** | `web-presentation/dist` |
+
+ملفات PDF في جذر المستودع **لا تُنشر** — النشر من `web-presentation/dist` فقط.
+
+محلياً:
+
+```powershell
+cd ..
+npm run build:cloudflare
+npx wrangler deploy
+```
 
 ## النشر على GitHub Pages
 

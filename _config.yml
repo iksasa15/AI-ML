@@ -6,6 +6,7 @@ exclude:
   - web-presentation/node_modules
   - web-presentation/dist
   - web-presentation/src
+  - docs/archive
   - .wrangler
   - package-lock.json
   - web-presentation/package-lock.json
