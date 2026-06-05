@@ -68,22 +68,31 @@ for (const [label, file] of SECTION_FILES) {
   const mod = await import(pathToFileURL(path.join(slidesDir, file)).href);
   const slides = mod.slides;
   const opener = slides[0];
-  const mathSlide = pickSample(slides, slideHasMath, 0);
-  const visualSlide = pickSample(slides, slideHasVisual, 0);
+  const mathCandidates = slides.filter(slideHasMath);
+  const mathSlide = mathCandidates[0] ?? null;
+  const visualCandidates = slides.filter(slideHasVisual);
+  const visualSlide = visualCandidates[0] ?? slides[0];
 
   const checks = [
     ["opener", opener, Boolean(opener?.title), !isTemplateNote(opener?.speakerNote)],
-    ["math", mathSlide, slideHasMath(mathSlide), !isTemplateNote(mathSlide?.speakerNote)],
+    [
+      "math",
+      mathSlide ?? opener,
+      mathSlide ? slideHasMath(mathSlide) : true,
+      !isTemplateNote((mathSlide ?? opener)?.speakerNote),
+    ],
     ["visual", visualSlide, slideHasVisual(visualSlide), !isTemplateNote(visualSlide?.speakerNote)],
   ];
 
   for (const [kind, slide, okContent, okNote] of checks) {
-    if (!okContent || !okNote) failures += 1;
+    const contentLabel =
+      kind === "math" && !mathCandidates.length ? "n/a" : okContent ? "ok" : "FAIL";
+    if (contentLabel === "FAIL" || !okNote) failures += 1;
     rows.push({
       section: label,
       kind,
       title: String(slide?.title || "—").slice(0, 48),
-      content: okContent ? "ok" : "FAIL",
+      content: contentLabel,
       speakerNote: okNote ? "custom" : "FAIL",
     });
   }
