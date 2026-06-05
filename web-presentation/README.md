@@ -201,9 +201,9 @@ web-presentation/
 
 ## النشر على Cloudflare Workers / Pages
 
-المستودع يتضمن ملفي إعداد في الجذر:
-- [`wrangler.jsonc`](../wrangler.jsonc) — **Cloudflare Pages** (`pages_build_output_dir`، اسم المشروع `web-presentation`)
-- [`wrangler.worker.jsonc`](../wrangler.worker.jsonc) — **Workers** (`assets.directory` + `build.command`، اسم المشروع `ai`)
+المستودع يتضمن [`wrangler.jsonc`](../wrangler.jsonc) في الجذر لمشروع **Workers `ai`** (`assets.directory` + `build.command`).
+
+> **ملاحظة:** حقل `assets` غير مدعوم في إعداد Pages عبر Wrangler، لذا يتجاهل Cloudflare Pages ملف `wrangler.jsonc` ويعتمد على **إعدادات اللوحة** أدناه (مطلوبة يدوياً).
 
 على Cloudflare يُبنى العرض بـ `base: /` (على GitHub Pages يبقى `/AI-ML/web-presentation/`).
 
@@ -213,11 +213,11 @@ web-presentation/
 |-------|--------|
 | Root directory | `/` |
 | **Build command** | `npm run build:cloudflare` |
-| **Deploy command** | `npx wrangler deploy -c wrangler.worker.jsonc` |
+| **Deploy command** | `npx wrangler deploy` |
 
-بديل: `npm run deploy:cloudflare` (بناء + نشر في أمر واحد). يجب استخدام `wrangler.worker.jsonc` وليس `wrangler.jsonc` (الأخير مخصّص لـ Pages فقط).
+بديل: `npm run deploy:cloudflare` (بناء + نشر في أمر واحد).
 
-### Cloudflare Pages (نفس المستودع)
+### Cloudflare Pages → مشروع **web-presentation** (إعداد اللوحة — مطلوب)
 
 | الحقل | القيمة |
 |-------|--------|
@@ -225,14 +225,16 @@ web-presentation/
 | **Build command** | `npm run build:cloudflare` |
 | **Build output directory** | `web-presentation/dist` |
 
-ملفات PDF في جذر المستودع **لا تُنشر** — النشر من `web-presentation/dist` فقط.
+بدون هذه القيم في اللوحة، يتجاهل Pages `wrangler.jsonc` (لأنه مخصّص لـ Workers) وقد يرفع جذر المستودع بالخطأ.
+
+ملفات PDF في `docs/archive/` **لا تُنشر** — النشر من `web-presentation/dist` فقط.
 
 محلياً:
 
 ```powershell
 cd ..
 npm run build:cloudflare
-npm run deploy:workers
+npx wrangler deploy
 ```
 
 ## النشر على GitHub Pages
