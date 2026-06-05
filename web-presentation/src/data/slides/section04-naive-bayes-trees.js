@@ -1,170 +1,252 @@
 /** Auto-split from presentationData — section04-naive-bayes-trees */
 export const slides = [
     {
-      title: "Naive Bayes: Bayes' Theorem",
-      subtitle: "Core Probability Rule",
-      formula: "P(A\\mid B)=\\frac{P(B\\mid A)P(A)}{P(B)}",
-      bullets: [
+      "title": "Naive Bayes: Bayes' Theorem",
+      "subtitle": "Core Probability Rule",
+      "formula": "P(A\\mid B)=\\frac{P(B\\mid A)P(A)}{P(B)}",
+      "bullets": [
         "P(A|B): posterior probability after observing evidence B.",
         "P(A): prior belief before seeing evidence.",
         "P(B|A): likelihood of evidence if class A is true.",
-        "P(B): evidence probability (normalization term).",
+        "P(B): evidence probability (normalization term)."
       ],
-      note: "This theorem updates beliefs when new evidence appears.",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/6/61/Bayes_theorem_tree_diagrams.svg",
+      "note": "This theorem updates beliefs when new evidence appears.",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/6/61/Bayes_theorem_tree_diagrams.svg"
       ],
+      "speakerNote": "This theorem updates beliefs when new evidence appears."
     },
     {
-      title: "How Naive Bayes Classifies",
-      bullets: [
+      "title": "How Naive Bayes Classifies",
+      "bullets": [
         "Compute class posterior for each class: P(Class | X).",
         "Estimate prior and feature likelihoods from training data.",
         "Compare posterior scores across classes.",
-        "Assign the class with the highest posterior probability.",
+        "Assign the class with the highest posterior probability."
       ],
-      formula:
-        "\\hat{y}=\\arg\\max_{c\\in\\mathcal{C}} P(c)\\prod_{j=1}^{m}P(x_j\\mid c)",
-      note: "For numerical stability, implementations often use log-probabilities.",
+      "formula": "\\hat{y}=\\arg\\max_{c\\in\\mathcal{C}} P(c)\\prod_{j=1}^{m}P(x_j\\mid c)",
+      "note": "For numerical stability, implementations often use log-probabilities.",
+      "speakerNote": "For numerical stability, implementations often use log-probabilities."
     },
     {
-      title: "Why Is It Called 'Naive'?",
-      subtitle: "Conditional Independence Assumption",
-      body: "Naive Bayes assumes features are conditionally independent given the class label.",
-      bullets: [
+      "title": "Why Is It Called 'Naive'?",
+      "subtitle": "Conditional Independence Assumption",
+      "body": "Naive Bayes assumes features are conditionally independent given the class label.",
+      "bullets": [
         "Simplifies parameter estimation and speeds up training.",
         "Works well in text classification and high-dimensional sparse data.",
-        "Can still perform well even when independence is not fully true.",
+        "Can still perform well even when independence is not fully true."
       ],
-      note: "When comparing classes for the same X, P(X) is constant and can be ignored.",
+      "note": "When comparing classes for the same X, P(X) is constant and can be ignored.",
+      "speakerNote": "When comparing classes for the same X, P(X) is constant and can be ignored."
     },
     {
-      title: "Naive Bayes: Practical Notes",
-      table: {
-        headers: ["Variant", "Typical Data Type", "Key Idea"],
-        rows: [
-          ["Gaussian NB", "Continuous", "Assumes each feature follows a Gaussian distribution."],
-          ["Multinomial NB", "Count-based", "Common for document word counts."],
-          ["Bernoulli NB", "Binary", "Uses binary presence/absence features."],
+      "title": "Naive Bayes: Practical Notes",
+      "table": {
+        "headers": [
+          "Variant",
+          "Typical Data Type",
+          "Key Idea"
         ],
+        "rows": [
+          [
+            "Gaussian NB",
+            "Continuous",
+            "Assumes each feature follows a Gaussian distribution."
+          ],
+          [
+            "Multinomial NB",
+            "Count-based",
+            "Common for document word counts."
+          ],
+          [
+            "Bernoulli NB",
+            "Binary",
+            "Uses binary presence/absence features."
+          ]
+        ]
       },
-      bullets: [
+      "bullets": [
         "Handle zero-frequency with smoothing (e.g., Laplace smoothing).",
-        "Scale and preprocessing depend on feature type and variant.",
+        "Scale and preprocessing depend on feature type and variant."
       ],
+      "speakerNote": "Cover \"Naive Bayes: Practical Notes\". Emphasize: Handle zero-frequency with smoothing (e.g., Laplace smoothing).; then Scale and preprocessing depend on feature type and variant.. Pause for a quick check-in before moving on."
     },
     {
-      title: "Decision Tree Classification (CART)",
-      body: "Decision Tree Classification predicts class labels by recursively splitting feature space into purer class regions.",
-      bullets: [
+      "title": "Decision Tree Classification (CART)",
+      "body": "Decision Tree Classification predicts class labels by recursively splitting feature space into purer class regions.",
+      "bullets": [
         "Internal nodes represent feature-based decisions.",
         "Branches represent decision outcomes.",
-        "Leaf nodes output final class prediction.",
+        "Leaf nodes output final class prediction."
       ],
-      imageUrls: ["https://upload.wikimedia.org/wikipedia/commons/f/ff/Decision_tree_model.png"],
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/f/ff/Decision_tree_model.png"
+      ],
+      "speakerNote": "Cover \"Decision Tree Classification (CART)\". Emphasize: Internal nodes represent feature-based decisions.; then Branches represent decision outcomes.. Pause for a quick check-in before moving on."
     },
     {
-      title: "How Splits Are Chosen in Classification Trees",
-      bullets: [
+      "title": "How Splits Are Chosen in Classification Trees",
+      "bullets": [
         "Choose split that best separates classes at each node.",
-        "Stop splitting using rules like max depth or minimum samples.",
+        "Stop splitting using rules like max depth or minimum samples."
       ],
-      sections: [
+      "sections": [
         {
-          heading: "Gini Impurity (CART default)",
-          formula: "Gini(S)=1-\\sum_{k=1}^{K}p_k^2",
+          "heading": "Gini Impurity (CART default)",
+          "formula": "Gini(S)=1-\\sum_{k=1}^{K}p_k^2"
         },
         {
-          heading: "Entropy and Information Gain",
-          formula: "Entropy(S)=-\\sum_{k=1}^{K}p_k\\log_2 p_k",
-        },
+          "heading": "Entropy and Information Gain",
+          "formula": "Entropy(S)=-\\sum_{k=1}^{K}p_k\\log_2 p_k"
+        }
       ],
-      note: "Better splits reduce impurity and increase class purity in child nodes.",
+      "note": "Better splits reduce impurity and increase class purity in child nodes.",
+      "speakerNote": "Better splits reduce impurity and increase class purity in child nodes."
     },
     {
-      title: "Decision Tree: Classification vs Regression",
-      table: {
-        headers: ["Aspect", "Classification Tree", "Regression Tree"],
-        rows: [
-          ["Target", "Categorical class", "Continuous value"],
-          ["Split criterion", "Gini / Entropy", "MSE / MAE"],
-          ["Leaf output", "Class label or class probability", "Numeric mean/median"],
+      "title": "Decision Tree: Classification vs Regression",
+      "table": {
+        "headers": [
+          "Aspect",
+          "Classification Tree",
+          "Regression Tree"
         ],
+        "rows": [
+          [
+            "Target",
+            "Categorical class",
+            "Continuous value"
+          ],
+          [
+            "Split criterion",
+            "Gini / Entropy",
+            "MSE / MAE"
+          ],
+          [
+            "Leaf output",
+            "Class label or class probability",
+            "Numeric mean/median"
+          ]
+        ]
       },
-      note: "Both use recursive partitioning, but optimize different objectives.",
+      "note": "Both use recursive partitioning, but optimize different objectives.",
+      "speakerNote": "Both use recursive partitioning, but optimize different objectives."
     },
     {
-      title: "Random Forest Classification",
-      subtitle: "Ensemble Learning by Bagging",
-      bullets: [
+      "title": "Random Forest Classification",
+      "subtitle": "Ensemble Learning by Bagging",
+      "bullets": [
         "Sample bootstrap data and train many trees.",
         "Each tree predicts a class for the new sample.",
-        "Final class is selected by majority voting.",
+        "Final class is selected by majority voting."
       ],
-      formula:
-        "\\hat{y}_{RF}(x)=\\operatorname*{mode}\\{\\hat{y}_1(x),\\hat{y}_2(x),\\ldots,\\hat{y}_T(x)\\}",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/4/4e/Random_forest_explain.png",
+      "formula": "\\hat{y}_{RF}(x)=\\operatorname*{mode}\\{\\hat{y}_1(x),\\hat{y}_2(x),\\ldots,\\hat{y}_T(x)\\}",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/4/4e/Random_forest_explain.png"
       ],
+      "speakerNote": "Cover \"Random Forest Classification\". Emphasize: Sample bootstrap data and train many trees.; then Each tree predicts a class for the new sample.. Pause for a quick check-in before moving on."
     },
     {
-      title: "Why Random Forest Often Outperforms a Single Tree",
-      table: {
-        headers: ["Property", "Single Decision Tree", "Random Forest"],
-        rows: [
-          ["Variance", "High", "Lower (averaging effect)"],
-          ["Overfitting risk", "Higher", "Lower"],
-          ["Interpretability", "High", "Moderate"],
-          ["Predictive robustness", "Sensitive to data noise", "More stable"],
+      "title": "Why Random Forest Often Outperforms a Single Tree",
+      "table": {
+        "headers": [
+          "Property",
+          "Single Decision Tree",
+          "Random Forest"
         ],
+        "rows": [
+          [
+            "Variance",
+            "High",
+            "Lower (averaging effect)"
+          ],
+          [
+            "Overfitting risk",
+            "Higher",
+            "Lower"
+          ],
+          [
+            "Interpretability",
+            "High",
+            "Moderate"
+          ],
+          [
+            "Predictive robustness",
+            "Sensitive to data noise",
+            "More stable"
+          ]
+        ]
       },
-      note: "Random Forest improves generalization by combining diverse weak learners.",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/d/d8/Decision_Tree_vs._Random_Forest.png",
+      "note": "Random Forest improves generalization by combining diverse weak learners.",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/d/d8/Decision_Tree_vs._Random_Forest.png"
       ],
+      "speakerNote": "Random Forest improves generalization by combining diverse weak learners."
     },
     {
-      title: "Classification Errors: FP and FN",
-      bullets: [
+      "title": "Classification Errors: FP and FN",
+      "bullets": [
         "False Positive (Type I): model predicts positive, but actual is negative.",
         "False Negative (Type II): model predicts negative, but actual is positive.",
-        "Error impact depends on domain costs (e.g., healthcare vs spam filtering).",
+        "Error impact depends on domain costs (e.g., healthcare vs spam filtering)."
       ],
-      note: "Model evaluation should consider error trade-offs, not accuracy alone.",
+      "note": "Model evaluation should consider error trade-offs, not accuracy alone.",
+      "speakerNote": "Model evaluation should consider error trade-offs, not accuracy alone."
     },
     {
-      title: "Confusion Matrix and Accuracy",
-      table: {
-        headers: ["Metric", "Meaning"],
-        rows: [
-          ["TP", "Correctly predicted positives"],
-          ["TN", "Correctly predicted negatives"],
-          ["FP", "Incorrectly predicted positives"],
-          ["FN", "Incorrectly predicted negatives"],
+      "title": "Confusion Matrix and Accuracy",
+      "table": {
+        "headers": [
+          "Metric",
+          "Meaning"
         ],
+        "rows": [
+          [
+            "TP",
+            "Correctly predicted positives"
+          ],
+          [
+            "TN",
+            "Correctly predicted negatives"
+          ],
+          [
+            "FP",
+            "Incorrectly predicted positives"
+          ],
+          [
+            "FN",
+            "Incorrectly predicted negatives"
+          ]
+        ]
       },
-      formula: "Accuracy=\\frac{TP+TN}{TP+TN+FP+FN}",
-      imageUrls: ["https://upload.wikimedia.org/wikipedia/commons/6/6f/ConfusionMatrix.png"],
+      "formula": "Accuracy=\\frac{TP+TN}{TP+TN+FP+FN}",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/6/6f/ConfusionMatrix.png"
+      ],
+      "speakerNote": "Present \"Confusion Matrix and Accuracy\". Tie back to the section objective and invite one question before advancing."
     },
     {
-      title: "Precision, Recall, and F1-Score",
-      bullets: [
+      "title": "Precision, Recall, and F1-Score",
+      "bullets": [
         "Precision: of predicted positives, how many are truly positive.",
         "Recall: of actual positives, how many were detected.",
-        "F1-score: harmonic mean balancing precision and recall.",
+        "F1-score: harmonic mean balancing precision and recall."
       ],
-      sections: [
+      "sections": [
         {
-          heading: "Formulas",
-          formula: "Precision=\\frac{TP}{TP+FP},\\quad Recall=\\frac{TP}{TP+FN}",
+          "heading": "Formulas",
+          "formula": "Precision=\\frac{TP}{TP+FP},\\quad Recall=\\frac{TP}{TP+FN}"
         },
         {
-          heading: "F1",
-          formula: "F1=2\\cdot\\frac{Precision\\cdot Recall}{Precision+Recall}",
-        },
+          "heading": "F1",
+          "formula": "F1=2\\cdot\\frac{Precision\\cdot Recall}{Precision+Recall}"
+        }
       ],
-      note: "Use F1 especially when class distribution is imbalanced.",
-      imageUrls: ["https://upload.wikimedia.org/wikipedia/commons/2/26/Precisionrecall.svg"],
-    },
-
-];
+      "note": "Use F1 especially when class distribution is imbalanced.",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/2/26/Precisionrecall.svg"
+      ],
+      "speakerNote": "Use F1 especially when class distribution is imbalanced."
+    }
+  ];

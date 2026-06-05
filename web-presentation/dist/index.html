@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI & Machine Learning Bootcamp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Cairo:wght@400;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
     <script>
       (function () {
         try {
@@ -15,13 +21,23 @@
             document.documentElement.setAttribute("lang", "ar");
             document.documentElement.setAttribute("dir", "rtl");
           }
-        } catch (e) {}
+          var theme = localStorage.getItem("ml-presentation-theme");
+          document.documentElement.setAttribute(
+            "data-theme",
+            theme === "dark" ? "dark" : "light"
+          );
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
       })();
     </script>
-    <script type="module" crossorigin src="/assets/index-BN3xgyIX.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-csgnuWDd.css">
-  </head>
+    <script type="module" crossorigin src="/AI-ML/web-presentation/assets/index-BpC0UiH4.js"></script>
+    <link rel="modulepreload" crossorigin href="/AI-ML/web-presentation/assets/katex-B4JB2ECv.js">
+    <link rel="modulepreload" crossorigin href="/AI-ML/web-presentation/assets/codemirror-DwF-3cRG.js">
+    <link rel="stylesheet" crossorigin href="/AI-ML/web-presentation/assets/katex-bSHLN78z.css">
+    <link rel="stylesheet" crossorigin href="/AI-ML/web-presentation/assets/index-vpwgHILh.css">
+  <link rel="manifest" href="/AI-ML/web-presentation/manifest.webmanifest"></head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>

@@ -1,0 +1,445 @@
+/* ── Day 4: Slide transitions ── */
+
+@keyframes slide-transition-in {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes section-transition-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes divider-wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.6;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+[dir="rtl"] .slide-transition-slide.is-entering {
+  animation-name: slide-transition-in-rtl;
+}
+
+@keyframes slide-transition-in-rtl {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-transition-slide.is-entering {
+  animation: slide-transition-in 300ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.slide-transition-section.is-entering {
+  animation: section-transition-in 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.slide-transition-divider.is-entering {
+  animation: divider-wipe-in 600ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Bullet reveal — one at a time */
+.slide-bullet-reveal {
+  animation: bullet-reveal-in 0.4s ease both;
+}
+
+@keyframes bullet-reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bullet-reveal-hint {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── Concept animation cards ── */
+
+.concept-card {
+  margin: var(--space-3) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-2);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.concept-card-head {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+}
+
+.concept-card-head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.concept-card-head p {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.concept-svg {
+  width: 100%;
+  display: block;
+  background: var(--card);
+}
+
+.concept-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.concept-btn {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+}
+
+.concept-btn--ghost {
+  background: transparent;
+  color: var(--accent);
+}
+
+.concept-btn:hover {
+  filter: brightness(1.05);
+}
+
+.concept-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--muted);
+  margin-inline-start: auto;
+}
+
+.concept-caption {
+  margin: 0;
+  padding: var(--space-1) var(--space-3) var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+/* Neural network */
+.nn-edge {
+  stroke: var(--accent);
+  cursor: pointer;
+  transition: stroke-width 0.15s ease, stroke-opacity 0.15s ease;
+}
+
+.nn-edge.is-flowing {
+  stroke: var(--color-gold);
+  stroke-opacity: 1;
+}
+
+.nn-flow-dot {
+  fill: var(--color-gold);
+}
+
+.nn-node {
+  fill: var(--card);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.nn-node.is-lit {
+  fill: var(--color-accent-light);
+  stroke: var(--color-gold);
+}
+
+.nn-node-label,
+.nn-layer-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--muted);
+  pointer-events: none;
+}
+
+.nn-layer-label {
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--text);
+}
+
+/* Gradient descent */
+.gd-axis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.gd-curve {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.gd-point {
+  fill: var(--color-danger);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.gd-point.is-moving {
+  fill: var(--color-gold);
+}
+
+.gd-minimum {
+  fill: var(--color-success);
+  opacity: 0.85;
+}
+
+.gd-min-label,
+.gd-axis-label {
+  font-family: var(--font-ui);
+  font-size: 9px;
+  fill: var(--muted);
+}
+
+.gd-drop-line {
+  stroke: var(--color-gold);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+/* Attention heatmap */
+.attn-matrix-wrap {
+  padding: var(--space-2);
+  overflow-x: auto;
+}
+
+.attn-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.attn-matrix th,
+.attn-matrix td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.5rem;
+  text-align: center;
+  min-width: 2.5rem;
+}
+
+.attn-row-btn {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  padding: 0;
+}
+
+.attn-row-btn.is-active {
+  color: var(--accent);
+}
+
+.attn-cell.is-row-active {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.attn-cell.is-peak {
+  outline: 2px solid var(--color-gold);
+  outline-offset: -2px;
+}
+
+/* ── Day 5: Live Code Runner ── */
+
+.code-runner {
+  margin: var(--space-3) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.code-runner-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
+  background: var(--card-2);
+}
+
+.code-runner-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.code-runner-meta {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.code-runner-actions {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.code-runner-btn {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: var(--radius-full);
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+}
+
+.code-runner-btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.code-runner-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.code-runner-warning {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-gold-light);
+  border-bottom: 1px solid var(--color-gold);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text);
+}
+
+.code-runner-warn-dismiss {
+  border: 1px solid var(--color-gold);
+  background: transparent;
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.65rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.code-runner-editor {
+  border-bottom: 1px solid var(--border);
+}
+
+.code-runner-editor .cm-editor {
+  background: var(--card-3);
+}
+
+.code-runner-editor .cm-focused {
+  outline: none;
+}
+
+.code-runner-status {
+  margin: 0;
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--muted);
+  background: var(--card-2);
+}
+
+.code-runner-output-wrap {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+}
+
+.code-runner-output-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+}
+
+.code-runner-output {
+  margin: 0;
+  min-height: 3.5rem;
+  max-height: 200px;
+  overflow: auto;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.code-runner-output.is-error {
+  color: #fca5a5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-transition-slide.is-entering,
+  .slide-transition-section.is-entering,
+  .slide-transition-divider.is-entering,
+  .slide-bullet-reveal {
+    animation: none;
+  }
+}

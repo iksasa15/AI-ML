@@ -1,0 +1,134 @@
+/* ── Academic Precision Design System ── */
+
+:root {
+  /* Colors — palette */
+  --color-bg: #fafaf8;
+  --color-bg-subtle: #f1f0ee;
+  --color-surface: #ffffff;
+  --color-border: #e2e0dc;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-accent: #2563eb;
+  --color-accent-light: #dbeafe;
+  --color-accent-hover: #1d4ed8;
+  --color-gold: #d4a853;
+  --color-gold-light: #f5ecd8;
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+
+  /* Typography */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  --font-ui: "DM Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-body-ar: "Cairo", "Noto Kufi Arabic", "Amiri", serif;
+  --font-ui-ar: "Cairo", "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+
+  /* Type scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+  --text-4xl: 3.5rem;
+
+  /* Spacing — 8pt grid */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-6: 3rem;
+  --space-8: 4rem;
+  --space-12: 6rem;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout */
+  --slide-w: min(100%, 1040px);
+  --slide-h: 640px;
+  --slide-min-h: clamp(360px, min(70vh, var(--slide-h)), 82vh);
+  --print-slide-w: 277mm;
+  --print-slide-h: calc(277mm * 0.64);
+  --card-box-h: 210px;
+
+  /* Semantic aliases (used across components) */
+  --bg: var(--color-bg);
+  --bg-top: var(--color-bg-subtle);
+  --card: var(--color-surface);
+  --card-2: var(--color-bg-subtle);
+  --card-3: #f8f7f5;
+  --card-4: #eeedeb;
+  --text: var(--color-text-primary);
+  --muted: var(--color-text-secondary);
+  --accent: var(--color-accent);
+  --accent-2: var(--color-accent-hover);
+  --accent-glow: rgba(37, 99, 235, 0.18);
+  --border: var(--color-border);
+  --note-bg: var(--color-accent-light);
+  --dot-bg: #cbd5e1;
+  --shadow-soft: var(--shadow-md);
+  --shadow-slide: var(--shadow-lg), 0 0 0 1px rgba(30, 41, 59, 0.04);
+  --topbar-accent-line: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold) 15%,
+    var(--color-accent) 50%,
+    var(--color-gold) 85%,
+    transparent
+  );
+}
+
+/* Light theme — explicit (same as :root) */
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Dark theme — refined academic night mode */
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: #0f1419;
+  --color-bg-subtle: #1a2332;
+  --color-surface: #1e293b;
+  --color-border: #334155;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-accent: #3b82f6;
+  --color-accent-light: rgba(59, 130, 246, 0.12);
+  --color-accent-hover: #2563eb;
+  --color-gold: #d4a853;
+  --color-gold-light: rgba(212, 168, 83, 0.15);
+
+  --card-3: #172033;
+  --card-4: #243044;
+  --accent-glow: rgba(59, 130, 246, 0.22);
+  --dot-bg: #475569;
+  --note-bg: rgba(59, 130, 246, 0.1);
+  --shadow-slide: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(59, 130, 246, 0.1);
+  --topbar-accent-line: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold) 15%,
+    var(--color-accent) 50%,
+    var(--color-gold) 85%,
+    transparent
+  );
+}

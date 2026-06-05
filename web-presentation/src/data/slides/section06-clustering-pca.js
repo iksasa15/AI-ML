@@ -1,134 +1,182 @@
 /** Auto-split from presentationData — section06-clustering-pca */
 export const slides = [
     {
-      title: "Clustering Overview",
-      subtitle: "Unsupervised Learning for Structure Discovery",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/d/d1/KMeans-density-data.svg",
+      "title": "Clustering Overview",
+      "subtitle": "Unsupervised Learning for Structure Discovery",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/d/d1/KMeans-density-data.svg"
       ],
-      bullets: [
+      "bullets": [
         "Clustering groups similar observations without target labels.",
         "It is used for customer segmentation, anomaly discovery, and data exploration.",
-        "Cluster quality depends on feature scaling, distance metric, and algorithm assumptions.",
+        "Cluster quality depends on feature scaling, distance metric, and algorithm assumptions."
       ],
-      note: "In unsupervised settings, evaluation combines metrics with domain interpretation.",
+      "note": "In unsupervised settings, evaluation combines metrics with domain interpretation.",
+      "speakerNote": "In unsupervised settings, evaluation combines metrics with domain interpretation."
     },
     {
-      title: "K-Means Clustering: Core Idea",
-      subtitle: "Partition Data into K Compact Groups",
-      formula:
-        "J = \\sum_{i=1}^{K} \\sum_{x \\in C_i} \\lVert x - \\mu_i \\rVert^2",
-      bullets: [
+      "title": "K-Means Clustering: Core Idea",
+      "subtitle": "Partition Data into K Compact Groups",
+      "formula": "J = \\sum_{i=1}^{K} \\sum_{x \\in C_i} \\lVert x - \\mu_i \\rVert^2",
+      "bullets": [
         "Initialize K centroids, assign each point to the nearest centroid, then update centroids.",
         "Repeat assignment and update until cluster memberships stabilize.",
-        "K-Means favors spherical, similarly sized clusters in Euclidean space.",
+        "K-Means favors spherical, similarly sized clusters in Euclidean space."
       ],
-      note: "The objective minimizes within-cluster variance (WCSS/inertia).",
+      "note": "The objective minimizes within-cluster variance (WCSS/inertia).",
+      "speakerNote": "The objective minimizes within-cluster variance (WCSS/inertia)."
     },
     {
-      title: "Selecting K: Elbow and Silhouette",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/c/cd/DataClustering_ElbowCriterion.JPG",
-      imageAlt: "Elbow method chart",
-      table: {
-        headers: ["Method", "What to inspect", "Interpretation"],
-        rows: [
+      "title": "Selecting K: Elbow and Silhouette",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cd/DataClustering_ElbowCriterion.JPG",
+      "imageAlt": "Elbow method chart",
+      "table": {
+        "headers": [
+          "Method",
+          "What to inspect",
+          "Interpretation"
+        ],
+        "rows": [
           [
             "Elbow",
             "WCSS vs number of clusters",
-            "Choose the knee where improvement starts diminishing",
+            "Choose the knee where improvement starts diminishing"
           ],
           [
             "Silhouette",
             "Mean silhouette score in [-1, 1]",
-            "Higher values indicate better separation and compactness",
-          ],
-        ],
+            "Higher values indicate better separation and compactness"
+          ]
+        ]
       },
-      note: "Use both metrics and business context; the mathematically best K is not always operationally best.",
+      "note": "Use both metrics and business context; the mathematically best K is not always operationally best.",
+      "speakerNote": "Use both metrics and business context; the mathematically best K is not always operationally best."
     },
     {
-      title: "K-Means++ Initialization",
-      subtitle: "A Better Start than Pure Random Seeds",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif",
+      "title": "K-Means++ Initialization",
+      "subtitle": "A Better Start than Pure Random Seeds",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif"
       ],
-      bullets: [
+      "bullets": [
         "Pick the first centroid randomly from data points.",
         "Choose subsequent centroids with probability proportional to squared distance (D^2).",
-        "Then run standard K-Means iterations.",
+        "Then run standard K-Means iterations."
       ],
-      note: "K-Means++ reduces poor initialization risk and often converges to lower inertia.",
+      "note": "K-Means++ reduces poor initialization risk and often converges to lower inertia.",
+      "speakerNote": "K-Means++ reduces poor initialization risk and often converges to lower inertia."
     },
     {
-      title: "Hierarchical Clustering",
-      subtitle: "Agglomerative vs Divisive Perspectives",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/a/ad/Hierarchical_clustering_simple_diagram.svg",
+      "title": "Hierarchical Clustering",
+      "subtitle": "Agglomerative vs Divisive Perspectives",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/a/ad/Hierarchical_clustering_simple_diagram.svg"
       ],
-      bullets: [
+      "bullets": [
         "Agglomerative clustering starts with one point per cluster and merges progressively.",
         "Divisive clustering starts with one global cluster and splits recursively.",
-        "The dendrogram stores merge history and supports multi-resolution analysis.",
+        "The dendrogram stores merge history and supports multi-resolution analysis."
       ],
-      note: "Unlike K-Means, hierarchical methods can reveal nested structure in data.",
+      "note": "Unlike K-Means, hierarchical methods can reveal nested structure in data.",
+      "speakerNote": "Unlike K-Means, hierarchical methods can reveal nested structure in data."
     },
     {
-      title: "Linkage Choices and Dendrogram Cuts",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/f/f2/SLINK-density-data.svg",
+      "title": "Linkage Choices and Dendrogram Cuts",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/f/f2/SLINK-density-data.svg"
       ],
-      table: {
-        headers: ["Linkage", "Distance between clusters", "Typical behavior"],
-        rows: [
-          ["Single", "Minimum pairwise distance", "Can chain elongated clusters"],
-          ["Complete", "Maximum pairwise distance", "Produces compact, tighter clusters"],
-          ["Average", "Mean pairwise distance", "Balanced tradeoff between single/complete"],
-          ["Ward", "Increase in within-cluster variance", "Often forms homogeneous clusters"],
+      "table": {
+        "headers": [
+          "Linkage",
+          "Distance between clusters",
+          "Typical behavior"
         ],
+        "rows": [
+          [
+            "Single",
+            "Minimum pairwise distance",
+            "Can chain elongated clusters"
+          ],
+          [
+            "Complete",
+            "Maximum pairwise distance",
+            "Produces compact, tighter clusters"
+          ],
+          [
+            "Average",
+            "Mean pairwise distance",
+            "Balanced tradeoff between single/complete"
+          ],
+          [
+            "Ward",
+            "Increase in within-cluster variance",
+            "Often forms homogeneous clusters"
+          ]
+        ]
       },
-      note: "Choose a dendrogram cut threshold where vertical gaps are most pronounced.",
+      "note": "Choose a dendrogram cut threshold where vertical gaps are most pronounced.",
+      "speakerNote": "Choose a dendrogram cut threshold where vertical gaps are most pronounced."
     },
     {
-      title: "PCA: Dimensionality Reduction Intuition",
-      subtitle: "Project Data onto High-Variance Directions",
-      imageUrls: [
-        "https://upload.wikimedia.org/wikipedia/commons/a/a0/PCA_plot_of_European_individuals.png",
+      "title": "PCA: Dimensionality Reduction Intuition",
+      "subtitle": "Project Data onto High-Variance Directions",
+      "imageUrls": [
+        "https://upload.wikimedia.org/wikipedia/commons/a/a0/PCA_plot_of_European_individuals.png"
       ],
-      formula:
-        "\\Sigma = \\frac{1}{n-1}X^\\top X,\\quad \\Sigma v_j = \\lambda_j v_j",
-      bullets: [
+      "formula": "\\Sigma = \\frac{1}{n-1}X^\\top X,\\quad \\Sigma v_j = \\lambda_j v_j",
+      "bullets": [
         "PCA transforms correlated features into orthogonal principal components.",
         "Components are ordered by explained variance (largest eigenvalues first).",
-        "Keeping top components reduces noise and computational cost.",
+        "Keeping top components reduces noise and computational cost."
       ],
-      note: "Standardize features before PCA when original scales differ substantially.",
+      "note": "Standardize features before PCA when original scales differ substantially.",
+      "speakerNote": "Standardize features before PCA when original scales differ substantially."
     },
     {
-      title: "PCA Workflow and Explained Variance",
-      formula:
-        "\\text{Explained Variance Ratio}_j = \\frac{\\lambda_j}{\\sum_{m=1}^{p} \\lambda_m}",
-      table: {
-        headers: ["Step", "Action", "Outcome"],
-        rows: [
-          ["1", "Standardize features", "Comparable feature scales"],
-          ["2", "Compute covariance matrix and eigenpairs", "Ranked principal directions"],
-          ["3", "Select top-k components", "Compressed feature representation"],
-          ["4", "Project data onto selected components", "Lower-dimensional inputs"],
+      "title": "PCA Workflow and Explained Variance",
+      "formula": "\\text{Explained Variance Ratio}_j = \\frac{\\lambda_j}{\\sum_{m=1}^{p} \\lambda_m}",
+      "table": {
+        "headers": [
+          "Step",
+          "Action",
+          "Outcome"
         ],
+        "rows": [
+          [
+            "1",
+            "Standardize features",
+            "Comparable feature scales"
+          ],
+          [
+            "2",
+            "Compute covariance matrix and eigenpairs",
+            "Ranked principal directions"
+          ],
+          [
+            "3",
+            "Select top-k components",
+            "Compressed feature representation"
+          ],
+          [
+            "4",
+            "Project data onto selected components",
+            "Lower-dimensional inputs"
+          ]
+        ]
       },
-      note: "Select k using cumulative explained variance (e.g., 90-95%) and downstream model performance.",
+      "note": "Select k using cumulative explained variance (e.g., 90-95%) and downstream model performance.",
+      "speakerNote": "Select k using cumulative explained variance (e.g., 90-95%) and downstream model performance."
     },
     {
-      title: "Clustering + PCA in Practice",
-      subtitle: "A Robust Pipeline for Unsupervised Analysis",
-      bullets: [
+      "title": "Clustering + PCA in Practice",
+      "subtitle": "A Robust Pipeline for Unsupervised Analysis",
+      "bullets": [
         "Scale features, run PCA, then cluster in reduced space.",
         "Use 2D/3D PCA projections to visually inspect cluster separability.",
         "Compare multiple algorithms (K-Means, Hierarchical, DBSCAN) before finalizing.",
-        "Validate with silhouette score, stability checks, and domain plausibility.",
+        "Validate with silhouette score, stability checks, and domain plausibility."
       ],
-      note: "Combining PCA with clustering often improves interpretability and runtime on high-dimensional data.",
-    },
-
-];
+      "note": "Combining PCA with clustering often improves interpretability and runtime on high-dimensional data.",
+      "speakerNote": "Combining PCA with clustering often improves interpretability and runtime on high-dimensional data."
+    }
+  ];

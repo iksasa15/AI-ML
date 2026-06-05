@@ -1,4 +1,18 @@
 import katex from "katex";
+import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
+import { COURSE_WEEKS } from "./courseWeeks";
+import { highlightCode } from "./highlightCode";
+import {
+  getSectionKeyTopics,
+  getSectionTheme,
+  parseSectionIdFromDivider,
+} from "./sectionTheme";
+import {
+  countSlidesInSection,
+  estimateSectionMinutes,
+  getDividerEyebrow,
+  getDividerTitleLines,
+} from "./slideMeta";
 
 export type SlideRecord = Record<string, unknown> & { title?: string };
 
@@ -11,8 +25,7 @@ export function escapeHTML(value: string) {
     .replaceAll("'", "&#039;");
 }
 
-/** Display math via KaTeX (avoid \\[…\\] + auto-render: findEndOfMath breaks on nested \\frac/\\text). */
-function renderDisplayFormula(tex: string): string {
+export function renderDisplayFormula(tex: string): string {
   try {
     return katex.renderToString(tex.trim(), {
       displayMode: true,
@@ -25,16 +38,16 @@ function renderDisplayFormula(tex: string): string {
   }
 }
 
-function buildTableMarkup(table: {
+export function buildTableMarkup(table: {
   title?: string;
   headers?: string[];
   rows?: string[][];
 }) {
   if (!table) return "";
   return `
-    <div class="table-wrap">
-      ${table.title ? `<h3>${escapeHTML(table.title)}</h3>` : ""}
-      <table>
+    <div class="table-wrap slide-table-wrap">
+      ${table.title ? `<h3 class="slide-table-caption">${escapeHTML(table.title)}</h3>` : ""}
+      <table class="slide-table">
         <thead>
           <tr>
             ${(table.headers || [])
@@ -55,14 +68,14 @@ function buildTableMarkup(table: {
   `;
 }
 
-function getImageSources(slide: SlideRecord) {
+export function getImageSources(slide: SlideRecord) {
   if (!slide) return [];
   if (Array.isArray(slide.imageUrls)) return slide.imageUrls as string[];
   if (typeof slide.imageUrl === "string") return [slide.imageUrl];
   return [];
 }
 
-function buildMediaBadgeMarkup(slide: SlideRecord) {
+export function buildMediaBadgeMarkup(slide: SlideRecord) {
   const imageSources = getImageSources(slide);
   if (!imageSources.length) return "";
 
@@ -71,58 +84,240 @@ function buildMediaBadgeMarkup(slide: SlideRecord) {
 
   if (hasAnimated && hasStatic) {
     return `
-      <span class="media-badge media-badge-static" title="تحتوي الشريحة صور ثابتة">🖼️ صورة ثابتة</span>
-      <span class="media-badge media-badge-animated" title="تحتوي الشريحة صور متحركة">🎞️ صورة متحركة</span>
+      <span class="media-badge media-badge-static" title="Static image">🖼️ Static</span>
+      <span class="media-badge media-badge-animated" title="Animated image">🎞️ Animated</span>
     `;
   }
 
   if (hasAnimated) {
-    return `<span class="media-badge media-badge-animated" title="تحتوي الشريحة صور متحركة">🎞️ صورة متحركة</span>`;
+    return `<span class="media-badge media-badge-animated" title="Animated image">🎞️ Animated</span>`;
   }
 
-  return `<span class="media-badge media-badge-static" title="تحتوي الشريحة صور ثابتة">🖼️ صورة ثابتة</span>`;
+  return `<span class="media-badge media-badge-static" title="Static image">🖼️ Static</span>`;
 }
 
-export function buildSlideMarkup(slide: SlideRecord) {
-  if (slide.type === "section-divider") {
-    return `
-      <div class="section-divider-box">
-        <p class="section-tag">${escapeHTML(String(slide.title || ""))}</p>
-        <h2>${escapeHTML(String(slide.subtitle || ""))}</h2>
+function buildTitleBlock(title: string, mediaBadgeHTML = "") {
+  return `
+    <header class="slide-title-block">
+      <h2 class="slide-title">
+        ${escapeHTML(title)}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}
+      </h2>
+      <div class="slide-title-rule" aria-hidden="true"></div>
+    </header>
+  `;
+}
+
+function buildBulletsMarkup(items: string[], className = "slide-bullet-list") {
+  if (!items.length) return "";
+  const itemsHTML = items
+    .map(
+      (item, index) =>
+        `<li style="animation-delay:${index * 60}ms">${escapeHTML(item)}</li>`
+    )
+    .join("");
+  return `<ul class="${className}">${itemsHTML}</ul>`;
+}
+
+function buildFormulaMarkup(tex: string) {
+  return `<div class="slide-formula-block notranslate" translate="no">${renderDisplayFormula(tex)}</div>`;
+}
+
+function buildCodeMarkup(code: string, language = "python") {
+  const lang = escapeHTML(language);
+  return `
+    <div class="slide-code-wrap">
+      <div class="slide-code-lang">${lang}</div>
+      <pre class="slide-code-block"><code class="language-${lang}">${highlightCode(code, language)}</code></pre>
+    </div>
+  `;
+}
+
+function buildSectionDividerMarkup(
+  slide: SlideRecord,
+  slides: SlideRecord[],
+  slideIndex: number
+) {
+  const sectionId = parseSectionIdFromDivider(slide) ?? 0;
+  const theme = getSectionTheme(sectionId);
+  const keyTopics = getSectionKeyTopics(sectionId);
+  const eyebrow = getDividerEyebrow(slide);
+  const titleLines = getDividerTitleLines(slide);
+  const slideCount = countSlidesInSection(slides, slideIndex);
+  const minutes = estimateSectionMinutes(slideCount);
+  const titlesHTML = titleLines
+    .map((line) => `<h2 class="section-divider-title-line">${escapeHTML(line)}</h2>`)
+    .join("");
+  const topicsHTML = keyTopics
+    .map((topic) => `<li>${escapeHTML(topic)}</li>`)
+    .join("");
+
+  return `
+    <div class="section-divider-hero section-divider-hero--themed print-section-divider" style="--section-accent:${theme.color}">
+      <p class="section-divider-eyebrow">${escapeHTML(eyebrow)} · ${escapeHTML(theme.label)}</p>
+      <p class="print-section-number" aria-hidden="true">${sectionId}</p>
+      <div class="section-divider-titles">${titlesHTML}</div>
+      ${topicsHTML ? `<ul class="section-divider-topics">${topicsHTML}</ul>` : ""}
+      <p class="section-divider-meta">
+        <span class="section-divider-meta-icon" aria-hidden="true">▸</span>
+        ${slideCount} slides · ~${minutes} min
+      </p>
+    </div>
+  `;
+}
+
+function buildIntroHeroPrintMarkup(slide: SlideRecord) {
+  return `
+    <div class="print-intro-hero">
+      <p class="print-intro-eyebrow">AI &amp; MACHINE LEARNING BOOTCAMP</p>
+      <h2>${escapeHTML(String(slide.title || ""))}</h2>
+      ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
+    </div>
+  `;
+}
+
+function buildCourseMapPrintMarkup() {
+  const cards = COURSE_WEEKS.map(
+    (week) => `
+      <article class="print-course-map-card">
+        <h3>${escapeHTML(week.label)} — ${escapeHTML(week.theme)}</h3>
+        <p>${week.days} days · ${escapeHTML(week.sections)}</p>
+        <p>${escapeHTML(week.topic)}</p>
+      </article>
+    `
+  ).join("");
+
+  return `
+    <div class="print-course-map">
+      <p class="print-intro-eyebrow">COURSE AGENDA</p>
+      <h2>Interactive Roadmap</h2>
+      <div class="print-course-map-grid">${cards}</div>
+    </div>
+  `;
+}
+
+function buildTimelinePrintMarkup() {
+  const columns = COURSE_WEEKS.map(
+    (week) => `
+      <div class="print-timeline-col">
+        <strong>W${week.id}</strong>
+        <p>${escapeHTML(week.theme)}</p>
+        <p>${week.days} days</p>
       </div>
-    `;
+    `
+  ).join("");
+
+  return `
+    <div class="print-bootcamp-timeline">
+      <p class="print-intro-eyebrow">BOOTCAMP TIMELINE</p>
+      <h2>4-Week Arc</h2>
+      <div class="print-timeline-grid">${columns}</div>
+    </div>
+  `;
+}
+
+function buildBigPicturePrintMarkup(slide: SlideRecord) {
+  const sectionId = Number(slide.sectionId ?? 0);
+  const items = BOOTCAMP_MAP_SECTIONS.map((section) => {
+    const state =
+      section.id === sectionId ? "current" : section.id < sectionId ? "past" : "upcoming";
+    return `<li class="print-map-item print-map-item--${state}"><strong>${escapeHTML(section.shortLabel)}</strong> ${escapeHTML(section.title)}</li>`;
+  }).join("");
+
+  return `
+    <div class="print-big-picture">
+      <p class="print-big-picture-eyebrow">BIG PICTURE</p>
+      <h2>${escapeHTML(String(slide.title || "Where Are We in the Bootcamp?"))}</h2>
+      ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
+      <ul class="print-map-list">${items}</ul>
+    </div>
+  `;
+}
+
+function buildTakeawayPrintMarkup(slide: SlideRecord) {
+  const bullets = (slide.bullets || []) as string[];
+  const items = bullets
+    .slice(0, 3)
+    .map((item, index) => `<li><strong>${index + 1}.</strong> ${escapeHTML(item)}</li>`)
+    .join("");
+
+  return `
+    <div class="print-takeaway">
+      <p class="print-takeaway-eyebrow">TAKEAWAYS</p>
+      <h2>${escapeHTML(String(slide.title || "Section Takeaways"))}</h2>
+      <ol class="print-takeaway-list">${items}</ol>
+      ${
+        slide.reflectionQuestion
+          ? `<p class="print-takeaway-reflection"><strong>Think:</strong> ${escapeHTML(String(slide.reflectionQuestion))}</p>`
+          : ""
+      }
+    </div>
+  `;
+}
+
+function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideIndex: number) {
+  if (slide.type === "intro-hero") {
+    return buildIntroHeroPrintMarkup(slide);
+  }
+
+  if (slide.type === "course-map") {
+    return buildCourseMapPrintMarkup();
+  }
+
+  if (slide.type === "bootcamp-timeline") {
+    return buildTimelinePrintMarkup();
+  }
+
+  if (slide.type === "section-divider") {
+    return buildSectionDividerMarkup(slide, slides, slideIndex);
+  }
+
+  if (slide.type === "big-picture") {
+    return buildBigPicturePrintMarkup(slide);
+  }
+
+  if (slide.type === "takeaway") {
+    return buildTakeawayPrintMarkup(slide);
+  }
+
+  if (slide.type === "loading") {
+    return `<p class="slide-body">Loading…</p>`;
   }
 
   if (slide.type === "three-columns") {
-    const columns = (slide.columns || []) as Array<{
-      heading?: string;
-      bullets?: string[];
-    }>;
+    const columns = (slide.columns || []) as Array<{ heading?: string; bullets?: string[] }>;
     const columnsHTML = columns
       .map((col) => {
-        const colBullets = (col.bullets || [])
-          .map((item) => `<li>${escapeHTML(item)}</li>`)
-          .join("");
+        const colBullets = buildBulletsMarkup(
+          col.bullets || [],
+          "slide-bullet-list slide-bullet-list--compact"
+        );
         return `
-          <article class="step-card">
-            <h3>${escapeHTML(col.heading || "")}</h3>
-            <ul>${colBullets}</ul>
+          <article class="slide-column-card">
+            <h3 class="slide-column-heading">${escapeHTML(col.heading || "")}</h3>
+            ${colBullets}
           </article>
         `;
       })
       .join("");
-
     const mediaBadgeHTML = buildMediaBadgeMarkup(slide);
+
     return `
-      <h2>${escapeHTML(String(slide.title))}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}</h2>
+      ${buildTitleBlock(String(slide.title || ""), mediaBadgeHTML)}
       ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
-      <div class="steps-grid">${columnsHTML}</div>
+      <div class="slide-columns-three">${columnsHTML}</div>
+    `;
+  }
+
+  if (slide.type === "code") {
+    return `
+      ${buildTitleBlock(String(slide.title || ""))}
+      ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
+      ${buildCodeMarkup(String(slide.code || ""), typeof slide.language === "string" ? slide.language : "python")}
+      ${slide.note ? `<p class="note-box">${escapeHTML(String(slide.note))}</p>` : ""}
     `;
   }
 
   const bullets = (slide.bullets || []) as string[];
-  const bulletsHTML = bullets.map((item) => `<li>${escapeHTML(item)}</li>`).join("");
-
   const sections = (slide.sections || []) as Array<{
     heading?: string;
     body?: string;
@@ -132,15 +327,16 @@ export function buildSlideMarkup(slide: SlideRecord) {
   }>;
   const sectionsHTML = sections
     .map((section) => {
-      const sectionBullets = (section.bullets || [])
-        .map((item) => `<li>${escapeHTML(item)}</li>`)
-        .join("");
+      const sectionBullets = buildBulletsMarkup(
+        section.bullets || [],
+        "slide-bullet-list slide-bullet-list--compact"
+      );
       return `
         <article class="content-card">
           <h3>${escapeHTML(section.heading || "")}</h3>
           ${section.body ? `<p>${escapeHTML(section.body)}</p>` : ""}
-          ${section.formula ? `<div class="formula notranslate" translate="no">${renderDisplayFormula(String(section.formula))}</div>` : ""}
-          ${sectionBullets ? `<ul>${sectionBullets}</ul>` : ""}
+          ${section.formula ? buildFormulaMarkup(String(section.formula)) : ""}
+          ${sectionBullets}
           ${buildTableMarkup(section.table || {})}
         </article>
       `;
@@ -164,17 +360,83 @@ export function buildSlideMarkup(slide: SlideRecord) {
     .join("");
 
   return `
-    <h2>${escapeHTML(String(slide.title))}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}</h2>
+    ${buildTitleBlock(String(slide.title || ""), mediaBadgeHTML)}
     ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
     ${slide.body ? `<p class="slide-body">${escapeHTML(String(slide.body))}</p>` : ""}
-    ${slide.formula ? `<div class="formula notranslate" translate="no">${renderDisplayFormula(String(slide.formula))}</div>` : ""}
+    ${slide.formula ? buildFormulaMarkup(String(slide.formula)) : ""}
+    ${typeof slide.code === "string" ? buildCodeMarkup(slide.code, typeof slide.language === "string" ? slide.language : "python") : ""}
     ${imageHTML}
-    ${bulletsHTML ? `<ul>${bulletsHTML}</ul>` : ""}
+    ${buildBulletsMarkup(bullets)}
     ${sectionsHTML ? `<div class="content-sections">${sectionsHTML}</div>` : ""}
     ${tableHTML}
     ${tablesHTML}
     ${slide.note ? `<p class="note-box">${escapeHTML(String(slide.note))}</p>` : ""}
   `;
+}
+
+export type SlideFrameMeta = {
+  sectionTag: string;
+  sectionLabel: string;
+  slideNumber: number;
+  totalSlides: number;
+  progressPercent: number;
+};
+
+export function buildSlideFrameMarkup(meta: SlideFrameMeta, innerHTML: string, isDivider = false) {
+  if (isDivider) {
+    return `
+      <div class="slide-frame slide-frame--divider">
+        <div class="slide-frame-divider-body">${innerHTML}</div>
+        <footer class="slide-frame-footer slide-frame-footer--divider">
+          <div class="slide-frame-progress">
+            <div class="slide-frame-progress-fill" style="width:${meta.progressPercent}%"></div>
+          </div>
+        </footer>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="slide-frame">
+      <header class="slide-frame-header">
+        <div class="slide-frame-header-start">
+          <span class="slide-frame-section-tag">${escapeHTML(meta.sectionTag)}</span>
+          <span class="slide-frame-section-sep" aria-hidden="true">·</span>
+          <span class="slide-frame-section-label">${escapeHTML(meta.sectionLabel)}</span>
+        </div>
+        <span class="slide-frame-slide-num">
+          ${meta.slideNumber}<span class="slide-frame-slide-total"> / ${meta.totalSlides}</span>
+        </span>
+      </header>
+      <div class="slide-frame-content">${innerHTML}</div>
+      <footer class="slide-frame-footer">
+        <div class="slide-frame-progress">
+          <div class="slide-frame-progress-fill" style="width:${meta.progressPercent}%"></div>
+        </div>
+      </footer>
+    </div>
+  `;
+}
+
+export function buildSlideMarkup(
+  slide: SlideRecord,
+  options?: {
+    slides?: SlideRecord[];
+    slideIndex?: number;
+    frame?: SlideFrameMeta;
+  }
+) {
+  const slides = options?.slides ?? [];
+  const slideIndex = options?.slideIndex ?? 0;
+  const inner = buildSlideInnerMarkup(slide, slides, slideIndex);
+
+  if (!options?.frame) return inner;
+
+  return buildSlideFrameMarkup(
+    options.frame,
+    inner,
+    slide.type === "section-divider"
+  );
 }
 
 export function getActiveSectionLabel(slides: SlideRecord[], slideIndex: number) {

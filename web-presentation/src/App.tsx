@@ -1,13 +1,53 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MentorshipTemplate } from "./components/MentorshipTemplate";
+import { AiAssistantPanel } from "./components/ai/AiAssistantPanel";
+import { QuizModal } from "./components/quiz/QuizModal";
+import { SectionSidebar } from "./components/navigation/SectionSidebar";
+import { SpeakerNotesPanel } from "./components/navigation/SpeakerNotesPanel";
+import { TopNavBar } from "./components/navigation/TopNavBar";
+import { TraineeProgressRing } from "./components/navigation/TraineeProgressRing";
 import { SectionOutlinePage } from "./components/SectionOutlinePage";
-import { presentationData } from "./data/presentationData.js";
-import { addPresentationStructure } from "./lib/addPresentationStructure";
+import { usePresentationDeck } from "./hooks/usePresentationDeck";
+import { VirtualSlideStage } from "./components/slides/VirtualSlideStage";
 import { DAY01_FIRST_SLIDE_TITLE } from "./lib/day01Anchor";
 import { renderSlideMath } from "./lib/renderMath";
-import { buildSectionJumps, getActiveSectionJumpId } from "./lib/sectionNav";
+import { usePresentationShortcuts } from "./hooks/usePresentationShortcuts";
+import {
+  countSlideBullets,
+  readBulletReveal,
+  writeBulletReveal,
+} from "./lib/bulletReveal";
+import {
+  getSlideTransitionKind,
+  type SlideTransitionKind,
+} from "./lib/slideTransitions";
+import {
+  getActiveSectionNavItem,
+  getSectionIdFromJump,
+  getQuizSectionIds,
+  hasQuizForSection,
+  isLastSlideInSection,
+} from "./lib/quiz";
+import {
+  getQuizSummary,
+  isQuizCompleted,
+  resetQuizResults,
+  saveQuizResult,
+  type QuizSectionResult,
+} from "./lib/quizResults";
+import { buildSectionJumps, buildSectionNavItems, getActiveSectionJumpId } from "./lib/sectionNav";
+import { getNavContextLabel } from "./lib/slideMeta";
+import {
+  bumpTraineeProgress,
+  readTraineeProgress,
+  resetTraineeProgress,
+  traineeDeckPercent,
+} from "./lib/traineeProgress";
 import { initGoogleTranslateElement, loadGoogleTranslateScript } from "./lib/googleTranslate";
+import { openPresenterWindow, persistPresenterState } from "./lib/presenterSync";
+import { getActiveSectionTag } from "./lib/slideMeta";
 import { buildSlideMarkup, getActiveSectionLabel, type SlideRecord } from "./lib/slideMarkup";
+import { readClaudeApiKey, writeClaudeApiKey } from "./lib/claudeApi";
 import {
   applyDocumentUiLang,
   getUiStrings,
@@ -27,7 +67,7 @@ function applyThemeToDocument(theme: "light" | "dark") {
 export default function App() {
   const [booted, setBooted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
   const [view, setView] = useState<"slides" | "outline">("slides");
@@ -35,16 +75,33 @@ export default function App() {
   const [translateMounted, setTranslateMounted] = useState(false);
   const [translatePanelOpen, setTranslatePanelOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [quizSectionId, setQuizSectionId] = useState(1);
+  const [quizResultsVersion, setQuizResultsVersion] = useState(0);
+  const [progressRingOpen, setProgressRingOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [claudeApiKey, setClaudeApiKey] = useState(() => readClaudeApiKey());
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [traineeMaxIndex, setTraineeMaxIndex] = useState(0);
   const [uiLang, setUiLang] = useState<UiLang>(() => readStoredUiLang());
 
-  const slideRef = useRef<HTMLElement>(null);
+  const slideRef = useRef<HTMLElement | null>(null);
+  const { slides: deckSlides, ready: deckReady, title: deckTitle, ensureForIndex, ensureAllForPrint } =
+    usePresentationDeck();
   const printRef = useRef<HTMLDivElement>(null);
+  const presentationRef = useRef<HTMLDivElement>(null);
+  const prevIndexRef = useRef(0);
+  const lastAutoQuizKeyRef = useRef<string | null>(null);
+  const [transitionKind, setTransitionKind] = useState<SlideTransitionKind>("slide");
+  const [revealedBullets, setRevealedBullets] = useState(0);
 
-  const allSlides = presentationData.slides as SlideRecord[];
+  const allSlides = deckSlides;
   const day01StartIndex = useMemo(() => {
-    if (!booted) return -1;
+    if (!booted || !deckReady) return -1;
     return allSlides.findIndex((s) => String(s.title || "") === DAY01_FIRST_SLIDE_TITLE);
-  }, [allSlides, booted]);
+  }, [allSlides, booted, deckReady]);
   const day01EndExclusive = useMemo(() => {
     if (!booted || day01StartIndex < 0) return -1;
     const conclusionIdx = allSlides.findIndex(
@@ -59,29 +116,76 @@ export default function App() {
   const slides = deckScope === "day1" ? day01Slides : allSlides;
   const total = slides.length;
   const slide = slides[currentIndex];
-  const slideHtml = useMemo(() => (slide ? buildSlideMarkup(slide) : ""), [slide]);
   const sectionLabel = useMemo(
     () => getActiveSectionLabel(slides, currentIndex),
     [slides, currentIndex, booted]
   );
-  /** `booted` في التبعيات: بعد `addPresentationStructure()` تتغير محتويات المصفوفة بنفس المرجع، فيجب إعادة بناء الفهرس حتى يظهر زر «جدول الأقسام». */
+  /** `booted` في التبعيات: بعد تحميل الهيكل تتغير محتويات المصفوفة، فيجب إعادة بناء الفهرس حتى يظهر زر «جدول الأقسام». */
   const sectionJumps = useMemo(() => buildSectionJumps(slides), [slides, booted]);
   const activeSectionJumpId = useMemo(
     () => getActiveSectionJumpId(sectionJumps, currentIndex),
     [sectionJumps, currentIndex]
   );
+  const sectionNavItems = useMemo(
+    () => buildSectionNavItems(slides, sectionJumps, traineeMaxIndex),
+    [slides, sectionJumps, traineeMaxIndex, booted]
+  );
+  const navContextLabel = useMemo(
+    () => getNavContextLabel(slides, currentIndex),
+    [slides, currentIndex, booted]
+  );
+  const traineePercent = useMemo(
+    () => traineeDeckPercent(traineeMaxIndex, total),
+    [traineeMaxIndex, total]
+  );
   const day01SlidesLink = useMemo(() => `${window.location.pathname}${window.location.search}${DAY01_HASH}`, []);
   const progressPercent = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
+  const bulletTotal = useMemo(() => countSlideBullets(slide), [slide]);
   const ui = useMemo(() => getUiStrings(uiLang), [uiLang]);
+  const activeSectionNavItem = useMemo(
+    () => getActiveSectionNavItem(sectionNavItems, activeSectionJumpId),
+    [sectionNavItems, activeSectionJumpId]
+  );
+  const activeQuizSectionId = useMemo(
+    () => getSectionIdFromJump(activeSectionNavItem),
+    [activeSectionNavItem]
+  );
+  const quizSectionIds = useMemo(() => getQuizSectionIds(), []);
+  const quizSummary = useMemo(
+    () => getQuizSummary(deckScope, quizSectionIds),
+    [deckScope, quizSectionIds, quizResultsVersion]
+  );
+  const quizSectionLabel = useMemo(() => {
+    const item = sectionNavItems.find((s) => getSectionIdFromJump(s) === quizSectionId);
+    return item?.label ?? sectionLabel;
+  }, [sectionNavItems, quizSectionId, sectionLabel]);
 
   useEffect(() => {
-    addPresentationStructure();
     const saved = localStorage.getItem(THEME_STORAGE_KEY);
-    const initial = saved === "light" || saved === "dark" ? saved : "dark";
+    const initial = saved === "light" || saved === "dark" ? saved : "light";
     setTheme(initial);
     applyThemeToDocument(initial);
-    setBooted(true);
   }, []);
+
+  useEffect(() => {
+    if (deckReady) setBooted(true);
+  }, [deckReady]);
+
+  useEffect(() => {
+    if (!booted) return;
+    ensureForIndex(currentIndex);
+  }, [booted, currentIndex, ensureForIndex]);
+
+  useEffect(() => {
+    if (!booted) return;
+    setTraineeMaxIndex(readTraineeProgress(deckScope).maxReachedIndex);
+  }, [booted, deckScope]);
+
+  useEffect(() => {
+    if (!booted) return;
+    const record = bumpTraineeProgress(deckScope, currentIndex);
+    setTraineeMaxIndex(record.maxReachedIndex);
+  }, [booted, deckScope, currentIndex]);
 
   useEffect(() => {
     applyDocumentUiLang(uiLang);
@@ -92,23 +196,75 @@ export default function App() {
     }
   }, [uiLang]);
 
+  useEffect(() => {
+    if (!booted || !slide) return;
+    setRevealedBullets(readBulletReveal(deckScope, slide, currentIndex));
+  }, [booted, deckScope, currentIndex, slide]);
+
+  useEffect(() => {
+    if (!isLastSlideInSection(currentIndex, activeSectionNavItem)) {
+      lastAutoQuizKeyRef.current = null;
+    }
+  }, [currentIndex, activeSectionNavItem]);
+
+  useEffect(() => {
+    if (!booted) return;
+    persistPresenterState({
+      currentIndex,
+      deckScope,
+      uiLang,
+      totalSlides: total,
+    });
+  }, [booted, currentIndex, deckScope, uiLang, total]);
+
+  useEffect(() => {
+    if (!booted || view !== "slides" || quizOpen) return;
+    if (!isLastSlideInSection(currentIndex, activeSectionNavItem)) return;
+    if (bulletTotal > 0 && revealedBullets < bulletTotal) return;
+
+    const sectionId = activeQuizSectionId;
+    if (!hasQuizForSection(sectionId) || sectionId === null) return;
+    if (isQuizCompleted(deckScope, sectionId)) return;
+
+    const key = `${sectionId}-${currentIndex}`;
+    if (lastAutoQuizKeyRef.current === key) return;
+    lastAutoQuizKeyRef.current = key;
+    setQuizSectionId(sectionId);
+    setQuizOpen(true);
+  }, [
+    booted,
+    view,
+    quizOpen,
+    currentIndex,
+    activeSectionNavItem,
+    activeQuizSectionId,
+    bulletTotal,
+    revealedBullets,
+    deckScope,
+  ]);
+
   useLayoutEffect(() => {
     if (!booted) return;
+    const kind = getSlideTransitionKind(slides, prevIndexRef.current, currentIndex);
+    setTransitionKind(kind);
     setSlideEntering(true);
+    prevIndexRef.current = currentIndex;
     const id = requestAnimationFrame(() => setSlideEntering(false));
     return () => cancelAnimationFrame(id);
-  }, [currentIndex, booted]);
+  }, [currentIndex, booted, slides]);
 
   useLayoutEffect(() => {
     if (!booted || view !== "slides") return;
     const root = slideRef.current;
     if (!root) return;
-    renderSlideMath(root);
+    if (!slide?._mathPrerendered) {
+      renderSlideMath(root);
+    }
     root.querySelectorAll(".katex, .katex-display").forEach((node) => {
       node.classList.add("notranslate");
       node.setAttribute("translate", "no");
     });
-  }, [slideHtml, booted, view]);
+  }, [currentIndex, slide, booted, view]);
 
   useEffect(() => {
     if (currentIndex >= total) {
@@ -138,6 +294,26 @@ export default function App() {
     setCurrentIndex((i) => Math.max(i - 1, 0));
   }, []);
 
+  const advanceSlide = useCallback(() => {
+    if (slide && bulletTotal > 0 && revealedBullets < bulletTotal) {
+      const next = revealedBullets + 1;
+      setRevealedBullets(next);
+      writeBulletReveal(deckScope, slide, currentIndex, next);
+      return;
+    }
+    goNext();
+  }, [slide, bulletTotal, revealedBullets, deckScope, currentIndex, goNext]);
+
+  const retreatSlide = useCallback(() => {
+    if (slide && bulletTotal > 0 && revealedBullets > 0) {
+      const next = revealedBullets - 1;
+      setRevealedBullets(next);
+      writeBulletReveal(deckScope, slide, currentIndex, next);
+      return;
+    }
+    goPrev();
+  }, [slide, bulletTotal, revealedBullets, deckScope, currentIndex, goPrev]);
+
   const goToSlideByNumber = useCallback(() => {
     const input = window.prompt(ui.promptSlideNumber(total, currentIndex + 1), String(currentIndex + 1));
     if (input === null) return;
@@ -158,25 +334,38 @@ export default function App() {
     });
   }, []);
 
-  const renderPrintDeck = useCallback(() => {
+  const renderPrintDeck = useCallback(async () => {
     const el = printRef.current;
     if (!el) return;
-    el.innerHTML = slides
-      .map(
-        (s) =>
-          `<section class="slide print-slide" dir="ltr" lang="en">${buildSlideMarkup(s)}</section>`
-      )
+    const printSlides = deckScope === "day1" ? slides : await ensureAllForPrint();
+    el.innerHTML = printSlides
+      .map((s, index) => {
+        const frameSlides = deckScope === "day1" ? slides : printSlides;
+        const frame = {
+          sectionTag: getActiveSectionTag(frameSlides, index),
+          sectionLabel: getActiveSectionLabel(frameSlides, index),
+          slideNumber: index + 1,
+          totalSlides: printSlides.length,
+          progressPercent: Math.round(((index + 1) / printSlides.length) * 100),
+        };
+        return `<section class="slide print-slide" dir="ltr" lang="en">${buildSlideMarkup(s, {
+          slides: frameSlides,
+          slideIndex: index,
+          frame,
+        })}</section>`;
+      })
       .join("");
     renderSlideMath(el);
-  }, [slides]);
+  }, [slides, deckScope, ensureAllForPrint]);
 
   const handleDownloadPdf = useCallback(() => {
-    renderPrintDeck();
-    window.print();
+    void renderPrintDeck().then(() => window.print());
   }, [renderPrintDeck]);
 
   useEffect(() => {
-    const onBeforePrint = () => renderPrintDeck();
+    const onBeforePrint = () => {
+      void renderPrintDeck();
+    };
     const onAfterPrint = () => {
       if (printRef.current) printRef.current.innerHTML = "";
     };
@@ -188,37 +377,88 @@ export default function App() {
     };
   }, [renderPrintDeck]);
 
+  const toggleFullscreen = useCallback(() => {
+    const root = presentationRef.current;
+    if (!root) return;
+    if (!document.fullscreenElement) {
+      void root.requestFullscreen?.();
+    } else {
+      void document.exitFullscreen?.();
+    }
+  }, []);
+
   useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (templateOpen) {
-        if (event.key === "Escape") {
-          setTemplateOpen(false);
-        }
+    const onFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
+
+  const closeOverlays = useCallback(() => {
+    setTemplateOpen(false);
+    setSettingsOpen(false);
+    setTranslatePanelOpen(false);
+    setSidebarOpen(false);
+    setNotesOpen(false);
+    setQuizOpen(false);
+    setProgressRingOpen(false);
+    setAiOpen(false);
+    if (view === "outline") setView("slides");
+  }, [view]);
+
+  const openSectionQuiz = useCallback(() => {
+    if (!hasQuizForSection(activeQuizSectionId) || activeQuizSectionId === null) return;
+    setNotesOpen(false);
+    setQuizSectionId(activeQuizSectionId);
+    setQuizOpen(true);
+  }, [activeQuizSectionId]);
+
+  const handleQuizComplete = useCallback(
+    (result: QuizSectionResult) => {
+      saveQuizResult(deckScope, result);
+      setQuizResultsVersion((v) => v + 1);
+    },
+    [deckScope]
+  );
+
+  const openPresenterMode = useCallback(() => {
+    persistPresenterState({
+      currentIndex,
+      deckScope,
+      uiLang,
+      totalSlides: total,
+    });
+    openPresenterWindow();
+  }, [currentIndex, deckScope, uiLang, total]);
+
+  usePresentationShortcuts({
+    enabled: booted && view === "slides" && !templateOpen && !settingsOpen && !quizOpen && !aiOpen,
+    rtlNav: uiLang === "ar",
+    onPrev: retreatSlide,
+    onNext: advanceSlide,
+    onToggleFullscreen: toggleFullscreen,
+    onToggleNotes: () => {
+      setQuizOpen(false);
+      setNotesOpen((o) => !o);
+    },
+    onOpenPresenter: openPresenterMode,
+    onToggleQuiz: () => {
+      if (quizOpen) {
+        setQuizOpen(false);
         return;
       }
-      if (settingsOpen) {
-        if (event.key === "Escape") setSettingsOpen(false);
-        return;
-      }
-      if (translatePanelOpen && event.key === "Escape") {
-        setTranslatePanelOpen(false);
-        return;
-      }
-      if (view === "outline") {
-        if (event.key === "Escape") setView("slides");
-        return;
-      }
-      const rtlNav = uiLang === "ar";
-      if (event.key === "ArrowRight") {
-        rtlNav ? goPrev() : goNext();
-      }
-      if (event.key === "ArrowLeft") {
-        rtlNav ? goNext() : goPrev();
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [goNext, goPrev, templateOpen, settingsOpen, view, translatePanelOpen, uiLang]);
+      openSectionQuiz();
+    },
+    onEscape: closeOverlays,
+  });
+
+  const handleResetTraineeProgress = useCallback(() => {
+    if (!window.confirm(ui.nav.resetProgressConfirm)) return;
+    resetTraineeProgress(deckScope);
+    resetQuizResults(deckScope);
+    setTraineeMaxIndex(0);
+    setQuizResultsVersion((v) => v + 1);
+    setProgressRingOpen(false);
+  }, [deckScope, ui.nav.resetProgressConfirm]);
 
   const jumpToDay01Slides = useCallback(() => {
     if (day01Slides.length === 0) return;
@@ -253,6 +493,11 @@ export default function App() {
     setView("slides");
   }, []);
 
+  const goToSectionFromSidebar = useCallback((slideIndex: number) => {
+    setCurrentIndex(slideIndex);
+    setSidebarOpen(false);
+  }, []);
+
   const toggleTranslatePanel = useCallback(() => {
     setTranslateMounted(true);
     setSettingsOpen(false);
@@ -269,7 +514,7 @@ export default function App() {
     <>
       {view === "outline" && sectionJumps.length > 0 ? (
         <SectionOutlinePage
-          deckTitle={presentationData.title}
+          deckTitle={deckTitle}
           jumps={sectionJumps}
           activeJumpId={activeSectionJumpId}
           onJump={goToSectionFromOutline}
@@ -281,152 +526,171 @@ export default function App() {
           }}
         />
       ) : (
-        <div className="presentation" dir={ui.direction} lang={ui.docLang}>
-          <header className="topbar">
-            <h1 id="deck-title" dir="ltr" lang="en">
-              {presentationData.title}
-            </h1>
-            <div className="topbar-actions">
-              {day01Slides.length > 0 ? (
-                <a
-                  href={day01SlidesLink}
-                  className="nav-btn topbar-btn day01-deck-btn"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    jumpToDay01Slides();
-                  }}
-                  title={ui.day01SlidesShortcutTitle}
-                >
-                  {ui.day01SlidesShortcut}
-                </a>
-              ) : null}
-              <button
-                id="slide-jump-btn"
-                className="slide-count slide-jump-btn"
-                type="button"
-                title={ui.slideJumpTitle}
-                onClick={goToSlideByNumber}
-              >
-                <span id="current-slide">{currentIndex + 1}</span>
-                <span>/</span>
-                <span id="total-slides">{total}</span>
-              </button>
-              <div className="topbar-theme-outline-group">
-                <button
-                  id="theme-toggle-btn"
-                  className="nav-btn topbar-btn theme-btn"
-                  type="button"
-                  onClick={toggleTheme}
-                  aria-label={isLight ? ui.themeAriaLight : ui.themeAriaDark}
-                >
-                  <span id="theme-icon" aria-hidden="true">
-                    {isLight ? "☀️" : "🌙"}
-                  </span>
-                  <span id="theme-label">{isLight ? ui.themeLabelLight : ui.themeLabelDark}</span>
-                </button>
-                {sectionJumps.length > 0 ? (
-                  <button
-                    type="button"
-                    className="nav-btn topbar-btn"
-                    onClick={() => setView("outline")}
-                  >
-                    {ui.outline}
-                  </button>
-                ) : null}
-              </div>
-              <button
-                type="button"
-                className="nav-btn topbar-btn"
-                onClick={() => {
-                  setSettingsOpen(true);
-                  setTranslatePanelOpen(false);
-                }}
-                aria-haspopup="dialog"
-                aria-expanded={settingsOpen}
-                aria-controls="settings-modal-card"
-              >
-                {ui.settings}
-              </button>
-              <button
-                id="show-template-btn"
-                className="nav-btn topbar-btn"
-                type="button"
-                onClick={() => {
-                  setTemplateOpen(true);
-                  setSettingsOpen(false);
-                }}
-              >
-                {ui.curriculum}
-              </button>
-              <button id="download-pdf-btn" className="nav-btn topbar-btn" type="button" onClick={handleDownloadPdf}>
-                {ui.downloadPdf}
-              </button>
-              <button
-                id="translate-slides-btn"
-                className="nav-btn topbar-btn"
-                type="button"
-                onClick={toggleTranslatePanel}
-                aria-expanded={translatePanelOpen}
-                aria-controls="google_translate_element_slot"
-                title={ui.translateTooltip}
-              >
-                {ui.translateSlides}
-              </button>
-            </div>
-          </header>
-
-          <section className="status-row" aria-label={ui.sectionProgress}>
-          <span id="section-label" className="section-chip" dir="auto">
-            {sectionLabel}
-          </span>
-          <div
-            className="progress-track"
-            dir="ltr"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={progressPercent}
+        <div
+          ref={presentationRef}
+          className={`presentation${isFullscreen ? " is-fullscreen" : ""}`}
+          dir={ui.direction}
+          lang={ui.docLang}
+        >
+          <a className="skip-to-slides" href="#slide-container">
+            {ui.a11y.skipToSlides}
+          </a>
+          <TopNavBar
+            ui={ui}
+            direction={ui.direction}
+            contextLabel={navContextLabel}
+            currentSlide={currentIndex + 1}
+            totalSlides={total}
+            progressPercent={progressPercent}
+            canGoPrev={currentIndex > 0}
+            canGoNext={currentIndex < total - 1}
+            isLight={isLight}
+            sidebarOpen={sidebarOpen}
+            onOpenSidebar={() => setSidebarOpen((o) => !o)}
+            onPrev={retreatSlide}
+            onNext={advanceSlide}
+            onJumpToSlide={goToSlideByNumber}
+            onToggleTheme={toggleTheme}
+            onOpenSettings={() => {
+              setSettingsOpen(true);
+              setTranslatePanelOpen(false);
+            }}
+            onToggleFullscreen={toggleFullscreen}
+            isFullscreen={isFullscreen}
           >
-            <div id="progress-fill" className="progress-fill" style={{ width: `${progressPercent}%` }} />
-          </div>
-        </section>
+            {day01Slides.length > 0 ? (
+              <a
+                href={day01SlidesLink}
+                className="top-nav-tool-link"
+                onClick={(event) => {
+                  event.preventDefault();
+                  jumpToDay01Slides();
+                }}
+                title={ui.day01SlidesShortcutTitle}
+              >
+                {ui.day01SlidesShortcut}
+              </a>
+            ) : null}
+            <button type="button" className="top-nav-tool-btn" onClick={() => setView("outline")}>
+              {ui.outline}
+            </button>
+            <button
+              type="button"
+              className="top-nav-tool-btn"
+              onClick={() => {
+                setTemplateOpen(true);
+                setSettingsOpen(false);
+              }}
+            >
+              {ui.curriculum}
+            </button>
+            <button type="button" className="top-nav-tool-btn" onClick={handleDownloadPdf}>
+              {ui.downloadPdf}
+            </button>
+            <button
+              type="button"
+              className="top-nav-tool-btn"
+              onClick={openPresenterMode}
+              title={ui.presenter.openPresenterTitle}
+            >
+              {ui.presenter.openPresenter}
+            </button>
+            <button
+              type="button"
+              className="top-nav-tool-btn"
+              onClick={toggleTranslatePanel}
+              aria-expanded={translatePanelOpen}
+            >
+              {ui.translateSlides}
+            </button>
+            <button
+              type="button"
+              className="top-nav-tool-btn"
+              onClick={() => {
+                setNotesOpen(false);
+                setQuizOpen(false);
+                setAiOpen((o) => !o);
+              }}
+              aria-expanded={aiOpen}
+              title={ui.ai.toolbarTitle}
+            >
+              {ui.ai.toolbar}
+            </button>
+          </TopNavBar>
 
-        <main className="stage">
-          <section
-            ref={slideRef}
-            id="slide-container"
-            className={`slide${slideEntering ? " is-entering" : ""}`}
-            dir="ltr"
-            lang="en"
-            dangerouslySetInnerHTML={{ __html: slideHtml }}
+          <p className="top-nav-shortcuts-hint" aria-hidden="true">
+            {ui.nav.shortcutsHint}
+          </p>
+
+          <SectionSidebar
+            open={sidebarOpen}
+            ui={ui}
+            deckTitle={deckTitle}
+            items={sectionNavItems}
+            activeId={activeSectionJumpId}
+            onClose={() => setSidebarOpen(false)}
+            onJump={goToSectionFromSidebar}
           />
-        </main>
 
-        <footer className="controls">
-          <button id="prev-btn" className="nav-btn" type="button" disabled={currentIndex === 0} onClick={goPrev}>
-            {ui.previous}
-          </button>
-          <div id="dots" className="dots">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                className={`dot${index === currentIndex ? " active" : ""}`}
-                aria-label={ui.dotAria(index + 1)}
-                onClick={() => setCurrentIndex(index)}
-              />
-            ))}
-          </div>
-          <button
-            id="next-btn"
-            className="nav-btn"
-            type="button"
-            disabled={currentIndex >= total - 1}
-            onClick={goNext}
-          >
-            {ui.next}
-          </button>
-        </footer>
+          <VirtualSlideStage
+            slides={slides}
+            currentIndex={currentIndex}
+            totalSlides={total}
+            transitionKind={transitionKind}
+            slideEntering={slideEntering}
+            revealedBullets={revealedBullets}
+            uiLang={uiLang}
+            onActiveSlideRef={(node) => {
+              slideRef.current = node;
+            }}
+            footer={
+              bulletTotal > 0 && revealedBullets < bulletTotal ? (
+                <p className="bullet-reveal-hint">
+                  {ui.nav.bulletsRevealHint(revealedBullets, bulletTotal)}
+                </p>
+              ) : null
+            }
+          />
+
+          <SpeakerNotesPanel
+            open={notesOpen}
+            ui={ui}
+            slide={slide}
+            slideIndex={currentIndex}
+            deckScope={deckScope}
+            onClose={() => setNotesOpen(false)}
+          />
+
+          <AiAssistantPanel
+            open={aiOpen}
+            ui={ui}
+            slide={slide}
+            slideIndex={currentIndex}
+            uiLang={uiLang}
+            onClose={() => setAiOpen(false)}
+            onOpenSettings={() => {
+              setAiOpen(false);
+              setSettingsOpen(true);
+            }}
+          />
+
+          <QuizModal
+            open={quizOpen}
+            sectionId={quizSectionId}
+            sectionLabel={quizSectionLabel}
+            ui={ui}
+            onClose={() => setQuizOpen(false)}
+            onComplete={handleQuizComplete}
+          />
+
+          <TraineeProgressRing
+            ui={ui}
+            percent={traineePercent}
+            quizSummary={quizSummary}
+            open={progressRingOpen}
+            onToggle={() => setProgressRingOpen((o) => !o)}
+            onReset={handleResetTraineeProgress}
+          />
         </div>
       )}
 
@@ -513,6 +777,21 @@ export default function App() {
                 <span>{ui.uiLangEnglish}</span>
               </label>
             </fieldset>
+            <div className="settings-api-key-field">
+              <label htmlFor="claude-api-key">{ui.ai.apiKeyLabel}</label>
+              <input
+                id="claude-api-key"
+                type="password"
+                autoComplete="off"
+                value={claudeApiKey}
+                placeholder={ui.ai.apiKeyPlaceholder}
+                onChange={(e) => {
+                  setClaudeApiKey(e.target.value);
+                  writeClaudeApiKey(e.target.value);
+                }}
+              />
+              <p className="settings-api-key-hint">{ui.ai.apiKeyHint}</p>
+            </div>
           </div>
         </div>
       </div>

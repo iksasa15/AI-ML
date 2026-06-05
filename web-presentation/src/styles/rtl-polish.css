@@ -1,0 +1,48 @@
+/* Day 10 — RTL polish & Arabic typography */
+
+:root {
+  --font-body-ar: "Cairo", "Noto Kufi Arabic", "Amiri", serif;
+  --font-ui-ar: "Cairo", "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+}
+
+html[dir="rtl"] {
+  --font-body: var(--font-body-ar);
+  --font-ui: var(--font-ui-ar);
+}
+
+html[dir="rtl"] .presentation,
+html[dir="rtl"] .outline-page,
+html[dir="rtl"] .template-modal-card,
+html[dir="rtl"] .quiz-modal-card,
+html[dir="rtl"] .presenter-root {
+  font-family: var(--font-ui-ar);
+}
+
+/* Slide content stays English LTR */
+html[dir="rtl"] .slide,
+html[dir="rtl"] .print-slide {
+  font-family: var(--font-body);
+}
+
+/* RTL tables in UI chrome (outline, settings, modals) */
+html[dir="rtl"] .outline-table,
+html[dir="rtl"] .settings-modal-body table,
+html[dir="rtl"] .template-content table {
+  direction: rtl;
+}
+
+html[dir="rtl"] .outline-table th,
+html[dir="rtl"] .outline-table td,
+html[dir="rtl"] .settings-modal-body th,
+html[dir="rtl"] .settings-modal-body td {
+  text-align: start;
+}
+
+/* Slide tables remain LTR inside English slides */
+html[dir="rtl"] .slide .slide-table,
+html[dir="rtl"] .slide .table-wrap,
+html[dir="rtl"] .print-slide .slide-table,
+html[dir="rtl"] .print-slide .table-wrap {
+  direction: ltr;
+  text-align: left;
+}

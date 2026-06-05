@@ -8,6 +8,12 @@ export type SectionJump = {
   slideIndex: number;
 };
 
+export type SectionNavItem = SectionJump & {
+  slideCount: number;
+  endIndex: number;
+  completionPercent: number;
+};
+
 /** فواصل فرعية داخل قسم Deep Learning — تُعرض كشرائح لكن لا تُدرَج في جدول الأقسام */
 const OUTLINE_EXCLUDED_DIVIDER_TITLES = new Set(["Phase 1", "Phase 2", "Phase 3", "Phase 4"]);
 
@@ -52,4 +58,34 @@ export function getActiveSectionJumpId(jumps: SectionJump[], currentIndex: numbe
     else break;
   }
   return active;
+}
+
+export function buildSectionNavItems(
+  slides: SlideRecord[],
+  jumps: SectionJump[],
+  maxReachedIndex: number
+): SectionNavItem[] {
+  return jumps.map((jump, index) => {
+    const nextJump = jumps[index + 1];
+    const endIndex = nextJump ? nextJump.slideIndex - 1 : slides.length - 1;
+    const slideCount = Math.max(0, endIndex - jump.slideIndex + 1);
+
+    let completed = 0;
+    if (maxReachedIndex >= endIndex) {
+      completed = slideCount;
+    } else if (maxReachedIndex >= jump.slideIndex) {
+      completed = maxReachedIndex - jump.slideIndex + 1;
+    }
+
+    const completionPercent = slideCount
+      ? Math.min(100, Math.round((completed / slideCount) * 100))
+      : 0;
+
+    return {
+      ...jump,
+      slideCount,
+      endIndex,
+      completionPercent,
+    };
+  });
 }
