@@ -505,12 +505,12 @@ html[data-theme="dark"] .day01-deck-btn {
   }
 }
 
-.slide ul:not(.slide-bullet-list) {
+.slide ul:not(.slide-bullet-list):not(.section-divider-topics) {
   margin: var(--space-2) 0 0;
   padding-inline-start: var(--space-3);
 }
 
-.slide li:not(.slide-bullet-list li) {
+.slide li:not(.slide-bullet-list li):not(.section-divider-topics li) {
   margin-bottom: var(--space-1);
   font-family: var(--font-body);
   color: var(--text);
