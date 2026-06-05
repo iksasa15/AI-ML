@@ -1,247 +1,326 @@
 /** Auto-split from presentationData — section11-nlp-contextual-rnn */
 export const slides = [
-    {
-      "title": "NLP Contextualized Embeddings and RNNs",
-      "subtitle": "From Static Vectors to Context-Aware Sequence Models",
-      "imageUrls": [
-        "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png"
+  {
+    "title": "NLP Contextualized Embeddings and RNNs",
+    "subtitle": "From Static Vectors to Context-Aware Sequence Models",
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png"
+    ],
+    "bullets": [
+      {
+        "text": "Contextual embeddings assign different vectors to the same word in different contexts.",
+        "icon": "embedding"
+      },
+      {
+        "text": "This shift improved disambiguation, semantics, and downstream NLP performance.",
+        "icon": "rnn"
+      },
+      {
+        "text": "This module links contextual representation learning with recurrent sequence modeling.",
+        "icon": "rnn"
+      }
+    ],
+    "speakerNote": "Cover \"NLP Contextualized Embeddings and RNNs\". Emphasize: Contextual embeddings assign different vectors to the same word in different contexts.; then This shift improved disambiguation, semantics, and downstream NLP performance.. Pause for a quick check-in before moving on.",
+    "titleIcon": "rnn"
+  },
+  {
+    "title": "Static vs Contextualized Word Representations",
+    "table": {
+      "headers": [
+        "Property",
+        "Static Embeddings (Word2Vec/GloVe)",
+        "Contextualized Embeddings (ELMo/BERT/GPT)"
       ],
-      "bullets": [
-        "Contextual embeddings assign different vectors to the same word in different contexts.",
-        "This shift improved disambiguation, semantics, and downstream NLP performance.",
-        "This module links contextual representation learning with recurrent sequence modeling."
-      ],
-      "speakerNote": "Cover \"NLP Contextualized Embeddings and RNNs\". Emphasize: Contextual embeddings assign different vectors to the same word in different contexts.; then This shift improved disambiguation, semantics, and downstream NLP performance.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "Static vs Contextualized Word Representations",
-      "table": {
-        "headers": [
-          "Property",
-          "Static Embeddings (Word2Vec/GloVe)",
-          "Contextualized Embeddings (ELMo/BERT/GPT)"
+      "rows": [
+        [
+          "Vector per word",
+          "One fixed vector",
+          "Different vectors per context"
         ],
-        "rows": [
-          [
-            "Vector per word",
-            "One fixed vector",
-            "Different vectors per context"
-          ],
-          [
-            "Polysemy handling",
-            "Weak",
-            "Strong"
-          ],
-          [
-            "Context direction",
-            "Usually local/global corpus only",
-            "Bidirectional or autoregressive sequence context"
-          ],
-          [
-            "Task transfer",
-            "Moderate",
-            "High with pretraining + fine-tuning"
-          ]
+        [
+          "Polysemy handling",
+          "Weak",
+          "Strong"
+        ],
+        [
+          "Context direction",
+          "Usually local/global corpus only",
+          "Bidirectional or autoregressive sequence context"
+        ],
+        [
+          "Task transfer",
+          "Moderate",
+          "High with pretraining + fine-tuning"
+        ]
+      ]
+    },
+    "note": "Contextualization is a core enabler for modern LLM quality.",
+    "speakerNote": "Contextualization is a core enabler for modern LLM quality.",
+    "titleIcon": "idea"
+  },
+  {
+    "title": "How Contextualized Embeddings Work",
+    "sections": [
+      {
+        "heading": "Architecture Layers",
+        "bullets": [
+          {
+            "text": "Token/base embedding layer maps input ids to dense vectors.",
+            "icon": "neural-net"
+          },
+          {
+            "text": "Context encoder layers (often Transformer blocks) enrich each token with sequence context.",
+            "icon": "encoding"
+          },
+          {
+            "text": "Task head uses contextual features for prediction.",
+            "icon": "feature"
+          }
         ]
       },
-      "note": "Contextualization is a core enabler for modern LLM quality.",
-      "speakerNote": "Contextualization is a core enabler for modern LLM quality."
-    },
-    {
-      "title": "How Contextualized Embeddings Work",
-      "sections": [
-        {
-          "heading": "Architecture Layers",
-          "bullets": [
-            "Token/base embedding layer maps input ids to dense vectors.",
-            "Context encoder layers (often Transformer blocks) enrich each token with sequence context.",
-            "Task head uses contextual features for prediction."
-          ]
-        },
-        {
-          "heading": "Layer Semantics",
-          "bullets": [
-            "Lower layers capture local syntax/patterns.",
-            "Middle layers improve sense disambiguation.",
-            "Upper layers capture richer semantics and task-specific signals."
-          ]
-        }
-      ],
-      "speakerNote": "Present \"How Contextualized Embeddings Work\". Tie back to the section objective and invite one question before advancing."
-    },
-    {
-      "title": "Impact of Contextual Embeddings on LLMs",
-      "bullets": [
-        "Better understanding of ambiguous queries and nuanced language.",
-        "Strong transfer learning via pretrain-then-finetune workflows.",
-        "Improved scalability for large vocabularies and unseen contexts."
-      ],
-      "table": {
-        "headers": [
-          "Benefit",
-          "Practical Outcome"
-        ],
-        "rows": [
-          [
-            "Disambiguation",
-            "Fewer semantic errors in QA/NER/sentiment tasks"
-          ],
-          [
-            "Transfer learning",
-            "Less task-specific labeled data required"
-          ],
-          [
-            "Generalization",
-            "Better robustness on new domains"
-          ]
+      {
+        "heading": "Layer Semantics",
+        "bullets": [
+          {
+            "text": "Lower layers capture local syntax/patterns.",
+            "icon": "neural-net"
+          },
+          {
+            "text": "Middle layers improve sense disambiguation.",
+            "icon": "neural-net"
+          },
+          {
+            "text": "Upper layers capture richer semantics and task-specific signals.",
+            "icon": "neural-net"
+          }
         ]
+      }
+    ],
+    "speakerNote": "Present \"How Contextualized Embeddings Work\". Tie back to the section objective and invite one question before advancing.",
+    "titleIcon": "embedding",
+    "illustration": "embedding-space"
+  },
+  {
+    "title": "Impact of Contextual Embeddings on LLMs",
+    "bullets": [
+      {
+        "text": "Better understanding of ambiguous queries and nuanced language.",
+        "icon": "embedding"
       },
-      "speakerNote": "Cover \"Impact of Contextual Embeddings on LLMs\". Emphasize: Better understanding of ambiguous queries and nuanced language.; then Strong transfer learning via pretrain-then-finetune workflows.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "From Traditional LMs to Recurrent Models",
-      "bullets": [
-        "N-gram models struggle with long-distance dependencies and memory cost.",
-        "RNNs process full sequences by propagating hidden state through time.",
-        "Shared parameters across time steps keep model size manageable."
+      {
+        "text": "Strong transfer learning via pretrain-then-finetune workflows.",
+        "icon": "train"
+      },
+      {
+        "text": "Improved scalability for large vocabularies and unseen contexts.",
+        "icon": "scaling"
+      }
+    ],
+    "table": {
+      "headers": [
+        "Benefit",
+        "Practical Outcome"
       ],
-      "note": "RNNs were an important step beyond count-based language modeling.",
-      "speakerNote": "RNNs were an important step beyond count-based language modeling."
-    },
-    {
-      "title": "RNN Mechanism and Weight Sharing",
-      "imageUrls": [
-        "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg"
-      ],
-      "bullets": [
-        "At time t, the RNN consumes current input and previous hidden state.",
-        "The same cell and weights are reused at every time step.",
-        "This recurrence captures sequential information in variable-length text."
-      ],
-      "formula": "h_t = f(W_x x_t + W_h h_{t-1} + b)",
-      "speakerNote": "Cover \"RNN Mechanism and Weight Sharing\". Emphasize: At time t, the RNN consumes current input and previous hidden state.; then The same cell and weights are reused at every time step.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "Common RNN Input/Output Patterns",
-      "table": {
-        "headers": [
-          "Pattern",
-          "Mapping",
-          "Example Task"
+      "rows": [
+        [
+          "Disambiguation",
+          "Fewer semantic errors in QA/NER/sentiment tasks"
         ],
-        "rows": [
-          [
-            "One-to-One",
-            "single input -> single output",
-            "basic regression/classification"
-          ],
-          [
-            "One-to-Many",
-            "single input -> sequence output",
-            "image captioning"
-          ],
-          [
-            "Many-to-One",
-            "sequence input -> single output",
-            "sentiment classification"
-          ],
-          [
-            "Many-to-Many",
-            "sequence input -> sequence output",
-            "machine translation"
-          ]
-        ]
-      },
-      "note": "Sequence-aware patterns are where recurrent models provide clear value.",
-      "speakerNote": "Sequence-aware patterns are where recurrent models provide clear value."
-    },
-    {
-      "title": "RNN Family: Vanilla, GRU, BiRNN, LSTM",
-      "imageUrls": [
-        "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg"
-      ],
-      "table": {
-        "headers": [
-          "Model",
-          "Vanishing Gradient Risk",
-          "Key Strength",
-          "Typical Limitation"
+        [
+          "Transfer learning",
+          "Less task-specific labeled data required"
         ],
-        "rows": [
-          [
-            "Vanilla RNN",
-            "High",
-            "Simple architecture",
-            "Poor long-range memory"
-          ],
-          [
-            "GRU",
-            "Lower",
-            "Efficient gating with fewer parameters",
-            "Can still degrade on very long contexts"
-          ],
-          [
-            "BiRNN",
-            "Medium",
-            "Uses past and future context",
-            "Higher compute and memory"
-          ],
-          [
-            "LSTM",
-            "Low (relative)",
-            "Strong long-term dependency handling",
-            "Heavier than GRU"
-          ]
+        [
+          "Generalization",
+          "Better robustness on new domains"
         ]
-      },
-      "speakerNote": "Present \"RNN Family: Vanilla, GRU, BiRNN, LSTM\". Tie back to the section objective and invite one question before advancing."
+      ]
     },
-    {
-      "title": "Activation Functions in Recurrent/Deep Models",
-      "table": {
-        "headers": [
-          "Activation",
-          "Range",
-          "Typical Use",
-          "Note"
-        ],
-        "rows": [
-          [
-            "tanh",
-            "(-1, 1)",
-            "RNN hidden states",
-            "Smooth and zero-centered"
-          ],
-          [
-            "sigmoid",
-            "(0, 1)",
-            "gates and binary outputs",
-            "Interpretable as probability"
-          ],
-          [
-            "ReLU",
-            "[0, inf)",
-            "deep feedforward/CNN layers",
-            "Fast but can produce dead units"
-          ],
-          [
-            "softmax",
-            "(0,1) distribution",
-            "multiclass output layer",
-            "Probabilities sum to 1"
-          ]
-        ]
+    "speakerNote": "Cover \"Impact of Contextual Embeddings on LLMs\". Emphasize: Better understanding of ambiguous queries and nuanced language.; then Strong transfer learning via pretrain-then-finetune workflows.. Pause for a quick check-in before moving on.",
+    "titleIcon": "embedding",
+    "illustration": "embedding-space"
+  },
+  {
+    "title": "From Traditional LMs to Recurrent Models",
+    "bullets": [
+      {
+        "text": "N-gram models struggle with long-distance dependencies and memory cost.",
+        "icon": "model"
       },
-      "speakerNote": "Present \"Activation Functions in Recurrent/Deep Models\". Tie back to the section objective and invite one question before advancing."
-    },
-    {
-      "title": "Contextual Embeddings and RNNs Summary",
-      "bullets": [
-        "Contextualized embeddings replaced one-vector-per-word limitations.",
-        "RNNs introduced sequence-aware state propagation over time.",
-        "GRU/LSTM mitigate gradient issues and improve long-context learning.",
-        "These ideas paved the path toward stronger seq2seq and transformer systems."
+      {
+        "text": "RNNs process full sequences by propagating hidden state through time.",
+        "icon": "neural-net"
+      },
+      {
+        "text": "Shared parameters across time steps keep model size manageable.",
+        "icon": "model"
+      }
+    ],
+    "note": "RNNs were an important step beyond count-based language modeling.",
+    "speakerNote": "RNNs were an important step beyond count-based language modeling.",
+    "titleIcon": "rnn"
+  },
+  {
+    "title": "RNN Mechanism and Weight Sharing",
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg"
+    ],
+    "bullets": [
+      {
+        "text": "At time t, the RNN consumes current input and previous hidden state.",
+        "icon": "neural-net"
+      },
+      {
+        "text": "The same cell and weights are reused at every time step.",
+        "icon": "rnn"
+      },
+      {
+        "text": "This recurrence captures sequential information in variable-length text.",
+        "icon": "rnn"
+      }
+    ],
+    "formula": "h_t = f(W_x x_t + W_h h_{t-1} + b)",
+    "speakerNote": "Cover \"RNN Mechanism and Weight Sharing\". Emphasize: At time t, the RNN consumes current input and previous hidden state.; then The same cell and weights are reused at every time step.. Pause for a quick check-in before moving on.",
+    "titleIcon": "rnn"
+  },
+  {
+    "title": "Common RNN Input/Output Patterns",
+    "table": {
+      "headers": [
+        "Pattern",
+        "Mapping",
+        "Example Task"
       ],
-      "speakerNote": "Cover \"Contextual Embeddings and RNNs Summary\". Emphasize: Contextualized embeddings replaced one-vector-per-word limitations.; then RNNs introduced sequence-aware state propagation over time.. Pause for a quick check-in before moving on."
-    }
-  ];
+      "rows": [
+        [
+          "One-to-One",
+          "single input -> single output",
+          "basic regression/classification"
+        ],
+        [
+          "One-to-Many",
+          "single input -> sequence output",
+          "image captioning"
+        ],
+        [
+          "Many-to-One",
+          "sequence input -> single output",
+          "sentiment classification"
+        ],
+        [
+          "Many-to-Many",
+          "sequence input -> sequence output",
+          "machine translation"
+        ]
+      ]
+    },
+    "note": "Sequence-aware patterns are where recurrent models provide clear value.",
+    "speakerNote": "Sequence-aware patterns are where recurrent models provide clear value.",
+    "titleIcon": "rnn"
+  },
+  {
+    "title": "RNN Family: Vanilla, GRU, BiRNN, LSTM",
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg"
+    ],
+    "table": {
+      "headers": [
+        "Model",
+        "Vanishing Gradient Risk",
+        "Key Strength",
+        "Typical Limitation"
+      ],
+      "rows": [
+        [
+          "Vanilla RNN",
+          "High",
+          "Simple architecture",
+          "Poor long-range memory"
+        ],
+        [
+          "GRU",
+          "Lower",
+          "Efficient gating with fewer parameters",
+          "Can still degrade on very long contexts"
+        ],
+        [
+          "BiRNN",
+          "Medium",
+          "Uses past and future context",
+          "Higher compute and memory"
+        ],
+        [
+          "LSTM",
+          "Low (relative)",
+          "Strong long-term dependency handling",
+          "Heavier than GRU"
+        ]
+      ]
+    },
+    "speakerNote": "Present \"RNN Family: Vanilla, GRU, BiRNN, LSTM\". Tie back to the section objective and invite one question before advancing.",
+    "titleIcon": "rnn"
+  },
+  {
+    "title": "Activation Functions in Recurrent/Deep Models",
+    "table": {
+      "headers": [
+        "Activation",
+        "Range",
+        "Typical Use",
+        "Note"
+      ],
+      "rows": [
+        [
+          "tanh",
+          "(-1, 1)",
+          "RNN hidden states",
+          "Smooth and zero-centered"
+        ],
+        [
+          "sigmoid",
+          "(0, 1)",
+          "gates and binary outputs",
+          "Interpretable as probability"
+        ],
+        [
+          "ReLU",
+          "[0, inf)",
+          "deep feedforward/CNN layers",
+          "Fast but can produce dead units"
+        ],
+        [
+          "softmax",
+          "(0,1) distribution",
+          "multiclass output layer",
+          "Probabilities sum to 1"
+        ]
+      ]
+    },
+    "speakerNote": "Present \"Activation Functions in Recurrent/Deep Models\". Tie back to the section objective and invite one question before advancing.",
+    "titleIcon": "neural-net"
+  },
+  {
+    "title": "Contextual Embeddings and RNNs Summary",
+    "bullets": [
+      {
+        "text": "Contextualized embeddings replaced one-vector-per-word limitations.",
+        "icon": "embedding"
+      },
+      {
+        "text": "RNNs introduced sequence-aware state propagation over time.",
+        "icon": "rnn"
+      },
+      {
+        "text": "GRU/LSTM mitigate gradient issues and improve long-context learning.",
+        "icon": "rnn"
+      },
+      {
+        "text": "These ideas paved the path toward stronger seq2seq and transformer systems.",
+        "icon": "attention"
+      }
+    ],
+    "speakerNote": "Cover \"Contextual Embeddings and RNNs Summary\". Emphasize: Contextualized embeddings replaced one-vector-per-word limitations.; then RNNs introduced sequence-aware state propagation over time.. Pause for a quick check-in before moving on.",
+    "titleIcon": "rnn",
+    "illustration": "embedding-space"
+  }
+];

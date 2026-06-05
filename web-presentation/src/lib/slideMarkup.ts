@@ -1,5 +1,8 @@
 import katex from "katex";
 import { formatAmpersandHTML } from "./ampersandText";
+import { normalizeBullets } from "./bulletItems";
+import { ILLUSTRATION_CAPTIONS, isSlideIllustrationId } from "./slideIllustrations";
+import { isSlideIconId } from "./slideIconKeys";
 import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
 import { COURSE_WEEKS } from "./courseWeeks";
 import {
@@ -38,28 +41,58 @@ export function renderDisplayFormula(tex: string): string {
   }
 }
 
-export function buildTableMarkup(table: {
+type TableInput = {
   title?: string;
   headers?: string[];
   rows?: string[][];
-}) {
+  _titleHtml?: string;
+  _headersHtml?: string[];
+  _rowsHtml?: string[][];
+};
+
+function renderTableCell(cell: string, html?: string) {
+  if (html) {
+    return `<td class="notranslate" translate="no">${html}</td>`;
+  }
+  return `<td>${escapeHTML(cell)}</td>`;
+}
+
+export function buildTableMarkup(table: TableInput) {
   if (!table) return "";
+  const titleHtml =
+    typeof table._titleHtml === "string"
+      ? table._titleHtml
+      : table.title
+        ? escapeHTML(table.title)
+        : "";
+  const headers = table.headers || [];
+  const headerHtml = table._headersHtml || [];
+  const rows = table.rows || [];
+  const rowsHtml = table._rowsHtml || [];
+
   return `
     <div class="table-wrap slide-table-wrap">
-      ${table.title ? `<h3 class="slide-table-caption">${escapeHTML(table.title)}</h3>` : ""}
+      ${titleHtml ? `<h3 class="slide-table-caption notranslate" translate="no">${titleHtml}</h3>` : ""}
       <table class="slide-table">
         <thead>
           <tr>
-            ${(table.headers || [])
-              .map((header) => `<th>${escapeHTML(header)}</th>`)
+            ${headers
+              .map(
+                (header, index) =>
+                  `<th class="notranslate" translate="no">${headerHtml[index] ?? escapeHTML(header)}</th>`
+              )
               .join("")}
           </tr>
         </thead>
         <tbody>
-          ${(table.rows || [])
+          ${rows
             .map(
-              (row) =>
-                `<tr>${row.map((cell) => `<td>${escapeHTML(cell)}</td>`).join("")}</tr>`
+              (row, rowIndex) =>
+                `<tr>${row
+                  .map((cell, cellIndex) =>
+                    renderTableCell(cell, rowsHtml[rowIndex]?.[cellIndex])
+                  )
+                  .join("")}</tr>`
             )
             .join("")}
         </tbody>
@@ -96,26 +129,62 @@ export function buildMediaBadgeMarkup(slide: SlideRecord) {
   return `<span class="media-badge media-badge-static" title="Static image">🖼️ Static</span>`;
 }
 
-function buildTitleBlock(title: string, mediaBadgeHTML = "") {
+function buildTitleIconMarkup(iconId?: string) {
+  if (!iconId || !isSlideIconId(iconId)) return "";
+  return `<span class="slide-title-icon slide-title-icon--print" data-icon="${escapeHTML(iconId)}" aria-hidden="true"></span>`;
+}
+
+function buildTitleBlock(title: string, mediaBadgeHTML = "", titleIcon?: string) {
+  const iconHTML = buildTitleIconMarkup(titleIcon);
   return `
     <header class="slide-title-block">
       <h2 class="slide-title">
-        ${escapeHTML(title)}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}
+        ${iconHTML ? `<span class="slide-title-row">${iconHTML}<span>${escapeHTML(title)}</span></span>` : escapeHTML(title)}${mediaBadgeHTML ? ` <span class="media-badges">${mediaBadgeHTML}</span>` : ""}
       </h2>
       <div class="slide-title-rule" aria-hidden="true"></div>
     </header>
   `;
 }
 
-function buildBulletsMarkup(items: string[], className = "slide-bullet-list") {
-  if (!items.length) return "";
-  const itemsHTML = items
-    .map(
-      (item, index) =>
-        `<li style="animation-delay:${index * 60}ms">${escapeHTML(item)}</li>`
-    )
+function buildBulletIconMarkup(iconId?: string) {
+  if (!iconId || !isSlideIconId(iconId)) return "";
+  return `<span class="slide-bullet-icon-wrap slide-bullet-icon-wrap--print" data-icon="${escapeHTML(iconId)}" aria-hidden="true"></span>`;
+}
+
+function buildBulletContent(text: string, html?: string) {
+  if (html) {
+    return `<span class="notranslate" translate="no">${html}</span>`;
+  }
+  return escapeHTML(text);
+}
+
+function buildBulletsMarkup(
+  items: unknown[] | undefined,
+  className = "slide-bullet-list",
+  itemsHtml?: string[]
+) {
+  const normalized = normalizeBullets(items);
+  if (!normalized.length) return "";
+  const itemsHTML = normalized
+    .map((item, index) => {
+      const icon = buildBulletIconMarkup(item.icon);
+      const rowClass = icon ? "slide-bullet-item slide-bullet-item--icon" : "";
+      const content = buildBulletContent(item.text, itemsHtml?.[index]);
+      return `<li class="${rowClass}" style="animation-delay:${index * 60}ms">${icon}${content}</li>`;
+    })
     .join("");
   return `<ul class="${className}">${itemsHTML}</ul>`;
+}
+
+function buildIllustrationMarkup(illustrationId?: string) {
+  if (!illustrationId || !isSlideIllustrationId(illustrationId)) return "";
+  const caption = ILLUSTRATION_CAPTIONS[illustrationId];
+  return `
+    <figure class="illustration-slot illustration-slot--print" aria-label="${escapeHTML(caption)}">
+      <div class="illustration-slot-graphic" data-illustration="${escapeHTML(illustrationId)}"></div>
+      <figcaption class="illustration-slot-caption">${escapeHTML(caption)}</figcaption>
+    </figure>
+  `;
 }
 
 function buildFormulaMarkup(tex: string) {
@@ -224,10 +293,17 @@ function buildBigPicturePrintMarkup(slide: SlideRecord) {
 }
 
 function buildTakeawayPrintMarkup(slide: SlideRecord) {
-  const bullets = (slide.bullets || []) as string[];
+  const bullets = normalizeBullets(slide.bullets as unknown[] | undefined);
+  const bulletsHtml = Array.isArray(slide._bulletsHtml)
+    ? (slide._bulletsHtml as string[])
+    : undefined;
   const items = bullets
     .slice(0, 3)
-    .map((item, index) => `<li><strong>${index + 1}.</strong> ${escapeHTML(item)}</li>`)
+    .map((item, index) => {
+      const icon = buildBulletIconMarkup(item.icon);
+      const content = buildBulletContent(item.text, bulletsHtml?.[index]);
+      return `<li class="takeaway-item">${icon}<strong>${index + 1}.</strong> ${content}</li>`;
+    })
     .join("");
 
   return `
@@ -274,12 +350,17 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
   }
 
   if (slide.type === "three-columns") {
-    const columns = (slide.columns || []) as Array<{ heading?: string; bullets?: string[] }>;
+    const columns = (slide.columns || []) as Array<{
+      heading?: string;
+      bullets?: unknown[];
+      _bulletsHtml?: string[];
+    }>;
     const columnsHTML = columns
       .map((col) => {
         const colBullets = buildBulletsMarkup(
           col.bullets || [],
-          "slide-bullet-list slide-bullet-list--compact"
+          "slide-bullet-list slide-bullet-list--compact",
+          col._bulletsHtml
         );
         return `
           <article class="slide-column-card">
@@ -291,32 +372,50 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
       .join("");
     const mediaBadgeHTML = buildMediaBadgeMarkup(slide);
 
+    const titleIcon = typeof slide.titleIcon === "string" ? slide.titleIcon : undefined;
+    const illustrationHTML = buildIllustrationMarkup(
+      typeof slide.illustration === "string" ? slide.illustration : undefined
+    );
+
     return `
-      ${buildTitleBlock(String(slide.title || ""), mediaBadgeHTML)}
+      ${buildTitleBlock(String(slide.title || ""), mediaBadgeHTML, titleIcon)}
       ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
+      ${illustrationHTML}
       <div class="slide-columns-three">${columnsHTML}</div>
     `;
   }
 
-  const bullets = (slide.bullets || []) as string[];
+  const bullets = slide.bullets as unknown[] | undefined;
   const sections = (slide.sections || []) as Array<{
     heading?: string;
     body?: string;
+    _bodyHtml?: string;
     formula?: string;
-    bullets?: string[];
-    table?: { title?: string; headers?: string[]; rows?: string[][] };
+    _formulaHtml?: string;
+    bullets?: unknown[];
+    _bulletsHtml?: string[];
+    table?: TableInput;
   }>;
   const sectionsHTML = sections
     .map((section) => {
       const sectionBullets = buildBulletsMarkup(
         section.bullets || [],
-        "slide-bullet-list slide-bullet-list--compact"
+        "slide-bullet-list slide-bullet-list--compact",
+        section._bulletsHtml
       );
+      const bodyHtml = section._bodyHtml
+        ? `<p class="notranslate" translate="no">${section._bodyHtml}</p>`
+        : section.body
+          ? `<p>${escapeHTML(section.body)}</p>`
+          : "";
+      const formulaHtml =
+        section._formulaHtml ||
+        (section.formula ? buildFormulaMarkup(String(section.formula)) : "");
       return `
         <article class="content-card">
           <h3>${escapeHTML(section.heading || "")}</h3>
-          ${section.body ? `<p>${escapeHTML(section.body)}</p>` : ""}
-          ${section.formula ? buildFormulaMarkup(String(section.formula)) : ""}
+          ${bodyHtml}
+          ${formulaHtml}
           ${sectionBullets}
           ${buildTableMarkup(section.table || {})}
         </article>
@@ -340,17 +439,48 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
     )
     .join("");
 
+  const titleIcon = typeof slide.titleIcon === "string" ? slide.titleIcon : undefined;
+  const illustrationHTML = buildIllustrationMarkup(
+    typeof slide.illustration === "string" ? slide.illustration : undefined
+  );
+
+  const subtitleHtml =
+    typeof slide._subtitleHtml === "string"
+      ? `<p class="slide-subtitle notranslate" translate="no">${slide._subtitleHtml}</p>`
+      : slide.subtitle
+        ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>`
+        : "";
+  const bodyHtml =
+    typeof slide._bodyHtml === "string"
+      ? `<p class="slide-body notranslate" translate="no">${slide._bodyHtml}</p>`
+      : slide.body
+        ? `<p class="slide-body">${escapeHTML(String(slide.body))}</p>`
+        : "";
+  const formulaHtml =
+    typeof slide._formulaHtml === "string"
+      ? `<div class="slide-formula-block notranslate" translate="no">${slide._formulaHtml}</div>`
+      : slide.formula
+        ? buildFormulaMarkup(String(slide.formula))
+        : "";
+  const noteHtml =
+    typeof slide._noteHtml === "string"
+      ? `<p class="note-box notranslate" translate="no">${slide._noteHtml}</p>`
+      : slide.note
+        ? `<p class="note-box">${escapeHTML(String(slide.note))}</p>`
+        : "";
+
   return `
-    ${buildTitleBlock(String(slide.title || ""), mediaBadgeHTML)}
-    ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
-    ${slide.body ? `<p class="slide-body">${escapeHTML(String(slide.body))}</p>` : ""}
-    ${slide.formula ? buildFormulaMarkup(String(slide.formula)) : ""}
+    ${buildTitleBlock(String(slide.title || ""), mediaBadgeHTML, titleIcon)}
+    ${subtitleHtml}
+    ${bodyHtml}
+    ${illustrationHTML}
+    ${formulaHtml}
     ${imageHTML}
-    ${buildBulletsMarkup(bullets)}
+    ${buildBulletsMarkup(bullets, "slide-bullet-list", slide._bulletsHtml as string[] | undefined)}
     ${sectionsHTML ? `<div class="content-sections">${sectionsHTML}</div>` : ""}
     ${tableHTML}
     ${tablesHTML}
-    ${slide.note ? `<p class="note-box">${escapeHTML(String(slide.note))}</p>` : ""}
+    ${noteHtml}
   `;
 }
 

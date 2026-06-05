@@ -1,3 +1,4 @@
+import { bulletTexts, normalizeBullets } from "./bulletItems";
 import type { SlideRecord } from "./slideMarkup";
 import type { DeckScope } from "./traineeProgress";
 
@@ -6,6 +7,7 @@ const STORAGE_PREFIX = "ml-presentation-bullet-reveal";
 export type BulletGroup = {
   id: string;
   items: string[];
+  icons?: (string | undefined)[];
   className?: string;
 };
 
@@ -18,41 +20,50 @@ function slideKey(slide: SlideRecord, slideIndex: number): string {
   return `${slideIndex}:${title}`;
 }
 
+function groupFromBullets(
+  id: string,
+  bullets: unknown[] | undefined,
+  className?: string
+): BulletGroup | null {
+  const normalized = normalizeBullets(bullets);
+  if (!normalized.length) return null;
+  return {
+    id,
+    items: normalized.map((b) => b.text),
+    icons: normalized.map((b) => b.icon),
+    className,
+  };
+}
+
 export function getSlideBulletGroups(slide: SlideRecord): BulletGroup[] {
   if (!slide || slide.type === "section-divider") return [];
 
   const groups: BulletGroup[] = [];
 
-  const main = (slide.bullets || []) as string[];
-  if (main.length) {
-    groups.push({ id: "main", items: main });
-  }
+  const main = groupFromBullets("main", slide.bullets as unknown[] | undefined);
+  if (main) groups.push(main);
 
   if (slide.type === "three-columns") {
-    const columns = (slide.columns || []) as Array<{ heading?: string; bullets?: string[] }>;
+    const columns = (slide.columns || []) as Array<{ heading?: string; bullets?: unknown[] }>;
     columns.forEach((col, index) => {
-      const items = col.bullets || [];
-      if (items.length) {
-        groups.push({
-          id: `col-${index}`,
-          items,
-          className: "slide-bullet-list slide-bullet-list--compact",
-        });
-      }
+      const group = groupFromBullets(
+        `col-${index}`,
+        col.bullets,
+        "slide-bullet-list slide-bullet-list--compact"
+      );
+      if (group) groups.push(group);
     });
     return groups;
   }
 
-  const sections = (slide.sections || []) as Array<{ heading?: string; bullets?: string[] }>;
+  const sections = (slide.sections || []) as Array<{ heading?: string; bullets?: unknown[] }>;
   sections.forEach((section, index) => {
-    const items = section.bullets || [];
-    if (items.length) {
-      groups.push({
-        id: `sec-${index}`,
-        items,
-        className: "slide-bullet-list slide-bullet-list--compact",
-      });
-    }
+    const group = groupFromBullets(
+      `sec-${index}`,
+      section.bullets,
+      "slide-bullet-list slide-bullet-list--compact"
+    );
+    if (group) groups.push(group);
   });
 
   return groups;
@@ -61,6 +72,11 @@ export function getSlideBulletGroups(slide: SlideRecord): BulletGroup[] {
 export function countSlideBullets(slide: SlideRecord | undefined): number {
   if (!slide) return 0;
   return getSlideBulletGroups(slide).reduce((sum, group) => sum + group.items.length, 0);
+}
+
+/** Legacy helper — flat string list for callers that only need text */
+export function getSlideBulletTexts(slide: SlideRecord): string[] {
+  return bulletTexts(slide.bullets as unknown[] | undefined);
 }
 
 function readAll(scope: DeckScope): Record<string, number> {

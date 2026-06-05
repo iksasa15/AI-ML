@@ -200,14 +200,16 @@ export function getBigPictureSlide(sectionId: number): SlideRecord {
 
 export function getTakeawaySlide(sectionId: number): SlideRecord {
   const meta = BOOKENDS[sectionId];
+  const texts = meta?.takeaways ?? ["Key idea 1", "Key idea 2", "Key idea 3"];
   return {
     type: "takeaway",
     title: "Section Takeaways",
+    titleIcon: "idea",
     subtitle: `Section ${sectionId} — remember these`,
-    bullets: meta?.takeaways ?? [
-      "Key idea 1",
-      "Key idea 2",
-      "Key idea 3",
+    bullets: [
+      { text: texts[0], icon: "check" },
+      { text: texts[1], icon: "idea" },
+      { text: texts[2], icon: "target" },
     ],
     reflectionQuestion: meta?.reflectionQuestion ?? "What will you apply first?",
     speakerNote: meta?.speakerNoteTakeaway ?? "Pause for reflection before the quiz.",

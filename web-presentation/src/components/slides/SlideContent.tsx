@@ -1,8 +1,11 @@
 import { ConceptAnimationSlot } from "../animations/ConceptAnimationSlot";
+import { IllustrationSlot } from "../illustrations/IllustrationSlot";
+import { SlideIcon } from "../icons/SlideIcon";
 import {
   getSlideBulletGroups,
   getVisibleCounts,
 } from "../../lib/bulletReveal";
+import { isSlideIconId } from "../../lib/slideIconKeys";
 import {
   buildMediaBadgeMarkup,
   buildTableMarkup,
@@ -11,8 +14,10 @@ import {
   type SlideRecord,
 } from "../../lib/slideMarkup";
 import type { UiLang } from "../../lib/uiStrings";
+import { normalizeBullets } from "../../lib/bulletItems";
 import { BigPictureSlide } from "./BigPictureSlide";
 import { BootcampTimelineSlide } from "./BootcampTimelineSlide";
+import { BulletItem } from "./BulletItem";
 import { CourseMapSlide } from "./CourseMapSlide";
 import { IntroHeroSlide } from "./IntroHeroSlide";
 import { SectionDivider } from "./SectionDivider";
@@ -53,15 +58,26 @@ function PrerenderedParagraph({
 
 function SlideTitle({
   title,
+  titleIcon,
   mediaBadgeHtml,
 }: {
   title: string;
+  titleIcon?: string;
   mediaBadgeHtml?: string;
 }) {
+  const showIcon = titleIcon && isSlideIconId(titleIcon);
+
   return (
     <header className="slide-title-block">
       <h2 className="slide-title">
-        {title}
+        <span className="slide-title-row">
+          {showIcon ? (
+            <span className="slide-title-icon" aria-hidden="true">
+              <SlideIcon id={titleIcon} size="lg" />
+            </span>
+          ) : null}
+          <span>{title}</span>
+        </span>
         {mediaBadgeHtml ? (
           <span
             className="media-badges"
@@ -101,17 +117,12 @@ function RevealedBulletGroups({
             {group.items.slice(0, visible).map((item, index) => {
               const html = group.id === "main" ? bulletsHtml?.[index] : undefined;
               return (
-                <li key={`${group.id}-${index}`}>
-                  {html ? (
-                    <span
-                      className="notranslate"
-                      translate="no"
-                      dangerouslySetInnerHTML={{ __html: html }}
-                    />
-                  ) : (
-                    item
-                  )}
-                </li>
+                <BulletItem
+                  key={`${group.id}-${index}`}
+                  text={item}
+                  html={html}
+                  icon={group.icons?.[index]}
+                />
               );
             })}
           </ul>
@@ -164,6 +175,7 @@ export function SlideContent({
 }: SlideContentProps) {
   void _uiLang;
   const bulletGroups = getSlideBulletGroups(slide);
+  const titleIcon = typeof slide.titleIcon === "string" ? slide.titleIcon : undefined;
 
   if (slide.type === "intro-hero") {
     return (
@@ -198,7 +210,7 @@ export function SlideContent({
   }
 
   if (slide.type === "takeaway") {
-    const bullets = Array.isArray(slide.bullets) ? slide.bullets.map(String) : [];
+    const bullets = normalizeBullets(slide.bullets as unknown[] | undefined);
     return (
       <TakeawaySlide
         bullets={bullets}
@@ -211,16 +223,21 @@ export function SlideContent({
 
   if (slide.type === "three-columns") {
     const mediaBadgeHtml = buildMediaBadgeMarkup(slide);
-    const columns = (slide.columns || []) as Array<{ heading?: string; bullets?: string[] }>;
+    const columns = (slide.columns || []) as Array<{ heading?: string; bullets?: unknown[] }>;
 
     return (
       <>
-        <SlideTitle title={String(slide.title || "")} mediaBadgeHtml={mediaBadgeHtml || undefined} />
+        <SlideTitle
+          title={String(slide.title || "")}
+          titleIcon={titleIcon}
+          mediaBadgeHtml={mediaBadgeHtml || undefined}
+        />
         <PrerenderedParagraph
           className="slide-subtitle"
           html={typeof slide._subtitleHtml === "string" ? slide._subtitleHtml : undefined}
           fallback={slide.subtitle ? String(slide.subtitle) : undefined}
         />
+        <IllustrationSlot slide={slide} />
         <ConceptAnimationSlot slide={slide} />
         <div className="slide-columns-three">
           {columns.map((col, index) => {
@@ -237,22 +254,14 @@ export function SlideContent({
                 <h3 className="slide-column-heading">{col.heading || ""}</h3>
                 {visible > 0 && group ? (
                   <ul className="slide-bullet-list slide-bullet-list--compact">
-                    {group.items.slice(0, visible).map((item, bi) => {
-                      const html = columnBulletsHtml?.[bi];
-                      return (
-                        <li key={bi}>
-                          {html ? (
-                            <span
-                              className="notranslate"
-                              translate="no"
-                              dangerouslySetInnerHTML={{ __html: html }}
-                            />
-                          ) : (
-                            item
-                          )}
-                        </li>
-                      );
-                    })}
+                    {group.items.slice(0, visible).map((item, bi) => (
+                      <BulletItem
+                        key={bi}
+                        text={item}
+                        html={columnBulletsHtml?.[bi]}
+                        icon={group.icons?.[bi]}
+                      />
+                    ))}
                   </ul>
                 ) : null}
               </article>
@@ -269,7 +278,7 @@ export function SlideContent({
     _bodyHtml?: string;
     formula?: string;
     _formulaHtml?: string;
-    bullets?: string[];
+    bullets?: unknown[];
     _bulletsHtml?: string[];
     table?: { title?: string; headers?: string[]; rows?: string[][] };
   }>;
@@ -284,7 +293,11 @@ export function SlideContent({
 
   return (
     <>
-      <SlideTitle title={String(slide.title || "")} mediaBadgeHtml={mediaBadgeHtml || undefined} />
+      <SlideTitle
+        title={String(slide.title || "")}
+        titleIcon={titleIcon}
+        mediaBadgeHtml={mediaBadgeHtml || undefined}
+      />
       <PrerenderedParagraph
         className="slide-subtitle"
         html={typeof slide._subtitleHtml === "string" ? slide._subtitleHtml : undefined}
@@ -295,6 +308,7 @@ export function SlideContent({
         html={typeof slide._bodyHtml === "string" ? slide._bodyHtml : undefined}
         fallback={slide.body ? String(slide.body) : undefined}
       />
+      <IllustrationSlot slide={slide} />
       <ConceptAnimationSlot slide={slide} />
       {slide.formula || slide._formulaHtml ? (
         <FormulaBlock
@@ -335,22 +349,14 @@ export function SlideContent({
                 ) : null}
                 {visible > 0 && group ? (
                   <ul className="slide-bullet-list slide-bullet-list--compact">
-                    {group.items.slice(0, visible).map((item, bi) => {
-                      const html = section._bulletsHtml?.[bi];
-                      return (
-                        <li key={bi}>
-                          {html ? (
-                            <span
-                              className="notranslate"
-                              translate="no"
-                              dangerouslySetInnerHTML={{ __html: html }}
-                            />
-                          ) : (
-                            item
-                          )}
-                        </li>
-                      );
-                    })}
+                    {group.items.slice(0, visible).map((item, bi) => (
+                      <BulletItem
+                        key={bi}
+                        text={item}
+                        html={section._bulletsHtml?.[bi]}
+                        icon={group.icons?.[bi]}
+                      />
+                    ))}
                   </ul>
                 ) : null}
                 {section.table ? (
@@ -367,7 +373,17 @@ export function SlideContent({
       {tables.map((t, index) => (
         <div key={`table-${index}`} dangerouslySetInnerHTML={{ __html: buildTableMarkup(t) }} />
       ))}
-      {slide.note ? <p className="note-box">{String(slide.note)}</p> : null}
+      {slide.note ? (
+        typeof slide._noteHtml === "string" ? (
+          <p
+            className="note-box notranslate"
+            translate="no"
+            dangerouslySetInnerHTML={{ __html: slide._noteHtml }}
+          />
+        ) : (
+          <p className="note-box">{String(slide.note)}</p>
+        )
+      ) : null}
     </>
   );
 }

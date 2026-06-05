@@ -142,6 +142,10 @@
   overflow: visible;
 }
 
+.concept-card--static .concept-caption {
+  border-top: 1px solid var(--border);
+}
+
 .concept-card-actions {
   display: flex;
   flex-wrap: wrap;

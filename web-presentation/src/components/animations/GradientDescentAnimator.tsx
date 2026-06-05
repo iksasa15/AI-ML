@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { ConceptDiagramCard } from "./ConceptDiagramCard";
 
 const W = 400;
 const H = 180;
@@ -33,56 +33,34 @@ function buildCurvePath() {
 }
 
 const CURVE_PATH = buildCurvePath();
+const X = MIN_X;
+const PX = xToSvg(X);
+const PY = yToSvg(loss(X));
 
 export function GradientDescentAnimator() {
-  const [playing, setPlaying] = useState(false);
-  const [x, setX] = useState(0.4);
-  const step = useCallback(() => {
-    setX((prev) => {
-      const grad = 0.7 * (prev - MIN_X);
-      const next = prev - 0.04 * grad;
-      if (Math.abs(next - MIN_X) < 0.02) {
-        setPlaying(false);
-        return MIN_X;
-      }
-      return next;
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!playing) return;
-    const id = window.setInterval(step, 80);
-    return () => window.clearInterval(id);
-  }, [playing, step]);
-
-  const px = xToSvg(x);
-  const py = yToSvg(loss(x));
-
   return (
-    <div className="concept-card concept-card--gd">
-      <div className="concept-card-head">
-        <h3>Gradient Descent Animator</h3>
-        <p>Loss curve L(w) — the point descends toward the minimum</p>
-      </div>
-      <div className="concept-svg-wrap concept-svg-wrap--gd">
+    <ConceptDiagramCard
+      title="Gradient Descent"
+      subtitle="Loss curve L(w) — minimum at the bottom of the bowl"
+      caption={`Converged: w = ${X.toFixed(2)} · L(w) = ${loss(X).toFixed(2)}`}
+      wrapClass="concept-svg-wrap--gd"
+    >
       <svg
         className="concept-svg concept-svg--gd"
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
-        aria-label="Gradient descent on loss curve"
+        aria-label="Gradient descent loss curve with minimum marked"
       >
         <line x1={20} y1={H - 20} x2={W - 20} y2={H - 20} className="gd-axis" />
         <line x1={20} y1={20} x2={20} y2={H - 20} className="gd-axis" />
         <path d={CURVE_PATH} className="gd-curve" fill="none" />
-        <circle cx={xToSvg(MIN_X)} cy={yToSvg(loss(MIN_X))} r={5} className="gd-minimum" />
-        <text x={xToSvg(MIN_X)} y={yToSvg(loss(MIN_X)) - 10} className="gd-min-label" textAnchor="middle">
+        <circle cx={PX} cy={PY} r={7} className="gd-point" />
+        <circle cx={PX} cy={PY} r={5} className="gd-minimum" />
+        <text x={PX} y={PY - 12} className="gd-min-label" textAnchor="middle">
           min
         </text>
-        <circle cx={px} cy={py} r={7} className={`gd-point${playing ? " is-moving" : ""}`} />
-        {playing ? (
-          <line x1={px} y1={py} x2={px} y2={H - 20} className="gd-drop-line" strokeDasharray="4 3" />
-        ) : null}
+        <line x1={PX} y1={PY} x2={PX} y2={H - 20} className="gd-drop-line" strokeDasharray="4 3" />
         <text x={W / 2} y={H - 4} className="gd-axis-label" textAnchor="middle">
           parameter w
         </text>
@@ -90,23 +68,6 @@ export function GradientDescentAnimator() {
           L(w)
         </text>
       </svg>
-      </div>
-      <div className="concept-card-actions">
-        <button type="button" className="concept-btn" onClick={() => setPlaying((p) => !p)}>
-          {playing ? "⏸ Pause" : "▶ Play"}
-        </button>
-        <button
-          type="button"
-          className="concept-btn concept-btn--ghost"
-          onClick={() => {
-            setPlaying(false);
-            setX(0.4);
-          }}
-        >
-          Reset
-        </button>
-        <span className="concept-meta">w = {x.toFixed(2)} · L = {loss(x).toFixed(2)}</span>
-      </div>
-    </div>
+    </ConceptDiagramCard>
   );
 }

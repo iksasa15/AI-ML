@@ -1,144 +1,265 @@
 /** Auto-split from presentationData — section03-classification-intro */
 export const slides = [
-    {
-      "title": "Classification Overview",
-      "body": "Classification is a supervised learning task used to assign a new observation to a predefined category based on learned patterns from labeled data.",
-      "bullets": [
-        "Output is a class label (e.g., 0/1, Yes/No).",
-        "Used in spam detection, medical diagnosis, fraud detection, and customer churn prediction."
-      ],
-      "imageUrls": [
-        "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png"
-      ],
-      "speakerNote": "Cover \"Classification Overview\". Emphasize: Output is a class label (e.g., 0/1, Yes/No).; then Used in spam detection, medical diagnosis, fraud detection, and customer churn prediction.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "Logistic Regression: Definition",
-      "body": "Logistic Regression is a supervised algorithm for binary classification that estimates the probability of class membership.",
-      "bullets": [
-        "Produces probabilities in the range [0, 1].",
-        "Final class is determined using a threshold (commonly 0.5).",
-        "Models the relationship between features and log-odds of the target."
-      ],
-      "speakerNote": "Cover \"Logistic Regression: Definition\". Emphasize: Produces probabilities in the range [0, 1].; then Final class is determined using a threshold (commonly 0.5).. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "Why Not Linear Regression for Classification?",
-      "bullets": [
-        "Linear regression predicts continuous values rather than discrete classes.",
-        "Predicted values can be less than 0 or greater than 1, which is invalid for probabilities.",
-        "It does not naturally provide a robust classification boundary."
-      ],
-      "note": "Logistic Regression solves this by mapping the linear score to probability through a sigmoid function.",
-      "speakerNote": "Logistic Regression solves this by mapping the linear score to probability through a sigmoid function."
-    },
-    {
-      "title": "Sigmoid Mapping and Decision Threshold",
-      "formula": "P(y=1|x)=\\sigma(z)=\\frac{1}{1+e^{-z}}, \\; z=\\beta_0+\\beta^Tx",
-      "bullets": [
-        "Sigmoid converts any real-valued score into a valid probability.",
-        "If probability >= 0.5, predict class 1; otherwise class 0.",
-        "Threshold can be adjusted based on business/clinical needs."
-      ],
-      "imageUrls": [
-        "https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg"
-      ],
-      "speakerNote": "Cover \"Sigmoid Mapping and Decision Threshold\". Emphasize: Sigmoid converts any real-valued score into a valid probability.; then If probability >= 0.5, predict class 1; otherwise class 0.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "Key Assumptions for Logistic Regression",
-      "bullets": [
-        "Observations should be independent.",
-        "Predictors should not have severe multicollinearity.",
-        "Relationship should be approximately linear in the log-odds space."
-      ],
-      "formula": "\\text{Odds}=\\frac{p}{1-p},\\quad \\text{Logit}(p)=\\log\\left(\\frac{p}{1-p}\\right)",
-      "speakerNote": "Cover \"Key Assumptions for Logistic Regression\". Emphasize: Observations should be independent.; then Predictors should not have severe multicollinearity.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "Maximum Likelihood Estimation (MLE)",
-      "body": "Logistic Regression parameters are estimated by maximizing the likelihood of observing the true class labels.",
-      "bullets": [
-        "Different curves correspond to different parameter values.",
-        "The optimal model is the one with the highest likelihood (or lowest log-loss)."
-      ],
-      "speakerNote": "Cover \"Maximum Likelihood Estimation (MLE)\". Emphasize: Different curves correspond to different parameter values.; then The optimal model is the one with the highest likelihood (or lowest log-loss).. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "Logistic Regression: Strengths and Limits",
-      "sections": [
-        {
-          "heading": "Strengths",
-          "bullets": [
-            "High interpretability of coefficients and odds ratios.",
-            "Fast training and strong baseline for binary tasks."
-          ]
-        },
-        {
-          "heading": "Limitations",
-          "bullets": [
-            "May underperform on complex non-linear boundaries.",
-            "Sensitive when classes strongly overlap."
-          ]
-        }
-      ],
-      "speakerNote": "Present \"Logistic Regression: Strengths and Limits\". Tie back to the section objective and invite one question before advancing."
-    },
-    {
-      "title": "Multiclass Extension of Logistic Regression",
-      "bullets": [
-        "Multinomial (Softmax) Logistic Regression directly handles multiple classes.",
-        "One-vs-All (OvA) trains one binary classifier per class.",
-        "Final class is selected by highest predicted probability."
-      ],
-      "imageUrls": [
-        "https://upload.wikimedia.org/wikipedia/commons/7/71/Multiclass_classification.png"
-      ],
-      "speakerNote": "Cover \"Multiclass Extension of Logistic Regression\". Emphasize: Multinomial (Softmax) Logistic Regression directly handles multiple classes.; then One-vs-All (OvA) trains one binary classifier per class.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "K-Nearest Neighbors (K-NN): Core Idea",
-      "body": "K-NN is an instance-based, non-parametric algorithm that classifies a sample using the majority class among its nearest neighbors.",
-      "bullets": [
-        "Choose K.",
-        "Compute distance to all training points.",
-        "Select K nearest points and apply majority voting."
-      ],
-      "imageUrls": [
-        "https://upload.wikimedia.org/wikipedia/commons/e/e7/KnnClassification.svg"
-      ],
-      "speakerNote": "Cover \"K-Nearest Neighbors (K-NN): Core Idea\". Emphasize: Choose K.; then Compute distance to all training points.. Pause for a quick check-in before moving on."
-    },
-    {
-      "title": "K-NN: Choosing K and Distance Metric",
-      "bullets": [
-        "Small K: lower bias, higher variance (sensitive to noise).",
-        "Large K: smoother boundary, may miss local structure.",
-        "Common metrics: Euclidean, Manhattan, Hamming."
-      ],
-      "note": "Use cross-validation to choose K and scale numeric features before distance-based modeling.",
-      "speakerNote": "Use cross-validation to choose K and scale numeric features before distance-based modeling."
-    },
-    {
-      "title": "K-NN: Strengths and Limitations",
-      "sections": [
-        {
-          "heading": "Strengths",
-          "bullets": [
-            "Simple and intuitive.",
-            "Effective on smaller, well-separated datasets.",
-            "Naturally supports multiclass classification."
-          ]
-        },
-        {
-          "heading": "Limitations",
-          "bullets": [
-            "Prediction can be slow on large datasets.",
-            "Sensitive to irrelevant features and class imbalance.",
-            "Performance drops in high-dimensional spaces."
-          ]
-        }
-      ],
-      "speakerNote": "Present \"K-NN: Strengths and Limitations\". Tie back to the section objective and invite one question before advancing."
-    }
-  ];
+  {
+    "title": "Classification Overview",
+    "body": "Classification is a supervised learning task used to assign a new observation to a predefined category based on learned patterns from labeled data.",
+    "bullets": [
+      {
+        "text": "Output is a class label (e.g., 0/1, Yes/No).",
+        "icon": "classification"
+      },
+      {
+        "text": "Used in spam detection, medical diagnosis, fraud detection, and customer churn prediction.",
+        "icon": "target"
+      }
+    ],
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png"
+    ],
+    "speakerNote": "Cover \"Classification Overview\". Emphasize: Output is a class label (e.g., 0/1, Yes/No).; then Used in spam detection, medical diagnosis, fraud detection, and customer churn prediction.. Pause for a quick check-in before moving on.",
+    "titleIcon": "classification"
+  },
+  {
+    "title": "Logistic Regression: Definition",
+    "body": "Logistic Regression is a supervised algorithm for binary classification that estimates the probability of class membership.",
+    "bullets": [
+      {
+        "text": "Produces probabilities in the range [0, 1].",
+        "icon": "regression"
+      },
+      {
+        "text": "Final class is determined using a threshold (commonly 0.5).",
+        "icon": "regression"
+      },
+      {
+        "text": "Models the relationship between features and log-odds of the target.",
+        "icon": "feature"
+      }
+    ],
+    "speakerNote": "Cover \"Logistic Regression: Definition\". Emphasize: Produces probabilities in the range [0, 1].; then Final class is determined using a threshold (commonly 0.5).. Pause for a quick check-in before moving on.",
+    "titleIcon": "regression",
+    "conceptAnimation": "sigmoid-threshold"
+  },
+  {
+    "title": "Why Not Linear Regression for Classification?",
+    "bullets": [
+      {
+        "text": "Linear regression predicts continuous values rather than discrete classes.",
+        "icon": "regression"
+      },
+      {
+        "text": "Predicted values can be less than 0 or greater than 1, which is invalid for probabilities.",
+        "icon": "test"
+      },
+      {
+        "text": "It does not naturally provide a robust classification boundary.",
+        "icon": "classification"
+      }
+    ],
+    "note": "Logistic Regression solves this by mapping the linear score to probability through a sigmoid function.",
+    "speakerNote": "Logistic Regression solves this by mapping the linear score to probability through a sigmoid function.",
+    "titleIcon": "regression"
+  },
+  {
+    "title": "Sigmoid Mapping and Decision Threshold",
+    "formula": "P(y=1|x)=\\sigma(z)=\\frac{1}{1+e^{-z}}, \\; z=\\beta_0+\\beta^Tx",
+    "bullets": [
+      {
+        "text": "Sigmoid converts any real-valued score into a valid probability.",
+        "icon": "test"
+      },
+      {
+        "text": "If probability >= 0.5, predict class 1; otherwise class 0.",
+        "icon": "probability"
+      },
+      {
+        "text": "Threshold can be adjusted based on business/clinical needs.",
+        "icon": "probability"
+      }
+    ],
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg"
+    ],
+    "speakerNote": "Cover \"Sigmoid Mapping and Decision Threshold\". Emphasize: Sigmoid converts any real-valued score into a valid probability.; then If probability >= 0.5, predict class 1; otherwise class 0.. Pause for a quick check-in before moving on.",
+    "titleIcon": "probability",
+    "conceptAnimation": "sigmoid-threshold"
+  },
+  {
+    "title": "Key Assumptions for Logistic Regression",
+    "bullets": [
+      {
+        "text": "Observations should be independent.",
+        "icon": "regression"
+      },
+      {
+        "text": "Predictors should not have severe multicollinearity.",
+        "icon": "regression"
+      },
+      {
+        "text": "Relationship should be approximately linear in the log-odds space.",
+        "icon": "regression"
+      }
+    ],
+    "formula": "\\text{Odds}=\\frac{p}{1-p},\\quad \\text{Logit}(p)=\\log\\left(\\frac{p}{1-p}\\right)",
+    "speakerNote": "Cover \"Key Assumptions for Logistic Regression\". Emphasize: Observations should be independent.; then Predictors should not have severe multicollinearity.. Pause for a quick check-in before moving on.",
+    "titleIcon": "regression",
+    "conceptAnimation": "sigmoid-threshold"
+  },
+  {
+    "title": "Maximum Likelihood Estimation (MLE)",
+    "body": "Logistic Regression parameters are estimated by maximizing the likelihood of observing the true class labels.",
+    "bullets": [
+      {
+        "text": "Different curves correspond to different parameter values.",
+        "icon": "regression"
+      },
+      {
+        "text": "The optimal model is the one with the highest likelihood (or lowest log-loss).",
+        "icon": "formula"
+      }
+    ],
+    "speakerNote": "Cover \"Maximum Likelihood Estimation (MLE)\". Emphasize: Different curves correspond to different parameter values.; then The optimal model is the one with the highest likelihood (or lowest log-loss).. Pause for a quick check-in before moving on.",
+    "titleIcon": "regression"
+  },
+  {
+    "title": "Logistic Regression: Strengths and Limits",
+    "sections": [
+      {
+        "heading": "Strengths",
+        "bullets": [
+          {
+            "text": "High interpretability of coefficients and odds ratios.",
+            "icon": "regression"
+          },
+          {
+            "text": "Fast training and strong baseline for binary tasks.",
+            "icon": "train"
+          }
+        ]
+      },
+      {
+        "heading": "Limitations",
+        "bullets": [
+          {
+            "text": "May underperform on complex non-linear boundaries.",
+            "icon": "regression"
+          },
+          {
+            "text": "Sensitive when classes strongly overlap.",
+            "icon": "regression"
+          }
+        ]
+      }
+    ],
+    "speakerNote": "Present \"Logistic Regression: Strengths and Limits\". Tie back to the section objective and invite one question before advancing.",
+    "titleIcon": "regression",
+    "conceptAnimation": "sigmoid-threshold"
+  },
+  {
+    "title": "Multiclass Extension of Logistic Regression",
+    "bullets": [
+      {
+        "text": "Multinomial (Softmax) Logistic Regression directly handles multiple classes.",
+        "icon": "regression"
+      },
+      {
+        "text": "One-vs-All (OvA) trains one binary classifier per class.",
+        "icon": "train"
+      },
+      {
+        "text": "Final class is selected by highest predicted probability.",
+        "icon": "probability"
+      }
+    ],
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/7/71/Multiclass_classification.png"
+    ],
+    "speakerNote": "Cover \"Multiclass Extension of Logistic Regression\". Emphasize: Multinomial (Softmax) Logistic Regression directly handles multiple classes.; then One-vs-All (OvA) trains one binary classifier per class.. Pause for a quick check-in before moving on.",
+    "titleIcon": "regression",
+    "conceptAnimation": "sigmoid-threshold"
+  },
+  {
+    "title": "K-Nearest Neighbors (K-NN): Core Idea",
+    "body": "K-NN is an instance-based, non-parametric algorithm that classifies a sample using the majority class among its nearest neighbors.",
+    "bullets": [
+      {
+        "text": "Choose K.",
+        "icon": "classification"
+      },
+      {
+        "text": "Compute distance to all training points.",
+        "icon": "train"
+      },
+      {
+        "text": "Select K nearest points and apply majority voting.",
+        "icon": "classification"
+      }
+    ],
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/e/e7/KnnClassification.svg"
+    ],
+    "speakerNote": "Cover \"K-Nearest Neighbors (K-NN): Core Idea\". Emphasize: Choose K.; then Compute distance to all training points.. Pause for a quick check-in before moving on.",
+    "titleIcon": "classification"
+  },
+  {
+    "title": "K-NN: Choosing K and Distance Metric",
+    "bullets": [
+      {
+        "text": "Small K: lower bias, higher variance (sensitive to noise).",
+        "icon": "classification"
+      },
+      {
+        "text": "Large K: smoother boundary, may miss local structure.",
+        "icon": "missing-data"
+      },
+      {
+        "text": "Common metrics: Euclidean, Manhattan, Hamming.",
+        "icon": "metric"
+      }
+    ],
+    "note": "Use cross-validation to choose K and scale numeric features before distance-based modeling.",
+    "speakerNote": "Use cross-validation to choose K and scale numeric features before distance-based modeling.",
+    "titleIcon": "classification"
+  },
+  {
+    "title": "K-NN: Strengths and Limitations",
+    "sections": [
+      {
+        "heading": "Strengths",
+        "bullets": [
+          {
+            "text": "Simple and intuitive.",
+            "icon": "classification"
+          },
+          {
+            "text": "Effective on smaller, well-separated datasets.",
+            "icon": "data"
+          },
+          {
+            "text": "Naturally supports multiclass classification.",
+            "icon": "classification"
+          }
+        ]
+      },
+      {
+        "heading": "Limitations",
+        "bullets": [
+          {
+            "text": "Prediction can be slow on large datasets.",
+            "icon": "target"
+          },
+          {
+            "text": "Sensitive to irrelevant features and class imbalance.",
+            "icon": "feature"
+          },
+          {
+            "text": "Performance drops in high-dimensional spaces.",
+            "icon": "pca"
+          }
+        ]
+      }
+    ],
+    "speakerNote": "Present \"K-NN: Strengths and Limitations\". Tie back to the section objective and invite one question before advancing.",
+    "titleIcon": "classification"
+  }
+];

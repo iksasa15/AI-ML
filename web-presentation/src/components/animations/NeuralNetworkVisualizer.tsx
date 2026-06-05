@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo } from "react";
+import { ConceptDiagramCard } from "./ConceptDiagramCard";
 
 type Layer = { id: string; label: string; nodes: number };
 
@@ -8,24 +9,28 @@ const LAYERS: Layer[] = [
   { id: "output", label: "Output", nodes: 2 },
 ];
 
-function randomWeight() {
-  return Number((Math.random() * 2 - 1).toFixed(2));
-}
-
-function buildInitialWeights() {
-  const weights: Record<string, number> = {};
-  for (let i = 0; i < LAYERS[0].nodes; i += 1) {
-    for (let h = 0; h < LAYERS[1].nodes; h += 1) {
-      weights[`i${i}-h${h}`] = randomWeight();
-    }
-  }
-  for (let h = 0; h < LAYERS[1].nodes; h += 1) {
-    for (let o = 0; o < LAYERS[2].nodes; o += 1) {
-      weights[`h${h}-o${o}`] = randomWeight();
-    }
-  }
-  return weights;
-}
+const DEMO_WEIGHTS: Record<string, number> = {
+  "i0-h0": 0.6,
+  "i0-h1": -0.3,
+  "i0-h2": 0.45,
+  "i0-h3": 0.2,
+  "i1-h0": -0.5,
+  "i1-h1": 0.7,
+  "i1-h2": 0.15,
+  "i1-h3": -0.4,
+  "i2-h0": 0.35,
+  "i2-h1": 0.55,
+  "i2-h2": -0.25,
+  "i2-h3": 0.65,
+  "h0-o0": 0.5,
+  "h0-o1": -0.35,
+  "h1-o0": -0.2,
+  "h1-o1": 0.6,
+  "h2-o0": 0.4,
+  "h2-o1": 0.3,
+  "h3-o0": -0.45,
+  "h3-o1": 0.55,
+};
 
 const W = 420;
 const H = 220;
@@ -41,10 +46,6 @@ function nodeY(_layerIndex: number, nodeIndex: number, total: number) {
 }
 
 export function NeuralNetworkVisualizer() {
-  const [weights, setWeights] = useState(buildInitialWeights);
-  const [forwardActive, setForwardActive] = useState(false);
-  const [pulseEdge, setPulseEdge] = useState<string | null>(null);
-
   const edges = useMemo(() => {
     const list: Array<{ id: string; x1: number; y1: number; x2: number; y2: number; w: number }> = [];
     for (let i = 0; i < LAYERS[0].nodes; i += 1) {
@@ -55,7 +56,7 @@ export function NeuralNetworkVisualizer() {
           y1: nodeY(0, i, LAYERS[0].nodes),
           x2: layerX(1),
           y2: nodeY(1, h, LAYERS[1].nodes),
-          w: weights[`i${i}-h${h}`] ?? 0,
+          w: DEMO_WEIGHTS[`i${i}-h${h}`] ?? 0.3,
         });
       }
     }
@@ -67,87 +68,48 @@ export function NeuralNetworkVisualizer() {
           y1: nodeY(1, h, LAYERS[1].nodes),
           x2: layerX(2),
           y2: nodeY(2, o, LAYERS[2].nodes),
-          w: weights[`h${h}-o${o}`] ?? 0,
+          w: DEMO_WEIGHTS[`h${h}-o${o}`] ?? 0.3,
         });
       }
     }
     return list;
-  }, [weights]);
-
-  const shuffleWeights = useCallback(() => {
-    setWeights(buildInitialWeights());
-    setForwardActive(false);
-    setPulseEdge(null);
   }, []);
 
-  const runForwardPass = useCallback(() => {
-    setForwardActive(true);
-    let step = 0;
-    const ids = edges.map((e) => e.id);
-    const tick = () => {
-      if (step >= ids.length) {
-        setPulseEdge(null);
-        return;
-      }
-      setPulseEdge(ids[step]);
-      step += 1;
-      window.setTimeout(tick, 120);
-    };
-    tick();
-  }, [edges]);
-
   return (
-    <div className="concept-card concept-card--nn">
-      <div className="concept-card-head">
-        <h3>Neural Network Visualizer</h3>
-        <p>Input → Hidden → Output · click edges to nudge weights</p>
-      </div>
-      <div className="concept-svg-wrap concept-svg-wrap--nn">
+    <ConceptDiagramCard
+      title="Neural Network"
+      subtitle="Input → Hidden → Output (forward pass)"
+      caption="Edge thickness reflects weight magnitude"
+      wrapClass="concept-svg-wrap--nn"
+    >
       <svg
         className="concept-svg concept-svg--nn"
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
-        aria-label="Interactive neural network diagram"
+        aria-label="Neural network diagram with weighted connections"
       >
         {edges.map((edge) => {
-          const active = forwardActive && pulseEdge === edge.id;
           const strokeWidth = 1 + Math.abs(edge.w) * 2.5;
-          const opacity = 0.25 + Math.abs(edge.w) * 0.45;
+          const opacity = 0.3 + Math.abs(edge.w) * 0.5;
           return (
-            <g key={edge.id}>
-              <line
-                x1={edge.x1}
-                y1={edge.y1}
-                x2={edge.x2}
-                y2={edge.y2}
-                className={`nn-edge${active ? " is-flowing" : ""}`}
-                strokeWidth={strokeWidth}
-                strokeOpacity={opacity}
-                onClick={() => {
-                  setWeights((prev) => ({
-                    ...prev,
-                    [edge.id]: Number((prev[edge.id] + (Math.random() > 0.5 ? 0.2 : -0.2)).toFixed(2)),
-                  }));
-                }}
-              />
-              {active ? (
-                <circle className="nn-flow-dot" r="4">
-                  <animateMotion
-                    dur="0.35s"
-                    repeatCount="1"
-                    path={`M${edge.x1},${edge.y1} L${edge.x2},${edge.y2}`}
-                  />
-                </circle>
-              ) : null}
-            </g>
+            <line
+              key={edge.id}
+              x1={edge.x1}
+              y1={edge.y1}
+              x2={edge.x2}
+              y2={edge.y2}
+              className="nn-edge"
+              strokeWidth={strokeWidth}
+              strokeOpacity={opacity}
+            />
           );
         })}
         {LAYERS.map((layer, layerIndex) =>
           Array.from({ length: layer.nodes }, (_, nodeIndex) => (
             <g key={`${layer.id}-${nodeIndex}`}>
               <circle
-                className={`nn-node nn-node--${layer.id}${forwardActive && layer.id === "output" && pulseEdge?.startsWith("h") ? " is-lit" : ""}`}
+                className={`nn-node nn-node--${layer.id}`}
                 cx={layerX(layerIndex)}
                 cy={nodeY(layerIndex, nodeIndex, layer.nodes)}
                 r={NODE_R}
@@ -158,7 +120,11 @@ export function NeuralNetworkVisualizer() {
                 y={nodeY(layerIndex, nodeIndex, layer.nodes) + 4}
                 textAnchor="middle"
               >
-                {layer.id === "input" ? `x${nodeIndex + 1}` : layer.id === "output" ? `y${nodeIndex + 1}` : `h${nodeIndex + 1}`}
+                {layer.id === "input"
+                  ? `x${nodeIndex + 1}`
+                  : layer.id === "output"
+                    ? `y${nodeIndex + 1}`
+                    : `h${nodeIndex + 1}`}
               </text>
             </g>
           ))
@@ -175,15 +141,6 @@ export function NeuralNetworkVisualizer() {
           </text>
         ))}
       </svg>
-      </div>
-      <div className="concept-card-actions">
-        <button type="button" className="concept-btn" onClick={runForwardPass}>
-          ▶ Forward pass
-        </button>
-        <button type="button" className="concept-btn concept-btn--ghost" onClick={shuffleWeights}>
-          Shuffle weights
-        </button>
-      </div>
-    </div>
+    </ConceptDiagramCard>
   );
 }

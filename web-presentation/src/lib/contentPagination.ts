@@ -92,6 +92,11 @@ export function collectSplittableBlocks(container: HTMLElement): HTMLElement[] {
       continue;
     }
 
+    if (child.classList.contains("illustration-slot")) {
+      blocks.push(child.cloneNode(true) as HTMLElement);
+      continue;
+    }
+
     blocks.push(child.cloneNode(true) as HTMLElement);
   }
 

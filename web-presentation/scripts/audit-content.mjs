@@ -1,5 +1,5 @@
 /**
- * Content audit — classifies slides per section.
+ * Content audit — classifies slides per section + visual coverage.
  * Run: node scripts/audit-content.mjs
  */
 import fs from "fs";
@@ -27,6 +27,23 @@ const SECTION_FILES = [
   ["Section 15", "section15-rag.js"],
   ["Section 16", "section16-mlops.js"],
 ];
+
+function bulletHasIcon(bullets) {
+  if (!Array.isArray(bullets)) return false;
+  return bullets.some((b) => typeof b === "object" && b !== null && b.icon);
+}
+
+function slideHasVisual(slide) {
+  if (slide.type === "section-divider") return true;
+  if (slide.titleIcon) return true;
+  if (slide.illustration) return true;
+  if (slide.conceptAnimation) return true;
+  if (slide.imageUrl || slide.imageUrls?.length) return true;
+  if (bulletHasIcon(slide.bullets)) return true;
+  if (Array.isArray(slide.columns) && slide.columns.some((c) => bulletHasIcon(c.bullets))) return true;
+  if (Array.isArray(slide.sections) && slide.sections.some((s) => bulletHasIcon(s.bullets))) return true;
+  return false;
+}
 
 function classifySlide(slide, titleCounts) {
   const title = String(slide.title || "Untitled");
@@ -67,8 +84,12 @@ md += `| Rating | Meaning |\n|--------|--------|\n`;
 md += `| 🔴 | Needs rewrite (weak/duplicate) |\n`;
 md += `| 🟡 | Design/layout improvement |\n`;
 md += `| 🟢 | Good — no change required |\n\n`;
+md += `| Visual | Meaning |\n|--------|--------|\n`;
+md += `| ✅ | hasVisual — titleIcon, illustration, animation, image, or bullet icons |\n`;
+md += `| ⬜ | No visual enrichment detected |\n\n`;
 
 const totals = { red: 0, yellow: 0, green: 0 };
+const visualTotals = { yes: 0, no: 0 };
 
 for (const [sectionLabel, file] of SECTION_FILES) {
   const mod = await import(pathToFileURL(path.join(slidesDir, file)).href);
@@ -82,26 +103,44 @@ for (const [sectionLabel, file] of SECTION_FILES) {
   const rows = slides.map((slide) => {
     const { rating, reason } = classifySlide(slide, titleCounts);
     totals[rating] += 1;
-    return { title: String(slide.title || "Untitled"), rating, reason };
+    const hasVisual = slideHasVisual(slide);
+    if (hasVisual) visualTotals.yes += 1;
+    else visualTotals.no += 1;
+    return {
+      title: String(slide.title || "Untitled"),
+      rating,
+      reason,
+      hasVisual,
+      titleIcon: slide.titleIcon || "—",
+    };
   });
 
   const sectionTotals = { red: 0, yellow: 0, green: 0 };
   for (const r of rows) sectionTotals[r.rating] += 1;
+  const visualCount = rows.filter((r) => r.hasVisual).length;
+  const visualPct = Math.round((visualCount / slides.length) * 100);
 
   md += `## ${sectionLabel} (${file})\n\n`;
   md += `Summary: 🟢 ${sectionTotals.green} · 🟡 ${sectionTotals.yellow} · 🔴 ${sectionTotals.red} · **${slides.length} slides**\n\n`;
-  md += `| Slide | Rating | Note |\n|-------|--------|------|\n`;
+  md += `Visual coverage: **${visualPct}%** (${visualCount}/${slides.length} with hasVisual)\n\n`;
+  md += `| Slide | Rating | Visual | titleIcon | Note |\n|-------|--------|--------|-----------|------|\n`;
   for (const r of rows) {
-    md += `| ${r.title.replace(/\|/g, "/")} | ${emoji[r.rating]} | ${r.reason} |\n`;
+    md += `| ${r.title.replace(/\|/g, "/")} | ${emoji[r.rating]} | ${r.hasVisual ? "✅" : "⬜"} | ${r.titleIcon} | ${r.reason} |\n`;
   }
   md += `\n`;
 }
+
+const deckTotal = totals.red + totals.yellow + totals.green;
+const deckVisualPct = Math.round((visualTotals.yes / deckTotal) * 100);
 
 md += `## Deck Totals\n\n`;
 md += `- 🟢 Good: **${totals.green}**\n`;
 md += `- 🟡 Improve: **${totals.yellow}**\n`;
 md += `- 🔴 Rewrite: **${totals.red}**\n`;
-md += `- **${totals.red + totals.yellow + totals.green}** content slides audited\n\n`;
+md += `- **${deckTotal}** content slides audited\n\n`;
+md += `### Visual enrichment\n\n`;
+md += `- ✅ hasVisual: **${visualTotals.yes}** (${deckVisualPct}%)\n`;
+md += `- ⬜ Missing: **${visualTotals.no}**\n\n`;
 md += `### Recommended next passes\n\n`;
 md += `1. Rewrite 🔴 slides in Sections 7 (phase dividers), 13 (intro density), and any duplicate titles.\n`;
 md += `2. Apply 🟡 design pass: add tables/diagrams to single-bullet slides.\n`;
@@ -111,3 +150,4 @@ const outPath = path.join(__dirname, "../CONTENT_AUDIT.md");
 fs.writeFileSync(outPath, md, "utf8");
 console.log(`Wrote ${outPath}`);
 console.log(`Totals: green=${totals.green} yellow=${totals.yellow} red=${totals.red}`);
+console.log(`Visual: ${visualTotals.yes}/${deckTotal} (${deckVisualPct}%)`);

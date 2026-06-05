@@ -1,6 +1,7 @@
 import { getConceptAnimationId } from "../../lib/conceptAnimations";
 import type { SlideRecord } from "../../lib/slideMarkup";
 import { AttentionHeatmap } from "./AttentionHeatmap";
+import { ExtendedConceptAnimation } from "./ExtendedConceptAnimations";
 import { GradientDescentAnimator } from "./GradientDescentAnimator";
 import { NeuralNetworkVisualizer } from "./NeuralNetworkVisualizer";
 
@@ -20,6 +21,6 @@ export function ConceptAnimationSlot({ slide }: ConceptAnimationSlotProps) {
     case "attention-heatmap":
       return <AttentionHeatmap />;
     default:
-      return null;
+      return <ExtendedConceptAnimation id={id} />;
   }
 }
