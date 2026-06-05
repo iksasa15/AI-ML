@@ -93,6 +93,7 @@
   background: var(--card-2);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .concept-card-head {
@@ -116,10 +117,29 @@
   color: var(--muted);
 }
 
-.concept-svg {
+.concept-svg-wrap {
+  position: relative;
   width: 100%;
-  display: block;
+  flex-shrink: 0;
   background: var(--card);
+  overflow: visible;
+}
+
+.concept-svg-wrap--gd {
+  aspect-ratio: 400 / 180;
+}
+
+.concept-svg-wrap--nn {
+  aspect-ratio: 420 / 220;
+}
+
+.concept-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
 }
 
 .concept-card-actions {

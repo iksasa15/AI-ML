@@ -1,3 +1,5 @@
+import type { MouseEvent } from "react";
+import { AmpersandText } from "../ui/AmpersandText";
 import type { SectionNavItem } from "../../lib/sectionNav";
 import type { UiStrings } from "../../lib/uiStrings";
 
@@ -7,6 +9,7 @@ type SectionSidebarProps = {
   deckTitle: string;
   items: SectionNavItem[];
   activeId: string | null;
+  onOpen: () => void;
   onClose: () => void;
   onJump: (slideIndex: number) => void;
 };
@@ -17,11 +20,32 @@ export function SectionSidebar({
   deckTitle,
   items,
   activeId,
+  onOpen,
   onClose,
   onJump,
 }: SectionSidebarProps) {
+  const handleClose = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onClose();
+  };
+
   return (
     <>
+      {!open ? (
+        <button
+          type="button"
+          className="nav-sidebar-reopen"
+          onClick={onOpen}
+          aria-label={ui.nav.openSections}
+          title={ui.nav.openSections}
+        >
+          <span className="nav-sidebar-reopen-icon" aria-hidden="true">
+            ☰
+          </span>
+          <span className="nav-sidebar-reopen-label">{ui.nav.sectionsTitle}</span>
+        </button>
+      ) : null}
+
       <div
         className={`nav-sidebar-backdrop${open ? " is-open" : ""}`}
         onClick={onClose}
@@ -30,17 +54,24 @@ export function SectionSidebar({
       <aside
         className={`nav-sidebar${open ? " is-open" : ""}`}
         aria-hidden={!open}
+        inert={open ? undefined : true}
         aria-label={ui.nav.sectionsTitle}
       >
         <div className="nav-sidebar-head">
           <div>
             <h2 className="nav-sidebar-title">{ui.nav.sectionsTitle}</h2>
             <p className="nav-sidebar-deck" dir="ltr" lang="en">
-              {deckTitle}
+              <AmpersandText text={deckTitle} />
             </p>
           </div>
-          <button type="button" className="nav-sidebar-close" onClick={onClose} aria-label={ui.close}>
-            ✕
+          <button
+            type="button"
+            className="nav-sidebar-close"
+            onClick={handleClose}
+            aria-label={ui.nav.closeSections}
+            title={ui.nav.closeSections}
+          >
+            <span aria-hidden="true">×</span>
           </button>
         </div>
 

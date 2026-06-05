@@ -1,0 +1,25 @@
+/* Readable ampersand — sans-serif, distinct from display serif titles */
+
+.text-amp {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1em;
+  letter-spacing: normal;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
+.intro-hero-title .text-amp {
+  font-weight: 700;
+}
+
+.section-divider-topics .text-amp {
+  font-weight: 600;
+  color: var(--section-accent, var(--color-gold));
+}
+
+.intro-hero-eyebrow .text-amp,
+.print-intro-eyebrow .text-amp {
+  color: var(--accent);
+}

@@ -1,4 +1,5 @@
 import katex from "katex";
+import { formatAmpersandHTML } from "./ampersandText";
 import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
 import { COURSE_WEEKS } from "./courseWeeks";
 import {
@@ -137,7 +138,7 @@ function buildSectionDividerMarkup(
     .map((line) => `<h2 class="section-divider-title-line">${escapeHTML(line)}</h2>`)
     .join("");
   const topicsHTML = keyTopics
-    .map((topic) => `<li>${escapeHTML(topic)}</li>`)
+    .map((topic) => `<li>${formatAmpersandHTML(topic, escapeHTML)}</li>`)
     .join("");
 
   return `
@@ -157,8 +158,8 @@ function buildSectionDividerMarkup(
 function buildIntroHeroPrintMarkup(slide: SlideRecord) {
   return `
     <div class="print-intro-hero">
-      <p class="print-intro-eyebrow">AI &amp; MACHINE LEARNING BOOTCAMP</p>
-      <h2>${escapeHTML(String(slide.title || ""))}</h2>
+      <p class="print-intro-eyebrow">${formatAmpersandHTML("AI & MACHINE LEARNING BOOTCAMP", escapeHTML)}</p>
+      <h2>${formatAmpersandHTML(String(slide.title || ""), escapeHTML)}</h2>
       ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
     </div>
   `;

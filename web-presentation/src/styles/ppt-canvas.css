@@ -1,0 +1,342 @@
+/* Fullscreen 1920×1080 — fill canvas, larger readable type */
+
+.presentation.is-fullscreen .slide-frame-header {
+  padding: 0.85rem 2.5rem;
+  font-size: 1rem;
+}
+
+.presentation.is-fullscreen .slide-frame-content {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  width: 100%;
+  padding: 2rem 3.5rem 1.5rem;
+}
+
+.presentation.is-fullscreen .slide-frame-footer {
+  padding: 0 2.5rem 0.65rem;
+}
+
+/* ── General content slides ── */
+
+.presentation.is-fullscreen .slide-title {
+  font-size: 2.75rem;
+}
+
+.presentation.is-fullscreen .slide h2:not(.slide-title):not(.section-divider-title-line) {
+  font-size: 2.5rem;
+}
+
+.presentation.is-fullscreen .slide h3 {
+  font-size: 1.65rem;
+}
+
+.presentation.is-fullscreen .slide-subtitle {
+  font-size: 1.125rem;
+}
+
+.presentation.is-fullscreen .slide p,
+.presentation.is-fullscreen .slide-body {
+  font-size: 1.375rem;
+  line-height: 1.7;
+}
+
+.presentation.is-fullscreen .slide-bullet-list li {
+  font-size: 1.4rem;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+  padding-inline-start: 1.6rem;
+}
+
+.presentation.is-fullscreen .slide-bullet-list li::before {
+  width: 9px;
+  height: 9px;
+  top: 0.58em;
+}
+
+.presentation.is-fullscreen .slide-bullet-list--compact li {
+  font-size: 1.2rem;
+}
+
+.presentation.is-fullscreen .content-card,
+.presentation.is-fullscreen .slide-column-card {
+  padding: var(--space-3);
+}
+
+.presentation.is-fullscreen .note-box {
+  font-size: 1.25rem;
+  padding: var(--space-3);
+}
+
+/* ── Big Picture map ── */
+
+.presentation.is-fullscreen .big-picture-slide {
+  flex: 1;
+  min-height: 0;
+  gap: 1.75rem;
+}
+
+.presentation.is-fullscreen .big-picture-eyebrow {
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+}
+
+.presentation.is-fullscreen .big-picture-title {
+  font-size: 2.75rem;
+  line-height: 1.15;
+}
+
+.presentation.is-fullscreen .big-picture-focus {
+  font-size: 1.5rem;
+  line-height: 1.45;
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.presentation.is-fullscreen .bootcamp-map {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.presentation.is-fullscreen .bootcamp-map-week {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.presentation.is-fullscreen .bootcamp-map-week-label {
+  font-size: 1rem;
+  margin-bottom: 0.65rem;
+}
+
+.presentation.is-fullscreen .bootcamp-map-sections {
+  flex: 1;
+  gap: 0.55rem;
+}
+
+.presentation.is-fullscreen .bootcamp-map-card {
+  padding: 0.7rem 0.9rem;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  border-radius: var(--radius-md);
+}
+
+.presentation.is-fullscreen .bootcamp-map-card-id {
+  font-size: 1.05rem;
+  min-width: 2.25rem;
+}
+
+.presentation.is-fullscreen .big-picture-legend {
+  font-size: 1rem;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* ── Takeaway ── */
+
+.presentation.is-fullscreen .takeaway-title {
+  font-size: 2.5rem;
+}
+
+.presentation.is-fullscreen .takeaway-text {
+  font-size: 1.35rem;
+}
+
+.presentation.is-fullscreen .takeaway-reflection-question {
+  font-size: 1.5rem;
+}
+
+/* ── Course map & intro ── */
+
+.presentation.is-fullscreen .course-map-slide,
+.presentation.is-fullscreen .bootcamp-timeline-slide,
+.presentation.is-fullscreen .intro-hero {
+  flex: 1;
+  min-height: 0;
+}
+
+.presentation.is-fullscreen .course-map-title,
+.presentation.is-fullscreen .bootcamp-timeline-title {
+  font-size: 2.75rem;
+}
+
+.presentation.is-fullscreen .course-map-subtitle {
+  font-size: 1.25rem;
+}
+
+.presentation.is-fullscreen .course-map-grid {
+  flex: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.presentation.is-fullscreen .course-map-card {
+  padding: 1.5rem 1.25rem;
+}
+
+.presentation.is-fullscreen .course-map-card-theme {
+  font-size: 1.5rem;
+}
+
+.presentation.is-fullscreen .course-map-card-topic,
+.presentation.is-fullscreen .course-map-card-week,
+.presentation.is-fullscreen .course-map-card-days,
+.presentation.is-fullscreen .course-map-card-sections {
+  font-size: 1rem;
+}
+
+.presentation.is-fullscreen .intro-hero-title {
+  font-size: 3.5rem;
+}
+
+.presentation.is-fullscreen .intro-hero-subtitle {
+  font-size: 1.5rem;
+}
+
+/* ── Section divider — vertical center in fullscreen ── */
+
+.presentation.is-fullscreen .slide-frame--divider {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.presentation.is-fullscreen .slide-frame-divider-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: var(--space-4) var(--space-6);
+}
+
+.presentation.is-fullscreen .slide-frame--divider .slide-frame-footer--divider {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+.presentation.is-fullscreen .section-divider-hero--themed {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.presentation.is-fullscreen .section-divider-title-line {
+  font-size: clamp(2.5rem, 4vw, 3.75rem);
+}
+
+.presentation.is-fullscreen .section-divider-topics li {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.presentation.is-fullscreen .section-divider-number {
+  font-size: clamp(6rem, 16vw, 10rem);
+}
+
+/* ── Auto-split overflow pages (fullscreen) ── */
+
+.presentation.is-fullscreen .slide-frame:not(.slide-frame--divider) {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "body"
+    "footer";
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.presentation.is-fullscreen .slide-frame:not(.slide-frame--divider) .slide-frame-header {
+  grid-area: header;
+}
+
+.presentation.is-fullscreen .slide-frame:not(.slide-frame--divider) .slide-frame-content {
+  grid-area: body;
+}
+
+.presentation.is-fullscreen .slide-frame:not(.slide-frame--divider) .slide-frame-footer {
+  grid-area: footer;
+}
+
+.slide-content-overlay {
+  grid-area: body;
+  z-index: 2;
+  min-height: 0;
+  overflow: hidden;
+  pointer-events: auto;
+  padding: 2rem 3.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.slide-frame-content--live-paged .slide-live-block--hidden {
+  display: none !important;
+}
+
+.slide-content-overlay .slide-content-pages {
+  height: 100%;
+  min-height: 0;
+}
+
+.slide-content-overlay .slide-content-page {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+  min-height: 0;
+}
+
+.slide-content-overlay .slide-content-page.is-active {
+  display: flex;
+}
+
+.slide-content-overlay .slide-content-page[data-continued="true"] .content-card h3::after {
+  content: " (continued)";
+  font-size: 0.72em;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.top-nav-content-page {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── Concept animations (fullscreen) ── */
+
+.presentation.is-fullscreen .concept-card {
+  flex-shrink: 0;
+  margin: var(--space-2) 0;
+}
+
+.presentation.is-fullscreen .concept-card-head h3 {
+  font-size: 1.35rem;
+}
+
+.presentation.is-fullscreen .concept-card-head p {
+  font-size: 1rem;
+}
+
+.presentation.is-fullscreen .concept-svg-wrap--gd {
+  width: min(100%, calc(280px * 400 / 180));
+  margin-inline: auto;
+  max-height: 280px;
+}
+
+.presentation.is-fullscreen .concept-svg-wrap--nn {
+  width: min(100%, calc(320px * 420 / 220));
+  margin-inline: auto;
+  max-height: 320px;
+}
+
+.presentation.is-fullscreen .concept-btn,
+.presentation.is-fullscreen .concept-meta {
+  font-size: 0.95rem;
+}
+
+.presentation.is-fullscreen .slide-content-overlay .concept-svg-wrap,
+.presentation.is-fullscreen .slide-frame-content .concept-svg-wrap {
+  overflow: visible;
+}

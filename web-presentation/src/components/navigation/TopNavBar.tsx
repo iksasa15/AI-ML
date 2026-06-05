@@ -19,6 +19,9 @@ type TopNavBarProps = {
   onOpenSettings: () => void;
   onToggleFullscreen: () => void;
   isFullscreen: boolean;
+  onHideNav?: () => void;
+  contentPage?: number;
+  contentPageCount?: number;
   children?: React.ReactNode;
 };
 
@@ -41,6 +44,9 @@ export function TopNavBar({
   onOpenSettings,
   onToggleFullscreen,
   isFullscreen,
+  onHideNav,
+  contentPage,
+  contentPageCount,
   children,
 }: TopNavBarProps) {
   const isRtl = direction === "rtl";
@@ -53,11 +59,12 @@ export function TopNavBar({
         <div className="top-nav-group top-nav-group--start">
           <button
             type="button"
-            className="top-nav-icon-btn"
+            className={`top-nav-icon-btn${sidebarOpen ? " is-active" : ""}`}
             onClick={onOpenSidebar}
             aria-expanded={sidebarOpen}
-            aria-label={sidebarOpen ? ui.nav.closeSections : ui.nav.openSections}
+            aria-label={ui.nav.openSections}
             title={ui.nav.openSections}
+            disabled={sidebarOpen}
           >
             ☰
           </button>
@@ -89,6 +96,12 @@ export function TopNavBar({
             {currentSlide}
             <span className="top-nav-counter-sep">/</span>
             {totalSlides}
+            {contentPage && contentPageCount && contentPageCount > 1 ? (
+              <span className="top-nav-content-page">
+                <span className="top-nav-counter-sep"> · </span>
+                {contentPage}/{contentPageCount}
+              </span>
+            ) : null}
           </button>
         </div>
 
@@ -132,6 +145,17 @@ export function TopNavBar({
           >
             ⚙
           </button>
+          {isFullscreen && onHideNav ? (
+            <button
+              type="button"
+              className="top-nav-icon-btn top-nav-hide-btn"
+              onClick={onHideNav}
+              aria-label={ui.nav.hideNavBar}
+              title={ui.nav.hideNavBar}
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+          ) : null}
         </div>
       </div>
 

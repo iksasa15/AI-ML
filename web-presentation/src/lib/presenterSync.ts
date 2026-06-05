@@ -102,7 +102,7 @@ export function openPresenterWindow(): Window | null {
   const win = window.open(
     buildPresenterWindowUrl(),
     PRESENTER_WINDOW_NAME,
-    "width=1280,height=820,menubar=no,toolbar=no,location=no,status=no"
+    "width=1920,height=1080,menubar=no,toolbar=no,location=no,status=no"
   );
   win?.focus();
   return win;

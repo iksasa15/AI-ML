@@ -64,7 +64,14 @@ export function GradientDescentAnimator() {
         <h3>Gradient Descent Animator</h3>
         <p>Loss curve L(w) — the point descends toward the minimum</p>
       </div>
-      <svg className="concept-svg concept-svg--gd" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Gradient descent on loss curve">
+      <div className="concept-svg-wrap concept-svg-wrap--gd">
+      <svg
+        className="concept-svg concept-svg--gd"
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="Gradient descent on loss curve"
+      >
         <line x1={20} y1={H - 20} x2={W - 20} y2={H - 20} className="gd-axis" />
         <line x1={20} y1={20} x2={20} y2={H - 20} className="gd-axis" />
         <path d={CURVE_PATH} className="gd-curve" fill="none" />
@@ -83,6 +90,7 @@ export function GradientDescentAnimator() {
           L(w)
         </text>
       </svg>
+      </div>
       <div className="concept-card-actions">
         <button type="button" className="concept-btn" onClick={() => setPlaying((p) => !p)}>
           {playing ? "⏸ Pause" : "▶ Play"}

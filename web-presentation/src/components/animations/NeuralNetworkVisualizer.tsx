@@ -102,9 +102,11 @@ export function NeuralNetworkVisualizer() {
         <h3>Neural Network Visualizer</h3>
         <p>Input → Hidden → Output · click edges to nudge weights</p>
       </div>
+      <div className="concept-svg-wrap concept-svg-wrap--nn">
       <svg
         className="concept-svg concept-svg--nn"
         viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label="Interactive neural network diagram"
       >
@@ -173,6 +175,7 @@ export function NeuralNetworkVisualizer() {
           </text>
         ))}
       </svg>
+      </div>
       <div className="concept-card-actions">
         <button type="button" className="concept-btn" onClick={runForwardPass}>
           ▶ Forward pass

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MentorshipTemplate } from "./components/MentorshipTemplate";
-import { AiAssistantPanel } from "./components/ai/AiAssistantPanel";
 import { QuizModal } from "./components/quiz/QuizModal";
 import { SectionSidebar } from "./components/navigation/SectionSidebar";
 import { SpeakerNotesPanel } from "./components/navigation/SpeakerNotesPanel";
@@ -10,6 +9,7 @@ import { SectionOutlinePage } from "./components/SectionOutlinePage";
 import { usePresentationDeck } from "./hooks/usePresentationDeck";
 import { VirtualSlideStage } from "./components/slides/VirtualSlideStage";
 import { DAY01_FIRST_SLIDE_TITLE } from "./lib/day01Anchor";
+import { paginatePrintDeck } from "./lib/printPagination";
 import { renderSlideMath } from "./lib/renderMath";
 import { usePresentationShortcuts } from "./hooks/usePresentationShortcuts";
 import {
@@ -39,10 +39,9 @@ import {
   traineeDeckPercent,
 } from "./lib/traineeProgress";
 import { initGoogleTranslateElement, loadGoogleTranslateScript } from "./lib/googleTranslate";
-import { openPresenterWindow, persistPresenterState } from "./lib/presenterSync";
+import { persistPresenterState } from "./lib/presenterSync";
 import { getActiveSectionTag } from "./lib/slideMeta";
 import { buildSlideMarkup, getActiveSectionLabel, type SlideRecord } from "./lib/slideMarkup";
-import { readClaudeApiKey, writeClaudeApiKey } from "./lib/claudeApi";
 import {
   applyDocumentUiLang,
   getUiStrings,
@@ -76,9 +75,11 @@ export default function App() {
   const [quizSectionId, setQuizSectionId] = useState(1);
   const [quizResultsVersion, setQuizResultsVersion] = useState(0);
   const [progressRingOpen, setProgressRingOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
-  const [claudeApiKey, setClaudeApiKey] = useState(() => readClaudeApiKey());
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenNavHidden, setFullscreenNavHidden] = useState(false);
+  const [contentPageIndex, setContentPageIndex] = useState(0);
+  const [contentPageCount, setContentPageCount] = useState(1);
+  const jumpToLastContentPageRef = useRef(false);
   const [traineeMaxIndex, setTraineeMaxIndex] = useState(0);
   const [uiLang, setUiLang] = useState<UiLang>(() => readStoredUiLang());
 
@@ -278,8 +279,40 @@ export default function App() {
     setCurrentIndex((i) => Math.max(i - 1, 0));
   }, []);
 
-  const advanceSlide = goNext;
-  const retreatSlide = goPrev;
+  useEffect(() => {
+    if (!jumpToLastContentPageRef.current) {
+      setContentPageIndex(0);
+    }
+  }, [currentIndex]);
+
+  const handleContentPageCount = useCallback((count: number) => {
+    setContentPageCount(count);
+    if (jumpToLastContentPageRef.current && count > 1) {
+      setContentPageIndex(count - 1);
+      jumpToLastContentPageRef.current = false;
+    }
+  }, []);
+
+  const advanceSlide = useCallback(() => {
+    if (isFullscreen && contentPageIndex < contentPageCount - 1) {
+      setContentPageIndex((page) => page + 1);
+      return;
+    }
+    setContentPageIndex(0);
+    goNext();
+  }, [isFullscreen, contentPageIndex, contentPageCount, goNext]);
+
+  const retreatSlide = useCallback(() => {
+    if (isFullscreen && contentPageIndex > 0) {
+      setContentPageIndex((page) => page - 1);
+      return;
+    }
+    if (currentIndex > 0) {
+      jumpToLastContentPageRef.current = true;
+      goPrev();
+      return;
+    }
+  }, [isFullscreen, contentPageIndex, currentIndex, goPrev]);
 
   const goToSlideByNumber = useCallback(() => {
     const input = window.prompt(ui.promptSlideNumber(total, currentIndex + 1), String(currentIndex + 1));
@@ -323,6 +356,7 @@ export default function App() {
       })
       .join("");
     renderSlideMath(el);
+    paginatePrintDeck(el);
   }, [slides, deckScope, ensureAllForPrint]);
 
   const handleDownloadPdf = useCallback(() => {
@@ -360,6 +394,22 @@ export default function App() {
     return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
 
+  useEffect(() => {
+    if (isFullscreen) return;
+    setFullscreenNavHidden(false);
+  }, [isFullscreen]);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    setSidebarOpen(false);
+    setNotesOpen(false);
+    setQuizOpen(false);
+    setProgressRingOpen(false);
+    setTemplateOpen(false);
+    setSettingsOpen(false);
+    setTranslatePanelOpen(false);
+  }, [isFullscreen]);
+
   const closeOverlays = useCallback(() => {
     setTemplateOpen(false);
     setSettingsOpen(false);
@@ -368,7 +418,6 @@ export default function App() {
     setNotesOpen(false);
     setQuizOpen(false);
     setProgressRingOpen(false);
-    setAiOpen(false);
     if (view === "outline") setView("slides");
   }, [view]);
 
@@ -387,18 +436,8 @@ export default function App() {
     [deckScope]
   );
 
-  const openPresenterMode = useCallback(() => {
-    persistPresenterState({
-      currentIndex,
-      deckScope,
-      uiLang,
-      totalSlides: total,
-    });
-    openPresenterWindow();
-  }, [currentIndex, deckScope, uiLang, total]);
-
   usePresentationShortcuts({
-    enabled: booted && view === "slides" && !templateOpen && !settingsOpen && !quizOpen && !aiOpen,
+    enabled: booted && view === "slides" && !templateOpen && !settingsOpen && !quizOpen,
     rtlNav: uiLang === "ar",
     onPrev: retreatSlide,
     onNext: advanceSlide,
@@ -407,7 +446,6 @@ export default function App() {
       setQuizOpen(false);
       setNotesOpen((o) => !o);
     },
-    onOpenPresenter: openPresenterMode,
     onToggleQuiz: () => {
       if (quizOpen) {
         setQuizOpen(false);
@@ -495,7 +533,7 @@ export default function App() {
       ) : (
         <div
           ref={presentationRef}
-          className={`presentation${isFullscreen ? " is-fullscreen" : ""}`}
+          className={`presentation${isFullscreen ? " is-fullscreen" : ""}${isFullscreen && fullscreenNavHidden ? " is-nav-hidden" : ""}`}
           dir={ui.direction}
           lang={ui.docLang}
         >
@@ -509,11 +547,15 @@ export default function App() {
             currentSlide={currentIndex + 1}
             totalSlides={total}
             progressPercent={progressPercent}
-            canGoPrev={currentIndex > 0}
-            canGoNext={currentIndex < total - 1}
+            canGoPrev={currentIndex > 0 || (isFullscreen && contentPageIndex > 0)}
+            canGoNext={
+              currentIndex < total - 1 || (isFullscreen && contentPageIndex < contentPageCount - 1)
+            }
+            contentPage={isFullscreen && contentPageCount > 1 ? contentPageIndex + 1 : undefined}
+            contentPageCount={isFullscreen && contentPageCount > 1 ? contentPageCount : undefined}
             isLight={isLight}
             sidebarOpen={sidebarOpen}
-            onOpenSidebar={() => setSidebarOpen((o) => !o)}
+            onOpenSidebar={() => setSidebarOpen(true)}
             onPrev={retreatSlide}
             onNext={advanceSlide}
             onJumpToSlide={goToSlideByNumber}
@@ -524,6 +566,7 @@ export default function App() {
             }}
             onToggleFullscreen={toggleFullscreen}
             isFullscreen={isFullscreen}
+            onHideNav={() => setFullscreenNavHidden(true)}
           >
             {day01Slides.length > 0 ? (
               <a
@@ -557,33 +600,27 @@ export default function App() {
             <button
               type="button"
               className="top-nav-tool-btn"
-              onClick={openPresenterMode}
-              title={ui.presenter.openPresenterTitle}
-            >
-              {ui.presenter.openPresenter}
-            </button>
-            <button
-              type="button"
-              className="top-nav-tool-btn"
               onClick={toggleTranslatePanel}
               aria-expanded={translatePanelOpen}
             >
               {ui.translateSlides}
             </button>
+          </TopNavBar>
+
+          {isFullscreen && fullscreenNavHidden ? (
             <button
               type="button"
-              className="top-nav-tool-btn"
-              onClick={() => {
-                setNotesOpen(false);
-                setQuizOpen(false);
-                setAiOpen((o) => !o);
-              }}
-              aria-expanded={aiOpen}
-              title={ui.ai.toolbarTitle}
+              className="fullscreen-nav-reopen"
+              onClick={() => setFullscreenNavHidden(false)}
+              aria-label={ui.nav.showNavBar}
+              title={ui.nav.showNavBar}
             >
-              {ui.ai.toolbar}
+              <span className="fullscreen-nav-reopen-icon" aria-hidden="true">
+                ▴
+              </span>
+              <span className="fullscreen-nav-reopen-label">{ui.nav.showNavBar}</span>
             </button>
-          </TopNavBar>
+          ) : null}
 
           <p className="top-nav-shortcuts-hint" aria-hidden="true">
             {ui.nav.shortcutsHint}
@@ -595,6 +632,7 @@ export default function App() {
             deckTitle={deckTitle}
             items={sectionNavItems}
             activeId={activeSectionJumpId}
+            onOpen={() => setSidebarOpen(true)}
             onClose={() => setSidebarOpen(false)}
             onJump={goToSectionFromSidebar}
           />
@@ -606,6 +644,10 @@ export default function App() {
             transitionKind={transitionKind}
             slideEntering={slideEntering}
             uiLang={uiLang}
+            isFullscreen={isFullscreen}
+            fullscreenNavHidden={fullscreenNavHidden}
+            contentPageIndex={contentPageIndex}
+            onContentPageCount={handleContentPageCount}
             onActiveSlideRef={(node) => {
               slideRef.current = node;
             }}
@@ -618,19 +660,6 @@ export default function App() {
             slideIndex={currentIndex}
             deckScope={deckScope}
             onClose={() => setNotesOpen(false)}
-          />
-
-          <AiAssistantPanel
-            open={aiOpen}
-            ui={ui}
-            slide={slide}
-            slideIndex={currentIndex}
-            uiLang={uiLang}
-            onClose={() => setAiOpen(false)}
-            onOpenSettings={() => {
-              setAiOpen(false);
-              setSettingsOpen(true);
-            }}
           />
 
           <QuizModal
@@ -736,21 +765,6 @@ export default function App() {
                 <span>{ui.uiLangEnglish}</span>
               </label>
             </fieldset>
-            <div className="settings-api-key-field">
-              <label htmlFor="claude-api-key">{ui.ai.apiKeyLabel}</label>
-              <input
-                id="claude-api-key"
-                type="password"
-                autoComplete="off"
-                value={claudeApiKey}
-                placeholder={ui.ai.apiKeyPlaceholder}
-                onChange={(e) => {
-                  setClaudeApiKey(e.target.value);
-                  writeClaudeApiKey(e.target.value);
-                }}
-              />
-              <p className="settings-api-key-hint">{ui.ai.apiKeyHint}</p>
-            </div>
           </div>
         </div>
       </div>

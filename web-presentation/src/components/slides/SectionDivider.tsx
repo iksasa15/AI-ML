@@ -9,6 +9,7 @@ import {
   getSectionTheme,
   parseSectionIdFromDivider,
 } from "../../lib/sectionTheme";
+import { AmpersandText } from "../ui/AmpersandText";
 import type { SlideRecord } from "../../lib/slideMarkup";
 import { SectionDividerIcon } from "./SectionDividerIcon";
 
@@ -68,7 +69,9 @@ export function SectionDivider({ slide, slides, slideIndex }: SectionDividerProp
         {keyTopics.length ? (
           <ul className="section-divider-topics">
             {keyTopics.map((topic) => (
-              <li key={topic}>{topic}</li>
+              <li key={topic}>
+                <AmpersandText text={topic} />
+              </li>
             ))}
           </ul>
         ) : null}

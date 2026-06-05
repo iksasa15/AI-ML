@@ -60,6 +60,8 @@ export type UiStrings = {
     quizReflect: string;
     fullscreen: string;
     exitFullscreen: string;
+    hideNavBar: string;
+    showNavBar: string;
     tools: string;
     shortcutsHint: string;
     bulletsRevealHint: (shown: number, total: number) => string;
@@ -179,8 +181,10 @@ export function getUiStrings(lang: UiLang): UiStrings {
         quizReflect: "Reflection: how would you explain this topic in one sentence?",
         fullscreen: "Fullscreen",
         exitFullscreen: "Exit fullscreen",
+        hideNavBar: "Hide navigation bar",
+        showNavBar: "Show navigation bar",
         tools: "Tools",
-        shortcutsHint: "→ ← navigate · Space next · F fullscreen · N notes · P presenter · Q quiz · Esc close",
+        shortcutsHint: "→ ← navigate · Space next · F fullscreen · N notes · Q quiz · Esc close",
         bulletsRevealHint: (shown, total) => `Press → to reveal bullet ${shown + 1} of ${total}`,
       },
       quizModal: {
@@ -299,8 +303,10 @@ export function getUiStrings(lang: UiLang): UiStrings {
       quizReflect: "تأمل: كيف تشرح هذا الموضوع في جملة واحدة؟",
       fullscreen: "ملء الشاشة",
       exitFullscreen: "الخروج من ملء الشاشة",
+      hideNavBar: "إخفاء الشريط",
+      showNavBar: "إظهار الشريط",
       tools: "أدوات",
-      shortcutsHint: "← التالي · → السابق · Space التالي · F ملء الشاشة · N ملاحظات · P المقدّم · Q سؤال · Esc إغلاق",
+      shortcutsHint: "← التالي · → السابق · Space التالي · F ملء الشاشة · N ملاحظات · Q سؤال · Esc إغلاق",
       bulletsRevealHint: (shown, total) => `اضغط ← لإظهار النقطة ${shown + 1} من ${total}`,
     },
       quizModal: {

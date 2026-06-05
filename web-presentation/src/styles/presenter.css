@@ -66,9 +66,10 @@
   position: absolute;
   top: 0;
   inset-inline-start: 0;
-  width: 1280px;
-  min-height: 720px;
-  transform: scale(0.42);
+  width: var(--ppt-w);
+  height: var(--ppt-h);
+  min-height: var(--ppt-h);
+  transform: scale(0.28);
   transform-origin: top left;
   pointer-events: none;
 }
@@ -207,6 +208,6 @@
   }
 
   .presenter-preview-slide {
-    transform: scale(0.55);
+    transform: scale(0.36);
   }
 }

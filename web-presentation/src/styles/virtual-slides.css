@@ -3,6 +3,60 @@
   min-height: min(72vh, var(--slide-min-h));
 }
 
+.slide-fit-viewport {
+  position: relative;
+  width: 100%;
+  min-height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-fit-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.slide-fit-inner.is-active {
+  position: relative;
+  inset: auto;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.slide-fit-inner.is-active .slide {
+  flex-shrink: 0;
+}
+
+.virtual-slide-stage--fullscreen {
+  min-height: 0 !important;
+  height: 100%;
+}
+
+.virtual-slide-stage--fullscreen .slide-fit-viewport {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.virtual-slide-stage--fullscreen .slide-fit-inner.is-active {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  inset: auto;
+}
+
+.presentation.is-fullscreen .virtual-slide.is-active {
+  width: var(--ppt-w);
+  height: var(--ppt-h);
+  max-width: none;
+}
+
 .virtual-slide {
   opacity: 0;
   visibility: hidden;

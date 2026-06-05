@@ -61,12 +61,14 @@
   --transition-base: 250ms ease;
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Layout */
+  /* Layout — 16:9 Full HD slide canvas */
+  --ppt-w: 1920px;
+  --ppt-h: 1080px;
   --slide-w: min(100%, 1040px);
-  --slide-h: 640px;
+  --slide-h: var(--ppt-h);
   --slide-min-h: clamp(360px, min(70vh, var(--slide-h)), 82vh);
-  --print-slide-w: 277mm;
-  --print-slide-h: calc(277mm * 0.64);
+  --print-slide-w: 20in;
+  --print-slide-h: 11.25in;
   --card-box-h: 210px;
 
   /* Semantic aliases (used across components) */

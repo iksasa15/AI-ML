@@ -1,3 +1,4 @@
+import { AmpersandText } from "./ui/AmpersandText";
 import type { SectionJump } from "../lib/sectionNav";
 import { getUiStrings, type UiLang } from "../lib/uiStrings";
 
@@ -32,7 +33,7 @@ export function SectionOutlinePage({
           <h1 className="outline-title">{t.title}</h1>
           <p className="outline-subtitle">
             <span dir="ltr" lang="en">
-              {deckTitle}
+              <AmpersandText text={deckTitle} />
             </span>
           </p>
         </div>

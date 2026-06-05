@@ -14,6 +14,8 @@ import "./styles/rtl-polish.css";
 import "./styles/accessibility.css";
 import "./styles/intro-slides.css";
 import "./styles/section-dividers.css";
+import "./styles/typography.css";
+import "./styles/ppt-canvas.css";
 import "./styles/ai-assistant.css";
 
 if (import.meta.env.PROD) {
