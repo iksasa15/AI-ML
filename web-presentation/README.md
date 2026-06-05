@@ -201,9 +201,12 @@ web-presentation/
 
 ## النشر على Cloudflare Workers / Pages
 
-المستودع يتضمن [`wrangler.jsonc`](../wrangler.jsonc) في الجذر لمشروع **Workers `ai`** (`assets.directory` + `build.command`).
+ملفان في جذر المستودع (لا يمكن دمجهما في ملف واحد — `assets` يُبطل إعداد Pages):
 
-> **ملاحظة:** حقل `assets` غير مدعوم في إعداد Pages عبر Wrangler، لذا يتجاهل Cloudflare Pages ملف `wrangler.jsonc` ويعتمد على **إعدادات اللوحة** أدناه (مطلوبة يدوياً).
+| الملف | المشروع | الغرض |
+|-------|---------|--------|
+| [`wrangler.jsonc`](../wrangler.jsonc) | **web-presentation** (Pages) | `pages_build_output_dir` + `build.command` |
+| [`wrangler.worker.jsonc`](../wrangler.worker.jsonc) | **ai** (Workers) | `assets.directory` + `build.command` |
 
 على Cloudflare يُبنى العرض بـ `base: /` (على GitHub Pages يبقى `/AI-ML/web-presentation/`).
 
@@ -213,19 +216,19 @@ web-presentation/
 |-------|--------|
 | Root directory | `/` |
 | **Build command** | `npm run build:cloudflare` |
-| **Deploy command** | `npx wrangler deploy` |
+| **Deploy command** | `npm run deploy:workers` |
 
-بديل: `npm run deploy:cloudflare` (بناء + نشر في أمر واحد).
+بديل: `npm run deploy:cloudflare` (بناء + نشر). **لا تستخدم** `npx wrangler deploy` وحده — يقرأ `wrangler.jsonc` الخاص بـ Pages.
 
-### Cloudflare Pages → مشروع **web-presentation** (إعداد اللوحة — مطلوب)
+### Cloudflare Pages → مشروع **web-presentation**
+
+يقرأ [`wrangler.jsonc`](../wrangler.jsonc) تلقائياً (`pages_build_output_dir` + `build.command`). إن تعارضت اللوحة مع الملف، اجعل الحقول فارغة أو مطابقة:
 
 | الحقل | القيمة |
 |-------|--------|
 | Root directory | `/` |
-| **Build command** | `npm run build:cloudflare` |
+| **Build command** | `npm run build:cloudflare` (أو اتركه للملف) |
 | **Build output directory** | `web-presentation/dist` |
-
-بدون هذه القيم في اللوحة، يتجاهل Pages `wrangler.jsonc` (لأنه مخصّص لـ Workers) وقد يرفع جذر المستودع بالخطأ.
 
 ملفات PDF في `docs/archive/` **لا تُنشر** — النشر من `web-presentation/dist` فقط.
 
@@ -234,7 +237,7 @@ web-presentation/
 ```powershell
 cd ..
 npm run build:cloudflare
-npx wrangler deploy
+npm run deploy:workers
 ```
 
 ## النشر على GitHub Pages
