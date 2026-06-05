@@ -96,12 +96,21 @@ body {
 .presentation {
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr);
-  min-height: 100vh;
-  min-height: 100dvh;
+  width: 100%;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  min-height: 0;
   gap: var(--space-1);
-  padding: var(--space-3);
-  max-width: 1280px;
+  padding: clamp(var(--space-2), 1.5vw, var(--space-3));
   margin-inline: auto;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.presentation.is-canvas-fitted {
+  grid-template-rows: auto auto minmax(0, 1fr);
 }
 
 .top-nav {
@@ -114,6 +123,15 @@ body {
 
 .stage {
   grid-row: 3;
+  min-height: 0;
+  width: 100%;
+}
+
+.presentation.is-canvas-fitted .stage {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  overflow: hidden;
 }
 
 /* ── Top Bar ── */
@@ -252,11 +270,9 @@ html[data-theme="dark"] .day01-deck-btn {
 
 /* ── Slide Stage ── */
 
-.stage {
+.presentation:not(.is-canvas-fitted) .stage {
   display: grid;
   place-items: start center;
-  min-height: 0;
-  align-self: stretch;
   padding-block: var(--space-1);
 }
 
@@ -1374,6 +1390,8 @@ html[data-theme="dark"] .table-wrap th {
 
 /* ── Day 3: Navigation & Progress ── */
 
+html:has(.presentation.is-canvas-fitted),
+html:has(.presentation.is-canvas-fitted) body,
 html:has(.presentation.is-fullscreen),
 html:has(.presentation.is-fullscreen) body {
   overflow: hidden;
@@ -1490,30 +1508,31 @@ html:has(.presentation.is-fullscreen) body {
   display: none !important;
 }
 
-.presentation.is-fullscreen .slide.is-active {
+.presentation.is-canvas-fitted .slide.is-active {
   width: var(--ppt-w);
   height: var(--ppt-h);
-  min-height: var(--ppt-h);
+  min-height: 0;
   max-height: var(--ppt-h);
+  max-width: none;
   overflow: hidden;
 }
 
-.presentation.is-fullscreen .slide-frame,
-.presentation.is-fullscreen .slide-frame--divider {
+.presentation.is-canvas-fitted .slide-frame,
+.presentation.is-canvas-fitted .slide-frame--divider {
   height: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;
 }
 
-.presentation.is-fullscreen .slide-frame-content,
-.presentation.is-fullscreen .slide-frame-divider-body {
+.presentation.is-canvas-fitted .slide-frame-content,
+.presentation.is-canvas-fitted .slide-frame-divider-body {
   flex: 1;
   min-height: 0;
   overflow: hidden;
 }
 
-.presentation.is-fullscreen .slide-frame-footer {
+.presentation.is-canvas-fitted .slide-frame-footer {
   flex-shrink: 0;
   margin-top: auto;
 }
@@ -2328,13 +2347,31 @@ html:has(.presentation.is-fullscreen) body {
 
 /* ── Responsive ── */
 
-@media (max-width: 680px) {
-  .presentation {
-    padding: var(--space-2);
+@media (max-width: 1100px) {
+  .top-nav-tools {
+    justify-content: center;
   }
 
-  .slide {
-    min-height: min(66vh, var(--slide-min-h));
+  .top-nav-tool-btn,
+  .top-nav-tool-link {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .top-nav-shortcuts-hint {
+    font-size: 0.62rem;
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 680px) {
+  .presentation {
+    padding: var(--space-1);
+    gap: 0.35rem;
+  }
+
+  .presentation.is-canvas-fitted .slide.is-active {
+    border-radius: var(--radius-md);
   }
 
   .slide-frame-content {
@@ -2361,7 +2398,37 @@ html:has(.presentation.is-fullscreen) body {
   }
 
   .top-nav-pill-btn {
-    padding: 0.4rem 0.65rem;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.78rem;
+  }
+
+  .top-nav-icon-btn {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .top-nav-context {
+    font-size: 0.78rem;
+  }
+
+  .top-nav-counter {
+    font-size: 0.68rem;
+  }
+
+  .top-nav-tool-btn,
+  .top-nav-tool-link {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .top-nav-shortcuts-hint {
+    display: none;
+  }
+
+  .trainee-progress {
+    inset-inline-end: var(--space-1);
+    bottom: var(--space-1);
   }
 
   .status-row {

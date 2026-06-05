@@ -18,7 +18,8 @@ export function useSlideFitScale(
   slideRef: RefObject<HTMLElement | null>,
   enabled: boolean,
   slideIndex: number,
-  navHidden = false
+  navHidden = false,
+  isFullscreen = false
 ) {
   useLayoutEffect(() => {
     const viewport = viewportRef.current;
@@ -36,9 +37,14 @@ export function useSlideFitScale(
       inner.style.removeProperty("height");
 
       const viewportWidth = viewport.clientWidth;
-      const navEl = document.querySelector<HTMLElement>(".presentation.is-fullscreen .top-nav");
-      const navHeight = navHidden ? 0 : (navEl?.getBoundingClientRect().height ?? 0);
-      const viewportHeight = Math.max(viewport.clientHeight - navHeight, 0);
+      let viewportHeight = viewport.clientHeight;
+
+      if (isFullscreen) {
+        const navEl = document.querySelector<HTMLElement>(".presentation.is-fullscreen .top-nav");
+        const navHeight = navHidden ? 0 : (navEl?.getBoundingClientRect().height ?? 0);
+        viewportHeight = Math.max(viewportHeight - navHeight, 0);
+      }
+
       const slideWidth = PPT_WIDTH_PX;
       const slideHeight = PPT_HEIGHT_PX;
 
@@ -65,8 +71,17 @@ export function useSlideFitScale(
     const observer = new ResizeObserver(fit);
     observer.observe(viewport);
     observer.observe(slide);
-    const navEl = document.querySelector<HTMLElement>(".presentation.is-fullscreen .top-nav");
-    if (navEl) observer.observe(navEl);
+
+    const chromeSelectors = [
+      ".presentation .top-nav",
+      ".presentation .top-nav-shortcuts-hint",
+      ".presentation .top-nav-tools",
+    ];
+    chromeSelectors.forEach((selector) => {
+      const el = document.querySelector<HTMLElement>(selector);
+      if (el) observer.observe(el);
+    });
+
     window.addEventListener("resize", fit);
     document.addEventListener("fullscreenchange", fit);
 
@@ -85,5 +100,5 @@ export function useSlideFitScale(
       slide.style.removeProperty("height");
       slide.style.removeProperty("flex-shrink");
     };
-  }, [enabled, slideIndex, navHidden, viewportRef, innerRef, slideRef]);
+  }, [enabled, slideIndex, navHidden, isFullscreen, viewportRef, innerRef, slideRef]);
 }

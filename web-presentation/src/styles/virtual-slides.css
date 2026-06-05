@@ -3,6 +3,12 @@
   min-height: min(72vh, var(--slide-min-h));
 }
 
+.presentation.is-canvas-fitted .virtual-slide-stage {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
 .slide-fit-viewport {
   position: relative;
   width: 100%;
@@ -10,6 +16,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.presentation.is-canvas-fitted .slide-fit-viewport {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .slide-fit-inner {
@@ -51,7 +64,7 @@
   inset: auto;
 }
 
-.presentation.is-fullscreen .virtual-slide.is-active {
+.presentation.is-canvas-fitted .virtual-slide.is-active {
   width: var(--ppt-w);
   height: var(--ppt-h);
   max-width: none;

@@ -63,15 +63,16 @@ export function VirtualSlideStage({
     viewportRef,
     fitInnerRef,
     fitSlideRef,
-    isFullscreen,
+    true,
     currentIndex,
-    fullscreenNavHidden
+    fullscreenNavHidden,
+    isFullscreen
   );
   useLiveSlidePagination(
     fitSlideRef,
     currentIndex,
     contentPageIndex,
-    isFullscreen,
+    true,
     onContentPageCount ?? (() => {})
   );
 

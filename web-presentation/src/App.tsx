@@ -294,16 +294,16 @@ export default function App() {
   }, []);
 
   const advanceSlide = useCallback(() => {
-    if (isFullscreen && contentPageIndex < contentPageCount - 1) {
+    if (contentPageIndex < contentPageCount - 1) {
       setContentPageIndex((page) => page + 1);
       return;
     }
     setContentPageIndex(0);
     goNext();
-  }, [isFullscreen, contentPageIndex, contentPageCount, goNext]);
+  }, [contentPageIndex, contentPageCount, goNext]);
 
   const retreatSlide = useCallback(() => {
-    if (isFullscreen && contentPageIndex > 0) {
+    if (contentPageIndex > 0) {
       setContentPageIndex((page) => page - 1);
       return;
     }
@@ -312,7 +312,7 @@ export default function App() {
       goPrev();
       return;
     }
-  }, [isFullscreen, contentPageIndex, currentIndex, goPrev]);
+  }, [contentPageIndex, currentIndex, goPrev]);
 
   const goToSlideByNumber = useCallback(() => {
     const input = window.prompt(ui.promptSlideNumber(total, currentIndex + 1), String(currentIndex + 1));
@@ -533,7 +533,7 @@ export default function App() {
       ) : (
         <div
           ref={presentationRef}
-          className={`presentation${isFullscreen ? " is-fullscreen" : ""}${isFullscreen && fullscreenNavHidden ? " is-nav-hidden" : ""}`}
+          className={`presentation is-canvas-fitted${isFullscreen ? " is-fullscreen" : ""}${isFullscreen && fullscreenNavHidden ? " is-nav-hidden" : ""}`}
           dir={ui.direction}
           lang={ui.docLang}
         >
@@ -547,12 +547,10 @@ export default function App() {
             currentSlide={currentIndex + 1}
             totalSlides={total}
             progressPercent={progressPercent}
-            canGoPrev={currentIndex > 0 || (isFullscreen && contentPageIndex > 0)}
-            canGoNext={
-              currentIndex < total - 1 || (isFullscreen && contentPageIndex < contentPageCount - 1)
-            }
-            contentPage={isFullscreen && contentPageCount > 1 ? contentPageIndex + 1 : undefined}
-            contentPageCount={isFullscreen && contentPageCount > 1 ? contentPageCount : undefined}
+            canGoPrev={currentIndex > 0 || contentPageIndex > 0}
+            canGoNext={currentIndex < total - 1 || contentPageIndex < contentPageCount - 1}
+            contentPage={contentPageCount > 1 ? contentPageIndex + 1 : undefined}
+            contentPageCount={contentPageCount > 1 ? contentPageCount : undefined}
             isLight={isLight}
             sidebarOpen={sidebarOpen}
             onOpenSidebar={() => setSidebarOpen(true)}
