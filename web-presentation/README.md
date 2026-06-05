@@ -205,7 +205,7 @@ web-presentation/
 
 | الملف | المشروع | الغرض |
 |-------|---------|--------|
-| [`wrangler.toml`](../wrangler.toml) | **web-presentation** (Pages) | `pages_build_output_dir` + `[build]` |
+| [`wrangler.toml`](../wrangler.toml) | **web-presentation** (Pages) | `pages_build_output_dir` (مجلد الإخراج) |
 | [`wrangler.worker.jsonc`](../wrangler.worker.jsonc) | **ai** (Workers) | `assets.directory` + `build.command` |
 
 على Cloudflare يُبنى العرض بـ `base: /` (على GitHub Pages يبقى `/AI-ML/web-presentation/`).
@@ -222,13 +222,13 @@ web-presentation/
 
 ### Cloudflare Pages → مشروع **web-presentation**
 
-يقرأ [`wrangler.toml`](../wrangler.toml) تلقائياً (`pages_build_output_dir` + `[build]`). إن تعارضت اللوحة مع الملف، اجعل الحقول فارغة أو مطابقة:
+يقرأ [`wrangler.toml`](../wrangler.toml) لمجلد الإخراج. **يجب** ضبط أمر البناء في اللوحة (لا يُقرأ من Wrangler):
 
 | الحقل | القيمة |
 |-------|--------|
 | Root directory | `/` |
-| **Build command** | `npm run build:cloudflare` (أو اتركه للملف) |
-| **Build output directory** | `web-presentation/dist` |
+| **Build command** | `npm run build:cloudflare` |
+| **Build output directory** | *(اتركه فارغاً — يُقرأ من `wrangler.toml`)* |
 
 ملفات PDF في `docs/archive/` **لا تُنشر** — النشر من `web-presentation/dist` فقط.
 
