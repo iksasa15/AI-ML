@@ -71,7 +71,7 @@ export async function callClaude(options: {
   return text;
 }
 
-export type AiMode = "explain" | "qa" | "code";
+export type AiMode = "explain" | "qa";
 
 export function buildAiSystemPrompt(mode: AiMode, uiLang: "ar" | "en"): string {
   const langHint =
@@ -82,10 +82,7 @@ export function buildAiSystemPrompt(mode: AiMode, uiLang: "ar" | "en"): string {
   if (mode === "explain") {
     return `You are a patient ML bootcamp tutor. Explain the slide content in simpler language for mixed beginners. ${langHint} Keep it under 200 words. Use short paragraphs or bullets.`;
   }
-  if (mode === "qa") {
-    return `You are an ML bootcamp teaching assistant. Answer using ONLY the slide context provided. If unsure, say so. ${langHint}`;
-  }
-  return `You are a Python tutor for an ML bootcamp. Generate a short, runnable code example (NumPy only, no sklearn) that illustrates the concept on the slide. ${langHint} Return only the code block with a one-line comment at the top.`;
+  return `You are an ML bootcamp teaching assistant. Answer using ONLY the slide context provided. If unsure, say so. ${langHint}`;
 }
 
 export function buildAiUserPrompt(
@@ -96,8 +93,5 @@ export function buildAiUserPrompt(
   if (mode === "explain") {
     return `Explain this slide more simply:\n\n${slideText}`;
   }
-  if (mode === "qa") {
-    return `Slide context:\n${slideText}\n\nTrainee question:\n${question || ""}`;
-  }
-  return `Generate another code example for this concept:\n\n${slideText}`;
+  return `Slide context:\n${slideText}\n\nTrainee question:\n${question || ""}`;
 }

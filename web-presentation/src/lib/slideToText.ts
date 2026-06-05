@@ -28,7 +28,6 @@ export function slideToPlainText(slide: SlideRecord | undefined, slideIndex: num
   }
 
   if (slide.formula) parts.push(`Formula: ${slide.formula}`);
-  if (slide.code) parts.push(`Code (${slide.language || "python"}):\n${slide.code}`);
   if (slide.note) parts.push(`Trainer note: ${slide.note}`);
 
   const sections = slide.sections as Array<{ heading?: string; bullets?: string[] }> | undefined;

@@ -1,7 +1,6 @@
 import katex from "katex";
 import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
 import { COURSE_WEEKS } from "./courseWeeks";
-import { highlightCode } from "./highlightCode";
 import {
   getSectionKeyTopics,
   getSectionTheme,
@@ -120,16 +119,6 @@ function buildBulletsMarkup(items: string[], className = "slide-bullet-list") {
 
 function buildFormulaMarkup(tex: string) {
   return `<div class="slide-formula-block notranslate" translate="no">${renderDisplayFormula(tex)}</div>`;
-}
-
-function buildCodeMarkup(code: string, language = "python") {
-  const lang = escapeHTML(language);
-  return `
-    <div class="slide-code-wrap">
-      <div class="slide-code-lang">${lang}</div>
-      <pre class="slide-code-block"><code class="language-${lang}">${highlightCode(code, language)}</code></pre>
-    </div>
-  `;
 }
 
 function buildSectionDividerMarkup(
@@ -308,15 +297,6 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
     `;
   }
 
-  if (slide.type === "code") {
-    return `
-      ${buildTitleBlock(String(slide.title || ""))}
-      ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
-      ${buildCodeMarkup(String(slide.code || ""), typeof slide.language === "string" ? slide.language : "python")}
-      ${slide.note ? `<p class="note-box">${escapeHTML(String(slide.note))}</p>` : ""}
-    `;
-  }
-
   const bullets = (slide.bullets || []) as string[];
   const sections = (slide.sections || []) as Array<{
     heading?: string;
@@ -364,7 +344,6 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
     ${slide.subtitle ? `<p class="slide-subtitle">${escapeHTML(String(slide.subtitle))}</p>` : ""}
     ${slide.body ? `<p class="slide-body">${escapeHTML(String(slide.body))}</p>` : ""}
     ${slide.formula ? buildFormulaMarkup(String(slide.formula)) : ""}
-    ${typeof slide.code === "string" ? buildCodeMarkup(slide.code, typeof slide.language === "string" ? slide.language : "python") : ""}
     ${imageHTML}
     ${buildBulletsMarkup(bullets)}
     ${sectionsHTML ? `<div class="content-sections">${sectionsHTML}</div>` : ""}

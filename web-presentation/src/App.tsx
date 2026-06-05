@@ -13,11 +13,6 @@ import { DAY01_FIRST_SLIDE_TITLE } from "./lib/day01Anchor";
 import { renderSlideMath } from "./lib/renderMath";
 import { usePresentationShortcuts } from "./hooks/usePresentationShortcuts";
 import {
-  countSlideBullets,
-  readBulletReveal,
-  writeBulletReveal,
-} from "./lib/bulletReveal";
-import {
   getSlideTransitionKind,
   type SlideTransitionKind,
 } from "./lib/slideTransitions";
@@ -95,7 +90,6 @@ export default function App() {
   const prevIndexRef = useRef(0);
   const lastAutoQuizKeyRef = useRef<string | null>(null);
   const [transitionKind, setTransitionKind] = useState<SlideTransitionKind>("slide");
-  const [revealedBullets, setRevealedBullets] = useState(0);
 
   const allSlides = deckSlides;
   const day01StartIndex = useMemo(() => {
@@ -140,7 +134,6 @@ export default function App() {
   );
   const day01SlidesLink = useMemo(() => `${window.location.pathname}${window.location.search}${DAY01_HASH}`, []);
   const progressPercent = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
-  const bulletTotal = useMemo(() => countSlideBullets(slide), [slide]);
   const ui = useMemo(() => getUiStrings(uiLang), [uiLang]);
   const activeSectionNavItem = useMemo(
     () => getActiveSectionNavItem(sectionNavItems, activeSectionJumpId),
@@ -197,11 +190,6 @@ export default function App() {
   }, [uiLang]);
 
   useEffect(() => {
-    if (!booted || !slide) return;
-    setRevealedBullets(readBulletReveal(deckScope, slide, currentIndex));
-  }, [booted, deckScope, currentIndex, slide]);
-
-  useEffect(() => {
     if (!isLastSlideInSection(currentIndex, activeSectionNavItem)) {
       lastAutoQuizKeyRef.current = null;
     }
@@ -220,8 +208,6 @@ export default function App() {
   useEffect(() => {
     if (!booted || view !== "slides" || quizOpen) return;
     if (!isLastSlideInSection(currentIndex, activeSectionNavItem)) return;
-    if (bulletTotal > 0 && revealedBullets < bulletTotal) return;
-
     const sectionId = activeQuizSectionId;
     if (!hasQuizForSection(sectionId) || sectionId === null) return;
     if (isQuizCompleted(deckScope, sectionId)) return;
@@ -238,8 +224,6 @@ export default function App() {
     currentIndex,
     activeSectionNavItem,
     activeQuizSectionId,
-    bulletTotal,
-    revealedBullets,
     deckScope,
   ]);
 
@@ -294,25 +278,8 @@ export default function App() {
     setCurrentIndex((i) => Math.max(i - 1, 0));
   }, []);
 
-  const advanceSlide = useCallback(() => {
-    if (slide && bulletTotal > 0 && revealedBullets < bulletTotal) {
-      const next = revealedBullets + 1;
-      setRevealedBullets(next);
-      writeBulletReveal(deckScope, slide, currentIndex, next);
-      return;
-    }
-    goNext();
-  }, [slide, bulletTotal, revealedBullets, deckScope, currentIndex, goNext]);
-
-  const retreatSlide = useCallback(() => {
-    if (slide && bulletTotal > 0 && revealedBullets > 0) {
-      const next = revealedBullets - 1;
-      setRevealedBullets(next);
-      writeBulletReveal(deckScope, slide, currentIndex, next);
-      return;
-    }
-    goPrev();
-  }, [slide, bulletTotal, revealedBullets, deckScope, currentIndex, goPrev]);
+  const advanceSlide = goNext;
+  const retreatSlide = goPrev;
 
   const goToSlideByNumber = useCallback(() => {
     const input = window.prompt(ui.promptSlideNumber(total, currentIndex + 1), String(currentIndex + 1));
@@ -638,18 +605,10 @@ export default function App() {
             totalSlides={total}
             transitionKind={transitionKind}
             slideEntering={slideEntering}
-            revealedBullets={revealedBullets}
             uiLang={uiLang}
             onActiveSlideRef={(node) => {
               slideRef.current = node;
             }}
-            footer={
-              bulletTotal > 0 && revealedBullets < bulletTotal ? (
-                <p className="bullet-reveal-hint">
-                  {ui.nav.bulletsRevealHint(revealedBullets, bulletTotal)}
-                </p>
-              ) : null
-            }
           />
 
           <SpeakerNotesPanel

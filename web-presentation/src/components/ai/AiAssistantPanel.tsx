@@ -84,7 +84,7 @@ export function AiAssistantPanel({
 
       <div className="ai-panel-body">
         <div className="ai-mode-tabs" role="tablist">
-          {(["explain", "qa", "code"] as AiMode[]).map((tab) => (
+          {(["explain", "qa"] as AiMode[]).map((tab) => (
             <button
               key={tab}
               type="button"
@@ -97,14 +97,12 @@ export function AiAssistantPanel({
                 setError(null);
               }}
             >
-              {tab === "explain" ? t.explainTab : tab === "qa" ? t.qaTab : t.codeTab}
+              {tab === "explain" ? t.explainTab : t.qaTab}
             </button>
           ))}
         </div>
 
-        <p className="ai-panel-hint">
-          {mode === "explain" ? t.explainHint : mode === "qa" ? t.qaHint : t.codeHint}
-        </p>
+        <p className="ai-panel-hint">{mode === "explain" ? t.explainHint : t.qaHint}</p>
 
         {mode === "qa" ? (
           <label className="ai-question-label">

@@ -86,14 +86,7 @@
   --dot-bg: #cbd5e1;
   --shadow-soft: var(--shadow-md);
   --shadow-slide: var(--shadow-lg), 0 0 0 1px rgba(30, 41, 59, 0.04);
-  --topbar-accent-line: linear-gradient(
-    90deg,
-    transparent,
-    var(--color-gold) 15%,
-    var(--color-accent) 50%,
-    var(--color-gold) 85%,
-    transparent
-  );
+  --topbar-accent-line: var(--color-accent);
 }
 
 /* Light theme — explicit (same as :root) */
@@ -123,12 +116,5 @@ html[data-theme="dark"] {
   --dot-bg: #475569;
   --note-bg: rgba(59, 130, 246, 0.1);
   --shadow-slide: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(59, 130, 246, 0.1);
-  --topbar-accent-line: linear-gradient(
-    90deg,
-    transparent,
-    var(--color-gold) 15%,
-    var(--color-accent) 50%,
-    var(--color-gold) 85%,
-    transparent
-  );
+  --topbar-accent-line: var(--color-accent);
 }

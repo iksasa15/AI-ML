@@ -102,16 +102,11 @@ export const slides = [
   },
   {
     title: "Mini Lab — MLflow-style Run Log",
-    type: "code",
-    language: "python",
-    code: `# Minimal experiment log pattern (conceptual)
-run = {
-    "params": {"lr": 0.01, "max_depth": 5},
-    "metrics": {"f1": 0.82, "latency_ms": 45},
-    "tags": {"git_sha": "abc123", "data_version": "2026-06-01"},
-}
-print("Registered run:", run)
-# In production: push to MLflow / W&B / cloud tracker`,
+    bullets: [
+      "Log hyperparameters and evaluation metrics per training run.",
+      "Tag runs with git SHA and data version for auditability.",
+      "Push artifacts to MLflow, W&B, or your cloud tracker in production.",
+    ],
     speakerNote: "Emphasize tags for audit — who trained, on what data, when.",
   },
   {

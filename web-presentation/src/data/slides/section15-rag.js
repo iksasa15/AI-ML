@@ -106,23 +106,13 @@ export const slides = [
     speakerNote: "Most production systems start with RAG before fine-tuning.",
   },
   {
-    title: "Mini Lab — RAG in Python",
-    type: "code",
-    language: "python",
-    code: `# RAG sketch: embed query, retrieve, prompt LLM
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
-
-docs = ["Policy: refunds within 30 days.", "Policy: PII must not be logged."]
-# Pretend these are embedding vectors (use a real model in production)
-doc_emb = np.array([[1.0, 0.1], [0.2, 1.0]])
-q_emb = np.array([[0.9, 0.2]])
-
-scores = cosine_similarity(q_emb, doc_emb)[0]
-top = docs[int(np.argmax(scores))]
-print("Retrieved:", top)
-print("Prompt context:", top)`,
-    speakerNote: "Use live code slot if available; replace with real embeddings in lab.",
+    title: "Mini Lab — RAG Walkthrough",
+    bullets: [
+      "Embed the user query and every document chunk.",
+      "Retrieve the top chunk via similarity search.",
+      "Inject retrieved text into the LLM prompt before generation.",
+    ],
+    speakerNote: "Walk the RAG loop conceptually; use a real embedding model in the hands-on lab.",
   },
   {
     title: "Production Checklist",

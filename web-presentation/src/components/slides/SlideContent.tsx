@@ -1,6 +1,4 @@
 import { ConceptAnimationSlot } from "../animations/ConceptAnimationSlot";
-import { LiveCodeSlot } from "../code/LiveCodeSlot";
-import { highlightCode } from "../../lib/highlightCode";
 import {
   getSlideBulletGroups,
   getVisibleCounts,
@@ -13,7 +11,6 @@ import {
   type SlideRecord,
 } from "../../lib/slideMarkup";
 import type { UiLang } from "../../lib/uiStrings";
-import { getUiStrings } from "../../lib/uiStrings";
 import { BigPictureSlide } from "./BigPictureSlide";
 import { BootcampTimelineSlide } from "./BootcampTimelineSlide";
 import { CourseMapSlide } from "./CourseMapSlide";
@@ -104,11 +101,7 @@ function RevealedBulletGroups({
             {group.items.slice(0, visible).map((item, index) => {
               const html = group.id === "main" ? bulletsHtml?.[index] : undefined;
               return (
-                <li
-                  key={`${group.id}-${index}`}
-                  className="slide-bullet-reveal"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
+                <li key={`${group.id}-${index}`}>
                   {html ? (
                     <span
                       className="notranslate"
@@ -140,21 +133,6 @@ function FormulaBlock({ tex, html }: { tex?: string; html?: string }) {
   );
 }
 
-function CodeBlock({ code, language }: { code: string; language?: string }) {
-  const lang = language || "python";
-  return (
-    <div className="slide-code-wrap">
-      <div className="slide-code-lang">{lang}</div>
-      <pre className="slide-code-block">
-        <code
-          className={`language-${lang}`}
-          dangerouslySetInnerHTML={{ __html: highlightCode(code, lang) }}
-        />
-      </pre>
-    </div>
-  );
-}
-
 function SlideImages({ slide, isActive = false }: { slide: SlideRecord; isActive?: boolean }) {
   const sources = getImageSources(slide);
   if (!sources.length) return null;
@@ -181,12 +159,11 @@ export function SlideContent({
   slides,
   slideIndex,
   revealedBullets,
-  uiLang = "ar",
+  uiLang: _uiLang = "ar",
   isActive = false,
 }: SlideContentProps) {
-  const ui = getUiStrings(uiLang);
+  void _uiLang;
   const bulletGroups = getSlideBulletGroups(slide);
-  const liveCode = <LiveCodeSlot slide={slide} ui={ui} />;
 
   if (slide.type === "intro-hero") {
     return (
@@ -245,7 +222,6 @@ export function SlideContent({
           fallback={slide.subtitle ? String(slide.subtitle) : undefined}
         />
         <ConceptAnimationSlot slide={slide} />
-        {liveCode}
         <div className="slide-columns-three">
           {columns.map((col, index) => {
             const group = bulletGroups.find((g) => g.id === `col-${index}`);
@@ -264,7 +240,7 @@ export function SlideContent({
                     {group.items.slice(0, visible).map((item, bi) => {
                       const html = columnBulletsHtml?.[bi];
                       return (
-                        <li key={bi} className="slide-bullet-reveal">
+                        <li key={bi}>
                           {html ? (
                             <span
                               className="notranslate"
@@ -283,20 +259,6 @@ export function SlideContent({
             );
           })}
         </div>
-      </>
-    );
-  }
-
-  if (slide.type === "code") {
-    return (
-      <>
-        <SlideTitle title={String(slide.title || "")} />
-        {slide.subtitle ? <p className="slide-subtitle">{String(slide.subtitle)}</p> : null}
-        <CodeBlock
-          code={String(slide.code || "")}
-          language={typeof slide.language === "string" ? slide.language : "python"}
-        />
-        {slide.note ? <p className="note-box">{String(slide.note)}</p> : null}
       </>
     );
   }
@@ -334,17 +296,10 @@ export function SlideContent({
         fallback={slide.body ? String(slide.body) : undefined}
       />
       <ConceptAnimationSlot slide={slide} />
-      {liveCode}
       {slide.formula || slide._formulaHtml ? (
         <FormulaBlock
           tex={slide.formula ? String(slide.formula) : undefined}
           html={typeof slide._formulaHtml === "string" ? slide._formulaHtml : undefined}
-        />
-      ) : null}
-      {typeof slide.code === "string" ? (
-        <CodeBlock
-          code={slide.code}
-          language={typeof slide.language === "string" ? slide.language : "python"}
         />
       ) : null}
       <SlideImages slide={slide} isActive={isActive} />
@@ -383,7 +338,7 @@ export function SlideContent({
                     {group.items.slice(0, visible).map((item, bi) => {
                       const html = section._bulletsHtml?.[bi];
                       return (
-                        <li key={bi} className="slide-bullet-reveal">
+                        <li key={bi}>
                           {html ? (
                             <span
                               className="notranslate"

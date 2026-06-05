@@ -1,25 +1,21 @@
 /* Day 12 — section divider visual identity */
 
 .slide.slide--divider {
-  background: var(--section-accent-dark, #0f172a);
-  border-color: color-mix(in srgb, var(--section-accent, #1e293b) 40%, #0f172a);
+  background: #0f172a;
+  border-color: var(--section-accent, #1e293b);
 }
 
 .slide-frame-divider-body {
-  background: linear-gradient(
-    165deg,
-    color-mix(in srgb, var(--section-accent-dark, #0f172a) 88%, black) 0%,
-    color-mix(in srgb, var(--section-accent, #1e293b) 35%, #0f172a) 55%,
-    #0f172a 100%
-  ) !important;
+  background: #0f172a !important;
+  box-shadow: inset 0 6px 0 0 var(--section-accent, var(--accent));
 }
 
 .slide-frame-footer--divider {
-  background: color-mix(in srgb, var(--section-accent-dark, #0f172a) 90%, black);
+  background: #0f172a;
 }
 
 .slide-frame-footer--divider .slide-frame-progress-fill {
-  background: linear-gradient(90deg, var(--section-accent, var(--accent)), var(--color-gold));
+  background: var(--section-accent, var(--accent));
 }
 
 .section-divider-hero--themed {
@@ -27,15 +23,12 @@
   width: 100%;
   max-width: 720px;
   margin-inline: auto;
-  color: #f8fafc;
+  color: #ffffff;
   text-align: center;
 }
 
 .section-divider-hero-bg {
-  position: absolute;
-  inset: -20% -10%;
-  background: radial-gradient(ellipse at 50% 30%, var(--section-accent-glow), transparent 65%);
-  pointer-events: none;
+  display: none;
 }
 
 .section-divider-hero-content {
@@ -43,16 +36,22 @@
   z-index: 1;
 }
 
+.section-divider-hero--themed .section-divider-eyebrow {
+  color: #f1f5f9;
+  font-weight: 700;
+}
+
 .section-divider-theme-badge {
   display: inline-block;
   margin-inline-start: 0.65rem;
-  padding: 0.15rem 0.55rem;
+  padding: 0.2rem 0.6rem;
   border-radius: var(--radius-full);
   font-size: 0.65rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
-  background: color-mix(in srgb, var(--section-accent) 25%, transparent);
-  border: 1px solid color-mix(in srgb, var(--section-accent) 45%, transparent);
-  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #ffffff;
   vertical-align: middle;
 }
 
@@ -76,8 +75,11 @@
   font-weight: 700;
   line-height: 0.9;
   color: transparent;
-  -webkit-text-stroke: 2px color-mix(in srgb, var(--section-accent) 55%, white);
-  text-shadow: 0 0 40px var(--section-accent-glow);
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.88);
+}
+
+.section-divider-hero--themed .section-divider-title-line {
+  color: #ffffff;
 }
 
 .section-divider-copy {
@@ -89,13 +91,19 @@
 }
 
 .section-divider-icon-wrap {
-  color: var(--section-accent);
-  filter: drop-shadow(0 0 12px var(--section-accent-glow));
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  background: var(--section-accent, var(--accent));
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .section-divider-icon {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
 }
 
 .section-divider-topics {
@@ -109,22 +117,23 @@
 }
 
 .section-divider-topics li {
-  padding: 0.3rem 0.7rem;
+  padding: 0.35rem 0.75rem;
   border-radius: var(--radius-full);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
-  font-weight: 500;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #cbd5e1;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #f8fafc;
 }
 
-.section-divider-eyebrow {
-  color: color-mix(in srgb, var(--section-accent) 70%, white);
+.section-divider-hero--themed .section-divider-meta {
+  color: #e2e8f0;
+  font-weight: 500;
 }
 
 .section-divider-meta-icon {
-  color: var(--section-accent);
+  color: var(--section-accent, var(--color-gold));
 }
 
 @media (max-width: 600px) {

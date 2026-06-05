@@ -1,5 +1,4 @@
 import { useMemo, useRef } from "react";
-import { countSlideBullets } from "../../lib/bulletReveal";
 import { LOADING_SLIDE_TYPE } from "../../lib/presentationLoader";
 import { getActiveSectionLabel, type SlideRecord } from "../../lib/slideMarkup";
 import { getSectionTheme, parseSectionIdFromDivider } from "../../lib/sectionTheme";
@@ -17,7 +16,6 @@ type VirtualSlideStageProps = {
   totalSlides: number;
   transitionKind: SlideTransitionKind;
   slideEntering: boolean;
-  revealedBullets: number;
   uiLang: UiLang;
   onActiveSlideRef?: (node: HTMLElement | null) => void;
   footer?: React.ReactNode;
@@ -38,7 +36,6 @@ export function VirtualSlideStage({
   totalSlides,
   transitionKind,
   slideEntering,
-  revealedBullets,
   uiLang,
   onActiveSlideRef,
   footer,
@@ -59,9 +56,6 @@ export function VirtualSlideStage({
           : 0;
         const sectionTag = getActiveSectionTag(slides, index);
         const sectionLabel = getActiveSectionLabel(slides, index);
-        const bulletTotal = slide ? countSlideBullets(slide) : 0;
-        const revealed =
-          isActive && bulletTotal > 0 ? revealedBullets : undefined;
         const dividerSectionId =
           slide?.type === "section-divider" ? parseSectionIdFromDivider(slide) : null;
         const dividerTheme =
@@ -108,7 +102,7 @@ export function VirtualSlideStage({
                   slide={slide}
                   slides={slides}
                   slideIndex={index}
-                  revealedBullets={revealed}
+                  revealedBullets={undefined}
                   uiLang={uiLang}
                   isActive={isActive}
                 />

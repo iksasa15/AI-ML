@@ -58,7 +58,6 @@ export default defineConfig(({ mode }) => ({
             return match ? `slides-${match[0]}` : "slides";
           }
           if (id.includes("katex")) return "katex";
-          if (id.includes("codemirror") || id.includes("@codemirror")) return "codemirror";
         },
       },
     },

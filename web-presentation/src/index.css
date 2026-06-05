@@ -212,7 +212,7 @@ html[data-theme="dark"] .day01-deck-btn {
 .progress-fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--color-gold));
+  background: var(--accent);
   border-radius: var(--radius-full);
   transition: width var(--transition-base);
 }
@@ -355,7 +355,7 @@ html[data-theme="dark"] .day01-deck-btn {
 
 .slide-frame-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--color-gold));
+  background: var(--accent);
   border-radius: var(--radius-full);
   transition: width var(--transition-base);
 }
@@ -370,7 +370,7 @@ html[data-theme="dark"] .day01-deck-btn {
   display: grid;
   place-items: center;
   padding: var(--space-6) var(--space-4);
-  background: linear-gradient(165deg, #0f172a 0%, #1e293b 55%, #0f172a 100%);
+  background: #0f172a;
 }
 
 .slide-frame-footer--divider {
@@ -385,7 +385,7 @@ html[data-theme="dark"] .day01-deck-btn {
 }
 
 .slide-frame-footer--divider .slide-frame-progress-fill {
-  background: linear-gradient(90deg, var(--color-gold), #f59e0b);
+  background: var(--color-gold);
   border-radius: 0;
 }
 
@@ -412,7 +412,7 @@ html[data-theme="dark"] .day01-deck-btn {
   width: 4rem;
   height: 3px;
   margin-top: var(--space-2);
-  background: linear-gradient(90deg, var(--color-gold), transparent);
+  background: var(--color-gold);
   border-radius: var(--radius-full);
 }
 
@@ -1501,7 +1501,7 @@ html[data-theme="dark"] .table-wrap th {
 
 .top-nav-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--color-gold));
+  background: var(--accent);
   border-radius: var(--radius-full);
   transition: width var(--transition-base);
 }

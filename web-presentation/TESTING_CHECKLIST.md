@@ -45,12 +45,10 @@ Use before a live bootcamp session or after major changes.
 ## Offline / PWA
 
 - [ ] `npm run build` + `npm run preview` loads shell offline after first visit
-- [ ] Pyodide code runner works after first online load (cached runtime)
-
 ## AI assistant (optional, Day 13)
 
 - [ ] API key saves in Settings (localStorage only)
-- [ ] Explain / Q&A / Code tabs return responses with valid key
+- [ ] Explain / Q&A tabs return responses with valid key
 - [ ] Graceful error when key missing or offline
 
 ## Browsers
@@ -59,7 +57,7 @@ Use before a live bootcamp session or after major changes.
 |---------|--------|-------|
 | Chrome | Primary | Full feature set |
 | Safari | Required | Presenter sync, print, PWA |
-| Firefox | Required | Keyboard nav, Pyodide |
+| Firefox | Required | Keyboard nav |
 
 ## GitHub Pages
 

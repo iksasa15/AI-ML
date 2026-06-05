@@ -64,18 +64,6 @@ export type UiStrings = {
     shortcutsHint: string;
     bulletsRevealHint: (shown: number, total: number) => string;
   };
-  codeRunner: {
-    run: string;
-    reset: string;
-    output: string;
-    outputPlaceholder: string;
-    outputEmpty: string;
-    pyodideWarning: string;
-    dismissWarning: string;
-    statusLoadingRuntime: string;
-    statusLoadingPackages: string;
-    statusRunning: string;
-  };
   quizModal: {
     title: string;
     questionOf: (current: number, total: number) => string;
@@ -97,10 +85,8 @@ export type UiStrings = {
     toolbarTitle: string;
     explainTab: string;
     qaTab: string;
-    codeTab: string;
     explainHint: string;
     qaHint: string;
-    codeHint: string;
     questionLabel: string;
     questionPlaceholder: string;
     run: string;
@@ -197,19 +183,6 @@ export function getUiStrings(lang: UiLang): UiStrings {
         shortcutsHint: "→ ← navigate · Space next · F fullscreen · N notes · P presenter · Q quiz · Esc close",
         bulletsRevealHint: (shown, total) => `Press → to reveal bullet ${shown + 1} of ${total}`,
       },
-      codeRunner: {
-        run: "Run",
-        reset: "Reset",
-        output: "Output",
-        outputPlaceholder: "Run the code to see output here.",
-        outputEmpty: "(no output)",
-        pyodideWarning:
-          "First run downloads the Python runtime (Pyodide, ~10 MB). Allow a moment on slow networks.",
-        dismissWarning: "Got it",
-        statusLoadingRuntime: "Loading Python runtime (Pyodide)…",
-        statusLoadingPackages: "Loading NumPy…",
-        statusRunning: "Running…",
-      },
       quizModal: {
         title: "Section quiz",
         questionOf: (current, total) => `Question ${current} of ${total}`,
@@ -229,13 +202,11 @@ export function getUiStrings(lang: UiLang): UiStrings {
       ai: {
         title: "AI assistant",
         toolbar: "AI help",
-        toolbarTitle: "Explain slides, ask questions, or generate code examples (Claude API)",
+        toolbarTitle: "Explain slides or ask questions in context (Claude API)",
         explainTab: "Simplify",
         qaTab: "Q&A",
-        codeTab: "Code",
         explainHint: "Sends this slide to Claude for a simpler explanation — great for mixed audiences.",
         qaHint: "Ask a question in context of the current slide.",
-        codeHint: "Request another NumPy-only code example for this concept.",
         questionLabel: "Your question",
         questionPlaceholder: "e.g. Why do we scale features before K-NN?",
         run: "Ask Claude",
@@ -332,20 +303,7 @@ export function getUiStrings(lang: UiLang): UiStrings {
       shortcutsHint: "← التالي · → السابق · Space التالي · F ملء الشاشة · N ملاحظات · P المقدّم · Q سؤال · Esc إغلاق",
       bulletsRevealHint: (shown, total) => `اضغط ← لإظهار النقطة ${shown + 1} من ${total}`,
     },
-    codeRunner: {
-      run: "تشغيل",
-      reset: "إعادة ضبط",
-      output: "المخرجات",
-      outputPlaceholder: "شغّل الكود لعرض المخرجات هنا.",
-      outputEmpty: "(لا مخرجات)",
-      pyodideWarning:
-        "أول تشغيل يحمّل بيئة Python (Pyodide) بحجم ~10 ميغابايت — قد يستغرق وقتاً على الشبكات البطيئة.",
-      dismissWarning: "فهمت",
-      statusLoadingRuntime: "جاري تحميل Python (Pyodide)…",
-      statusLoadingPackages: "جاري تحميل NumPy…",
-      statusRunning: "جاري التشغيل…",
-    },
-    quizModal: {
+      quizModal: {
       title: "اختبار القسم",
       questionOf: (current, total) => `السؤال ${current} من ${total}`,
       correct: "إجابة صحيحة!",
@@ -364,13 +322,11 @@ export function getUiStrings(lang: UiLang): UiStrings {
     ai: {
       title: "مساعد الذكاء الاصطناعي",
       toolbar: "مساعد AI",
-      toolbarTitle: "اشرح الشريحة، اسأل سؤالاً، أو ولّد مثال كود (Claude API)",
+      toolbarTitle: "اشرح الشريحة أو اسأل سؤالاً في السياق (Claude API)",
       explainTab: "تبسيط",
       qaTab: "سؤال وجواب",
-      codeTab: "كود",
       explainHint: "يرسل محتوى الشريحة لـ Claude لشرح أبسط — مناسب للجمهور المختلط.",
       qaHint: "اكتب سؤالاً وسيجيب في سياق الشريحة الحالية.",
-      codeHint: "اطلب مثال كود NumPy آخر لهذا المفهوم.",
       questionLabel: "سؤالك",
       questionPlaceholder: "مثال: لماذا نُحجّم الميزات قبل K-NN؟",
       run: "اسأل Claude",
