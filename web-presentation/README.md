@@ -201,7 +201,9 @@ web-presentation/
 
 ## النشر على Cloudflare Workers / Pages
 
-المستودع يتضمن [`wrangler.jsonc`](../wrangler.jsonc) في الجذر — يدعم **Workers** (`assets.directory`) و**Pages** (`pages_build_output_dir`) معاً.
+المستودع يتضمن ملفي إعداد في الجذر:
+- [`wrangler.jsonc`](../wrangler.jsonc) — **Cloudflare Pages** (`pages_build_output_dir`، اسم المشروع `web-presentation`)
+- [`wrangler.worker.jsonc`](../wrangler.worker.jsonc) — **Workers** (`assets.directory` + `build.command`، اسم المشروع `ai`)
 
 على Cloudflare يُبنى العرض بـ `base: /` (على GitHub Pages يبقى `/AI-ML/web-presentation/`).
 
@@ -211,9 +213,9 @@ web-presentation/
 |-------|--------|
 | Root directory | `/` |
 | **Build command** | `npm run build:cloudflare` |
-| **Deploy command** | `npx wrangler deploy` |
+| **Deploy command** | `npx wrangler deploy -c wrangler.worker.jsonc` |
 
-بديل: `npm run deploy:cloudflare` (بناء + نشر في أمر واحد).
+بديل: `npm run deploy:cloudflare` (بناء + نشر في أمر واحد). يجب استخدام `wrangler.worker.jsonc` وليس `wrangler.jsonc` (الأخير مخصّص لـ Pages فقط).
 
 ### Cloudflare Pages (نفس المستودع)
 
@@ -230,7 +232,7 @@ web-presentation/
 ```powershell
 cd ..
 npm run build:cloudflare
-npx wrangler deploy
+npm run deploy:workers
 ```
 
 ## النشر على GitHub Pages
