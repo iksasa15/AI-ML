@@ -205,7 +205,7 @@ web-presentation/
 
 | الملف | المشروع | الغرض |
 |-------|---------|--------|
-| [`wrangler.toml`](../wrangler.toml) | **web-presentation** (Pages) | `pages_build_output_dir` (مجلد الإخراج) |
+| [`wrangler.jsonc`](../wrangler.jsonc) | **web-presentation** (Pages) | `pages_build_output_dir` فقط |
 | [`wrangler.worker.jsonc`](../wrangler.worker.jsonc) | **ai** (Workers) | `assets.directory` + `build.command` |
 
 على Cloudflare يُبنى العرض بـ `base: /` (على GitHub Pages يبقى `/AI-ML/web-presentation/`).
@@ -218,11 +218,11 @@ web-presentation/
 | **Build command** | `npm run build:cloudflare` |
 | **Deploy command** | `npm run deploy:workers` |
 
-بديل: `npm run deploy:cloudflare` (بناء + نشر). **لا تستخدم** `npx wrangler deploy` وحده — يقرأ `wrangler.toml` الخاص بـ Pages.
+بديل: `npm run deploy:cloudflare` (بناء + نشر). **لا تستخدم** `npx wrangler deploy` وحده — يقرأ `wrangler.jsonc` الخاص بـ Pages وليس Worker.
 
 ### Cloudflare Pages → مشروع **web-presentation**
 
-يقرأ [`wrangler.toml`](../wrangler.toml) لمجلد الإخراج. **يجب** ضبط أمر البناء في اللوحة (لا يُقرأ من Wrangler):
+يقرأ [`wrangler.jsonc`](../wrangler.jsonc) لمجلد الإخراج. **يجب** ضبط أمر البناء في اللوحة (لا يُقرأ من Wrangler):
 
 | الحقل | القيمة |
 |-------|--------|
