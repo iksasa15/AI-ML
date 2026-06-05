@@ -126,9 +126,11 @@ export function paginatePrintDeck(container: HTMLElement) {
   for (const slide of slides) {
     pages.push(...paginateSingleSlide(slide));
   }
+  if (!pages.length) return;
 
-  container.innerHTML = "";
+  const fragment = document.createDocumentFragment();
   for (const page of pages) {
-    container.appendChild(page);
+    fragment.appendChild(page);
   }
+  container.replaceChildren(fragment);
 }

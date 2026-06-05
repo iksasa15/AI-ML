@@ -1157,6 +1157,17 @@ html[data-theme="dark"] .table-wrap th {
   display: none;
 }
 
+body.is-print-export .print-deck {
+  display: block;
+  position: fixed;
+  left: -20000px;
+  top: 0;
+  width: var(--print-slide-w, 20in);
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
 #slide-container:focus {
   outline: none;
 }
@@ -2477,7 +2488,7 @@ html:has(.presentation.is-fullscreen) body {
 
 @media print {
   @page {
-    size: 20in 11.25in;
+    size: landscape;
     margin: 0;
   }
 
@@ -2505,7 +2516,8 @@ html:has(.presentation.is-fullscreen) body {
     print-color-adjust: exact;
   }
 
-  #root > *:not(#print-container),
+  #root,
+  #root > *,
   .presentation,
   .outline-page,
   .translate-dropdown-panel,
@@ -2530,12 +2542,14 @@ html:has(.presentation.is-fullscreen) body {
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    visibility: visible !important;
   }
 
   .print-deck {
-    display: block;
+    display: block !important;
     margin: 0;
     padding: 0;
+    visibility: visible !important;
   }
 
   .print-page {
@@ -2571,6 +2585,17 @@ html:has(.presentation.is-fullscreen) body {
     box-shadow: none;
     overflow: hidden;
     font-family: var(--font-body);
+  }
+
+  .print-deck > .print-slide {
+    display: block;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-deck > .print-slide:last-child {
+    break-after: auto;
+    page-break-after: auto;
   }
 
   .print-page .slide-frame,

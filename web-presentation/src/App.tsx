@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { MentorshipTemplate } from "./components/MentorshipTemplate";
 import { QuizModal } from "./components/quiz/QuizModal";
 import { SectionSidebar } from "./components/navigation/SectionSidebar";
@@ -10,7 +11,7 @@ import { usePresentationDeck } from "./hooks/usePresentationDeck";
 import { VirtualSlideStage } from "./components/slides/VirtualSlideStage";
 import { DAY01_FIRST_SLIDE_TITLE } from "./lib/day01Anchor";
 import { paginatePrintDeck } from "./lib/printPagination";
-import { renderSlideMath } from "./lib/renderMath";
+import { renderMathInContainer, renderSlideMath } from "./lib/renderMath";
 import { usePresentationShortcuts } from "./hooks/usePresentationShortcuts";
 import {
   getSlideTransitionKind,
@@ -334,10 +335,22 @@ export default function App() {
     });
   }, []);
 
-  const renderPrintDeck = useCallback(async () => {
+  const waitForPrintLayout = useCallback(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      }),
+    []
+  );
+
+  const renderPrintDeck = useCallback(async (): Promise<number> => {
     const el = printRef.current;
-    if (!el) return;
+    if (!el) return 0;
+
     const printSlides = deckScope === "day1" ? slides : await ensureAllForPrint();
+    if (!printSlides.length) return 0;
+
+    el.removeAttribute("aria-hidden");
     el.innerHTML = printSlides
       .map((s, index) => {
         const frameSlides = deckScope === "day1" ? slides : printSlides;
@@ -355,46 +368,69 @@ export default function App() {
         })}</section>`;
       })
       .join("");
-    renderSlideMath(el);
+
+    renderMathInContainer(el);
     paginatePrintDeck(el);
-    printReadyRef.current = true;
-  }, [slides, deckScope, ensureAllForPrint]);
+    await waitForPrintLayout();
+
+    const pageCount = el.querySelectorAll(".print-page, .print-slide").length;
+    printReadyRef.current = pageCount > 0;
+    return pageCount;
+  }, [slides, deckScope, ensureAllForPrint, waitForPrintLayout]);
 
   const printReadyRef = useRef(false);
 
   const handleDownloadPdf = useCallback(() => {
-    void renderPrintDeck().then(() => {
-      printReadyRef.current = true;
-      window.print();
-    });
-  }, [renderPrintDeck]);
+    void (async () => {
+      document.body.classList.add("is-print-export");
+      try {
+        const pageCount = await renderPrintDeck();
+        if (!pageCount) {
+          window.alert(
+            uiLang === "ar"
+              ? "تعذّر تجهيز الشرائح للطباعة. انتظر تحميل العرض ثم أعد المحاولة."
+              : "Could not prepare slides for print. Wait for the deck to load, then try again."
+          );
+          return;
+        }
+        await waitForPrintLayout();
+        window.print();
+      } finally {
+        document.body.classList.remove("is-print-export");
+      }
+    })();
+  }, [renderPrintDeck, uiLang, waitForPrintLayout]);
 
   useEffect(() => {
     if (!booted || view !== "slides") return;
     const warmId = window.setTimeout(() => {
-      void renderPrintDeck().then(() => {
-        printReadyRef.current = true;
-      });
+      void renderPrintDeck();
     }, 2000);
     return () => window.clearTimeout(warmId);
   }, [booted, view, slides.length, deckScope, renderPrintDeck]);
 
   useEffect(() => {
     const onBeforePrint = () => {
-      if (printReadyRef.current) return;
-      void renderPrintDeck().then(() => {
-        printReadyRef.current = true;
-      });
+      document.body.classList.add("is-print-export");
+      if (printReadyRef.current && printRef.current?.querySelector(".print-page, .print-slide")) {
+        return;
+      }
+      void renderPrintDeck();
     };
     const onAfterPrint = () => {
+      document.body.classList.remove("is-print-export");
       printReadyRef.current = false;
-      if (printRef.current) printRef.current.innerHTML = "";
+      if (printRef.current) {
+        printRef.current.innerHTML = "";
+        printRef.current.setAttribute("aria-hidden", "true");
+      }
     };
     window.addEventListener("beforeprint", onBeforePrint);
     window.addEventListener("afterprint", onAfterPrint);
     return () => {
       window.removeEventListener("beforeprint", onBeforePrint);
       window.removeEventListener("afterprint", onAfterPrint);
+      document.body.classList.remove("is-print-export");
     };
   }, [renderPrintDeck]);
 
@@ -787,7 +823,10 @@ export default function App() {
         </div>
       </div>
 
-      <div id="print-container" ref={printRef} className="print-deck" aria-hidden="true" />
+      {createPortal(
+        <div id="print-container" ref={printRef} className="print-deck" aria-hidden="true" />,
+        document.body
+      )}
 
       {booted && translateMounted ? (
         <div
