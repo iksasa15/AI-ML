@@ -1,0 +1,11 @@
+# GitHub Pages (Jekyll) — exclude app build artifacts and dependencies
+title: AI-ML
+theme: jekyll-theme-primer
+exclude:
+  - node_modules
+  - web-presentation/node_modules
+  - web-presentation/dist
+  - web-presentation/src
+  - .wrangler
+  - package-lock.json
+  - web-presentation/package-lock.json
