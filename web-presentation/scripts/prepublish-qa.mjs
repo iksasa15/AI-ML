@@ -57,10 +57,6 @@ function slideHasVisual(slide) {
   );
 }
 
-function pickSample(slides, predicate, fallbackIndex = 0) {
-  return slides.find(predicate) ?? slides[fallbackIndex];
-}
-
 let failures = 0;
 const rows = [];
 
