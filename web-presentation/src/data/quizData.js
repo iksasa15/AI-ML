@@ -523,9 +523,9 @@ export const quizQuestions = [
     explanation: "Simple split-on-space breaks for agglutinative languages and compound words.",
   },
 
-  // ── Section 10: Language Modeling ──
+  // ── Section 11: Language Modeling ──
   {
-    sectionId: 10,
+    sectionId: 11,
     question: "A language model assigns:",
     options: [
       "Probabilities to sequences of tokens",
@@ -537,14 +537,14 @@ export const quizQuestions = [
     explanation: "LMs estimate how likely a text sequence is under a learned distribution.",
   },
   {
-    sectionId: 10,
+    sectionId: 11,
     question: "A bigram model conditions on:",
     options: ["The previous one token", "The entire document history always", "Only labels", "Image patches"],
     correct: 0,
     explanation: "P(w_i | w_{i-1}) uses one token of context in a bigram model.",
   },
   {
-    sectionId: 10,
+    sectionId: 11,
     question: "Perplexity measures:",
     options: [
       "How well a LM predicts held-out text (lower is better)",
@@ -556,7 +556,7 @@ export const quizQuestions = [
     explanation: "Perplexity is exponentiated average negative log-likelihood per token.",
   },
   {
-    sectionId: 10,
+    sectionId: 11,
     question: "Smoothing in count-based LMs:",
     options: [
       "Handles zero counts for unseen n-grams",
@@ -568,7 +568,7 @@ export const quizQuestions = [
     explanation: "Techniques like Laplace or Kneser-Ney smoothing avoid zero probabilities.",
   },
   {
-    sectionId: 10,
+    sectionId: 11,
     question: "N-gram models struggle with:",
     options: [
       "Long-range dependencies due to limited context",
@@ -580,9 +580,9 @@ export const quizQuestions = [
     explanation: "Fixed n-gram context cannot capture dependencies spanning many tokens.",
   },
 
-  // ── Section 11: Embeddings & RNNs ──
+  // ── Section 12: Embeddings & RNNs ──
   {
-    sectionId: 11,
+    sectionId: 12,
     question: "Static word embeddings assign:",
     options: [
       "One vector per word type regardless of context",
@@ -594,7 +594,7 @@ export const quizQuestions = [
     explanation: "Word2Vec/GloVe produce a single vector per word form.",
   },
   {
-    sectionId: 11,
+    sectionId: 12,
     question: "Contextualized embeddings differ because:",
     options: [
       "The same word can get different vectors in different sentences",
@@ -606,7 +606,7 @@ export const quizQuestions = [
     explanation: "ELMo/BERT-style models produce representations conditioned on surrounding tokens.",
   },
   {
-    sectionId: 11,
+    sectionId: 12,
     question: "RNNs process sequences by:",
     options: [
       "Maintaining a hidden state across time steps",
@@ -618,7 +618,7 @@ export const quizQuestions = [
     explanation: "Recurrent updates carry information from prior tokens forward.",
   },
   {
-    sectionId: 11,
+    sectionId: 12,
     question: "Vanishing gradients in long RNNs make it hard to:",
     options: [
       "Learn long-term dependencies",
@@ -630,7 +630,7 @@ export const quizQuestions = [
     explanation: "Repeated multiplication of small gradients attenuates signal over many steps.",
   },
   {
-    sectionId: 11,
+    sectionId: 12,
     question: "LSTM gates help by:",
     options: [
       "Controlling what to keep, forget, and output",
@@ -642,9 +642,9 @@ export const quizQuestions = [
     explanation: "Input, forget, and output gates regulate information flow in the cell state.",
   },
 
-  // ── Section 12: Seq2Seq ──
+  // ── Section 13: Seq2Seq ──
   {
-    sectionId: 12,
+    sectionId: 13,
     question: "Seq2Seq models map:",
     options: [
       "Variable-length input to variable-length output",
@@ -656,14 +656,14 @@ export const quizQuestions = [
     explanation: "Encoder-decoder architectures handle translation, summarization, etc.",
   },
   {
-    sectionId: 12,
+    sectionId: 13,
     question: "BLEU is commonly used to evaluate:",
     options: ["Machine translation quality", "Image segmentation", "K-Means", "PCA variance"],
     correct: 0,
     explanation: "BLEU compares n-gram overlap between hypothesis and reference translations.",
   },
   {
-    sectionId: 12,
+    sectionId: 13,
     question: "Teacher forcing during training:",
     options: [
       "Feeds ground-truth previous tokens as decoder input",
@@ -675,7 +675,7 @@ export const quizQuestions = [
     explanation: "Teacher forcing stabilizes training by avoiding exposure to own mistakes early on.",
   },
   {
-    sectionId: 12,
+    sectionId: 13,
     question: "Attention in Seq2Seq allows the decoder to:",
     options: [
       "Focus on relevant encoder states",
@@ -687,16 +687,16 @@ export const quizQuestions = [
     explanation: "Attention weights let the decoder look at different source positions each step.",
   },
   {
-    sectionId: 12,
+    sectionId: 13,
     question: "ROUGE is often used for:",
     options: ["Summarization evaluation", "SVM margins", "Image rotation", "SQL indexing"],
     correct: 0,
     explanation: "ROUGE measures overlap of n-grams between generated and reference summaries.",
   },
 
-  // ── Section 13: Generative AI ──
+  // ── Section 14: Generative AI ──
   {
-    sectionId: 13,
+    sectionId: 14,
     question: "Self-attention computes relationships:",
     options: [
       "Between all pairs of tokens in a sequence",
@@ -708,7 +708,7 @@ export const quizQuestions = [
     explanation: "Each token attends to every other token via query-key scores.",
   },
   {
-    sectionId: 13,
+    sectionId: 14,
     question: "BERT is primarily:",
     options: [
       "An encoder-only bidirectional model",
@@ -720,7 +720,7 @@ export const quizQuestions = [
     explanation: "BERT uses masked language modeling with bidirectional context in the encoder.",
   },
   {
-    sectionId: 13,
+    sectionId: 14,
     question: "GPT-style models generate text by:",
     options: [
       "Predicting the next token autoregressively",
@@ -732,7 +732,7 @@ export const quizQuestions = [
     explanation: "Decoder-only LMs factorize joint probability as product of next-token conditionals.",
   },
   {
-    sectionId: 13,
+    sectionId: 14,
     question: "Multi-head attention allows:",
     options: [
       "Multiple representation subspaces in parallel",
@@ -744,7 +744,7 @@ export const quizQuestions = [
     explanation: "Different heads can capture diverse syntactic and semantic relations.",
   },
   {
-    sectionId: 13,
+    sectionId: 14,
     question: "Transfer learning in NLP often means:",
     options: [
       "Pretraining on large corpora then fine-tuning on a task",
@@ -756,9 +756,9 @@ export const quizQuestions = [
     explanation: "Pretrained transformers adapt efficiently to downstream tasks with less labeled data.",
   },
 
-  // ── Section 14: Day 1 NLP ──
+  // ── Section 10: Text Analysis & NER ──
   {
-    sectionId: 14,
+    sectionId: 10,
     question: "Part-of-speech tagging assigns:",
     options: [
       "Grammatical roles (noun, verb, etc.) to each token",
@@ -770,7 +770,7 @@ export const quizQuestions = [
     explanation: "POS tags describe the syntactic category of each word in context.",
   },
   {
-    sectionId: 14,
+    sectionId: 10,
     question: "SpaCy and NLTK are primarily used for:",
     options: [
       "Practical text processing and NLP pipelines",
@@ -782,7 +782,7 @@ export const quizQuestions = [
     explanation: "Both provide tokenization, tagging, parsing, and other NLP utilities.",
   },
   {
-    sectionId: 14,
+    sectionId: 10,
     question: "Named Entity Recognition (NER) identifies:",
     options: [
       "Spans like persons, organizations, and locations",
@@ -794,7 +794,7 @@ export const quizQuestions = [
     explanation: "NER tags text spans that refer to real-world entities.",
   },
   {
-    sectionId: 14,
+    sectionId: 10,
     question: "A minimal text-analysis project should:",
     options: [
       "Define goal, preprocess text, extract features, evaluate",
@@ -806,7 +806,7 @@ export const quizQuestions = [
     explanation: "A clear pipeline from raw text to measurable outcome is essential.",
   },
   {
-    sectionId: 14,
+    sectionId: 10,
     question: "Lemmatization usually needs:",
     options: [
       "Dictionary and morphological analysis",
