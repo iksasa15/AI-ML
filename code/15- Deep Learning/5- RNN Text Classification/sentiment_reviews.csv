@@ -1,0 +1,483 @@
+review,sentiment
+"I loved this product it works perfectly",1
+"Terrible quality broke after one day",0
+"Amazing experience highly recommend",1
+"Worst purchase ever complete waste",0
+"Good value for money satisfied",1
+"Not worth the price very disappointed",0
+"Excellent service and fast delivery",1
+"Poor design and uncomfortable to use",0
+"Best thing I bought this year",1
+"Returned it immediately awful",0
+"Pretty good overall happy with it",1
+"Stopped working within a week",0
+"Five stars great performance",1
+"One star do not buy",0
+"Surpassed my expectations truly great",1
+"Cheap materials feels flimsy",0
+"Would buy again without hesitation",1
+"Customer support was useless",0
+"Perfect gift they loved it",1
+"Misleading description not as advertised",0
+"Smooth and reliable every day",1
+"Laggy slow and frustrating",0
+"Clean interface easy to learn",1
+"Confusing setup took hours",0
+"Battery lasts all day impressive",1
+"Battery dies in two hours",0
+"Looks premium and works well",1
+"Looks cheap and performs worse",0
+"My favorite app so far",1
+"Deleted after ten minutes",0
+"Helpful features save me time",1
+"Missing basic features unusable",0
+"Stable update fixed old bugs",1
+"New update broke everything",0
+"Comfortable fit highly practical",1
+"Uncomfortable and poorly sized",0
+"Great for beginners simple steps",1
+"Too advanced for newcomers",0
+"Fast shipping item as described",1
+"Wrong item sent twice",0
+"Teachers recommended-unit clear lessons",1
+"Boring content hard to follow",0
+"Reliable in daily workflow",1
+"Crashes constantly on startup",0
+"Nice color sharp display",1
+"Dull screen hard to read",0
+"Worth every penny fantastic",1
+"Overpriced for what you get",0
+"Easy refund process fair company",1
+"No refund policy scam feel",0
+"Compact and travel friendly",1
+"Bulky heavy inconvenient",0
+"Quiet operation no noise",1
+"Loud annoying motor sound",0
+"Accurate results every test",1
+"Inconsistent wrong readings",0
+"Friendly staff helpful store",1
+"Rude staff ignored complaints",0
+"Kids enjoy it educational fun",1
+"Kids bored after five minutes",0
+"Secure payment smooth checkout",1
+"Payment failed multiple times",0
+"Fresh taste great recipe",1
+"Stale taste bad smell",0
+"Soft fabric washes well",1
+"Fabric shrank after wash",0
+"Strong signal no drops",1
+"Signal weak in every room",0
+"Clear audio no distortion",1
+"Audio crackles at volume",0
+"Organized dashboard very intuitive",1
+"Cluttered dashboard hard navigate",0
+"Quick install under ten minutes",1
+"Install failed missing drivers",0
+"Motivating course learned a lot",1
+"Outdated course waste of time",0
+"Beautiful packaging nice detail",1
+"Damaged box broken parts",0
+"Flexible schedule works for me",1
+"Rigid schedule impossible manage",0
+"Prompt replies from support team",1
+"Never got a reply from support",0
+"Healthy meal plan tasty options",1
+"Greasy meal plan felt unhealthy",0
+"Safe for pets no issues",1
+"Unsafe design hurt my pet",0
+"Bright photos true to life",1
+"Dark photos color is off",0
+"Smooth ride comfortable seat",1
+"Bumpy ride painful seat",0
+"Accurate translation helpful tool",1
+"Wrong translation caused confusion",0
+"Clean hotel friendly staff",1
+"Dirty room noisy hallway",0
+"Fresh coffee rich flavor",1
+"Bitter coffee watered down",0
+"Spacious room great view",1
+"Tiny room blocked view",0
+"On time flight smooth landing",1
+"Delayed flight missed connection",0
+"Polite driver clean car",1
+"Rude driver dirty car",0
+"Warm soup perfect lunch",1
+"Cold soup sent back twice",0
+"Fun game addictive gameplay",1
+"Pay to win unfair game",0
+"Sharp knife easy to handle",1
+"Dull knife dangerous slip",0
+"Fresh bread soft crust",1
+"Hard bread stale inside",0
+"Calm music relaxing playlist",1
+"Chaotic music gave headache",0
+"Helpful tutorial clear examples",1
+"Vague tutorial no examples",0
+"Bright lamp good for reading",1
+"Flickering lamp hurts eyes",0
+"Soft pillow slept well",1
+"Flat pillow neck pain",0
+"Cool breeze strong fan",1
+"Weak fan no airflow",0
+"Rich color vibrant paint",1
+"Patchy paint uneven coat",0
+"Secure lock feels solid",1
+"Loose lock easy to break",0
+"Fresh salad crisp vegetables",1
+"Wilted salad brown edges",0
+"Fast laptop handles multitasking",1
+"Slow laptop freezes often",0
+"Great movie emotional story",1
+"Boring movie fell asleep",0
+"Kind neighbor helped move",1
+"Rude neighbor loud parties",0
+"Clean code easy maintain",1
+"Messy code hard debug",0
+"Sweet dessert perfect balance",1
+"Too sweet dessert cloying",0
+"Honest review matches reality",1
+"Fake hype does not match",0
+"Smooth scroll responsive page",1
+"Janky scroll broken buttons",0
+"Fresh flowers lovely scent",1
+"Dead flowers no scent",0
+"Warm jacket winter ready",1
+"Thin jacket not warm",0
+"Clear voice on calls",1
+"Muffled voice hard hear",0
+"Neat garden well kept",1
+"Weedy garden neglected mess",0
+"Smart layout saves space",1
+"Wasted space poor layout",0
+"Fresh fish grilled perfectly",1
+"Fishy smell overcooked fish",0
+"Bright morning sunny weather",1
+"Gloomy morning heavy rain",0
+"Helpful book practical tips",1
+"Repetitive book no new tips",0
+"Safe trip smooth route",1
+"Scary trip reckless driver",0
+"Fresh juice natural taste",1
+"Artificial juice too sugary",0
+"Calm beach peaceful vacation",1
+"Crowded beach noisy vacation",0
+"Nice team good collaboration",1
+"Toxic team blame culture",0
+"Fresh pizza hot crust",1
+"Soggy pizza cold delivery",0
+"Clear goals focused sprint",1
+"Unclear goals chaotic sprint",0
+"Bright stars clear night",1
+"Cloudy night saw nothing",0
+"Helpful mentor great feedback",1
+"Harsh mentor no guidance",0
+"Fresh mint clean taste",1
+"Bitter mint odd aftertaste",0
+"Smooth checkout no errors",1
+"Checkout error lost cart",0
+"Warm tea relaxing evening",1
+"Bitter tea over steeped",0
+"Fresh start positive mindset",1
+"Bad start ruined mood",0
+"Great coach improved skills",1
+"Bad coach ignored basics",0
+"Clean beach soft sand",1
+"Trash beach dirty sand",0
+"Fresh ideas creative workshop",1
+"Stale ideas boring workshop",0
+"Nice park safe playground",1
+"Unsafe park broken swings",0
+"Clear path easy hike",1
+"Muddy path slippery hike",0
+"Warm soup healed cold",1
+"Cold soup made worse",0
+"Fresh air mountain trip",1
+"Smoky air hard breathe",0
+"Smart answer solved issue",1
+"Wrong answer wasted time",0
+"Fresh paint bright room",1
+"Peeling paint ugly room",0
+"Calm yoga reduced stress",1
+"Stressful class too intense",0
+"Fresh start new habit",1
+"Old habit hard break",0
+"Great speech inspired audience",1
+"Dull speech lost audience",0
+"Fresh water cold bottle",1
+"Warm water stale bottle",0
+"Nice hotel quiet nights",1
+"Noisy hotel sleepless nights",0
+"Clear plan hit deadline",1
+"Missed deadline no plan",0
+"Fresh bread morning bakery",1
+"Stale bread hard crust",0
+"Warm smile friendly greeting",1
+"Cold stare rude greeting",0
+"Fresh team energy high",1
+"Low energy tired team",0
+"Great design user friendly",1
+"Bad design confusing menus",0
+"Fresh code passed review",1
+"Failed review buggy code",0
+"Nice gift thoughtful card",1
+"Thoughtless gift no card",0
+"Clear sky perfect photo",1
+"Blurry photo bad focus",0
+"Fresh herbs garden pick",1
+"Dead herbs wilted pick",0
+"Warm room cozy winter",1
+"Cold room drafty winter",0
+"Smart save auto backup",1
+"Lost files no backup",0
+"Fresh fruit sweet mango",1
+"Sour mango unripe fruit",0
+"Great trip memorable views",1
+"Bad trip delayed flights",0
+"Clean desk focused work",1
+"Messy desk distracted work",0
+"Fresh idea solved bug",1
+"Old idea same bug",0
+"Warm hug felt supported",1
+"Cold reply felt ignored",0
+"Nice song catchy melody",1
+"Annoying song stuck head",0
+"Clear rules fair game",1
+"Broken rules unfair game",0
+"Fresh coat looks new",1
+"Rusty coat looks old",0
+"Great help fixed issue",1
+"No help closed ticket",0
+"Fresh breeze open window",1
+"Stuffy room closed window",0
+"Warm meal family dinner",1
+"Cold meal lonely dinner",0
+"Smart tool saved hours",1
+"Slow tool wasted hours",0
+"Fresh page clean slate",1
+"Error page broken link",0
+"Nice walk sunny path",1
+"Rain walk muddy path",0
+"Clear mind after rest",1
+"Tired mind after stress",0
+"Fresh soap gentle skin",1
+"Harsh soap dry skin",0
+"Great fit true size",1
+"Wrong size too tight",0
+"Warm light soft glow",1
+"Harsh light bright glare",0
+"Fresh team win celebration",1
+"Painful loss quiet locker",0
+"Smart plan reduced cost",1
+"Costly plan over budget",0
+"Fresh juice morning boost",1
+"No boost sluggish morning",0
+"Nice view balcony sunset",1
+"Blocked view ugly wall",0
+"Clear voice podcast host",1
+"Monotone host boring podcast",0
+"Fresh salad lunch break",1
+"Greasy lunch heavy break",0
+"Warm blanket cozy night",1
+"Thin blanket cold night",0
+"Great app daily helper",1
+"Buggy app daily headache",0
+"Fresh paint new look",1
+"Faded paint old look",0
+"Smart choice no regrets",1
+"Bad choice full regrets",0
+"Fresh coffee morning ritual",1
+"Stale coffee sad ritual",0
+"Nice chat friendly barista",1
+"Rude chat grumpy barista",0
+"Clear notes passed exam",1
+"Missing notes failed exam",0
+"Fresh wind sailing day",1
+"Still wind stuck sailing",0
+"Warm pool relaxing swim",1
+"Cold pool shocking swim",0
+"Great book page turner",1
+"Dry book put down",0
+"Fresh herbs pasta dish",1
+"Bland pasta no flavor",0
+"Smart watch accurate steps",1
+"Wrong steps useless watch",0
+"Fresh start Monday plan",1
+"Rough start Monday chaos",0
+"Nice park picnic day",1
+"Ant picnic ruined day",0
+"Clear water clean pool",1
+"Cloudy water dirty pool",0
+"Warm bread soup dip",1
+"Hard bread soup fail",0
+"Great mentor career boost",1
+"Bad mentor career stall",0
+"Fresh flowers birthday joy",1
+"Wilted flowers birthday sad",0
+"Smart lock easy entry",1
+"Broken lock locked out",0
+"Fresh air morning run",1
+"Smog air coughing run",0
+"Nice hotel beach access",1
+"Far hotel no beach",0
+"Clear screen sharp text",1
+"Dim screen eye strain",0
+"Fresh mango smoothie bowl",1
+"Watery smoothie bowl",0
+"Warm scarf winter gift",1
+"Itchy scarf winter gift",0
+"Great course hands on labs",1
+"Theory only course boring",0
+"Fresh code deploy success",1
+"Failed deploy rollback night",0
+"Nice UI smooth animations",1
+"Laggy UI janky animations",0
+"Clear goal team aligned",1
+"Mixed goal team confused",0
+"Fresh lemon tea zesty",1
+"Flat lemon tea dull",0
+"Warm cabin mountain trip",1
+"Leaky cabin mountain trip",0
+"Smart budget saved money",1
+"Over budget lost money",0
+"Fresh salad diet win",1
+"Cheating diet pizza loss",0
+"Great support quick fix",1
+"Slow support open ticket",0
+"Fresh ideas brainstorm win",1
+"No ideas blank board",0
+"Nice rhythm dance class",1
+"Off beat dance class",0
+"Clear signal video call",1
+"Frozen video call fail",0
+"Fresh paint bike makeover",1
+"Rusty bike no makeover",0
+"Warm pie family dessert",1
+"Burnt pie family dessert",0
+"Smart list daily tasks",1
+"Lost list missed tasks",0
+"Fresh herbs omelet tasty",1
+"Burnt omelet breakfast fail",0
+"Great trainer form tips",1
+"Bad trainer injury risk",0
+"Fresh breeze kite flying",1
+"No wind kite grounded",0
+"Nice trail forest walk",1
+"Muddy trail forest slip",0
+"Clear answer exam bonus",1
+"Wrong answer exam penalty",0
+"Fresh juice detox day",1
+"Sugar juice detox fail",0
+"Warm socks cold morning",1
+"Wet socks cold morning",0
+"Great playlist gym energy",1
+"Slow playlist gym drag",0
+"Fresh start habit tracker",1
+"Broken streak habit fail",0
+"Nice photo golden hour",1
+"Bad photo harsh noon",0
+"Clear mind meditation calm",1
+"Restless mind meditation fail",0
+"Fresh bread market find",1
+"Stale bread market pass",0
+"Warm tea study session",1
+"Cold tea study break",0
+"Smart alarm woke on time",1
+"Missed alarm late again",0
+"Fresh salad vegan lunch",1
+"Greasy lunch vegan cheat",0
+"Great view rooftop dinner",1
+"Rain view rooftop cancel",0
+"Nice code readable functions",1
+"Spaghetti code unreadable mess",0
+"Fresh air balcony plants",1
+"Dry plants balcony sad",0
+"Warm jacket rain walk",1
+"Soaked jacket rain walk",0
+"Clear plan project done",1
+"Scope creep project late",0
+"Fresh mango summer treat",1
+"Sour mango summer fail",0
+"Great feedback improved draft",1
+"Harsh feedback quit draft",0
+"Nice UI dark mode",1
+"Bright UI night strain",0
+"Fresh start journal entry",1
+"Blank page journal skip",0
+"Warm soup sick day",1
+"Spicy soup sick worse",0
+"Smart route avoided traffic",1
+"Wrong route stuck traffic",0
+"Fresh herbs garden win",1
+"Pest herbs garden loss",0
+"Great talk conference highlight",1
+"Dull talk conference nap",0
+"Nice team retro honest",1
+"Blame retro toxic retro",0
+"Clear docs onboarding fast",1
+"Missing docs onboarding slow",0
+"Fresh coffee coworker gift",1
+"Cold coffee coworker joke",0
+"Warm welcome new member",1
+"Cold welcome new ignored",0
+"Smart test caught bug",1
+"Skipped test prod outage",0
+"Fresh ideas hackathon win",1
+"No demo hackathon lose",0
+"Great design accessible UI",1
+"Poor design excludes users",0
+"Nice refactor cleaner module",1
+"Risky refactor broke module",0
+"Clear metric dashboard trust",1
+"Wrong metric bad decisions",0
+"Fresh deploy zero downtime",1
+"Hotfix deploy weekend panic",0
+"Warm team celebration pizza",1
+"Silent team burnout signs",0
+"Great onboarding first week",1
+"Lost onboarding first month",0
+"Fresh dataset clean labels",1
+"Noisy dataset wrong labels",0
+"Smart validation caught leak",1
+"Data leak inflated score",0
+"Nice model generalizes well",1
+"Overfit model fails prod",0
+"Clear loss curve healthy train",1
+"Diverging loss unstable train",0
+"Fresh notebook reproducible run",1
+"Broken seed random results",0
+"Great baseline beats complex",1
+"Complex model wasted GPU",0
+"Warm mentor code review",1
+"Harsh review demotivated dev",0
+"Smart early stop saved time",1
+"Long train overfit val",0
+"Fresh features improved recall",1
+"Leaky features fake recall",0
+"Nice embedding semantic search",1
+"Bad tokens broken search",0
+"Clear attention interpretable map",1
+"Noisy attention useless map",0
+"Great tokenizer stable vocab",1
+"OOV heavy broken tokenizer",0
+"Fresh batch norm stable train",1
+"Unstable batch small batch",0
+"Warm learning rate schedule",1
+"High lr diverged loss",0
+"Smart dropout reduced gap",1
+"No reg huge val gap",0
+"Nice conv edge detector",1
+"Random conv no edges",0
+"Clear seq2seq bleu improved",1
+"Bad decode gibberish output",0
+"Fresh latent smooth samples",1
+"Collapsed latent mode collapse",0
+"Great GAN diverse faces",1
+"Mode collapse same face",0
+"Warm transfer quick finetune",1
+"Catastrophic forget bad finetune",0
+"Smart quant model smaller",1
+"Bad quant accuracy drop",0
+"Nice edge deploy low latency",1
+"Slow edge missed SLA",0
+"Clear checklist shipped model",1
+"No monitor silent drift",0
