@@ -89,6 +89,8 @@
   --shadow-soft: var(--shadow-md);
   --shadow-slide: var(--shadow-lg), 0 0 0 1px rgba(30, 41, 59, 0.04);
   --topbar-accent-line: var(--color-accent);
+  --etra-gradient: linear-gradient(135deg, #5234b7 0%, #9e59cd 100%);
+  --etra-glow: rgba(82, 52, 183, 0.25);
 }
 
 /* Light theme — explicit (same as :root) */
@@ -96,27 +98,32 @@ html[data-theme="light"] {
   color-scheme: light;
 }
 
-/* Dark theme — refined academic night mode */
+/* Dark theme — Etra creators portal palette */
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  --color-bg: #0f1419;
-  --color-bg-subtle: #1a2332;
-  --color-surface: #1e293b;
-  --color-border: #334155;
-  --color-text-primary: #f1f5f9;
-  --color-text-secondary: #94a3b8;
-  --color-accent: #3b82f6;
-  --color-accent-light: rgba(59, 130, 246, 0.12);
-  --color-accent-hover: #2563eb;
-  --color-gold: #d4a853;
-  --color-gold-light: rgba(212, 168, 83, 0.15);
+  --color-bg: #0d0d1a;
+  --color-bg-subtle: #12122a;
+  --color-surface: #1a1a35;
+  --color-border: rgba(82, 52, 183, 0.35);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b0a8d4;
+  --color-accent: #5234b7;
+  --color-accent-light: rgba(82, 52, 183, 0.15);
+  --color-accent-hover: #9e59cd;
+  --color-gold: #9e59cd;
+  --color-gold-light: rgba(158, 89, 205, 0.18);
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
 
-  --card-3: #172033;
-  --card-4: #243044;
-  --accent-glow: rgba(59, 130, 246, 0.22);
-  --dot-bg: #475569;
-  --note-bg: rgba(59, 130, 246, 0.1);
-  --shadow-slide: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(59, 130, 246, 0.1);
-  --topbar-accent-line: var(--color-accent);
+  --card-3: #1a1a35;
+  --card-4: #242445;
+  --accent-glow: rgba(82, 52, 183, 0.35);
+  --dot-bg: #6b6490;
+  --note-bg: rgba(82, 52, 183, 0.12);
+  --shadow-slide: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(82, 52, 183, 0.15);
+  --topbar-accent-line: #9e59cd;
+  --etra-gradient: linear-gradient(135deg, #5234b7 0%, #9e59cd 100%);
+  --etra-glow: rgba(82, 52, 183, 0.4);
 }

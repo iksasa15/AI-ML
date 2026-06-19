@@ -57,6 +57,21 @@ export function TopNavBar({
     <header className="top-nav" aria-label={ui.sectionProgress} dir={direction}>
       <div className="top-nav-row">
         <div className="top-nav-group top-nav-group--start">
+          <a
+            className="top-nav-brand"
+            href="https://etra-creators-portal-zaqfav.cranl.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="إترا للتمكين التقني"
+            title="إترا للتمكين التقني"
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}assets/etra-logo.png`}
+              alt="إترا للتمكين التقني"
+              className="top-nav-logo"
+              height={48}
+            />
+          </a>
           <button
             type="button"
             className={`top-nav-icon-btn${sidebarOpen ? " is-active" : ""}`}

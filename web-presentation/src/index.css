@@ -1556,6 +1556,60 @@ html:has(.presentation.is-fullscreen) body {
   overflow: hidden;
 }
 
+.top-nav-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-inline-end: var(--space-1);
+  line-height: 0;
+  opacity: 0.95;
+  transition: opacity var(--transition-fast);
+}
+
+.top-nav-brand:hover {
+  opacity: 1;
+}
+
+.top-nav-logo {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+html[data-theme="dark"] .top-nav {
+  background: rgba(13, 13, 26, 0.95);
+  backdrop-filter: blur(16px);
+  border-color: rgba(82, 52, 183, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .top-nav-logo {
+  height: 52px;
+}
+
+html[data-theme="dark"] .top-nav-pill-btn--primary {
+  background: var(--etra-gradient, linear-gradient(135deg, #5234b7 0%, #9e59cd 100%));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 24px var(--etra-glow, rgba(82, 52, 183, 0.4));
+}
+
+html[data-theme="dark"] .top-nav-pill-btn--primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+html[data-theme="dark"] .top-nav-progress-fill {
+  background: var(--etra-gradient, linear-gradient(135deg, #5234b7 0%, #9e59cd 100%));
+}
+
+html[data-theme="dark"] .presentation {
+  background:
+    radial-gradient(ellipse 800px 600px at 80% 10%, rgba(82, 52, 183, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 500px at 10% 90%, rgba(158, 89, 205, 0.08) 0%, transparent 60%),
+    var(--color-bg);
+}
+
 .top-nav-row {
   display: grid;
   grid-template-columns: auto 1fr auto;
