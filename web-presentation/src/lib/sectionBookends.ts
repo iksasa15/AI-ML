@@ -106,53 +106,9 @@ const BOOKENDS: Record<number, BookendContent> = {
     ],
     reflectionQuestion: "How would a wrong tokenizer silently hurt retrieval quality?",
     speakerNoteBig: "Alternate theory slides with live lab cells — same session, not a separate day.",
-    speakerNoteTakeaway: "Next session: POS and NER with SpaCy (S14).",
+    speakerNoteTakeaway: "Next session: POS and NER with SpaCy (S10).",
   },
   10: {
-    bigPictureFocus: "Model language as probability over sequences.",
-    takeaways: [
-      "N-grams are interpretable but sparse; smoothing is mandatory.",
-      "Perplexity measures how surprised the model is by held-out text.",
-      "Neural LMs scale better but need more data and compute.",
-    ],
-    reflectionQuestion: "Why does a trigram model fail on long-range dependencies?",
-    speakerNoteBig: "Bridge classical LM to modern transformers mentally.",
-    speakerNoteTakeaway: "Relate perplexity to product autocomplete quality.",
-  },
-  11: {
-    bigPictureFocus: "Represent words in context and model sequences with memory.",
-    takeaways: [
-      "Static embeddings miss polysemy — contextual models fix this.",
-      "RNNs compress history; vanishing gradients limit long context.",
-      "Bidirectional context helps understanding, not generation.",
-    ],
-    reflectionQuestion: "When would you still pick an RNN over a Transformer?",
-    speakerNoteBig: "Contextual embeddings unlock downstream gains — show one example.",
-    speakerNoteTakeaway: "Set up attention as the next leap.",
-  },
-  12: {
-    bigPictureFocus: "Week 3 Session 6 — Seq2Seq, attention, metrics, and bridge to Transformers.",
-    takeaways: [
-      "Seq2Seq maps variable input to variable output lengths.",
-      "Attention fixes the information bottleneck in basic encoder–decoders.",
-      "BLEU/ROUGE are proxies — human judgment still matters.",
-    ],
-    reflectionQuestion: "What failure mode does BLEU miss in fluent translations?",
-    speakerNoteBig: "Close Week 3 — transformer slide previews Week 4 GenAI (S13).",
-    speakerNoteTakeaway: "Assign: compare greedy vs beam search on one translation pair.",
-  },
-  13: {
-    bigPictureFocus: "Pretrain at scale, fine-tune for tasks, generate with decoders.",
-    takeaways: [
-      "Encoder models understand; decoder models generate; seq2seq models both.",
-      "Attention lets models focus on relevant context per token.",
-      "Scaling laws trade compute for capability — plan responsibly.",
-    ],
-    reflectionQuestion: "Which GenAI risks matter most for your organization's data?",
-    speakerNoteBig: "Capstone of Week 4 GenAI — tie BERT/T5/GPT to products.",
-    speakerNoteTakeaway: "Point toward RAG as the production pattern next week.",
-  },
-  14: {
     bigPictureFocus:
       "Week 3 Session 3 — POS, dependency parsing, NER, and the product-review mini project.",
     takeaways: [
@@ -163,7 +119,51 @@ const BOOKENDS: Record<number, BookendContent> = {
     reflectionQuestion: "What would you ship as a v0 NLP feature in one sprint?",
     speakerNoteBig:
       "Mid-week analysis session — jump here via #day1-nlp-slides after S8–S9 if time-boxed.",
-    speakerNoteTakeaway: "Collect blockers before language modeling (S10).",
+    speakerNoteTakeaway: "Collect blockers before language modeling (S11).",
+  },
+  11: {
+    bigPictureFocus: "Model language as probability over sequences.",
+    takeaways: [
+      "N-grams are interpretable but sparse; smoothing is mandatory.",
+      "Perplexity measures how surprised the model is by held-out text.",
+      "Neural LMs scale better but need more data and compute.",
+    ],
+    reflectionQuestion: "Why does a trigram model fail on long-range dependencies?",
+    speakerNoteBig: "Bridge classical LM to modern transformers mentally.",
+    speakerNoteTakeaway: "Relate perplexity to product autocomplete quality.",
+  },
+  12: {
+    bigPictureFocus: "Represent words in context and model sequences with memory.",
+    takeaways: [
+      "Static embeddings miss polysemy — contextual models fix this.",
+      "RNNs compress history; vanishing gradients limit long context.",
+      "Bidirectional context helps understanding, not generation.",
+    ],
+    reflectionQuestion: "When would you still pick an RNN over a Transformer?",
+    speakerNoteBig: "Contextual embeddings unlock downstream gains — show one example.",
+    speakerNoteTakeaway: "Set up attention as the next leap.",
+  },
+  13: {
+    bigPictureFocus: "Week 3 Session 6 — Seq2Seq, attention, metrics, and bridge to Transformers.",
+    takeaways: [
+      "Seq2Seq maps variable input to variable output lengths.",
+      "Attention fixes the information bottleneck in basic encoder–decoders.",
+      "BLEU/ROUGE are proxies — human judgment still matters.",
+    ],
+    reflectionQuestion: "What failure mode does BLEU miss in fluent translations?",
+    speakerNoteBig: "Close Week 3 — transformer slide previews Week 4 GenAI (S14).",
+    speakerNoteTakeaway: "Assign: compare greedy vs beam search on one translation pair.",
+  },
+  14: {
+    bigPictureFocus: "Pretrain at scale, fine-tune for tasks, generate with decoders.",
+    takeaways: [
+      "Encoder models understand; decoder models generate; seq2seq models both.",
+      "Attention lets models focus on relevant context per token.",
+      "Scaling laws trade compute for capability — plan responsibly.",
+    ],
+    reflectionQuestion: "Which GenAI risks matter most for your organization's data?",
+    speakerNoteBig: "Capstone of Week 4 GenAI — tie BERT/T5/GPT to products.",
+    speakerNoteTakeaway: "Point toward RAG as the production pattern next week.",
   },
   15: {
     bigPictureFocus: "Ground LLM answers in your documents with retrieval-augmented generation.",

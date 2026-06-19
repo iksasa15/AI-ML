@@ -62,10 +62,10 @@ export function getSectionLabs(sectionId: number): LabLink[] {
           href: `${REPO}/web-presentation/deep-learning-topics.md`,
         },
       ];
-    case 14:
+    case 10:
       return [
         {
-          label: "Text Analysis & NER (S14)",
+          label: "Text Analysis & NER (S10)",
           href: `${REPO}/web-presentation/README.md#%D9%82%D8%B3%D9%85-%D8%AE%D8%A7%D8%B5-day-1-nlp`,
         },
       ];
