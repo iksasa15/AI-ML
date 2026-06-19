@@ -1,6 +1,6 @@
 # Content Audit — AI & ML Bootcamp
 
-Generated: 2026-06-05
+Generated: 2026-06-19
 
 | Rating | Meaning |
 |--------|--------|
@@ -220,9 +220,9 @@ Visual coverage: **100%** (48/48 with hasVisual)
 
 ## Section 8 (section08-nlp-fundamentals.js)
 
-Summary: 🟢 18 · 🟡 0 · 🔴 0 · **18 slides**
+Summary: 🟢 19 · 🟡 0 · 🔴 0 · **19 slides**
 
-Visual coverage: **100%** (18/18 with hasVisual)
+Visual coverage: **100%** (19/19 with hasVisual)
 
 | Slide | Rating | Visual | Notes | titleIcon | Note |
 |-------|--------|--------|-------|-----------|------|
@@ -236,23 +236,30 @@ Visual coverage: **100%** (18/18 with hasVisual)
 | Heaps' Law in NLP Corpora | 🟢 | ✅ | custom | nlp | Adequate depth for delivery |
 | Text Normalization Pipeline | 🟢 | ✅ | custom | scaling | Adequate depth for delivery |
 | Text Preprocessing Techniques (Operational View) | 🟢 | ✅ | custom | pipeline | Adequate depth for delivery |
+| The Full NLP Pipeline | 🟢 | ✅ | custom | nlp | Adequate depth for delivery |
+| Text Cleaning — Why Raw Text Is Messy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Text Cleaning — Step 1: Conceptual Pipeline | 🟢 | ✅ | custom | pipeline | Adequate depth for delivery |
+| Text Cleaning — Step 2: Raw Input Example | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Text Cleaning — Python Function (Core) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Text Cleaning — Step 4: Transformation Trace | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Text Cleaning — Step 5: Final Before/After | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Lowercase Normalization | 🟢 | ✅ | custom | scaling | Adequate depth for delivery |
+| Lowercase Normalization — Step-by-Step Examples | 🟢 | ✅ | custom | scaling | Adequate depth for delivery |
+
+## Section 9 (section09-nlp-tokenization.js)
+
+Summary: 🟢 32 · 🟡 0 · 🔴 0 · **32 slides**
+
+Visual coverage: **100%** (32/32 with hasVisual)
+
+| Slide | Rating | Visual | Notes | titleIcon | Note |
+|-------|--------|--------|-------|-----------|------|
 | Tokenization Strategies | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | Subword Tokenization Algorithms | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | Unigram LM Tokenization Example | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | BPE Training Process | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | Stemming vs Lemmatization | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | Lemmatization and Morphology Examples | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Modern NLP Models: From Embeddings to Transformers | 🟢 | ✅ | custom | embedding | Adequate depth for delivery |
-| Transformer Encoder-Decoder Overview | 🟢 | ✅ | custom | encoding | Adequate depth for delivery |
-
-## Section 9 (section09-nlp-tokenization.js)
-
-Summary: 🟢 8 · 🟡 0 · 🔴 0 · **8 slides**
-
-Visual coverage: **100%** (8/8 with hasVisual)
-
-| Slide | Rating | Visual | Notes | titleIcon | Note |
-|-------|--------|--------|-------|-----------|------|
 | NLP Tokenization Masterclass | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | Space-Based vs Subword Tokenization | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | Subword Algorithms Comparison | 🟢 | ✅ | custom | token | Adequate depth for delivery |
@@ -261,6 +268,24 @@ Visual coverage: **100%** (8/8 with hasVisual)
 | BPE Tokenization Inference Example | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | Why Subword Tokenization Matters in Practice | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | Tokenization Practice Exercise | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Day 1 Lab — Tokenization Fundamentals | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Day 1 Lab — Tokenization Views | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| NLTK Tokenization Essentials | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| NLTK Tokenization — Practical Python Example | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Day 1 Lab — Subword Tokenization for LLMs | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Subword Tokenization (LLMs) — Why It Wins | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Subword Tokenization — BPE vs WordPiece (Example) | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Why Token Counts Matter | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Why Token Counts Matter — Practical Example | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| Stop Words — Removing Low-Information Tokens | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| NLTK Stop Words in Practice | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Custom and Domain Stop Words | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Custom Stop Words — Before / After Example | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| When Not to Remove Stop Words | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Day 1 Lab — Stemming vs Lemmatization | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| NLTK Stemmer Families | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Lemmatization with SpaCy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Choosing Stemming vs Lemmatization | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 
 ## Section 10 (section10-nlp-language-modeling.js)
 
@@ -307,9 +332,9 @@ Visual coverage: **100%** (10/10 with hasVisual)
 
 ## Section 12 (section12-nlp-seq2seq.js)
 
-Summary: 🟢 11 · 🟡 0 · 🔴 0 · **11 slides**
+Summary: 🟢 12 · 🟡 0 · 🔴 0 · **12 slides**
 
-Visual coverage: **100%** (11/11 with hasVisual)
+Visual coverage: **100%** (12/12 with hasVisual)
 
 | Slide | Rating | Visual | Notes | titleIcon | Note |
 |-------|--------|--------|-------|-----------|------|
@@ -324,6 +349,7 @@ Visual coverage: **100%** (11/11 with hasVisual)
 | BLEU Nuance: Modified Precision | 🟢 | ✅ | custom | metric | Adequate depth for delivery |
 | Metric Caveat and Practical Evaluation | 🟢 | ✅ | custom | metric | Adequate depth for delivery |
 | Seq2Seq and NMT Summary | 🟢 | ✅ | custom | seq2seq | Adequate depth for delivery |
+| Transformer Encoder-Decoder Overview | 🟢 | ✅ | custom | encoding | Adequate depth for delivery |
 
 ## Section 13 (section13-generative-ai.js)
 
@@ -356,45 +382,12 @@ Visual coverage: **100%** (20/20 with hasVisual)
 
 ## Section 14 (section14-day01-nlp-intro.js)
 
-Summary: 🟢 47 · 🟡 0 · 🔴 0 · **47 slides**
+Summary: 🟢 14 · 🟡 0 · 🔴 0 · **14 slides**
 
-Visual coverage: **100%** (47/47 with hasVisual)
+Visual coverage: **100%** (14/14 with hasVisual)
 
 | Slide | Rating | Visual | Notes | titleIcon | Note |
 |-------|--------|--------|-------|-----------|------|
-| Day 1 — Course Overview & Objectives | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| What Is NLP? | 🟢 | ✅ | custom | nlp | Adequate depth for delivery |
-| Why Language Is Hard for Computers | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| More NLP Challenges | 🟢 | ✅ | custom | nlp | Adequate depth for delivery |
-| Real-World NLP Applications | 🟢 | ✅ | custom | nlp | Adequate depth for delivery |
-| Real-World Applications — Concrete Input/Output Examples | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| The Full NLP Pipeline | 🟢 | ✅ | custom | nlp | Adequate depth for delivery |
-| Text Cleaning — Why Raw Text Is Messy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Text Cleaning — Step 1: Conceptual Pipeline | 🟢 | ✅ | custom | pipeline | Adequate depth for delivery |
-| Text Cleaning — Step 2: Raw Input Example | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Text Cleaning — Python Function (Core) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Text Cleaning — Step 4: Transformation Trace | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Text Cleaning — Step 5: Final Before/After | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Lowercase Normalization | 🟢 | ✅ | custom | scaling | Adequate depth for delivery |
-| Lowercase Normalization — Step-by-Step Examples | 🟢 | ✅ | custom | scaling | Adequate depth for delivery |
-| Day 1 Lab — Tokenization Fundamentals | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| Day 1 Lab — Tokenization Views | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| NLTK Tokenization Essentials | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| NLTK Tokenization — Practical Python Example | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| Day 1 Lab — Subword Tokenization for LLMs | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| Subword Tokenization (LLMs) — Why It Wins | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| Subword Tokenization — BPE vs WordPiece (Example) | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| Why Token Counts Matter | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| Why Token Counts Matter — Practical Example | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| Stop Words — Removing Low-Information Tokens | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| NLTK Stop Words in Practice | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Custom and Domain Stop Words | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Custom Stop Words — Before / After Example | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| When Not to Remove Stop Words | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Day 1 Lab — Stemming vs Lemmatization | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| NLTK Stemmer Families | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Lemmatization with SpaCy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Choosing Stemming vs Lemmatization | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | Part-of-Speech (POS) Tagging | 🟢 | ✅ | custom | token | Adequate depth for delivery |
 | POS and Dependency Highlights in SpaCy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | POS/Dependency — Worked Example | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
@@ -454,20 +447,20 @@ Visual coverage: **100%** (12/12 with hasVisual)
 
 ## Deck Totals
 
-- 🟢 Good: **295**
+- 🟢 Good: **288**
 - 🟡 Improve: **0**
 - 🔴 Rewrite: **0**
-- **295** content slides audited
+- **288** content slides audited
 
 ### Visual enrichment
 
-- ✅ hasVisual: **295** (100%)
+- ✅ hasVisual: **288** (100%)
 - ⬜ Missing: **0**
 
 ### Speaker notes
 
 - Template notes remaining: **0**
-- Custom notes: **295**
+- Custom notes: **288**
 
 ### Recommended next passes
 

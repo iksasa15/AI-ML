@@ -75,15 +75,5 @@ export function getSectionLabs(sectionId: number): LabLink[] {
 }
 
 export function getGlobalResourceLinks(): LabLink[] {
-  return [
-    { label: "All code labs", href: `${REPO}/code` },
-    {
-      label: "12-month learning roadmap",
-      href: `${REPO}/web-presentation/ai-learning-roadmap-12months.md`,
-    },
-    {
-      label: "Deep learning topics (Arabic)",
-      href: `${REPO}/web-presentation/deep-learning-topics.md`,
-    },
-  ];
+  return [];
 }

@@ -172,11 +172,11 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
     importSlides: () => import("../data/slides/section09-nlp-tokenization.js"),
   },
   {
-    id: 14,
+    id: 10,
     contentSlideCount: 14,
     divider: {
       type: "section-divider",
-      title: "Section 14",
+      title: "Section 10",
       subtitle: "Text Analysis & NER Workshop",
       speakerNote:
         "Week 3 Session 3: POS, dependency, NER with SpaCy, then the product-review mini project.",
@@ -184,11 +184,11 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
     importSlides: () => import("../data/slides/section14-day01-nlp-intro.js"),
   },
   {
-    id: 10,
+    id: 11,
     contentSlideCount: 15,
     divider: {
       type: "section-divider",
-      title: "Section 10",
+      title: "Section 11",
       subtitle: "NLP Language Modeling",
       speakerNote:
         "Week 3 Session 4: n-gram language modeling and perplexity.",
@@ -196,11 +196,11 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
     importSlides: () => import("../data/slides/section10-nlp-language-modeling.js"),
   },
   {
-    id: 11,
+    id: 12,
     contentSlideCount: 10,
     divider: {
       type: "section-divider",
-      title: "Section 11",
+      title: "Section 12",
       subtitle: "NLP Contextual Embeddings and RNNs",
       speakerNote:
         "Week 3 Session 5: contextual embeddings and recurrent sequence models.",
@@ -208,11 +208,11 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
     importSlides: () => import("../data/slides/section11-nlp-contextual-rnn.js"),
   },
   {
-    id: 12,
+    id: 13,
     contentSlideCount: 12,
     divider: {
       type: "section-divider",
-      title: "Section 12",
+      title: "Section 13",
       subtitle: "NLP Seq2Seq and NMT Evaluation",
       speakerNote:
         "Week 3 Session 6: Seq2Seq, attention, BLEU/ROUGE, transformer bridge to GenAI.",
@@ -220,14 +220,14 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
     importSlides: () => import("../data/slides/section12-nlp-seq2seq.js"),
   },
   {
-    id: 13,
+    id: 14,
     contentSlideCount: 20,
     divider: {
       type: "section-divider",
-      title: "Section 13",
+      title: "Section 14",
       subtitle: "GenAI: BERT, T5, GPT, Attention",
       speakerNote:
-        "Open Section 13: state learning goals, timing, and how it connects to prior sessions.",
+        "Week 4 Session 1: BERT, T5, GPT, and the transformer scaling story.",
     },
     importSlides: () => import("../data/slides/section13-generative-ai.js"),
   },

@@ -8,7 +8,8 @@ Use before a live bootcamp session or after major changes.
 |-------|--------|-------|
 | `npm run build` (tsc + vite) | ✅ Pass | 2026-06-19 — exit 0, PWA precache 121 entries |
 | Week calendar: 4 weeks in `courseWeeks`, `bootcampMap`, README | ✅ Pass | S13–S16 in Week 4; no Week 5 references |
-| S14 labeled alt NLP track in map + README | ✅ Pass | `#day1-nlp-slides`; not main Week 3 path |
+| Week 3 sequential order S8→S9→S14→S10→S11→S12 | ✅ Pass | deckStructure + week3-nlp scope (2026-06-19) |
+| S14 mid-week (Session 3) — POS/NER only | ✅ Pass | 14 slides; cleaning/token labs in S8/S9 |
 | Settings: deck scope presets (`all`, `week1-ml` … `week4-genai`, `day1`) | ✅ Code | Hash sync: `#week1-ml`, `#week2-dl`, `#week3-nlp`, `#week4-genai`, `#day1-nlp-slides` |
 | `week4-genai` excludes S14 (S13, S15, S16 only) | ✅ Code | `deckScopeConfig.ts` |
 | Section 7 phase jumps in sidebar (Phase 1–4) | ✅ Code | `section7Phases.ts` + `SectionSidebar` when S7 active |
