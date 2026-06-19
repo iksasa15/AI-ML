@@ -382,6 +382,18 @@
 
 ## ملحق
 
+### جدول ربط Labs (code/15- Deep Learning)
+
+| Lab | مجلد code | مواضيع العرض المرتبطة |
+|-----|-----------|------------------------|
+| 1 — MLP XOR | [`1- MLP XOR`](../code/15-%20Deep%20Learning/1-%20MLP%20XOR/) | #14–15 XOR، Perceptron vs MLP |
+| 2 — MLP Classification | [`2- MLP Classification`](../code/15-%20Deep%20Learning/2-%20MLP%20Classification/) | #9–18 MLP، cross-entropy |
+| 3 — MLP Dropout | [`3- MLP Dropout Regularization`](../code/15-%20Deep%20Learning/3-%20MLP%20Dropout%20Regularization/) | #20–25 regularization |
+| 4 — CNN | [`4- CNN Image Classification`](../code/15-%20Deep%20Learning/4-%20CNN%20Image%20Classification/) | #28–31 Conv، CNN |
+| 5 — RNN Text | [`5- RNN Text Classification`](../code/15-%20Deep%20Learning/5-%20RNN%20Text%20Classification/) | #36–39 LSTM/GRU |
+| 6 — Transfer Learning | [`6- Transfer Learning`](../code/15-%20Deep%20Learning/6-%20Transfer%20Learning/) | #35 Transfer Learning |
+| 7 — Autoencoder | [`7- Autoencoder`](../code/15-%20Deep%20Learning/7-%20Autoencoder/) | #41–42 AE |
+
 ### جدول مرجعي سريع (48 موضوعاً)
 
 | # | الموضوع | المرحلة |

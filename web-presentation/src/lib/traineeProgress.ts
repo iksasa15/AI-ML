@@ -1,4 +1,6 @@
-export type DeckScope = "all" | "day1";
+import type { DeckScope } from "./deckScopeConfig";
+
+export type { DeckScope };
 
 export type TraineeProgressRecord = {
   maxReachedIndex: number;

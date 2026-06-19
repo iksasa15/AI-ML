@@ -46,7 +46,7 @@ export const COURSE_WEEKS: CourseWeek[] = [
     label: "Week 4",
     days: 5,
     theme: "GenAI",
-    topic: "BERT, GPT, LLMs, RAG & MLOps",
+    topic: "BERT, GPT, LLMs, RAG & MLOps (S14 = optional NLP fast track)",
     sections: "S13 – S16",
     color: "#93C5FD",
     colorDark: "#1E3A8A",

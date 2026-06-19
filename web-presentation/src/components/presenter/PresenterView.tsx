@@ -10,6 +10,7 @@ import {
 import type { PresenterState } from "../../lib/presenterSync";
 import { subscribePresenter } from "../../lib/presenterSync";
 import type { DeckScope } from "../../lib/traineeProgress";
+import { filterSlidesForScope } from "../../lib/deckScopeConfig";
 import { getUiStrings, readStoredUiLang } from "../../lib/uiStrings";
 import { PresenterSlidePreview } from "./PresenterSlidePreview";
 
@@ -20,7 +21,7 @@ type PresenterViewProps = {
 };
 
 function slidesForScope(scope: DeckScope, allSlides: SlideRecord[], day01Slides: SlideRecord[]) {
-  return scope === "day1" ? day01Slides : allSlides;
+  return filterSlidesForScope(allSlides, scope, day01Slides);
 }
 
 export function PresenterView({ allSlides, day01Slides, initialState }: PresenterViewProps) {

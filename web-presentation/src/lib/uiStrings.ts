@@ -43,12 +43,23 @@ export type UiStrings = {
   };
   day01SlidesShortcut: string;
   day01SlidesShortcutTitle: string;
+  deckScopeLabel: string;
+  deckScopeAll: string;
+  deckScopeDay1: string;
+  deckScopeWeek1: string;
+  deckScopeWeek2: string;
+  deckScopeWeek3: string;
+  deckScopeWeek4: string;
   nav: {
     openSections: string;
     closeSections: string;
     sectionsTitle: string;
     slidesCount: (n: number) => string;
     sectionComplete: (pct: number) => string;
+    phasesTitle: string;
+    labsTitle: string;
+    resourcesTitle: string;
+    openLab: string;
     deckProgress: string;
     resetProgress: string;
     resetProgressConfirm: string;
@@ -162,14 +173,26 @@ export function getUiStrings(lang: UiLang): UiStrings {
         colGo: "Go",
         go: "Go",
       },
-      day01SlidesShortcut: "Day 1 — NLP slides",
-      day01SlidesShortcutTitle: "Jump to Section 14 — Day 1 Introduction to NLP (same deck)",
+      day01SlidesShortcut: "NLP fast track (S14)",
+      day01SlidesShortcutTitle:
+        "Alternative intensive NLP path — Section 14 only (skip S8–S12 theory arc)",
+      deckScopeLabel: "Deck track",
+      deckScopeAll: "Full deck (S1–S16)",
+      deckScopeDay1: "NLP fast track (S14)",
+      deckScopeWeek1: "Week 1 — ML core (S1–S6)",
+      deckScopeWeek2: "Week 2 — Deep learning (S7)",
+      deckScopeWeek3: "Week 3 — NLP (S8–S12)",
+      deckScopeWeek4: "Week 4 — GenAI + RAG + MLOps (S13, S15–S16)",
       nav: {
         openSections: "Open sections",
         closeSections: "Close sections",
         sectionsTitle: "Sections",
         slidesCount: (n) => `${n} slides`,
         sectionComplete: (pct) => `${pct}% complete`,
+        phasesTitle: "Deep Learning phases",
+        labsTitle: "Labs for this section",
+        resourcesTitle: "Course resources",
+        openLab: "Open",
         deckProgress: "Your progress",
         resetProgress: "Reset session",
         resetProgressConfirm: "Reset your saved progress for this deck?",
@@ -284,14 +307,26 @@ export function getUiStrings(lang: UiLang): UiStrings {
       colGo: "انتقال",
       go: "انتقال",
     },
-    day01SlidesShortcut: "اليوم 1 — شرائح NLP",
-    day01SlidesShortcutTitle: "الانتقال للقسم 14 — مقدمة اليوم الأول لـ NLP (نفس العرض)",
+    day01SlidesShortcut: "مسار NLP المكثّف (S14)",
+    day01SlidesShortcutTitle:
+      "مسار بديل مكثّف — القسم 14 فقط (بدلاً من S8–S12 النظري)",
+    deckScopeLabel: "مسار العرض",
+    deckScopeAll: "العرض الكامل (S1–S16)",
+    deckScopeDay1: "مسار NLP المكثّف (S14)",
+    deckScopeWeek1: "الأسبوع 1 — ML (S1–S6)",
+    deckScopeWeek2: "الأسبوع 2 — تعلم عميق (S7)",
+    deckScopeWeek3: "الأسبوع 3 — NLP (S8–S12)",
+    deckScopeWeek4: "الأسبوع 4 — GenAI + RAG + MLOps (S13, S15–S16)",
     nav: {
       openSections: "فتح الأقسام",
       closeSections: "إغلاق الأقسام",
       sectionsTitle: "الأقسام",
       slidesCount: (n) => `${n} شريحة`,
       sectionComplete: (pct) => `${pct}% مكتمل`,
+      phasesTitle: "مراحل التعلم العميق",
+      labsTitle: "مختبرات هذا القسم",
+      resourcesTitle: "موارد المسار",
+      openLab: "فتح",
       deckProgress: "تقدّمك",
       resetProgress: "تصفير الجلسة",
       resetProgressConfirm: "هل تريد تصفير التقدّم المحفوظ لهذا العرض؟",

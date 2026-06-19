@@ -83,8 +83,8 @@ const BOOKENDS: Record<number, BookendContent> = {
       "CNNs for grids, RNNs for sequences — match architecture to structure.",
     ],
     reflectionQuestion: "What symptom tells you the network is underfitting vs overfitting?",
-    speakerNoteBig: "Week 3 deep learning block — set expectation for labs and GPU optional.",
-    speakerNoteTakeaway: "Emphasize train/val curves over single accuracy numbers.",
+    speakerNoteBig: "Week 2 deep learning block — four phases (~45 min each). Point trainees to code/15 Deep Learning labs.",
+    speakerNoteTakeaway: "Emphasize train/val curves; open Phase 2 if time is short.",
   },
   8: {
     bigPictureFocus: "Turn raw text into features models can consume reliably.",
@@ -153,14 +153,16 @@ const BOOKENDS: Record<number, BookendContent> = {
     speakerNoteTakeaway: "Point toward RAG as the production pattern next week.",
   },
   14: {
-    bigPictureFocus: "Intensive Day 1 NLP workshop — from tokens to a mini pipeline.",
+    bigPictureFocus:
+      "Optional fast NLP track — intensive Day 1 workshop (alternative to S8–S12 theory path).",
     takeaways: [
+      "Use this track OR Sections 8–12 — not both in the same bootcamp week.",
       "Reproducible notebooks beat one-off demos.",
-      "Start with a baseline bag-of-words before transformers.",
       "Document data licenses and PII handling early.",
     ],
     reflectionQuestion: "What would you ship as a v0 NLP feature in one sprint?",
-    speakerNoteBig: "Workshop pacing — labs over theory density.",
+    speakerNoteBig:
+      "Alt track: jump here via #day1-nlp-slides. Skips the longer S8–S12 arc for a hands-on day.",
     speakerNoteTakeaway: "Collect blockers for office hours.",
   },
   15: {
@@ -171,7 +173,7 @@ const BOOKENDS: Record<number, BookendContent> = {
       "Evaluate faithfulness — models can still hallucinate with context.",
     ],
     reflectionQuestion: "What document boundary would cause harmful retrieval for your domain?",
-    speakerNoteBig: "Week 5 opens — RAG is the default enterprise GenAI architecture.",
+    speakerNoteBig: "Week 4 GenAI continues — RAG is the default enterprise GenAI architecture.",
     speakerNoteTakeaway: "Demo: bad chunk vs good chunk on same question.",
   },
   16: {

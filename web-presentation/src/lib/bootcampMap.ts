@@ -21,9 +21,9 @@ export const BOOTCAMP_MAP_SECTIONS: BootcampMapSection[] = [
   { id: 11, week: 3, weekLabel: "Week 3", title: "Embeddings & RNNs", shortLabel: "S11" },
   { id: 12, week: 3, weekLabel: "Week 3", title: "Seq2Seq & NMT", shortLabel: "S12" },
   { id: 13, week: 4, weekLabel: "Week 4", title: "Generative AI", shortLabel: "S13" },
-  { id: 14, week: 4, weekLabel: "Week 4", title: "Day 1 NLP Workshop", shortLabel: "S14" },
-  { id: 15, week: 5, weekLabel: "Week 5", title: "RAG Systems", shortLabel: "S15" },
-  { id: 16, week: 5, weekLabel: "Week 5", title: "MLOps", shortLabel: "S16" },
+  { id: 14, week: 4, weekLabel: "Week 4", title: "Day 1 NLP Workshop (alt track)", shortLabel: "S14" },
+  { id: 15, week: 4, weekLabel: "Week 4", title: "RAG Systems", shortLabel: "S15" },
+  { id: 16, week: 4, weekLabel: "Week 4", title: "MLOps", shortLabel: "S16" },
 ];
 
 export function getBootcampWeeks(): number[] {

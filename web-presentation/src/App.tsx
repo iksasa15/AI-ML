@@ -38,7 +38,16 @@ import {
   readTraineeProgress,
   resetTraineeProgress,
   traineeDeckPercent,
+  type DeckScope,
 } from "./lib/traineeProgress";
+import {
+  deckScopeFromHash,
+  filterSlidesForScope,
+  hashForDeckScope,
+  parseSectionIdFromJumpTag,
+} from "./lib/deckScopeConfig";
+import { buildDeepLearningPhaseJumps } from "./lib/section7Phases";
+import { getGlobalResourceLinks, getSectionLabs } from "./lib/sectionLabs";
 import { initGoogleTranslateElement, loadGoogleTranslateScript } from "./lib/googleTranslate";
 import { persistPresenterState } from "./lib/presenterSync";
 import { getActiveSectionTag } from "./lib/slideMeta";
@@ -55,6 +64,15 @@ const THEME_STORAGE_KEY = "ml-presentation-theme";
 const DAY01_HASH = "#day1-nlp-slides";
 const CONCLUSION_TITLE = "Conclusion";
 
+const DECK_SCOPE_OPTIONS: { id: DeckScope; labelKey: keyof ReturnType<typeof getUiStrings> }[] = [
+  { id: "all", labelKey: "deckScopeAll" },
+  { id: "week1-ml", labelKey: "deckScopeWeek1" },
+  { id: "week2-dl", labelKey: "deckScopeWeek2" },
+  { id: "week3-nlp", labelKey: "deckScopeWeek3" },
+  { id: "week4-genai", labelKey: "deckScopeWeek4" },
+  { id: "day1", labelKey: "deckScopeDay1" },
+];
+
 function applyThemeToDocument(theme: "light" | "dark") {
   document.documentElement.setAttribute("data-theme", theme);
 }
@@ -66,7 +84,7 @@ export default function App() {
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
   const [view, setView] = useState<"slides" | "outline">("slides");
-  const [deckScope, setDeckScope] = useState<"all" | "day1">("all");
+  const [deckScope, setDeckScope] = useState<DeckScope>("all");
   const [translateMounted, setTranslateMounted] = useState(false);
   const [translatePanelOpen, setTranslatePanelOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -109,7 +127,10 @@ export default function App() {
     if (day01StartIndex < 0 || day01EndExclusive <= day01StartIndex) return [] as SlideRecord[];
     return allSlides.slice(day01StartIndex, day01EndExclusive);
   }, [allSlides, day01StartIndex, day01EndExclusive]);
-  const slides = deckScope === "day1" ? day01Slides : allSlides;
+  const slides = useMemo(
+    () => filterSlidesForScope(allSlides, deckScope, day01Slides),
+    [allSlides, deckScope, day01Slides]
+  );
   const total = slides.length;
   const slide = slides[currentIndex];
   const sectionLabel = useMemo(
@@ -150,10 +171,36 @@ export default function App() {
     () => getQuizSummary(deckScope, quizSectionIds),
     [deckScope, quizSectionIds, quizResultsVersion]
   );
+  const activeSectionId = useMemo(() => {
+    const jump = sectionJumps.find((j) => j.id === activeSectionJumpId);
+    if (!jump) return null;
+    return parseSectionIdFromJumpTag(jump.tag);
+  }, [sectionJumps, activeSectionJumpId]);
+  const sectionLabs = useMemo(
+    () => (activeSectionId ? getSectionLabs(activeSectionId) : []),
+    [activeSectionId]
+  );
+  const dlPhaseJumps = useMemo(
+    () => buildDeepLearningPhaseJumps(allSlides),
+    [allSlides, booted]
+  );
+  const visiblePhaseJumps = activeSectionId === 7 ? dlPhaseJumps : [];
+  const resourceLinks = useMemo(() => getGlobalResourceLinks(), []);
   const quizSectionLabel = useMemo(() => {
     const item = sectionNavItems.find((s) => getSectionIdFromJump(s) === quizSectionId);
     return item?.label ?? sectionLabel;
   }, [sectionNavItems, quizSectionId, sectionLabel]);
+
+  const applyDeckScope = useCallback((scope: DeckScope) => {
+    setDeckScope(scope);
+    setCurrentIndex(0);
+    setView("slides");
+    const hash = hashForDeckScope(scope);
+    const base = `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(null, "", hash ? `${base}${hash}` : base);
+    setSettingsOpen(false);
+    setTranslatePanelOpen(false);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem(THEME_STORAGE_KEY);
@@ -166,10 +213,16 @@ export default function App() {
     if (deckReady) setBooted(true);
   }, [deckReady]);
 
+  const fullSlideIndex = useMemo(() => {
+    if (deckScope === "all") return currentIndex;
+    const mapped = allSlides.indexOf(slides[currentIndex] ?? slides[0]);
+    return mapped >= 0 ? mapped : currentIndex;
+  }, [deckScope, allSlides, slides, currentIndex]);
+
   useEffect(() => {
     if (!booted) return;
-    ensureForIndex(currentIndex);
-  }, [booted, currentIndex, ensureForIndex]);
+    ensureForIndex(fullSlideIndex);
+  }, [booted, fullSlideIndex, ensureForIndex]);
 
   useEffect(() => {
     if (!booted) return;
@@ -347,13 +400,13 @@ export default function App() {
     const el = printRef.current;
     if (!el) return 0;
 
-    const printSlides = deckScope === "day1" ? slides : await ensureAllForPrint();
+    const printSlides = deckScope === "all" ? await ensureAllForPrint() : slides;
     if (!printSlides.length) return 0;
 
     el.removeAttribute("aria-hidden");
     el.innerHTML = printSlides
       .map((s, index) => {
-        const frameSlides = deckScope === "day1" ? slides : printSlides;
+        const frameSlides = deckScope === "all" ? printSlides : slides;
         const frame = {
           sectionTag: getActiveSectionTag(frameSlides, index),
           sectionLabel: getActiveSectionLabel(frameSlides, index),
@@ -523,31 +576,25 @@ export default function App() {
 
   const jumpToDay01Slides = useCallback(() => {
     if (day01Slides.length === 0) return;
-    setDeckScope("day1");
-    setCurrentIndex(0);
-    if (window.location.hash !== DAY01_HASH) {
-      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${DAY01_HASH}`);
-    }
-    setSettingsOpen(false);
-    setTranslatePanelOpen(false);
-  }, [day01Slides.length]);
+    applyDeckScope("day1");
+  }, [day01Slides.length, applyDeckScope]);
 
   useEffect(() => {
     if (!booted) return;
     const syncFromHash = () => {
-      const isDay01 = window.location.hash === DAY01_HASH;
-      setDeckScope(isDay01 ? "day1" : "all");
-      if (!isDay01) return;
-      if (day01Slides.length === 0) return;
+      const scope = deckScopeFromHash(window.location.hash);
+      setDeckScope(scope);
       setCurrentIndex(0);
-      setView("slides");
-      setSettingsOpen(false);
-      setTranslatePanelOpen(false);
+      if (scope !== "all") {
+        setView("slides");
+        setSettingsOpen(false);
+        setTranslatePanelOpen(false);
+      }
     };
     syncFromHash();
     window.addEventListener("hashchange", syncFromHash);
     return () => window.removeEventListener("hashchange", syncFromHash);
-  }, [booted, day01Slides.length]);
+  }, [booted]);
 
   const goToSectionFromOutline = useCallback((slideIndex: number) => {
     setCurrentIndex(slideIndex);
@@ -686,6 +733,9 @@ export default function App() {
             deckTitle={deckTitle}
             items={sectionNavItems}
             activeId={activeSectionJumpId}
+            phaseJumps={visiblePhaseJumps}
+            sectionLabs={sectionLabs}
+            resourceLinks={resourceLinks}
             onOpen={() => setSidebarOpen(true)}
             onClose={() => setSidebarOpen(false)}
             onJump={goToSectionFromSidebar}
@@ -818,6 +868,20 @@ export default function App() {
                 />
                 <span>{ui.uiLangEnglish}</span>
               </label>
+            </fieldset>
+            <fieldset className="settings-fieldset">
+              <legend>{ui.deckScopeLabel}</legend>
+              {DECK_SCOPE_OPTIONS.map((opt) => (
+                <label className="settings-radio" key={opt.id}>
+                  <input
+                    type="radio"
+                    name="ml-deck-scope"
+                    checked={deckScope === opt.id}
+                    onChange={() => applyDeckScope(opt.id)}
+                  />
+                  <span>{ui[opt.labelKey] as string}</span>
+                </label>
+              ))}
             </fieldset>
           </div>
         </div>

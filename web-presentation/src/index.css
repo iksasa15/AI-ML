@@ -1984,6 +1984,62 @@ html:has(.presentation.is-fullscreen) body {
   white-space: nowrap;
 }
 
+.nav-sidebar-block {
+  padding: 0.65rem 0.85rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-sidebar-block--foot {
+  margin-top: auto;
+  padding-bottom: 0.85rem;
+}
+
+.nav-sidebar-block-title {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.nav-sidebar-sublist,
+.nav-sidebar-labs {
+  list-style: none;
+  margin: 0 0 0.65rem;
+  padding: 0;
+}
+
+.nav-sidebar-subitem {
+  width: 100%;
+  text-align: start;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+}
+
+.nav-sidebar-subitem:hover {
+  background: var(--color-bg-subtle);
+}
+
+.nav-sidebar-lab-link {
+  display: block;
+  padding: 0.35rem 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--color-accent);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+}
+
+.nav-sidebar-lab-link:hover {
+  background: var(--color-accent-light);
+  text-decoration: underline;
+}
+
 /* Trainee circular progress */
 .trainee-progress {
   position: fixed;

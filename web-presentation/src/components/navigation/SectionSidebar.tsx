@@ -1,6 +1,8 @@
 import type { MouseEvent } from "react";
 import { AmpersandText } from "../ui/AmpersandText";
 import type { SectionNavItem } from "../../lib/sectionNav";
+import type { PhaseJump } from "../../lib/section7Phases";
+import type { LabLink } from "../../lib/sectionLabs";
 import type { UiStrings } from "../../lib/uiStrings";
 
 type SectionSidebarProps = {
@@ -9,6 +11,9 @@ type SectionSidebarProps = {
   deckTitle: string;
   items: SectionNavItem[];
   activeId: string | null;
+  phaseJumps?: PhaseJump[];
+  sectionLabs?: LabLink[];
+  resourceLinks?: LabLink[];
   onOpen: () => void;
   onClose: () => void;
   onJump: (slideIndex: number) => void;
@@ -20,6 +25,9 @@ export function SectionSidebar({
   deckTitle,
   items,
   activeId,
+  phaseJumps = [],
+  sectionLabs = [],
+  resourceLinks = [],
   onOpen,
   onClose,
   onJump,
@@ -75,6 +83,53 @@ export function SectionSidebar({
           </button>
         </div>
 
+        {phaseJumps.length > 0 ? (
+          <div className="nav-sidebar-block">
+            <h3 className="nav-sidebar-block-title">{ui.nav.phasesTitle}</h3>
+            <ul className="nav-sidebar-sublist">
+              {phaseJumps.map((phase) => (
+                <li key={phase.id}>
+                  <button
+                    type="button"
+                    className="nav-sidebar-subitem"
+                    onClick={() => {
+                      onJump(phase.slideIndex);
+                      onClose();
+                    }}
+                  >
+                    <span className="nav-sidebar-item-tag" dir="ltr" lang="en">
+                      {phase.tag}
+                    </span>
+                    <span className="nav-sidebar-item-label" dir="auto">
+                      {phase.label}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {sectionLabs.length > 0 ? (
+          <div className="nav-sidebar-block">
+            <h3 className="nav-sidebar-block-title">{ui.nav.labsTitle}</h3>
+            <ul className="nav-sidebar-labs">
+              {sectionLabs.map((lab) => (
+                <li key={lab.href}>
+                  <a
+                    className="nav-sidebar-lab-link"
+                    href={lab.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {lab.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
         <ul className="nav-sidebar-list">
           {items.map((item) => {
             const isActive = item.id === activeId;
@@ -113,6 +168,26 @@ export function SectionSidebar({
             );
           })}
         </ul>
+
+        {resourceLinks.length > 0 ? (
+          <div className="nav-sidebar-block nav-sidebar-block--foot">
+            <h3 className="nav-sidebar-block-title">{ui.nav.resourcesTitle}</h3>
+            <ul className="nav-sidebar-labs">
+              {resourceLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    className="nav-sidebar-lab-link"
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </aside>
     </>
   );
