@@ -87,26 +87,26 @@ const BOOKENDS: Record<number, BookendContent> = {
     speakerNoteTakeaway: "Emphasize train/val curves; open Phase 2 if time is short.",
   },
   8: {
-    bigPictureFocus: "Turn raw text into features models can consume reliably.",
+    bigPictureFocus: "Week 3 Session 1 — NLP goals, regex, normalization, and hands-on text cleaning.",
     takeaways: [
-      "Text is messy — normalization and tokenization choices stick.",
-      "Bag-of-words is a baseline; context limits its power.",
-      "Evaluation must match task: classification vs generation differ.",
+      "Language is ambiguous — preprocessing choices persist through the pipeline.",
+      "Clean raw text before tokenization; regex handles structured patterns.",
+      "The full NLP pipeline: ingest → clean → tokenize → analyze → model.",
     ],
-    reflectionQuestion: "Which NLP preprocessing step is irreversible for your pipeline?",
-    speakerNoteBig: "Open NLP arc — link to products trainees use (search, chatbots).",
-    speakerNoteTakeaway: "Preview tokenization deep dive next session.",
+    reflectionQuestion: "Which cleaning step would break downstream NER if skipped?",
+    speakerNoteBig: "Week 3 opens — theory then immediate cleaning lab from the notebook track.",
+    speakerNoteTakeaway: "Preview Session 2 tokenization with NLTK/SpaCy labs.",
   },
   9: {
-    bigPictureFocus: "Master tokenization — the hidden interface between text and models.",
+    bigPictureFocus: "Week 3 Session 2 — Tokenization theory plus NLTK/SpaCy labs in one arc.",
     takeaways: [
       "Subword tokenization balances OOV handling and vocabulary size.",
-      "Sequence length affects memory — truncation has semantic cost.",
+      "Stop words and stemming trade speed for semantic precision — choose per task.",
       "Tokenizer must match the pretrained model exactly.",
     ],
     reflectionQuestion: "How would a wrong tokenizer silently hurt retrieval quality?",
-    speakerNoteBig: "Workshop tone — live demo if possible.",
-    speakerNoteTakeaway: "Assign micro-task: compare BPE vs word-level on same sentence.",
+    speakerNoteBig: "Alternate theory slides with live lab cells — same session, not a separate day.",
+    speakerNoteTakeaway: "Next session: POS and NER with SpaCy (S14).",
   },
   10: {
     bigPictureFocus: "Model language as probability over sequences.",
@@ -131,15 +131,15 @@ const BOOKENDS: Record<number, BookendContent> = {
     speakerNoteTakeaway: "Set up attention as the next leap.",
   },
   12: {
-    bigPictureFocus: "Translate and summarize with encoder–decoder sequence models.",
+    bigPictureFocus: "Week 3 Session 6 — Seq2Seq, attention, metrics, and bridge to Transformers.",
     takeaways: [
       "Seq2Seq maps variable input to variable output lengths.",
-      "Teacher forcing trains faster but creates exposure bias.",
+      "Attention fixes the information bottleneck in basic encoder–decoders.",
       "BLEU/ROUGE are proxies — human judgment still matters.",
     ],
     reflectionQuestion: "What failure mode does BLEU miss in fluent translations?",
-    speakerNoteBig: "Connect MT to enterprise localization and chat summarization.",
-    speakerNoteTakeaway: "Preview attention replacing fixed context vectors.",
+    speakerNoteBig: "Close Week 3 — transformer slide previews Week 4 GenAI (S13).",
+    speakerNoteTakeaway: "Assign: compare greedy vs beam search on one translation pair.",
   },
   13: {
     bigPictureFocus: "Pretrain at scale, fine-tune for tasks, generate with decoders.",
@@ -154,16 +154,16 @@ const BOOKENDS: Record<number, BookendContent> = {
   },
   14: {
     bigPictureFocus:
-      "Optional fast NLP track — intensive Day 1 workshop (alternative to S8–S12 theory path).",
+      "Week 3 Session 3 — POS, dependency parsing, NER, and the product-review mini project.",
     takeaways: [
-      "Use this track OR Sections 8–12 — not both in the same bootcamp week.",
-      "Reproducible notebooks beat one-off demos.",
-      "Document data licenses and PII handling early.",
+      "POS and dependencies structure meaning before modeling.",
+      "NER extracts entities your downstream apps can act on.",
+      "Ship a v0 text analyzer: clean → tokenize → tag → evaluate.",
     ],
     reflectionQuestion: "What would you ship as a v0 NLP feature in one sprint?",
     speakerNoteBig:
-      "Alt track: jump here via #day1-nlp-slides. Skips the longer S8–S12 arc for a hands-on day.",
-    speakerNoteTakeaway: "Collect blockers for office hours.",
+      "Mid-week analysis session — jump here via #day1-nlp-slides after S8–S9 if time-boxed.",
+    speakerNoteTakeaway: "Collect blockers before language modeling (S10).",
   },
   15: {
     bigPictureFocus: "Ground LLM answers in your documents with retrieval-augmented generation.",

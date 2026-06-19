@@ -149,27 +149,39 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
   },
   {
     id: 8,
-    contentSlideCount: 18,
+    contentSlideCount: 19,
     divider: {
       type: "section-divider",
       title: "Section 8",
-      subtitle: "Natural Language Processing (NLP)",
+      subtitle: "NLP Fundamentals & Text Cleaning",
       speakerNote:
-        "Open Section 8: state learning goals, timing, and how it connects to prior sessions.",
+        "Week 3 Session 1: NLP goals, regex, normalization, then hands-on text cleaning labs.",
     },
     importSlides: () => import("../data/slides/section08-nlp-fundamentals.js"),
   },
   {
     id: 9,
-    contentSlideCount: 8,
+    contentSlideCount: 32,
     divider: {
       type: "section-divider",
       title: "Section 9",
-      subtitle: "NLP Tokenization Workshop",
+      subtitle: "Tokenization Workshop & Labs",
       speakerNote:
-        "Open Section 9: state learning goals, timing, and how it connects to prior sessions.",
+        "Week 3 Session 2: tokenization theory, BPE, stop words, stemming — with NLTK/SpaCy labs.",
     },
     importSlides: () => import("../data/slides/section09-nlp-tokenization.js"),
+  },
+  {
+    id: 14,
+    contentSlideCount: 14,
+    divider: {
+      type: "section-divider",
+      title: "Section 14",
+      subtitle: "Text Analysis & NER Workshop",
+      speakerNote:
+        "Week 3 Session 3: POS, dependency, NER with SpaCy, then the product-review mini project.",
+    },
+    importSlides: () => import("../data/slides/section14-day01-nlp-intro.js"),
   },
   {
     id: 10,
@@ -179,7 +191,7 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
       title: "Section 10",
       subtitle: "NLP Language Modeling",
       speakerNote:
-        "Open Section 10: state learning goals, timing, and how it connects to prior sessions.",
+        "Week 3 Session 4: n-gram language modeling and perplexity.",
     },
     importSlides: () => import("../data/slides/section10-nlp-language-modeling.js"),
   },
@@ -191,19 +203,19 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
       title: "Section 11",
       subtitle: "NLP Contextual Embeddings and RNNs",
       speakerNote:
-        "Open Section 11: state learning goals, timing, and how it connects to prior sessions.",
+        "Week 3 Session 5: contextual embeddings and recurrent sequence models.",
     },
     importSlides: () => import("../data/slides/section11-nlp-contextual-rnn.js"),
   },
   {
     id: 12,
-    contentSlideCount: 11,
+    contentSlideCount: 12,
     divider: {
       type: "section-divider",
       title: "Section 12",
       subtitle: "NLP Seq2Seq and NMT Evaluation",
       speakerNote:
-        "Open Section 12: state learning goals, timing, and how it connects to prior sessions.",
+        "Week 3 Session 6: Seq2Seq, attention, BLEU/ROUGE, transformer bridge to GenAI.",
     },
     importSlides: () => import("../data/slides/section12-nlp-seq2seq.js"),
   },
@@ -218,18 +230,6 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
         "Open Section 13: state learning goals, timing, and how it connects to prior sessions.",
     },
     importSlides: () => import("../data/slides/section13-generative-ai.js"),
-  },
-  {
-    id: 14,
-    contentSlideCount: 47,
-    divider: {
-      type: "section-divider",
-      title: "Section 14",
-      subtitle: "Day 1 — Introduction to NLP (Intensive)",
-      speakerNote:
-        "Open Section 14: state learning goals, timing, and how it connects to prior sessions.",
-    },
-    importSlides: () => import("../data/slides/section14-day01-nlp-intro.js"),
   },
   {
     id: 15,

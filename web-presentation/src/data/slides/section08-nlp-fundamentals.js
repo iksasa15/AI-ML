@@ -1,4 +1,4 @@
-/** Auto-split from presentationData — section08-nlp-fundamentals */
+/** Week 3 Session 1 — NLP intro, pipeline, regex, text cleaning */
 export const slides = [
   {
     "title": "NLP Fundamentals and Challenges",
@@ -378,274 +378,305 @@ export const slides = [
     "illustration": "preprocessing-pipeline"
   },
   {
-    "title": "Tokenization Strategies",
+    "title": "The Full NLP Pipeline",
+    "subtitle": "From Raw Text to Structured Signals",
     "bullets": [
       {
-        "text": "Whitespace tokenization is simple and effective for many scripts.",
+        "text": "1. Text cleaning — HTML/URLs/noise removal.",
+        "icon": "nlp"
+      },
+      {
+        "text": "2. Tokenization — words, subwords, or sentences.",
         "icon": "token"
       },
       {
-        "text": "Character-level tokenization avoids OOV but can lengthen sequences.",
-        "icon": "token"
+        "text": "3. Stop word removal — optional, task-dependent.",
+        "icon": "nlp"
       },
       {
-        "text": "Subword tokenization balances vocabulary size and semantic coverage.",
-        "icon": "token"
+        "text": "4. Normalization — case, unicode, spelling heuristics.",
+        "icon": "scaling"
+      },
+      {
+        "text": "5. Stemming / lemmatization — canonical word forms.",
+        "icon": "nlp"
+      },
+      {
+        "text": "6. POS tagging — grammatical roles.",
+        "icon": "nlp"
+      },
+      {
+        "text": "7. NER — entities (people, orgs, money, dates, …).",
+        "icon": "nlp"
       }
     ],
-    "table": {
-      "headers": [
-        "Strategy",
-        "Strength",
-        "Tradeoff"
-      ],
-      "rows": [
-        [
-          "Word/space-based",
-          "Human-readable tokens",
-          "Weak on rare/compound words"
-        ],
-        [
-          "Character-based",
-          "No unknown words",
-          "Very long sequences"
-        ],
-        [
-          "Subword-based",
-          "Handles rare words and morphology",
-          "Tokenizer training complexity"
-        ]
-      ]
-    },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Whitespace tokenization is simple and effective for many scripts. · Character-level tokenization avoids OOV but can lengthen sequences.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
+    "note": "Output is structured data ready for classical ML, search, or neural models.",
+    "speakerNote": "Output is structured data ready for classical ML, search, or neural models.",
+    "titleIcon": "nlp",
+    "illustration": "nlp-pipeline"
   },
   {
-    "title": "Subword Tokenization Algorithms",
-    "table": {
-      "headers": [
-        "Algorithm",
-        "Base Idea",
-        "Common Usage"
-      ],
-      "rows": [
-        [
-          "BPE",
-          "Merge most frequent adjacent units iteratively",
-          "GPT-family style tokenizers"
-        ],
-        [
-          "WordPiece",
-          "Likelihood-driven merges",
-          "BERT-family models"
-        ],
-        [
-          "Unigram LM",
-          "Probabilistic token inventory pruning",
-          "T5/XLNet-style pipelines"
-        ],
-        [
-          "SentencePiece",
-          "Train on raw text without pre-tokenization",
-          "Multilingual pipelines"
-        ]
-      ]
-    },
-    "note": "Subword methods control vocabulary growth while preserving useful semantics.",
-    "speakerNote": "Subword methods control vocabulary growth while preserving useful semantics.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Unigram LM Tokenization Example",
+    "title": "Text Cleaning — Why Raw Text Is Messy",
     "bullets": [
       {
-        "text": "Model evaluates multiple candidate segmentations with token probabilities.",
-        "icon": "test"
+        "text": "Web text mixes markup, entities, URLs, handles, hashtags, emoji, and boilerplate.",
+        "icon": "idea"
       },
       {
-        "text": "Chooses segmentation with highest likelihood for each word context.",
-        "icon": "token"
+        "text": "Downstream models and lexicons assume cleaner character sequences.",
+        "icon": "model"
       },
       {
-        "text": "EM training updates token probabilities and prunes weak tokens.",
-        "icon": "train"
+        "text": "Cleaning rules must match your task — aggressive stripping can erase signal.",
+        "icon": "check"
       }
     ],
-    "table": {
-      "headers": [
-        "Candidate Tokenization",
-        "Score"
-      ],
-      "rows": [
-        [
-          "basket + ball",
-          "0.30"
-        ],
-        [
-          "basketball",
-          "0.40"
-        ],
-        [
-          "bask + etball",
-          "0.06"
-        ]
-      ]
-    },
-    "note": "Highest-probability segmentation is selected in decoding.",
-    "speakerNote": "Highest-probability segmentation is selected in decoding.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
+    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Web text mixes markup, entities, URLs, handles, hashtags, emoji, and boilerplate · Downstream models and lexicons assume cleaner character sequences.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
+    "titleIcon": "idea"
   },
   {
-    "title": "BPE Training Process",
-    "bullets": [
-      {
-        "text": "Start from character-level symbols.",
-        "icon": "regression"
-      },
-      {
-        "text": "Count adjacent symbol-pair frequencies.",
-        "icon": "token"
-      },
-      {
-        "text": "Merge most frequent pair into a new token.",
-        "icon": "token"
-      },
-      {
-        "text": "Repeat until target vocabulary size is reached.",
-        "icon": "token"
-      }
-    ],
+    "title": "Text Cleaning — Step 1: Conceptual Pipeline",
     "table": {
       "headers": [
-        "Step",
-        "Operation"
+        "Stage",
+        "What happens",
+        "Goal"
       ],
       "rows": [
         [
           "1",
-          "Initialize symbol inventory"
+          "Decode entities + remove HTML",
+          "Keep readable content only"
         ],
         [
           "2",
-          "Compute pair frequencies"
+          "Remove URLs / contacts / mentions",
+          "Drop metadata noise"
         ],
         [
           "3",
-          "Merge best pair"
+          "Remove emoji / odd symbols",
+          "Standardize character space"
         ],
         [
           "4",
-          "Rebuild sequence with merged token and iterate"
+          "Normalize punctuation + spaces",
+          "Produce clean model-ready text"
         ]
       ]
     },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Start from character-level symbols. · Count adjacent symbol-pair frequencies.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
+    "note": "Teach the idea first, then execute one worked example.",
+    "speakerNote": "Teach the idea first, then execute one worked example.",
+    "titleIcon": "pipeline"
   },
   {
-    "title": "Stemming vs Lemmatization",
+    "title": "Text Cleaning — Step 2: Raw Input Example",
     "table": {
       "headers": [
-        "Aspect",
-        "Stemming",
-        "Lemmatization"
+        "Item",
+        "Value"
       ],
       "rows": [
         [
-          "Method",
-          "Rule-based suffix stripping",
-          "Vocabulary + morphology aware normalization"
+          "Raw text",
+          "<p>John said: \"AI is amazing!!!! 🤖🔥\"</p> Visit: https://ai.com @john #AI Contact: +1-800-000-0000"
         ],
         [
-          "Output quality",
-          "May produce non-words (studi)",
-          "Canonical dictionary forms (study)"
-        ],
-        [
-          "Context sensitivity",
-          "Low",
-          "Higher (POS-aware)"
-        ],
-        [
-          "Use case",
-          "Fast retrieval/indexing",
-          "Semantically cleaner linguistic analysis"
+          "Contains",
+          "HTML + URL + @mention + hashtag + phone + emoji"
         ]
       ]
     },
-    "note": "Choose based on task priority: speed and recall vs linguistic precision.",
-    "speakerNote": "Choose based on task priority: speed and recall vs linguistic precision.",
+    "note": "Use this as the starting point before running clean_text().",
+    "speakerNote": "Use this as the starting point before running clean_text().",
     "titleIcon": "idea"
   },
   {
-    "title": "Lemmatization and Morphology Examples",
-    "bullets": [
-      {
-        "text": "Verb forms: am/are/is/was/were -> be.",
-        "icon": "idea"
-      },
-      {
-        "text": "Irregular nouns: mice -> mouse, children -> child.",
-        "icon": "idea"
-      },
-      {
-        "text": "POS-aware cases: better (adj) -> good, better (verb) -> better.",
-        "icon": "idea"
-      }
-    ],
-    "note": "Lemmatization preserves semantics better than aggressive stemming.",
-    "speakerNote": "Lemmatization preserves semantics better than aggressive stemming.",
+    "title": "Text Cleaning — Python Function (Core)",
+    "table": {
+      "headers": [
+        "Step",
+        "Python line",
+        "Purpose"
+      ],
+      "rows": [
+        [
+          "1",
+          "text = html.unescape(text)",
+          "Decode HTML entities"
+        ],
+        [
+          "2",
+          "text = re.sub(r'<[^>]+>', '', text)",
+          "Remove HTML tags"
+        ],
+        [
+          "3",
+          "text = re.sub(r'https?://\\S+|www\\.\\S+', '', text)",
+          "Remove URLs"
+        ],
+        [
+          "4",
+          "text = re.sub(r'\\S+@\\S+', '', text)",
+          "Remove email addresses"
+        ],
+        [
+          "5",
+          "text = re.sub(r'\\+?[\\d\\-\\(\\)\\s]{9,}', '', text)",
+          "Remove phone numbers"
+        ],
+        [
+          "6",
+          "text = re.sub(r'@\\w+|#\\w+', '', text)",
+          "Remove mentions and hashtags"
+        ],
+        [
+          "7",
+          "text = text.encode('ascii', 'ignore').decode('ascii')",
+          "Drop emoji / non-ASCII"
+        ],
+        [
+          "8",
+          "text = re.sub(r'[^\\w\\s\\.\\!\\?]', ' ', text)",
+          "Keep letters/spaces/sentence punctuation"
+        ],
+        [
+          "9",
+          "text = re.sub(r'\\s+', ' ', text).strip()",
+          "Normalize extra whitespace"
+        ]
+      ]
+    },
+    "note": "This is the same clean_text() pipeline from Day01_NLP_Introduction_EN.md section 3.2.",
+    "speakerNote": "This is the same clean_text() pipeline from Day01_NLP_Introduction_EN.md section 3.2.",
     "titleIcon": "idea"
   },
   {
-    "title": "Modern NLP Models: From Embeddings to Transformers",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/d/dd/Continuous_Bag_of_Words_model_%28CBOW%29.svg",
-      "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png"
-    ],
-    "bullets": [
-      {
-        "text": "Distributed embeddings (e.g., CBOW) map words into dense semantic vectors.",
-        "icon": "embedding"
-      },
-      {
-        "text": "Transformers model long-range dependencies via self-attention.",
-        "icon": "attention"
-      },
-      {
-        "text": "Current NLP systems combine strong preprocessing with large pretrained models.",
-        "icon": "train"
-      }
-    ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Distributed embeddings (e.g., CBOW) map words into dense semantic vectors. · Transformers model long-range dependencies via self-attention.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "embedding"
+    "title": "Text Cleaning — Step 4: Transformation Trace",
+    "table": {
+      "headers": [
+        "Step",
+        "What we remove / change",
+        "Text snapshot"
+      ],
+      "rows": [
+        [
+          "0 (raw)",
+          "Original text",
+          "<p>John said: \"AI is amazing!!!! \" Visit: https://ai.com @john #AI Contact: +1-800-000-0000</p>"
+        ],
+        [
+          "1",
+          "Remove HTML tags",
+          "John said: \"AI is amazing!!!! \" Visit: https://ai.com @john #AI Contact: +1-800-000-0000"
+        ],
+        [
+          "2",
+          "Remove URL",
+          "John said: \"AI is amazing!!!! \" Visit:  @john #AI Contact: +1-800-000-0000"
+        ],
+        [
+          "3",
+          "Remove @mention and #hashtag",
+          "John said: \"AI is amazing!!!! \" Visit:   Contact: +1-800-000-0000"
+        ],
+        [
+          "4",
+          "Remove phone number",
+          "John said: \"AI is amazing!!!! \" Visit:   Contact: "
+        ],
+        [
+          "5",
+          "Normalize punctuation + spaces",
+          "John said AI is amazing!!!! Visit"
+        ]
+      ]
+    },
+    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
+    "titleIcon": "idea"
   },
   {
-    "title": "Transformer Encoder-Decoder Overview",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/4/49/Attention_Is_All_You_Need_-_Encoder-decoder_Architecture.png"
-    ],
+    "title": "Text Cleaning — Step 5: Final Before/After",
+    "table": {
+      "headers": [
+        "Case",
+        "Value"
+      ],
+      "rows": [
+        [
+          "Before",
+          "<p>John said: \"AI is amazing!!!! \" Visit: https://ai.com @john #AI Contact: +1-800-000-0000</p>"
+        ],
+        [
+          "After",
+          "John said AI is amazing!!!! Visit"
+        ]
+      ]
+    },
+    "note": "This is the exact expected output from the lesson example.",
+    "speakerNote": "This is the exact expected output from the lesson example.",
+    "titleIcon": "idea"
+  },
+  {
+    "title": "Lowercase Normalization",
     "bullets": [
       {
-        "text": "Encoder builds contextual token representations from source text.",
-        "icon": "encoding"
+        "text": "Lowercasing merges surface forms: \"NASA\" / \"nasa\" → same token for bag-of-words style tasks.",
+        "icon": "token"
       },
       {
-        "text": "Decoder generates target tokens autoregressively with attention to encoder states.",
-        "icon": "encoding"
+        "text": "Risk: named-entity signal loss — \"Apple\" (company) vs \"apple\" (fruit).",
+        "icon": "formula"
       },
       {
-        "text": "Foundation architecture for translation, summarization, and many LLM pipelines.",
-        "icon": "llm"
+        "text": "For NER and MT, preserve case until you have a tokenizer/model policy.",
+        "icon": "token"
       }
     ],
-    "note": "Attention mechanisms reduce reliance on recurrence for sequence modeling.",
-    "speakerNote": "Attention mechanisms reduce reliance on recurrence for sequence modeling.",
-    "titleIcon": "encoding",
-    "conceptAnimation": "encoding-comparison"
+    "note": "Academic rule: lowercase for retrieval/classification, keep case for NER-sensitive pipelines.",
+    "speakerNote": "Academic rule: lowercase for retrieval/classification, keep case for NER-sensitive pipelines.",
+    "titleIcon": "scaling",
+    "conceptAnimation": "feature-scaling"
+  },
+  {
+    "title": "Lowercase Normalization — Step-by-Step Examples",
+    "table": {
+      "headers": [
+        "Step",
+        "Input text",
+        "Python operation",
+        "Output text"
+      ],
+      "rows": [
+        [
+          "1",
+          "Natural Language Processing",
+          "normalize_case(text)",
+          "natural language processing"
+        ],
+        [
+          "2",
+          "ARTIFICIAL INTELLIGENCE",
+          "normalize_case(text)",
+          "artificial intelligence"
+        ],
+        [
+          "3",
+          "iPhone vs Android",
+          "normalize_case(text)",
+          "iphone vs android"
+        ],
+        [
+          "4",
+          "NASA launched SpaceX",
+          "normalize_case(text)",
+          "nasa launched spacex"
+        ]
+      ]
+    },
+    "note": "Use lowercasing carefully for NER tasks where capitalization carries meaning.",
+    "speakerNote": "Use lowercasing carefully for NER tasks where capitalization carries meaning.",
+    "titleIcon": "scaling",
+    "conceptAnimation": "feature-scaling"
   }
 ];

@@ -30,7 +30,11 @@ export function getDividerEyebrow(slide: SlideRecord): string {
 
   if (sectionNum <= 6) return `WEEK 1 · SESSION ${sectionNum}`;
   if (sectionNum === 7) return "WEEK 2 · SESSION 1";
-  if (sectionNum <= 12) return `WEEK 3 · SESSION ${sectionNum - 7}`;
+  const week3Session: Record<number, number> = { 8: 1, 9: 2, 14: 3, 10: 4, 11: 5, 12: 6 };
+  if (sectionNum in week3Session) return `WEEK 3 · SESSION ${week3Session[sectionNum]}`;
+  if (sectionNum === 13) return "WEEK 4 · SESSION 1";
+  if (sectionNum === 15) return "WEEK 4 · SESSION 2";
+  if (sectionNum === 16) return "WEEK 4 · SESSION 3";
   return `WEEK 4 · SESSION ${sectionNum - 12}`;
 }
 
@@ -71,7 +75,7 @@ function weekLabelFromTag(tag: string): string | null {
   if (!sectionNum) return null;
   if (sectionNum <= 6) return "Week 1";
   if (sectionNum === 7) return "Week 2";
-  if (sectionNum <= 12) return "Week 3";
+  if ((sectionNum >= 8 && sectionNum <= 12) || sectionNum === 14) return "Week 3";
   return "Week 4";
 }
 

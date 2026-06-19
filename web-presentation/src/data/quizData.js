@@ -759,15 +759,15 @@ export const quizQuestions = [
   // ── Section 14: Day 1 NLP ──
   {
     sectionId: 14,
-    question: "Why is NLP challenging for computers?",
+    question: "Part-of-speech tagging assigns:",
     options: [
-      "Language has ambiguity, context, and figurative meaning",
-      "Text is always numeric",
-      "Tokens never repeat",
-      "GPUs cannot run Python",
+      "Grammatical roles (noun, verb, etc.) to each token",
+      "Only punctuation marks",
+      "GPU memory limits",
+      "Learning rate schedules",
     ],
     correct: 0,
-    explanation: "Ambiguity at lexical, syntactic, and pragmatic levels makes language hard to model.",
+    explanation: "POS tags describe the syntactic category of each word in context.",
   },
   {
     sectionId: 14,

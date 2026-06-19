@@ -40,13 +40,13 @@
 | **5** | `section05-svm.js` | SVM، الهامش، النواة (Kernel) | 9 |
 | **6** | `section06-clustering-pca.js` | التجميع (K-Means، Hierarchical) و PCA | 9 |
 | **7** | `section07-deep-learning.js` | التعلّم العميق، الشبكات العصبية، CNN، RNN | 48 |
-| **8** | `section08-nlp-fundamentals.js` | أساسيات NLP والتحديات | 18 |
-| **9** | `section09-nlp-tokenization.js` | ورشة Tokenization (BPE، WordPiece، Unigram) | 8 |
+| **8** | `section08-nlp-fundamentals.js` | أساسيات NLP، regex، تنظيف النص (عملي) | 19 |
+| **9** | `section09-nlp-tokenization.js` | Tokenization + labs (NLTK/SpaCy) | 32 |
+| **14** | `section14-day01-nlp-intro.js` | **تحليل نصي** — POS، NER، مشروع | 14 |
 | **10** | `section10-nlp-language-modeling.js` | نمذجة اللغة بـ N-grams والتقييم | 15 |
 | **11** | `section11-nlp-contextual-rnn.js` | التضمينات السياقية و RNN | 10 |
-| **12** | `section12-nlp-seq2seq.js` | Seq2Seq، الترجمة الآلية، BLEU/ROUGE | 11 |
+| **12** | `section12-nlp-seq2seq.js` | Seq2Seq، BLEU/ROUGE، جسر Transformers | 12 |
 | **13** | `section13-generative-ai.js` | GenAI: BERT، T5، GPT، Attention، LLMs | 20 |
-| **14** | `section14-day01-nlp-intro.js` | **اليوم 1 — مقدمة NLP** (مسار مكثّف عملي) | 47 |
 | **15** | `section15-rag.js` | RAG — Retrieval-Augmented Generation | 12 |
 | **16** | `section16-mlops.js` | MLOps — إنتاج ونشر النماذج | 12 |
 
@@ -54,20 +54,21 @@
 
 - **Conclusion** — ملخص النقاط الرئيسية ودعوة للأسئلة
 
-### قسم خاص: شرائح اليوم الأول (Day 1)
+### Week 3 — مسار NLP المتسلسل (6 جلسات)
 
-القسم 14 مخصّص لجلسة **مقدمة NLP** ويشمل:
+| جلسة | القسم | المحتوى |
+|------|-------|---------|
+| 1 | S8 | مقدمة NLP، regex، **labs تنظيف النص** |
+| 2 | S9 | tokenization + stop words + stemming + **labs NLTK/SpaCy** |
+| 3 | S14 | POS، dependency، NER، **مشروع Product Review** |
+| 4 | S10 | n-grams، perplexity |
+| 5 | S11 | contextual embeddings، RNN/LSTM |
+| 6 | S12 | Seq2Seq، attention، BLEU/ROUGE، جسر Transformers |
 
-- أهداف الجلسة ونظرة عامة
-- ما هو NLP ولماذا اللغة صعبة على الحاسوب
-- تطبيقات عملية (Chatbots، ترجمة، تحليل مشاعر…)
-- خط أنابيب NLP كامل
-- أدوات SpaCy و NLTK
-- Stemming مقابل Lemmatization
-- استخراج الكيانات المسماة (NER)
-- مشروع تحليل نصوص مصغّر
+**ترتيب العرض:** S8 → S9 → **S14** → S10 → S11 → S12 (مثل Week 1: نظري+عملي متداخل).
 
-يمكن عرض هذا القسم وحده عبر زر **«اليوم 1 — شرائح NLP»** أو الرابط `#day1-nlp-slides`.
+- أسبوع NLP كامل: `#week3-nlp`
+- القفز لتحليل نصي (S14): `#day1-nlp-slides`
 
 ---
 
@@ -144,7 +145,7 @@ npm run preview
 
 | الزر | الوظيفة |
 |------|---------|
-| **مسار NLP المكثّف (S14)** | مسار بديل لـ S8–S12 — القسم 14 فقط (~47 شريحة) |
+| **تحليل نصي (S14)** | القفز للجلسة 3 — POS/NER/مشروع (~14 شريحة) |
 | **رقم الشريحة** | الانتقال المباشر لشريحة |
 | **الوضع: ليلي / نهاري** | تبديل الثيم (يُحفظ في المتصفح) |
 | **جدول الأقسام** | فهرس الأقسام والانتقال السريع |
@@ -160,7 +161,7 @@ npm run preview
 1. ابدأ من **الشريحة الافتتاحية** ثم **خريطة المنهج** و**الخط الزمني** لإعطاء صورة عامة.
 2. استخدم **جدول الأقسام** للقفز بين الموضوعات دون التمرير شريحة بشريحة.
 3. فعّل **الوضع الليلي** في القاعات المظلمة.
-4. **مسار NLP:** استخدم **مسار NLP المكثّف (S14)** من الإعدادات أو `#day1-nlp-slides` — **بديل** لـ S8–S12، لا تعرضهما معاً في نفس الأسبوع.
+4. **أسبوع NLP (Week 3):** S8→S9→S14→S10→S11→S12 — `#week3-nlp` (6 جلسات متتابعة).
 5. **تعلم عميق (S7):** من **جدول الأقسام** → مراحل Phase 1–4 + روابط labs في [`code/15- Deep Learning/`](../code/15-%20Deep%20Learning/).
 6. لجمهور عربي، فعّل **ترجمة الشرائح** — قد تحتاج إعادة اختيار اللغة بعد كل شريحة.
 7. للمشاركة أو الأرشفة، استخدم **تحميل PDF** ثم «حفظ كـ PDF» من نافذة الطباعة.
@@ -174,9 +175,9 @@ npm run preview
 | معسكر 4 أسابيع كامل | S1–S16 (استخدم **مسار العرض الكامل** في الإعدادات) |
 | أسبوع ML فقط | S1–S6 — `#week1-ml` |
 | أسبوع DL فقط | S7 + labs — `#week2-dl` |
-| أسبوع NLP نظري | S8–S12 — `#week3-nlp` |
-| ورشة NLP يوم واحد | **S14 فقط** (بديل S8–S12) — `#day1-nlp-slides` |
-| أسبوع GenAI | S13, S15, S16 — `#week4-genai` (بدون S14) |
+| أسبوع NLP كامل | S8→S9→S14→S10→S11→S12 — `#week3-nlp` |
+| تحليل نصي فقط (S14) | `#day1-nlp-slides` |
+| أسبوع GenAI | S13, S15, S16 — `#week4-genai` |
 | Section 2 طويل (35 شريحة) | ركّز على OLS + R² + بناء النموذج؛ الباقي للمراجعة الذاتية |
 
 **روابط hash للمسارات:** `#week1-ml` · `#week2-dl` · `#week3-nlp` · `#week4-genai` · `#day1-nlp-slides`

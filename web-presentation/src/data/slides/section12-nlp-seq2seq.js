@@ -1,4 +1,4 @@
-/** Auto-split from presentationData — section12-nlp-seq2seq */
+/** Week 3 Session 6 — Seq2Seq, NMT, attention, transformer bridge */
 export const slides = [
   {
     "title": "NLP Seq2Seq for Neural Machine Translation",
@@ -332,5 +332,30 @@ export const slides = [
     "speakerNote": "Walk the on-screen bullets top to bottom. Land: Seq2Seq provides a general framework for sequence transduction. · Cross-entropy trains token-level next-step predictions.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "seq2seq",
     "conceptAnimation": "seq2seq-attention"
+  },
+  {
+    "title": "Transformer Encoder-Decoder Overview",
+    "imageUrls": [
+      "https://upload.wikimedia.org/wikipedia/commons/4/49/Attention_Is_All_You_Need_-_Encoder-decoder_Architecture.png"
+    ],
+    "bullets": [
+      {
+        "text": "Encoder builds contextual token representations from source text.",
+        "icon": "encoding"
+      },
+      {
+        "text": "Decoder generates target tokens autoregressively with attention to encoder states.",
+        "icon": "encoding"
+      },
+      {
+        "text": "Foundation architecture for translation, summarization, and many LLM pipelines.",
+        "icon": "llm"
+      }
+    ],
+    "note": "Attention mechanisms reduce reliance on recurrence for sequence modeling.",
+    "speakerNote": "Preview Week 4: same encoder-decoder idea scales to Transformers and modern LLMs.",
+    "titleIcon": "encoding",
+    "conceptAnimation": "encoding-comparison",
+    "subtitle": "Bridge to Week 4 GenAI — encoder-decoder intuition before BERT/GPT"
   }
 ];

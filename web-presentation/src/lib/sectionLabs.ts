@@ -65,7 +65,7 @@ export function getSectionLabs(sectionId: number): LabLink[] {
     case 14:
       return [
         {
-          label: "NLP fundamentals (S8–S12 alternative)",
+          label: "Text Analysis & NER (S14)",
           href: `${REPO}/web-presentation/README.md#%D9%82%D8%B3%D9%85-%D8%AE%D8%A7%D8%B5-day-1-nlp`,
         },
       ];
