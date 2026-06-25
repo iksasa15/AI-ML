@@ -62,11 +62,50 @@ export function getSectionLabs(sectionId: number): LabLink[] {
           href: `${REPO}/web-presentation/deep-learning-topics.md`,
         },
       ];
+    case 8:
+      return [
+        {
+          label: "NLP Text Cleaning (S8)",
+          href: `${REPO}/code/16-%20NLP/1-%20Text%20Cleaning`,
+        },
+        {
+          label: "NLP topics guide (Arabic)",
+          href: `${REPO}/web-presentation/nlp-topics.md`,
+        },
+      ];
+    case 9:
+      return [
+        {
+          label: "NLP Tokenization (S9)",
+          href: `${REPO}/code/16-%20NLP/2-%20Tokenization`,
+        },
+      ];
     case 10:
       return [
         {
-          label: "Text Analysis & NER (S10)",
-          href: `${REPO}/web-presentation/README.md#%D9%82%D8%B3%D9%85-%D8%AE%D8%A7%D8%B5-day-1-nlp`,
+          label: "NLP Text Analysis & NER (S10)",
+          href: `${REPO}/code/16-%20NLP/3-%20Text%20Analysis`,
+        },
+      ];
+    case 11:
+      return [
+        {
+          label: "NLP Language Modeling (S11)",
+          href: `${REPO}/code/16-%20NLP/4-%20Language%20Modeling`,
+        },
+      ];
+    case 12:
+      return [
+        {
+          label: "RNN Text Classification (S12)",
+          href: `${REPO}/code/15-%20Deep%20Learning/5-%20RNN%20Text%20Classification`,
+        },
+      ];
+    case 13:
+      return [
+        {
+          label: "NLP topics guide — Seq2Seq (S13)",
+          href: `${REPO}/web-presentation/nlp-topics.md`,
         },
       ];
     default:
