@@ -1160,7 +1160,17 @@ body[data-pdf-export="1"] .presentation,
 body[data-pdf-export="1"] .top-nav,
 body[data-pdf-export="1"] .translate-fab,
 body[data-pdf-export="1"] .trainee-progress {
-  visibility: hidden;
+  display: none !important;
+}
+
+body[data-pdf-export="1"] .print-deck {
+  display: block !important;
+  position: static !important;
+  left: auto !important;
+  visibility: visible !important;
+  width: 100% !important;
+  pointer-events: auto !important;
+  z-index: 1 !important;
 }
 
 #slide-container:focus {

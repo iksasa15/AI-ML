@@ -463,13 +463,13 @@ export default function App() {
     document.body.dataset.pdfExport = "1";
 
     void (async () => {
-      document.body.classList.add("is-print-export");
       try {
         const pageCount = await renderPrintDeck();
         const el = printRef.current;
         if (el && pageCount > 0) {
           el.dataset.printReady = "true";
           el.dataset.pageCount = String(pageCount);
+          el.removeAttribute("aria-hidden");
         } else if (el) {
           el.dataset.printError = "empty";
         }
