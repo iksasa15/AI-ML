@@ -29,7 +29,7 @@ export function buildSectionJumps(slides: SlideRecord[]): SectionJump[] {
   if (firstDividerIdx > 0) {
     jumps.push({
       id: "intro",
-      label: "جدول المحتوى والخطة الزمنية",
+      label: "مقدمة وأساسيات الذكاء الاصطناعي",
       tag: "مقدمة",
       slideIndex: 0,
     });

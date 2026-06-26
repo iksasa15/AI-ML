@@ -1,3 +1,4 @@
+import { slides as AI_INTRO_SLIDES } from "../data/slides/intro-ai-fundamentals.js";
 import { DAY01_FIRST_SLIDE_TITLE } from "./day01Anchor";
 import type { SlideRecord } from "./slideMarkup";
 
@@ -25,6 +26,7 @@ export const INTRO_SLIDES: SlideRecord[] = [
     speakerNote:
       "Anchor the timeline: each week has a deliverable. Ask trainees which milestone they are most excited about.",
   },
+  ...AI_INTRO_SLIDES,
 ];
 
 export const CONCLUSION_SLIDE: SlideRecord = {
