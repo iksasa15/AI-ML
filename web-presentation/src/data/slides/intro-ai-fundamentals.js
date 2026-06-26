@@ -901,15 +901,157 @@ export const slides = [
         bullets: [
           { text: "GitHub Copilot, Cursor, Codeium: autocomplete, refactor, explain code.", icon: "deploy" },
           { text: "ChatGPT/Claude for debugging, unit tests, and documentation.", icon: "check" },
-          { text: "Bootcamp intro complete — Section 1: Foundations and Data Pre-Processing (S1).", icon: "target" },
+          { text: "Next: ethics, the future of work, and your learning roadmap.", icon: "idea" },
         ],
       },
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/640px-Octicons-mark-github.svg.png",
     imageAlt: "GitHub — home of Copilot and open-source AI coding tools",
     speakerNote:
-      "Make it practical — trainees likely use 2–3 of these already. Code assistants accelerate learning but require review (models hallucinate APIs). Close the full intro: 'We covered AI fundamentals, history, domains, and GenAI — now we build from the ground up. Section 1: data preprocessing.' ~2–3 minutes.",
-    note: "Final intro slide — bridge to Section 1 (S1). Total intro ~60–65 min.",
+      "Make it practical — trainees likely use 2–3 of these already. Code assistants accelerate learning but require review (models hallucinate APIs). Next: responsible AI, careers, and how to grow after this bootcamp. ~2–3 minutes.",
+    note: "Bridge to Ethics & Future block (~4 slides).",
     titleIcon: "llm",
+  },
+  {
+    title: "Ethics & the Future",
+    subtitle: "Responsible AI, Careers & Your Learning Path",
+    body: "Building and deploying AI carries social responsibility. These final intro slides cover ethical risks, the evolving job market, and a practical roadmap for developing your skills — before we start hands-on work in Section 1.",
+    table: {
+      title: "Closing intro topics",
+      headers: ["Topic", "Focus"],
+      rows: [
+        ["AI ethics", "Bias, privacy, deepfakes"],
+        ["Future of jobs", "Human + machine collaboration"],
+        ["Learning roadmap", "Start, practice, and grow in AI/ML"],
+      ],
+    },
+    speakerNote:
+      "Frame this as the responsible closing of the intro — not fear, but awareness. ~1 minute, then dive into ethics.",
+    note: "Ethics & Future block opener.",
+    titleIcon: "warning",
+  },
+  {
+    title: "AI Ethics",
+    subtitle: "Bias, Privacy & Deepfakes",
+    body: "As AI systems influence hiring, healthcare, law enforcement, and public discourse, ethical design is not optional — it is a core engineering requirement.",
+    sections: [
+      {
+        heading: "Bias & Fairness",
+        bullets: [
+          { text: "Training data reflects historical bias → models can discriminate by race, gender, age.", icon: "warning" },
+          { text: "Examples: biased hiring filters, unequal loan approvals, skewed facial recognition.", icon: "compare" },
+          { text: "Mitigation: diverse datasets, fairness metrics, human review, audit trails.", icon: "check" },
+        ],
+      },
+      {
+        heading: "Privacy",
+        bullets: [
+          { text: "Models memorize sensitive training data — risk of leakage in outputs.", icon: "warning" },
+          { text: "Regulations: GDPR (EU), HIPAA (health), sector-specific data governance.", icon: "compare" },
+          { text: "Best practices: anonymization, consent, data minimization, secure pipelines (S1, S16).", icon: "deploy" },
+        ],
+      },
+      {
+        heading: "Deepfakes & Misinformation",
+        bullets: [
+          { text: "Synthetic video/audio/text indistinguishable from real — fraud, political manipulation.", icon: "warning" },
+          { text: "Detection tools emerging; watermarking and provenance standards in progress.", icon: "check" },
+          { text: "Always disclose AI-generated content; verify before sharing.", icon: "idea" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Deepfake_face_comparison.png/640px-Deepfake_face_comparison.png",
+    imageAlt: "Deepfake face comparison — real vs. synthetic media",
+    illustration: "confusion-matrix",
+    speakerNote:
+      "Use one concrete bias example (Amazon hiring tool scrapped). Privacy: never put patient data in public ChatGPT. Deepfakes link to public security slide. Fairness metrics appear in S4 classification. ~3 minutes.",
+    note: "AI ethics — bias, privacy, and synthetic media risks.",
+    titleIcon: "warning",
+  },
+  {
+    title: "The Future of Jobs",
+    subtitle: "Human–Machine Integration & the New Labor Market",
+    body: "AI will transform work — not by replacing every job overnight, but by reshaping tasks, roles, and the skills that matter most in a human–machine partnership.",
+    sections: [
+      {
+        heading: "What Changes",
+        bullets: [
+          { text: "Automation of repetitive tasks: data entry, basic reporting, first-draft content.", icon: "workflow" },
+          { text: "Augmentation: AI assists professionals — doctors, lawyers, engineers, analysts.", icon: "deploy" },
+          { text: "New roles: ML engineer, prompt engineer, AI ethicist, MLOps specialist, data curator.", icon: "target" },
+        ],
+      },
+      {
+        heading: "Human + Machine Model",
+        bullets: [
+          { text: "Humans: judgment, empathy, creativity, accountability, domain expertise.", icon: "idea" },
+          { text: "Machines: speed, scale, pattern detection, 24/7 availability.", icon: "neural-net" },
+          { text: "Best outcomes: human-in-the-loop — AI proposes, human approves.", icon: "check" },
+        ],
+      },
+      {
+        heading: "Skills That Grow in Value",
+        bullets: [
+          { text: "Critical thinking, communication, and interdisciplinary problem-solving.", icon: "compare" },
+          { text: "Technical: Python, ML pipelines, data literacy — exactly what this bootcamp builds.", icon: "model" },
+          { text: "Adaptability: AI tools evolve fast — learn how to learn.", icon: "train" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Human_robot_interaction.jpg/640px-Human_robot_interaction.jpg",
+    imageAlt: "Human–robot collaboration — augmented workforce",
+    illustration: "mlops-loop",
+    speakerNote:
+      "Avoid doom or hype — balanced view. Many jobs will change, not vanish. This bootcamp targets the 'AI-augmented professional' who builds and uses systems, not only consumes ChatGPT. Ask: which tasks in your target role could AI assist? ~2–3 minutes.",
+    note: "Future of work — augmentation over replacement.",
+    titleIcon: "workflow",
+  },
+  {
+    title: "Your Learning Roadmap",
+    subtitle: "How to Start & Grow Your AI/ML Skills",
+    body: "This bootcamp is your launchpad — not your finish line. A structured path after these five days keeps momentum and builds a portfolio that employers recognize.",
+    sections: [
+      {
+        heading: "Phase 1 — During Bootcamp (Now)",
+        bullets: [
+          { text: "Follow the daily arc: S1–S6 (ML) → S7 (DL) → S8–S13 (NLP) → S14–S16 (GenAI, RAG, MLOps).", icon: "workflow" },
+          { text: "Run every lab notebook — modify hyperparameters, break things, fix them.", icon: "train" },
+          { text: "Take notes on concepts you cannot explain — revisit after each section.", icon: "idea" },
+        ],
+      },
+      {
+        heading: "Phase 2 — First 3 Months After",
+        bullets: [
+          { text: "Build 2–3 portfolio projects: classification, NLP, or a small RAG app.", icon: "deploy" },
+          { text: "Practice on Kaggle competitions and open datasets.", icon: "target" },
+          { text: "Read papers: start with distill.pub and Hugging Face blog posts.", icon: "nlp" },
+          { text: "Contribute to open source: scikit-learn docs, Hugging Face models.", icon: "check" },
+        ],
+      },
+      {
+        heading: "Phase 3 — Long-Term Growth",
+        bullets: [
+          { text: "Specialize: vision, NLP, RL, or MLOps based on interest and job market.", icon: "compare" },
+          { text: "Stay current: follow arXiv summaries, AI newsletters, and vendor docs.", icon: "llm" },
+          { text: "Network: local meetups, GitHub, LinkedIn — share what you build.", icon: "workflow" },
+        ],
+      },
+    ],
+    table: {
+      title: "Bootcamp → career milestones",
+      headers: ["Milestone", "Target"],
+      rows: [
+        ["Week 1 (bootcamp)", "Complete S1–S16 + core labs"],
+        ["Month 1", "1 end-to-end ML project on GitHub"],
+        ["Month 3", "NLP or DL project + Kaggle entry"],
+        ["Month 6–12", "Specialization + internship or junior role"],
+      ],
+    },
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Vectorial_map_of_the_learning_path_for_a_data_scientist.png/640px-Vectorial_map_of_the_learning_path_for_a_data_scientist.png",
+    imageAlt: "Learning path map for data science and AI careers",
+    speakerNote:
+      "Point to the table — realistic timeline. Bootcamp gives breadth; depth comes from projects. Mention ai-learning-roadmap-12months.md in repo for extended plan. Close the entire intro: 'You are ready. Section 1 — Foundations and Data Pre-Processing starts now.' ~3 minutes.",
+    note: "Final intro slide — bridge to Section 1 (S1). Total intro ~70–75 min.",
+    titleIcon: "target",
   },
 ];
