@@ -79,7 +79,7 @@ function writePrintHtml({ html, styles }) {
     .map((href) => `<link rel="stylesheet" href="${normalizeAssetHref(href)}">`)
     .join("\n    ");
   const doc = `<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -133,7 +133,7 @@ async function main() {
 
     const browser = await playwright.chromium.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto(`${BASE_URL}/?pdfExport=1`, {
+    await page.goto(`${BASE_URL}/?pdfExport=1&theme=light`, {
       waitUntil: "domcontentloaded",
       timeout: 120_000,
     });

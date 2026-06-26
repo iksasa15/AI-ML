@@ -7,7 +7,8 @@
     <script>
       (function () {
         try {
-          var v = localStorage.getItem("ml-presentation-ui-lang");
+          var urlParams = new URLSearchParams(window.location.search);
+          var v = urlParams.get("lang") || localStorage.getItem("ml-presentation-ui-lang");
           if (v === "en") {
             document.documentElement.setAttribute("lang", "en");
             document.documentElement.setAttribute("dir", "ltr");
@@ -15,11 +16,8 @@
             document.documentElement.setAttribute("lang", "ar");
             document.documentElement.setAttribute("dir", "rtl");
           }
-          var theme = localStorage.getItem("ml-presentation-theme");
-          document.documentElement.setAttribute(
-            "data-theme",
-            theme === "dark" ? "dark" : "light"
-          );
+          var theme = urlParams.get("theme") || localStorage.getItem("ml-presentation-theme") || "light";
+          document.documentElement.setAttribute("data-theme", theme);
         } catch (e) {
           document.documentElement.setAttribute("data-theme", "light");
         }

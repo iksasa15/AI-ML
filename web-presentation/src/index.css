@@ -2629,25 +2629,9 @@ html[data-theme="dark"] .presentation {
     margin: 0;
   }
 
-  :root {
-    --bg: #ffffff;
-    --bg-top: #f8f7fc;
-    --card: #ffffff;
-    --card-2: #f0eef8;
-    --card-3: #f5f3fa;
-    --card-4: #ebe8f4;
-    --text: #1a1533;
-    --muted: #6b6490;
-    --accent: #5234b7;
-    --accent-2: #9e59cd;
-    --border: rgba(82, 52, 183, 0.22);
-    --note-bg: rgba(82, 52, 183, 0.08);
-    --dot-bg: #cbd5e1;
-  }
-
   html,
   body {
-    background: #fff !important;
+    background: var(--bg) !important;
     color: var(--text);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -2701,7 +2685,7 @@ html[data-theme="dark"] .presentation {
     page-break-after: always;
     break-inside: avoid;
     page-break-inside: avoid;
-    background: #fff;
+    background: var(--bg);
   }
 
   .print-page:last-child {
