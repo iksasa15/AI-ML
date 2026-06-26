@@ -153,11 +153,6 @@ function buildTitleBlock(title: string, mediaBadgeHTML = "", titleIcon?: string)
   `;
 }
 
-function buildBulletIconMarkup(iconId?: string) {
-  if (!iconId || !isSlideIconId(iconId)) return "";
-  return `<span class="slide-bullet-icon-wrap slide-bullet-icon-wrap--print" data-icon="${escapeHTML(iconId)}" aria-hidden="true"></span>`;
-}
-
 function buildBulletContent(text: string, html?: string) {
   if (html) {
     return `<span class="notranslate" translate="no">${html}</span>`;
@@ -174,10 +169,8 @@ function buildBulletsMarkup(
   if (!normalized.length) return "";
   const itemsHTML = normalized
     .map((item, index) => {
-      const icon = buildBulletIconMarkup(item.icon);
-      const rowClass = icon ? "slide-bullet-item slide-bullet-item--icon" : "";
       const content = buildBulletContent(item.text, itemsHtml?.[index]);
-      return `<li class="${rowClass}" style="animation-delay:${index * 60}ms">${icon}${content}</li>`;
+      return `<li style="animation-delay:${index * 60}ms">${content}</li>`;
     })
     .join("");
   return `<ul class="${className}">${itemsHTML}</ul>`;
@@ -309,9 +302,8 @@ function buildTakeawayPrintMarkup(slide: SlideRecord) {
   const items = bullets
     .slice(0, 3)
     .map((item, index) => {
-      const icon = buildBulletIconMarkup(item.icon);
       const content = buildBulletContent(item.text, bulletsHtml?.[index]);
-      return `<li class="takeaway-item">${icon}<strong>${index + 1}.</strong> ${content}</li>`;
+      return `<li class="takeaway-item"><strong>${index + 1}.</strong> ${content}</li>`;
     })
     .join("");
 
@@ -438,10 +430,14 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
   const tablesHTML = tables.map((table) => buildTableMarkup(table)).join("");
   const imageSources = getImageSources(slide);
   const mediaBadgeHTML = buildMediaBadgeMarkup(slide);
+  const imageSizeClass =
+    slide.imageSize === "featured" || slide.imageSize === "large"
+      ? ` slide-image--${slide.imageSize}`
+      : "";
   const imageHTML = imageSources
     .map(
       (src, index) => `
-      <figure class="slide-image">
+      <figure class="slide-image${imageSizeClass}">
         <img src="${escapeHTML(src)}" alt="${escapeHTML(String(slide.imageAlt || `slide image ${index + 1}`))}" />
       </figure>
     `

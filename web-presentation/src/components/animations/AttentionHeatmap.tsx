@@ -13,7 +13,7 @@ const ATTENTION: number[][] = [
 
 function heatColor(weight: number): string {
   const alpha = 0.12 + weight * 0.75;
-  return `rgba(37, 99, 235, ${alpha.toFixed(2)})`;
+  return `rgba(82, 52, 183, ${alpha.toFixed(2)})`;
 }
 
 export function AttentionHeatmap() {

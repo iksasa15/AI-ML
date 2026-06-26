@@ -53,34 +53,21 @@ async function checkUrl(url, attempt = 1) {
   };
   try {
     const res = await fetch(url, {
-      method: "HEAD",
+      method: "GET",
+      headers: { ...headers, Range: "bytes=0-0" },
       redirect: "follow",
-      headers,
       signal: AbortSignal.timeout(20000),
     });
-    if (res.ok) return { ok: true, status: res.status };
-    if (res.status === 429 && attempt < 4) {
-      await sleep(1500 * attempt);
+    if (res.ok || res.status === 206) return { ok: true, status: res.status };
+    if (res.status === 429) return { ok: true, status: 429, skipped: "rate-limited" };
+    if (attempt < 2 && (res.status === 403 || res.status === 405)) {
+      await sleep(500);
       return checkUrl(url, attempt + 1);
-    }
-    if (res.status === 405 || res.status === 403) {
-      const getRes = await fetch(url, {
-        method: "GET",
-        headers: { ...headers, Range: "bytes=0-0" },
-        redirect: "follow",
-        signal: AbortSignal.timeout(20000),
-      });
-      if (getRes.ok || getRes.status === 206) return { ok: true, status: getRes.status };
-      if (getRes.status === 429 && attempt < 4) {
-        await sleep(1500 * attempt);
-        return checkUrl(url, attempt + 1);
-      }
-      return { ok: false, status: getRes.status };
     }
     return { ok: false, status: res.status };
   } catch (err) {
-    if (attempt < 3) {
-      await sleep(1000 * attempt);
+    if (attempt < 2) {
+      await sleep(500);
       return checkUrl(url, attempt + 1);
     }
     return { ok: false, status: 0, error: err.message };
@@ -92,6 +79,7 @@ function sleep(ms) {
 }
 
 const broken = [];
+const skipped = [];
 
 for (const [localPath, refs] of localPaths) {
   const diskPath = path.join(publicDir, localPath.replace(/^\//, "").split("/").join(path.sep));
@@ -106,7 +94,9 @@ for (const [url, refs] of externalUrls) {
   checked += 1;
   process.stdout.write(`\r  ${checked}/${externalUrls.size}`);
   const result = await checkUrl(url);
-  if (!result.ok) {
+  if (result.skipped) {
+    skipped.push({ url, refs, reason: result.skipped });
+  } else if (!result.ok) {
     broken.push({
       kind: "external",
       url,
@@ -115,7 +105,7 @@ for (const [url, refs] of externalUrls) {
       error: result.error || `HTTP ${result.status}`,
     });
   }
-  await sleep(350);
+  await sleep(200);
 }
 console.log("\n");
 
@@ -128,6 +118,7 @@ const lines = [
   `- External URLs checked: **${externalUrls.size}**`,
   `- Local paths checked: **${localPaths.size}**`,
   `- Broken: **${broken.length}**`,
+  `- Skipped (rate limit): **${skipped.length}**`,
   "",
 ];
 
@@ -144,7 +135,7 @@ if (broken.length === 0) {
 
 fs.writeFileSync(reportPath, lines.join("\n"), "utf8");
 console.log(`External URLs: ${externalUrls.size}, Local paths: ${localPaths.size}`);
-console.log(`Broken: ${broken.length}`);
+console.log(`Broken: ${broken.length}, Skipped: ${skipped.length}`);
 console.log(`Report: ${reportPath}`);
 
 if (broken.length > 0) {

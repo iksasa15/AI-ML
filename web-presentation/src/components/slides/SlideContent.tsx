@@ -145,27 +145,36 @@ function FormulaBlock({ tex, html }: { tex?: string; html?: string }) {
   );
 }
 
+function getSlideImageSizeClass(imageSize: unknown): string {
+  if (imageSize === "featured" || imageSize === "large") {
+    return ` slide-image--${imageSize}`;
+  }
+  return "";
+}
+
 function SlideImageFigure({
   src,
   alt,
   isActive,
+  sizeClass = "",
 }: {
   src: string;
   alt: string;
   isActive: boolean;
+  sizeClass?: string;
 }) {
   const [failed, setFailed] = useState(false);
 
   if (failed) {
     return (
-      <figure className="slide-image slide-image-fallback" aria-label={alt}>
+      <figure className={`slide-image slide-image-fallback${sizeClass}`} aria-label={alt}>
         <p className="slide-image-fallback-label">{alt}</p>
       </figure>
     );
   }
 
   return (
-    <figure className="slide-image">
+    <figure className={`slide-image${sizeClass}`}>
       <img
         src={src}
         alt={alt}
@@ -182,6 +191,8 @@ function SlideImages({ slide, isActive = false }: { slide: SlideRecord; isActive
   const sources = getImageSources(slide);
   if (!sources.length) return null;
 
+  const sizeClass = getSlideImageSizeClass(slide.imageSize);
+
   return (
     <>
       {sources.map((src, index) => (
@@ -190,6 +201,7 @@ function SlideImages({ slide, isActive = false }: { slide: SlideRecord; isActive
           src={src}
           alt={String(slide.imageAlt || `slide image ${index + 1}`)}
           isActive={isActive}
+          sizeClass={sizeClass}
         />
       ))}
     </>

@@ -25,7 +25,7 @@ export const slides = [
       { text: "Language: understand and generate text or speech (e.g., voice assistants, chatbots).", icon: "nlp" },
       { text: "Everyday examples: spam filters, navigation apps, fraud detection, product suggestions.", icon: "check" },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/38/AI%2C_Machine_Learning%2C_Deep_Learning_and_Data_Science.svg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1b/AI_hierarchy.svg",
     imageAlt: "Hierarchy of AI, machine learning, and deep learning",
     speakerNote:
       "Read the definition once, then walk the four capability bullets. Land on everyday examples — trainees should recognize at least two. Clarify: AI is an umbrella term; ML and DL are subsets we will study in this bootcamp.",
@@ -131,7 +131,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Deep_Blue.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/be/Deep_Blue.jpg",
     imageAlt: "Deep Blue chess computer — classic Narrow AI example",
     speakerNote:
       "ANI is the only type of AI that exists in production today. Every tool trainees use — Google Translate, Netflix recommendations, Siri — is Narrow AI. Clarify: ChatGPT feels general but is still narrow (text in, text out). Budget ~2 minutes.",
@@ -167,7 +167,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Brain_neuron_growth.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Neuron.svg",
     imageAlt: "Neural connections — conceptual metaphor for general intelligence",
     speakerNote:
       "AGI is aspirational — distinguish hype from reality. LLMs are impressive but still narrow (text-focused, hallucinate, no persistent memory). Do not alarm trainees; frame as a long-term research frontier. ~2 minutes.",
@@ -444,7 +444,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Deep_Blue.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/be/Deep_Blue.jpg",
     imageAlt: "Deep Blue chess computer — 1997 Narrow AI milestone",
     illustration: "ml-workflow",
     speakerNote:
@@ -485,6 +485,7 @@ export const slides = [
     ],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png",
     imageAlt: "Transformer architecture — foundation of modern LLMs",
+    imageSize: "featured",
     conceptAnimation: "neural-network",
     speakerNote:
       "This is the era trainees live in. YOLO = vision in production; Transformers = everything in NLP/GenAI. ChatGPT moment = third 'golden age' — but remember the winters. Next: open Chapter 3 from the chapter cover — AI domains and branches. ~3 minutes.",
@@ -631,7 +632,7 @@ export const slides = [
       { text: "Powered by CNNs and increasingly Vision Transformers (ViT).", icon: "neural-net" },
       { text: "Bootcamp touchpoint: CNN labs and architectures in Section S7.", icon: "deploy" },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Intersection_over_Union_-_object_detection_bounding_boxes.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Intersection_over_Union_-_object_detection_bounding_boxes.jpg",
     imageAlt: "Object detection — bounding boxes on detected objects in a scene",
     speakerNote:
       "CV is everywhere: phones, cars, hospitals, security cameras. YOLO made real-time detection practical. Security/surveillance is a sensitive application — mention ethics and privacy. CNN content is in S7. ~2 minutes.",
@@ -668,7 +669,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/50/Vegas_Robot_by_Wirebeard.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Ameca_Generation_1.jpg",
     imageAlt: "Humanoid robot — AI embodied in physical systems",
     speakerNote:
       "Robotics is where AI meets physics — latency and safety matter more than benchmark scores. Self-driving is the headline example but warehouse bots are deployed at scale today. No dedicated robotics section, but S7 CNN + S1 ML feed into this domain. ~2 minutes.",
@@ -932,7 +933,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Deepfake_example.gif",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Male_and_female_deepfake.jpg",
     imageAlt: "Deepfake face comparison — real vs. synthetic media",
     illustration: "confusion-matrix",
     speakerNote:
@@ -970,7 +971,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/4/49/Human_robot_handshake.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/93/Robot_human_interaction_seminar_ituro_2011.png",
     imageAlt: "Human–robot collaboration — augmented workforce",
     illustration: "mlops-loop",
     speakerNote:

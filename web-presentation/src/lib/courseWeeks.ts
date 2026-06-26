@@ -18,8 +18,8 @@ export const COURSE_WEEKS: CourseWeek[] = [
     theme: "ML Core",
     topic: "Foundations, regression, classification, trees & SVM",
     sections: "S1 – S6",
-    color: "#EFF6FF",
-    colorDark: "#2563EB",
+    color: "#f3effa",
+    colorDark: "#5234b7",
   },
   {
     id: 2,
@@ -28,8 +28,8 @@ export const COURSE_WEEKS: CourseWeek[] = [
     theme: "Deep Learning",
     topic: "Neural networks, CNNs, RNNs, optimization",
     sections: "S7",
-    color: "#DBEAFE",
-    colorDark: "#1D4ED8",
+    color: "#ede6f8",
+    colorDark: "#6b46c1",
   },
   {
     id: 3,
@@ -38,8 +38,8 @@ export const COURSE_WEEKS: CourseWeek[] = [
     theme: "NLP",
     topic: "NLP: fundamentals → tokenization → analysis → LM → embeddings → Seq2Seq (S8–S13)",
     sections: "S8 – S13",
-    color: "#BFDBFE",
-    colorDark: "#1E40AF",
+    color: "#e8dff5",
+    colorDark: "#7c3aed",
   },
   {
     id: 4,
@@ -48,7 +48,7 @@ export const COURSE_WEEKS: CourseWeek[] = [
     theme: "GenAI",
     topic: "BERT, GPT, LLMs, RAG & MLOps",
     sections: "S14 – S16",
-    color: "#93C5FD",
-    colorDark: "#1E3A8A",
+    color: "#e2d6f2",
+    colorDark: "#9e59cd",
   },
 ];
