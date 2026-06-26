@@ -7,7 +7,7 @@ export function createMeasureRoot(): HTMLElement {
   if (existing) return existing;
 
   const root = document.createElement("div");
-  root.className = MEASURE_ROOT_CLASS;
+  root.className = `${MEASURE_ROOT_CLASS} is-canvas-fitted`;
   root.setAttribute("aria-hidden", "true");
   Object.assign(root.style, {
     position: "fixed",
