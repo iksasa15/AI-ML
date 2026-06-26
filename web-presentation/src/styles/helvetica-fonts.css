@@ -1,0 +1,66 @@
+/* Local Helvetica — from repo FONT/ */
+
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/helvetica/helvetica-light-587ebe5a59211.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/helvetica/Helvetica.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/helvetica/Helvetica-Bold.ttf") format("truetype");
+}
+
+/* Map semi-bold to Bold — no separate 600 file */
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/helvetica/Helvetica-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/helvetica/Helvetica-Oblique.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/helvetica/Helvetica-BoldOblique.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/helvetica/Helvetica-BoldOblique.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica Rounded";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/helvetica/helvetica-rounded-bold-5871d05ead8de.otf") format("opentype");
+}

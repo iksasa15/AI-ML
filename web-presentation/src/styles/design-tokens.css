@@ -17,13 +17,13 @@
   --color-warning: #d97706;
   --color-danger: #dc2626;
 
-  /* Typography */
-  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
-  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
-  --font-ui: "DM Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --font-body-ar: "Cairo", "Noto Kufi Arabic", "Amiri", serif;
-  --font-ui-ar: "Cairo", "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  /* Typography — local Helvetica (see helvetica-fonts.css) */
+  --font-display: "Helvetica", Arial, sans-serif;
+  --font-body: "Helvetica", Arial, sans-serif;
+  --font-mono: "Helvetica", ui-monospace, monospace;
+  --font-ui: "Helvetica", Arial, system-ui, sans-serif;
+  --font-body-ar: "Helvetica", Arial, system-ui, sans-serif;
+  --font-ui-ar: "Helvetica", Arial, system-ui, sans-serif;
 
   /* Type scale */
   --text-xs: 0.75rem;

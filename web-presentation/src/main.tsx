@@ -5,6 +5,7 @@ import App from "./App";
 import PresenterApp from "./PresenterApp";
 import { isPresenterWindow } from "./lib/presenterSync";
 import "katex/dist/katex.min.css";
+import "./styles/helvetica-fonts.css";
 import "./index.css";
 import "./styles/animations.css";
 import "./styles/presenter.css";
