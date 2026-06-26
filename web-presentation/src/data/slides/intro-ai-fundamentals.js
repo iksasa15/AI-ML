@@ -715,11 +715,11 @@ export const slides = [
         ],
       },
       {
-        heading: "Today & Bootcamp Start",
+        heading: "Today & Bootcamp",
         bullets: [
           { text: "Modern systems blend rules + ML (hybrid AI in finance, healthcare).", icon: "deploy" },
           { text: "Decision trees in S4 bridge symbolic and statistical approaches.", icon: "tree" },
-          { text: "Intro complete — Section 1: Foundations and Data Pre-Processing (S1).", icon: "target" },
+          { text: "Next: Generative AI and modern applications — the current frontier.", icon: "llm" },
         ],
       },
     ],
@@ -736,8 +736,180 @@ export const slides = [
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Mycin.gif",
     imageAlt: "MYCIN expert system — early rule-based medical AI",
     speakerNote:
-      "Connect back to the 1980s history slide — expert systems were the first AI gold rush in industry. Today ML dominates, but rules still matter (compliance, safety). Close the entire intro block: 'We have covered what AI is, its history, and its domains — now we build. Section 1 starts with data preprocessing.' ~2–3 minutes.",
-    note: "Final intro slide — bridge to Section 1 (S1). Total intro ~50–55 min.",
+      "Connect back to the 1980s history slide — expert systems were the first AI gold rush in industry. Today ML dominates, but rules still matter (compliance, safety). Next: Generative AI — how the field looks today in products trainees actually use. ~2–3 minutes.",
+    note: "Bridge to Generative AI & modern applications block (~5 slides).",
     titleIcon: "compare",
+  },
+  {
+    title: "Generative AI & Modern Applications",
+    subtitle: "From Prediction to Creation",
+    body: "Generative AI (GenAI) marks a shift from AI that classifies and predicts to AI that creates — text, images, code, audio, and video. These four slides map the revolution, the technology, industry use cases, and everyday productivity tools.",
+    table: {
+      title: "GenAI block roadmap",
+      headers: ["Topic", "Focus", "Bootcamp link"],
+      rows: [
+        ["Generative AI revolution", "Why creation changes everything", "S14 — GenAI"],
+        ["Large Language Models", "Conversation & context", "S8–S14 — NLP → GenAI"],
+        ["Industry applications", "Business, medicine, public security", "S15 — RAG, S16 — MLOps"],
+        ["Productivity tools", "Text, image, code generation", "Hands-on throughout bootcamp"],
+      ],
+    },
+    speakerNote:
+      "Set expectations for the final intro block — ~10 minutes. GenAI is what brought AI to mainstream attention in 2022–2023. This block connects intro concepts to sections S14–S16. ~1–2 minutes.",
+    note: "GenAI block opener — after domains, before Section 1.",
+    titleIcon: "llm",
+  },
+  {
+    title: "The Generative AI Revolution",
+    subtitle: "Why Creation Changes Everything",
+    body: "Traditional AI answers 'What is this?' or 'What will happen?' Generative AI answers 'Create something new that matches this intent' — drafts, designs, code, and synthetic data on demand.",
+    sections: [
+      {
+        heading: "Discriminative vs. Generative",
+        bullets: [
+          { text: "Discriminative: classify spam vs. ham, predict house prices.", icon: "classification" },
+          { text: "Generative: write emails, compose images, synthesize speech.", icon: "llm" },
+          { text: "GenAI learns data distributions — then samples new outputs.", icon: "probability" },
+        ],
+      },
+      {
+        heading: "Key Breakthroughs",
+        bullets: [
+          { text: "Transformers (2017): scalable sequence modeling at web scale.", icon: "transformer" },
+          { text: "Diffusion models: high-quality image generation (DALL·E, Stable Diffusion, Midjourney).", icon: "cnn" },
+          { text: "ChatGPT (2022): conversational interface made GenAI accessible to everyone.", icon: "llm" },
+        ],
+      },
+      {
+        heading: "Why It Matters Now",
+        bullets: [
+          { text: "Lower barrier: natural language replaces complex ML pipelines for many tasks.", icon: "workflow" },
+          { text: "Risks: hallucinations, bias, copyright, deepfakes — need guardrails.", icon: "warning" },
+          { text: "Bootcamp: Section S14 covers BERT, GPT, attention, and LLM fundamentals.", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/640px-ChatGPT_logo.svg.png",
+    imageAlt: "ChatGPT — generative AI entered mainstream use",
+    illustration: "transformer-block",
+    speakerNote:
+      "Contrast spam filter (discriminative) with ChatGPT drafting an email (generative). Mention diffusion briefly for images. Ethics: deepfakes in public security context preview. S14 is the deep dive. ~2–3 minutes.",
+    note: "GenAI revolution — prediction → creation paradigm shift.",
+    titleIcon: "llm",
+  },
+  {
+    title: "Large Language Models (LLMs)",
+    subtitle: "Machine Conversation & Context Understanding",
+    body: "Large Language Models are neural networks trained on vast text corpora to predict the next token — enabling fluent conversation, reasoning over context, and task completion from natural-language prompts.",
+    sections: [
+      {
+        heading: "How LLMs Work",
+        bullets: [
+          { text: "Pre-training: learn language patterns from billions of web pages, books, code.", icon: "train" },
+          { text: "Self-attention: weigh every word against every other — capture long-range context.", icon: "attention" },
+          { text: "Fine-tuning & RLHF: align outputs with human preferences (helpful, harmless, honest).", icon: "check" },
+        ],
+      },
+      {
+        heading: "Context & Conversation",
+        bullets: [
+          { text: "Context window: how much prior text the model 'remembers' in one session.", icon: "token" },
+          { text: "Multi-turn dialogue: model tracks conversation history for coherent replies.", icon: "nlp" },
+          { text: "Prompt engineering: instructions, examples, and role-setting steer behavior.", icon: "idea" },
+        ],
+      },
+      {
+        heading: "Examples & Bootcamp",
+        bullets: [
+          { text: "GPT-4, Claude, Gemini, Llama — general-purpose assistants and APIs.", icon: "llm" },
+          { text: "Bootcamp path: S8–S13 (NLP foundations) → S14 (BERT, GPT, attention) → S15 (RAG).", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Transformer%2C_full_architecture.png/640px-Transformer%2C_full_architecture.png",
+    imageAlt: "Transformer architecture — backbone of modern LLMs",
+    conceptAnimation: "attention-heatmap",
+    speakerNote:
+      "LLMs do not 'understand' like humans — they predict likely next tokens, which mimics understanding. Demo concept: context window limits mean long documents need RAG (S15). Attention animation shows how context is weighted. ~2–3 minutes.",
+    note: "LLMs — conversation, context windows, and prompt steering.",
+    titleIcon: "bert",
+  },
+  {
+    title: "Industry Applications",
+    subtitle: "Business, Medicine & Public Security",
+    body: "Generative AI is moving from demos to production across high-impact sectors — with distinct opportunities and governance requirements in each.",
+    sections: [
+      {
+        heading: "Business & Enterprise",
+        bullets: [
+          { text: "Customer support: AI agents resolve tickets, draft responses, summarize calls.", icon: "workflow" },
+          { text: "Marketing: personalized content, A/B copy variants, market research synthesis.", icon: "target" },
+          { text: "Finance: report generation, fraud narrative analysis, compliance document review.", icon: "metric" },
+          { text: "RAG over company docs: grounded answers from internal knowledge bases (S15).", icon: "rag" },
+        ],
+      },
+      {
+        heading: "Medicine & Healthcare",
+        bullets: [
+          { text: "Clinical documentation: draft notes from doctor-patient conversations.", icon: "check" },
+          { text: "Literature review: summarize research papers and trial results.", icon: "nlp" },
+          { text: "Medical imaging assist: report generation from radiology scans (human-in-the-loop).", icon: "cnn" },
+          { text: "Critical: HIPAA/privacy, validation, never replace clinician judgment.", icon: "warning" },
+        ],
+      },
+      {
+        heading: "Public Security & Safety",
+        bullets: [
+          { text: "Intelligence analysis: summarize large document sets, translate multilingual sources.", icon: "compare" },
+          { text: "Threat detection: pattern recognition in communications and surveillance metadata.", icon: "target" },
+          { text: "Deepfake detection: counter AI-generated misinformation and synthetic media.", icon: "warning" },
+          { text: "Ethics: bias, civil liberties, audit trails — MLOps monitoring essential (S16).", icon: "monitoring" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Hospital.svg/640px-Hospital.svg.png",
+    imageAlt: "Healthcare — high-stakes GenAI application domain",
+    illustration: "rag-architecture",
+    speakerNote:
+      "Walk three columns of use cases — emphasize governance in medicine and public security. Business RAG is the most common enterprise pattern today. Deepfakes link back to CV and ethics from ASI slide. S15 RAG + S16 MLOps are production skills. ~3 minutes.",
+    note: "Industry applications — opportunities and governance in each sector.",
+    titleIcon: "deploy",
+  },
+  {
+    title: "Daily Productivity Tools",
+    subtitle: "Text, Image & Code Generation for Everyone",
+    body: "GenAI is already embedded in everyday workflows — not just research labs. Knowing these tools helps trainees use AI responsibly while building their own systems in the bootcamp.",
+    sections: [
+      {
+        heading: "Text Generation",
+        bullets: [
+          { text: "ChatGPT, Claude, Gemini: drafting, summarizing, translating, brainstorming.", icon: "llm" },
+          { text: "Copilot in Word/Outlook: inline writing assistance in familiar apps.", icon: "workflow" },
+          { text: "Notion AI, Grammarly: notes, editing, and tone adjustment.", icon: "nlp" },
+        ],
+      },
+      {
+        heading: "Image Generation",
+        bullets: [
+          { text: "DALL·E, Midjourney, Stable Diffusion: marketing visuals, prototypes, storyboards.", icon: "cnn" },
+          { text: "Canva AI, Adobe Firefly: design workflows for non-designers.", icon: "target" },
+          { text: "Use with care: copyright, consent, and disclosure of AI-generated content.", icon: "warning" },
+        ],
+      },
+      {
+        heading: "Code Generation",
+        bullets: [
+          { text: "GitHub Copilot, Cursor, Codeium: autocomplete, refactor, explain code.", icon: "deploy" },
+          { text: "ChatGPT/Claude for debugging, unit tests, and documentation.", icon: "check" },
+          { text: "Bootcamp intro complete — Section 1: Foundations and Data Pre-Processing (S1).", icon: "target" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/640px-Octicons-mark-github.svg.png",
+    imageAlt: "GitHub — home of Copilot and open-source AI coding tools",
+    speakerNote:
+      "Make it practical — trainees likely use 2–3 of these already. Code assistants accelerate learning but require review (models hallucinate APIs). Close the full intro: 'We covered AI fundamentals, history, domains, and GenAI — now we build from the ground up. Section 1: data preprocessing.' ~2–3 minutes.",
+    note: "Final intro slide — bridge to Section 1 (S1). Total intro ~60–65 min.",
+    titleIcon: "llm",
   },
 ];
