@@ -25,7 +25,7 @@ export const slides = [
       { text: "Language: understand and generate text or speech (e.g., voice assistants, chatbots).", icon: "nlp" },
       { text: "Everyday examples: spam filters, navigation apps, fraud detection, product suggestions.", icon: "check" },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/35/AI_hierarchy.svg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/38/AI%2C_Machine_Learning%2C_Deep_Learning_and_Data_Science.svg",
     imageAlt: "Hierarchy of AI, machine learning, and deep learning",
     speakerNote:
       "Read the definition once, then walk the four capability bullets. Land on everyday examples — trainees should recognize at least two. Clarify: AI is an umbrella term; ML and DL are subsets we will study in this bootcamp.",
@@ -94,7 +94,7 @@ export const slides = [
       { text: "Garbage in, garbage out (GIGO): bad preprocessing → bad predictions.", icon: "warning" },
       { text: "Bridge to Section 1: we start with data cleaning, scaling, and train/test splits.", icon: "pipeline" },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/67/DataSciencePipeline.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png",
     imageAlt: "Data science pipeline from raw data to insights",
     illustration: "preprocessing-pipeline",
     speakerNote:
@@ -483,7 +483,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Transformer%2C_full_architecture.png/640px-Transformer%2C_full_architecture.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png",
     imageAlt: "Transformer architecture — foundation of modern LLMs",
     conceptAnimation: "neural-network",
     speakerNote:
@@ -573,7 +573,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Colored_neural_network.svg/640px-Colored_neural_network.svg.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg",
     imageAlt: "Artificial neural network — layers of interconnected nodes",
     conceptAnimation: "neural-network",
     speakerNote:
@@ -610,7 +610,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Natural_language_processing_concept.svg/640px-Natural_language_processing_concept.svg.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/79/Major_levels_of_linguistic_structure.svg",
     imageAlt: "NLP concept — text processing pipeline",
     illustration: "nlp-pipeline",
     speakerNote:
@@ -631,7 +631,7 @@ export const slides = [
       { text: "Powered by CNNs and increasingly Vision Transformers (ViT).", icon: "neural-net" },
       { text: "Bootcamp touchpoint: CNN labs and architectures in Section S7.", icon: "deploy" },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Object_detection_in_cluttered_environments.jpg/640px-Object_detection_in_cluttered_environments.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Intersection_over_Union_-_object_detection_bounding_boxes.jpg",
     imageAlt: "Object detection — bounding boxes on detected objects in a scene",
     speakerNote:
       "CV is everywhere: phones, cars, hospitals, security cameras. YOLO made real-time detection practical. Security/surveillance is a sensitive application — mention ethics and privacy. CNN content is in S7. ~2 minutes.",
@@ -668,7 +668,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Vegas_Robot_by_Wirebeard.jpg/640px-Vegas_Robot_by_Wirebeard.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/50/Vegas_Robot_by_Wirebeard.jpg",
     imageAlt: "Humanoid robot — AI embodied in physical systems",
     speakerNote:
       "Robotics is where AI meets physics — latency and safety matter more than benchmark scores. Self-driving is the headline example but warehouse bots are deployed at scale today. No dedicated robotics section, but S7 CNN + S1 ML feed into this domain. ~2 minutes.",
@@ -766,7 +766,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/640px-ChatGPT_logo.svg.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
     imageAlt: "ChatGPT — generative AI entered mainstream use",
     illustration: "transformer-block",
     speakerNote:
@@ -803,7 +803,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Transformer%2C_full_architecture.png/640px-Transformer%2C_full_architecture.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png",
     imageAlt: "Transformer architecture — backbone of modern LLMs",
     conceptAnimation: "attention-heatmap",
     speakerNote:
@@ -844,7 +844,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Hospital.svg/640px-Hospital.svg.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/29/Star_of_life2.svg",
     imageAlt: "Healthcare — high-stakes GenAI application domain",
     illustration: "rag-architecture",
     speakerNote:
@@ -882,7 +882,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/640px-Octicons-mark-github.svg.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
     imageAlt: "GitHub — home of Copilot and open-source AI coding tools",
     speakerNote:
       "Make it practical — trainees likely use 2–3 of these already. Code assistants accelerate learning but require review (models hallucinate APIs). Next: open Chapter 5 from the chapter cover — ethics, careers, and your learning roadmap. ~2–3 minutes.",
@@ -932,7 +932,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Deepfake_face_comparison.png/640px-Deepfake_face_comparison.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Deepfake_example.gif",
     imageAlt: "Deepfake face comparison — real vs. synthetic media",
     illustration: "confusion-matrix",
     speakerNote:
@@ -970,7 +970,7 @@ export const slides = [
         ],
       },
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Human_robot_interaction.jpg/640px-Human_robot_interaction.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/4/49/Human_robot_handshake.jpg",
     imageAlt: "Human–robot collaboration — augmented workforce",
     illustration: "mlops-loop",
     speakerNote:
@@ -1019,7 +1019,7 @@ export const slides = [
         ["Month 6–12", "Specialization + internship or junior role"],
       ],
     },
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Vectorial_map_of_the_learning_path_for_a_data_scientist.png/640px-Vectorial_map_of_the_learning_path_for_a_data_scientist.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png",
     imageAlt: "Learning path map for data science and AI careers",
     speakerNote:
       "Point to the table — realistic timeline. Bootcamp gives breadth; depth comes from projects. Mention ai-learning-roadmap-12months.md in repo for extended plan. Close the entire intro: 'You are ready. Section 1 — Foundations and Data Pre-Processing starts now.' ~3 minutes.",

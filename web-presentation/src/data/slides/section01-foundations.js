@@ -88,7 +88,7 @@ export const slides = [
   {
     "title": "Training Set & Test Set",
     "subtitle": "Key Idea",
-    "imageUrl": "https://miro.medium.com/v2/resize:fit:1160/format:webp/1*OECM6SWmlhVzebmSuvMtBg.png",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png",
     "imageAlt": "Training Set and Test Set",
     "bullets": [
       {

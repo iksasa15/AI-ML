@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ConceptAnimationSlot } from "../animations/ConceptAnimationSlot";
 import { IllustrationSlot } from "../illustrations/IllustrationSlot";
 import { SlideIcon } from "../icons/SlideIcon";
@@ -144,6 +145,39 @@ function FormulaBlock({ tex, html }: { tex?: string; html?: string }) {
   );
 }
 
+function SlideImageFigure({
+  src,
+  alt,
+  isActive,
+}: {
+  src: string;
+  alt: string;
+  isActive: boolean;
+}) {
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return (
+      <figure className="slide-image slide-image-fallback" aria-label={alt}>
+        <p className="slide-image-fallback-label">{alt}</p>
+      </figure>
+    );
+  }
+
+  return (
+    <figure className="slide-image">
+      <img
+        src={src}
+        alt={alt}
+        loading={isActive ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={isActive ? "high" : "low"}
+        onError={() => setFailed(true)}
+      />
+    </figure>
+  );
+}
+
 function SlideImages({ slide, isActive = false }: { slide: SlideRecord; isActive?: boolean }) {
   const sources = getImageSources(slide);
   if (!sources.length) return null;
@@ -151,15 +185,12 @@ function SlideImages({ slide, isActive = false }: { slide: SlideRecord; isActive
   return (
     <>
       {sources.map((src, index) => (
-        <figure key={src} className="slide-image">
-          <img
-            src={src}
-            alt={String(slide.imageAlt || `slide image ${index + 1}`)}
-            loading={isActive ? "eager" : "lazy"}
-            decoding="async"
-            fetchPriority={isActive ? "high" : "low"}
-          />
-        </figure>
+        <SlideImageFigure
+          key={src}
+          src={src}
+          alt={String(slide.imageAlt || `slide image ${index + 1}`)}
+          isActive={isActive}
+        />
       ))}
     </>
   );
