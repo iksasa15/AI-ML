@@ -1,11 +1,11 @@
 /* Fullscreen 1920×1080 — fill canvas, larger readable type */
 
-.presentation.is-canvas-fitted .slide-frame-header {
+.is-canvas-fitted .slide-frame-header {
   padding: 0.85rem 2.5rem;
   font-size: 1rem;
 }
 
-.presentation.is-canvas-fitted .slide-frame-content {
+.is-canvas-fitted .slide-frame-content {
   display: flex;
   flex-direction: column;
   max-width: none;
@@ -13,35 +13,35 @@
   padding: 2rem 3.5rem 1.5rem;
 }
 
-.presentation.is-canvas-fitted .slide-frame-footer {
+.is-canvas-fitted .slide-frame-footer {
   padding: 0 2.5rem 0.65rem;
 }
 
 /* ── General content slides ── */
 
-.presentation.is-canvas-fitted .slide-title {
+.is-canvas-fitted .slide-title {
   font-size: 2.75rem;
 }
 
-.presentation.is-canvas-fitted .slide h2:not(.slide-title):not(.section-divider-title-line) {
+.is-canvas-fitted .slide h2:not(.slide-title):not(.section-divider-title-line) {
   font-size: 2.5rem;
 }
 
-.presentation.is-canvas-fitted .slide h3 {
+.is-canvas-fitted .slide h3 {
   font-size: 1.65rem;
 }
 
-.presentation.is-canvas-fitted .slide-subtitle {
+.is-canvas-fitted .slide-subtitle {
   font-size: 1.125rem;
 }
 
-.presentation.is-canvas-fitted .slide p,
-.presentation.is-canvas-fitted .slide-body {
+.is-canvas-fitted .slide p,
+.is-canvas-fitted .slide-body {
   font-size: 1.375rem;
   line-height: 1.7;
 }
 
-.presentation.is-canvas-fitted .slide-bullet-list li {
+.is-canvas-fitted .slide-bullet-list li {
   font-size: 1.4rem;
   line-height: 1.65;
   margin-bottom: 1rem;
@@ -49,50 +49,50 @@
   border-inline-start-width: 4px;
 }
 
-.presentation.is-canvas-fitted .slide-bullet-list li::before {
+.is-canvas-fitted .slide-bullet-list li::before {
   display: none;
 }
 
-.presentation.is-canvas-fitted .slide-bullet-list--compact li {
+.is-canvas-fitted .slide-bullet-list--compact li {
   font-size: 1.2rem;
 }
 
-.presentation.is-canvas-fitted .content-card,
-.presentation.is-canvas-fitted .slide-column-card {
+.is-canvas-fitted .content-card,
+.is-canvas-fitted .slide-column-card {
   padding: var(--space-3);
 }
 
-.presentation.is-canvas-fitted .note-box {
+.is-canvas-fitted .note-box {
   font-size: 1.25rem;
   padding: var(--space-3);
 }
 
 /* ── Big Picture map ── */
 
-.presentation.is-canvas-fitted .big-picture-slide {
+.is-canvas-fitted .big-picture-slide {
   flex: 1;
   min-height: 0;
   gap: 1.75rem;
 }
 
-.presentation.is-canvas-fitted .big-picture-eyebrow {
+.is-canvas-fitted .big-picture-eyebrow {
   font-size: 1rem;
   letter-spacing: 0.16em;
 }
 
-.presentation.is-canvas-fitted .big-picture-title {
+.is-canvas-fitted .big-picture-title {
   font-size: 2.75rem;
   line-height: 1.15;
 }
 
-.presentation.is-canvas-fitted .big-picture-focus {
+.is-canvas-fitted .big-picture-focus {
   font-size: 1.5rem;
   line-height: 1.45;
   max-width: 52rem;
   margin-inline: auto;
 }
 
-.presentation.is-canvas-fitted .bootcamp-map {
+.is-canvas-fitted .bootcamp-map {
   flex: 1;
   min-height: 0;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -100,35 +100,35 @@
   align-items: stretch;
 }
 
-.presentation.is-canvas-fitted .bootcamp-map-week {
+.is-canvas-fitted .bootcamp-map-week {
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.presentation.is-canvas-fitted .bootcamp-map-week-label {
+.is-canvas-fitted .bootcamp-map-week-label {
   font-size: 1rem;
   margin-bottom: 0.65rem;
 }
 
-.presentation.is-canvas-fitted .bootcamp-map-sections {
+.is-canvas-fitted .bootcamp-map-sections {
   flex: 1;
   gap: 0.55rem;
 }
 
-.presentation.is-canvas-fitted .bootcamp-map-card {
+.is-canvas-fitted .bootcamp-map-card {
   padding: 0.7rem 0.9rem;
   font-size: 1.125rem;
   line-height: 1.35;
   border-radius: var(--radius-md);
 }
 
-.presentation.is-canvas-fitted .bootcamp-map-card-id {
+.is-canvas-fitted .bootcamp-map-card-id {
   font-size: 1.05rem;
   min-width: 2.25rem;
 }
 
-.presentation.is-canvas-fitted .big-picture-legend {
+.is-canvas-fitted .big-picture-legend {
   font-size: 1rem;
   gap: 1.5rem;
   justify-content: center;
@@ -136,75 +136,75 @@
 
 /* ── Takeaway ── */
 
-.presentation.is-canvas-fitted .takeaway-title {
+.is-canvas-fitted .takeaway-title {
   font-size: 2.5rem;
 }
 
-.presentation.is-canvas-fitted .takeaway-text {
+.is-canvas-fitted .takeaway-text {
   font-size: 1.35rem;
 }
 
-.presentation.is-canvas-fitted .takeaway-reflection-question {
+.is-canvas-fitted .takeaway-reflection-question {
   font-size: 1.5rem;
 }
 
 /* ── Course map & intro ── */
 
-.presentation.is-canvas-fitted .course-map-slide,
-.presentation.is-canvas-fitted .bootcamp-timeline-slide,
-.presentation.is-canvas-fitted .intro-hero {
+.is-canvas-fitted .course-map-slide,
+.is-canvas-fitted .bootcamp-timeline-slide,
+.is-canvas-fitted .intro-hero {
   flex: 1;
   min-height: 0;
 }
 
-.presentation.is-canvas-fitted .course-map-title,
-.presentation.is-canvas-fitted .bootcamp-timeline-title {
+.is-canvas-fitted .course-map-title,
+.is-canvas-fitted .bootcamp-timeline-title {
   font-size: 2.75rem;
 }
 
-.presentation.is-canvas-fitted .course-map-subtitle {
+.is-canvas-fitted .course-map-subtitle {
   font-size: 1.25rem;
 }
 
-.presentation.is-canvas-fitted .course-map-grid {
+.is-canvas-fitted .course-map-grid {
   flex: 1;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.25rem;
 }
 
-.presentation.is-canvas-fitted .course-map-card {
+.is-canvas-fitted .course-map-card {
   padding: 1.5rem 1.25rem;
 }
 
-.presentation.is-canvas-fitted .course-map-card-theme {
+.is-canvas-fitted .course-map-card-theme {
   font-size: 1.5rem;
 }
 
-.presentation.is-canvas-fitted .course-map-card-topic,
-.presentation.is-canvas-fitted .course-map-card-week,
-.presentation.is-canvas-fitted .course-map-card-days,
-.presentation.is-canvas-fitted .course-map-card-sections {
+.is-canvas-fitted .course-map-card-topic,
+.is-canvas-fitted .course-map-card-week,
+.is-canvas-fitted .course-map-card-days,
+.is-canvas-fitted .course-map-card-sections {
   font-size: 1rem;
 }
 
-.presentation.is-canvas-fitted .intro-hero-title {
+.is-canvas-fitted .intro-hero-title {
   font-size: 3.5rem;
 }
 
-.presentation.is-canvas-fitted .intro-hero-subtitle {
+.is-canvas-fitted .intro-hero-subtitle {
   font-size: 1.5rem;
 }
 
 /* ── Section divider — vertical center in fullscreen ── */
 
-.presentation.is-canvas-fitted .slide-frame--divider {
+.is-canvas-fitted .slide-frame--divider {
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 0;
 }
 
-.presentation.is-canvas-fitted .slide-frame-divider-body {
+.is-canvas-fitted .slide-frame-divider-body {
   flex: 1;
   display: flex;
   align-items: center;
@@ -213,33 +213,33 @@
   padding: var(--space-4) var(--space-6);
 }
 
-.presentation.is-canvas-fitted .slide-frame--divider .slide-frame-footer--divider {
+.is-canvas-fitted .slide-frame--divider .slide-frame-footer--divider {
   flex-shrink: 0;
   margin-top: 0;
 }
 
-.presentation.is-canvas-fitted .section-divider-hero--themed {
+.is-canvas-fitted .section-divider-hero--themed {
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
 }
 
-.presentation.is-canvas-fitted .section-divider-title-line {
+.is-canvas-fitted .section-divider-title-line {
   font-size: clamp(2.5rem, 4vw, 3.75rem);
 }
 
-.presentation.is-canvas-fitted .section-divider-topics li {
+.is-canvas-fitted .section-divider-topics li {
   font-size: 1rem;
   padding: 0.5rem 1rem;
 }
 
-.presentation.is-canvas-fitted .section-divider-number {
+.is-canvas-fitted .section-divider-number {
   font-size: clamp(6rem, 16vw, 10rem);
 }
 
 /* ── Auto-split overflow pages (fullscreen) ── */
 
-.presentation.is-canvas-fitted .slide-frame:not(.slide-frame--divider) {
+.is-canvas-fitted .slide-frame:not(.slide-frame--divider) {
   display: grid;
   grid-template-areas:
     "header"
@@ -248,15 +248,15 @@
   grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
-.presentation.is-canvas-fitted .slide-frame:not(.slide-frame--divider) .slide-frame-header {
+.is-canvas-fitted .slide-frame:not(.slide-frame--divider) .slide-frame-header {
   grid-area: header;
 }
 
-.presentation.is-canvas-fitted .slide-frame:not(.slide-frame--divider) .slide-frame-content {
+.is-canvas-fitted .slide-frame:not(.slide-frame--divider) .slide-frame-content {
   grid-area: body;
 }
 
-.presentation.is-canvas-fitted .slide-frame:not(.slide-frame--divider) .slide-frame-footer {
+.is-canvas-fitted .slide-frame:not(.slide-frame--divider) .slide-frame-footer {
   grid-area: footer;
 }
 
@@ -305,37 +305,37 @@
 
 /* ── Concept animations (fullscreen) ── */
 
-.presentation.is-canvas-fitted .concept-card {
+.is-canvas-fitted .concept-card {
   flex-shrink: 0;
   margin: var(--space-2) 0;
 }
 
-.presentation.is-canvas-fitted .concept-card-head h3 {
+.is-canvas-fitted .concept-card-head h3 {
   font-size: 1.35rem;
 }
 
-.presentation.is-canvas-fitted .concept-card-head p {
+.is-canvas-fitted .concept-card-head p {
   font-size: 1rem;
 }
 
-.presentation.is-canvas-fitted .concept-svg-wrap--gd {
+.is-canvas-fitted .concept-svg-wrap--gd {
   width: min(100%, calc(280px * 400 / 180));
   margin-inline: auto;
   max-height: 280px;
 }
 
-.presentation.is-canvas-fitted .concept-svg-wrap--nn {
+.is-canvas-fitted .concept-svg-wrap--nn {
   width: min(100%, calc(320px * 420 / 220));
   margin-inline: auto;
   max-height: 320px;
 }
 
-.presentation.is-canvas-fitted .concept-btn,
-.presentation.is-canvas-fitted .concept-meta {
+.is-canvas-fitted .concept-btn,
+.is-canvas-fitted .concept-meta {
   font-size: 0.95rem;
 }
 
-.presentation.is-canvas-fitted .slide-content-overlay .concept-svg-wrap,
-.presentation.is-canvas-fitted .slide-frame-content .concept-svg-wrap {
+.is-canvas-fitted .slide-content-overlay .concept-svg-wrap,
+.is-canvas-fitted .slide-frame-content .concept-svg-wrap {
   overflow: visible;
 }

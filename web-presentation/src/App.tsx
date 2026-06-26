@@ -919,7 +919,7 @@ export default function App() {
       </div>
 
       {createPortal(
-        <div id="print-container" ref={printRef} className="print-deck" aria-hidden="true" />,
+        <div id="print-container" ref={printRef} className="print-deck is-canvas-fitted" aria-hidden="true" />,
         document.body
       )}
 

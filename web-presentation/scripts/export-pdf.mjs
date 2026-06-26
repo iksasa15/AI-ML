@@ -85,7 +85,7 @@ function writePrintHtml({ html, styles }) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     ${stylesheetTags}
     <style>
-      @page { size: landscape; margin: 0; }
+      @page { size: 20in 11.25in; margin: 0; }
       html, body {
         margin: 0;
         padding: 0;
@@ -102,7 +102,7 @@ function writePrintHtml({ html, styles }) {
     </style>
   </head>
   <body>
-    <div id="print-container" class="print-deck">${html}</div>
+    <div id="print-container" class="print-deck is-canvas-fitted">${html}</div>
   </body>
 </html>`;
   fs.writeFileSync(printHtmlPath, doc, "utf8");

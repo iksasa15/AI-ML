@@ -1541,14 +1541,14 @@ html:has(.presentation.is-fullscreen) body {
   flex-direction: column;
 }
 
-.presentation.is-canvas-fitted .slide-frame-content,
-.presentation.is-canvas-fitted .slide-frame-divider-body {
+.is-canvas-fitted .slide-frame-content,
+.is-canvas-fitted .slide-frame-divider-body {
   flex: 1;
   min-height: 0;
   overflow: hidden;
 }
 
-.presentation.is-canvas-fitted .slide-frame-footer {
+.is-canvas-fitted .slide-frame-footer {
   flex-shrink: 0;
   margin-top: auto;
 }
@@ -2625,7 +2625,7 @@ html[data-theme="dark"] .presentation {
 
 @media print {
   @page {
-    size: landscape;
+    size: 20in 11.25in;
     margin: 0;
   }
 
@@ -2653,7 +2653,7 @@ html[data-theme="dark"] .presentation {
     print-color-adjust: exact;
   }
 
-  #root,
+   #root,
   #root > *,
   .presentation,
   .outline-page,

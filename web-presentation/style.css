@@ -14,8 +14,8 @@
   --dot-bg: #4b5177;
   --slide-w: min(100%, 1000px);
   --slide-h: 640px;
-  --print-slide-w: 277mm;
-  --print-slide-h: calc(277mm * 0.64);
+  --print-slide-w: 20in;
+  --print-slide-h: 11.25in;
   --card-box-h: 210px;
   --radius-lg: 18px;
   --radius-md: 12px;
@@ -633,8 +633,8 @@ body {
 
 @media print {
   @page {
-    size: A4 landscape;
-    margin: 10mm;
+    size: 20in 11.25in;
+    margin: 0;
   }
 
   html,
@@ -655,16 +655,16 @@ body {
 
   .print-deck {
     display: grid;
-    gap: 10mm;
+    gap: 0;
   }
 
   .print-slide {
     width: var(--print-slide-w);
     min-height: var(--print-slide-h);
     background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 2rem;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     box-shadow: none;
     break-after: page;
     page-break-after: always;

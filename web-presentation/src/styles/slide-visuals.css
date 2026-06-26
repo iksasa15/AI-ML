@@ -62,21 +62,21 @@
   text-align: center;
 }
 
-.presentation.is-canvas-fitted .slide-title-icon .slide-icon {
+.is-canvas-fitted .slide-title-icon .slide-icon {
   width: 40px;
   height: 40px;
 }
 
-.presentation.is-canvas-fitted .slide-bullet-icon-wrap .slide-icon {
+.is-canvas-fitted .slide-bullet-icon-wrap .slide-icon {
   width: 26px;
   height: 26px;
 }
 
-.presentation.is-canvas-fitted .illustration-slot {
+.is-canvas-fitted .illustration-slot {
   padding: 1.25rem;
 }
 
-.presentation.is-canvas-fitted .illustration-slot svg {
+.is-canvas-fitted .illustration-slot svg {
   max-height: 320px;
 }
 
