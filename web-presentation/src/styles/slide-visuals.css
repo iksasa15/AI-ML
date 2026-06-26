@@ -85,7 +85,7 @@ html[data-theme="dark"] .illustration-slot {
 }
 
 html[data-theme="dark"] .slide-icon {
-  color: var(--color-gold);
+  color: var(--accent);
 }
 
 .takeaway-icon {

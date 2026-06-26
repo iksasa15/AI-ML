@@ -41,8 +41,8 @@ export function SectionDividerIcon({ group }: SectionDividerIconProps) {
             fill="currentColor"
             opacity="0.85"
           />
-          <rect x="14" y="20" width="12" height="2" rx="1" fill="#0f172a" opacity="0.35" />
-          <rect x="14" y="26" width="18" height="2" rx="1" fill="#0f172a" opacity="0.35" />
+          <rect x="14" y="20" width="12" height="2" rx="1" fill="#0d0d1a" opacity="0.35" />
+          <rect x="14" y="26" width="18" height="2" rx="1" fill="#0d0d1a" opacity="0.35" />
         </svg>
       );
     case "genai":

@@ -80,7 +80,7 @@ function applyThemeToDocument(theme: "light" | "dark") {
 export default function App() {
   const [booted, setBooted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [templateOpen, setTemplateOpen] = useState(false);
   const [slideEntering, setSlideEntering] = useState(false);
   const [view, setView] = useState<"slides" | "outline">("slides");
@@ -204,7 +204,7 @@ export default function App() {
 
   useEffect(() => {
     const saved = localStorage.getItem(THEME_STORAGE_KEY);
-    const initial = saved === "light" || saved === "dark" ? saved : "light";
+    const initial = saved === "light" || saved === "dark" ? saved : "dark";
     setTheme(initial);
     applyThemeToDocument(initial);
   }, []);

@@ -14,9 +14,9 @@
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--slide-subtitle-color, var(--muted));
 }
 
 .intro-hero-title {
@@ -29,26 +29,6 @@
   letter-spacing: -0.02em;
 }
 
-.intro-hero-title-text {
-  white-space: pre-wrap;
-}
-
-.intro-hero-cursor {
-  display: inline-block;
-  width: 3px;
-  height: 0.9em;
-  margin-inline-start: 2px;
-  vertical-align: text-bottom;
-  background: var(--accent);
-  animation: intro-cursor-blink 0.9s step-end infinite;
-}
-
-@keyframes intro-cursor-blink {
-  50% {
-    opacity: 0;
-  }
-}
-
 .intro-hero-subtitle {
   margin: var(--space-3) 0 0;
   font-family: var(--font-ui);
@@ -58,11 +38,11 @@
 
 .intro-hero-accent {
   position: absolute;
-  inset: auto 15% 0;
-  height: 4px;
+  inset: auto 20% 0;
+  height: 2px;
   border-radius: var(--radius-full);
-  background: var(--accent);
-  opacity: 0.65;
+  background: var(--etra-gradient);
+  opacity: 0.9;
 }
 
 /* Course map */
@@ -82,9 +62,9 @@
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--slide-subtitle-color, var(--muted));
 }
 
 .course-map-title,
@@ -111,20 +91,17 @@
 
 .course-map-card {
   position: relative;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-2);
-  background: color-mix(in srgb, var(--week-color) 55%, var(--card));
-  border: 1px solid color-mix(in srgb, var(--week-color-dark) 22%, var(--border));
-  border-top: 4px solid var(--week-color-dark);
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base);
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--week-color-dark);
+  box-shadow: none;
+  transition: border-color var(--transition-fast);
 }
 
 .course-map-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--week-color-dark) 45%, var(--border));
 }
 
 .course-map-card-top {
@@ -244,8 +221,8 @@
   text-align: center;
   padding: var(--space-3) var(--space-2);
   border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--week-color) 50%, var(--card));
-  border: 1px solid color-mix(in srgb, var(--week-color-dark) 22%, var(--border));
+  background: var(--card-2);
+  border: 1px solid var(--border);
   border-top: 3px solid var(--week-color-dark);
   min-height: 110px;
 }

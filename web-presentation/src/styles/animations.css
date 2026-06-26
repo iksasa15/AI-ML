@@ -24,12 +24,12 @@
 
 @keyframes divider-wipe-in {
   from {
-    clip-path: inset(0 100% 0 0);
-    opacity: 0.6;
+    opacity: 0.88;
+    transform: translateY(6px);
   }
   to {
-    clip-path: inset(0 0 0 0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -57,7 +57,7 @@
 }
 
 .slide-transition-divider.is-entering {
-  animation: divider-wipe-in 600ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: divider-wipe-in 350ms ease both;
 }
 
 /* Bullet reveal — one at a time */

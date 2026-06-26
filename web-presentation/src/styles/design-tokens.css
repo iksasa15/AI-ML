@@ -91,6 +91,10 @@
   --topbar-accent-line: var(--color-accent);
   --etra-gradient: linear-gradient(135deg, #5234b7 0%, #9e59cd 100%);
   --etra-glow: rgba(82, 52, 183, 0.25);
+  --divider-bg: #0d0d1a;
+  --slide-subtitle-color: var(--color-text-secondary);
+  --code-bg: var(--card-3);
+  --code-header-bg: var(--color-bg-subtle);
 }
 
 /* Light theme — explicit (same as :root) */
@@ -126,4 +130,8 @@ html[data-theme="dark"] {
   --topbar-accent-line: #9e59cd;
   --etra-gradient: linear-gradient(135deg, #5234b7 0%, #9e59cd 100%);
   --etra-glow: rgba(82, 52, 183, 0.4);
+  --divider-bg: #0d0d1a;
+  --slide-subtitle-color: #b0a8d4;
+  --code-bg: var(--card-3);
+  --code-header-bg: #0d0d1a;
 }

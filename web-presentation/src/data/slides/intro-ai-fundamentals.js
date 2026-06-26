@@ -12,21 +12,7 @@ export const slides = [
       "Three Types of AI — Narrow, General, and Super",
     ],
     speakerNote:
-      "Open Chapter 1. Preview the four topics — conceptual foundations before any coding. Total chapter ~20 min.",
-  },
-  {
-    title: "Introduction to Artificial Intelligence",
-    subtitle: "Pre-Week 1 · Foundations",
-    body: "Before we dive into machine learning pipelines and models, we need a shared vocabulary: what AI is, how it differs from traditional software, why data matters, and what kinds of AI exist today versus in the future.",
-    bullets: [
-      { text: "This block sets context for Week 1 (Sections S1–S6).", icon: "idea" },
-      { text: "All slides are in English — technical terms stay standard for industry use.", icon: "target" },
-      { text: "Goal: understand the landscape before writing your first ML pipeline.", icon: "workflow" },
-    ],
-    speakerNote:
-      "Welcome trainees to the AI fundamentals block. Set expectations: ~15 minutes, conceptual only — hands-on starts at Section 1. Ask: who has used ChatGPT or a spam filter? That is Narrow AI in daily life.",
-    note: "Pacing: ~2 minutes. Transition from bootcamp timeline into conceptual foundations.",
-    titleIcon: "idea",
+      "Open Chapter 1. Preview the four topics — conceptual foundations before any coding. Welcome trainees: ~20 min conceptual block; hands-on starts at Section 1. Ask: who has used ChatGPT or a spam filter?",
   },
   {
     title: "What Is Artificial Intelligence?",
@@ -227,8 +213,8 @@ export const slides = [
       ],
     },
     speakerNote:
-      "Keep ASI brief and grounded — it is theoretical. Pivot to ethics: bias in hiring algorithms is a Narrow AI problem we must solve today. Close with the bootcamp bridge: we focus on ANI skills you can build and deploy. Next: a detailed tour through AI history — from Turing to LLMs.",
-    note: "Bridge to AI history block (~9 slides).",
+      "Keep ASI brief and grounded — it is theoretical. Pivot to ethics: bias in hiring algorithms is a Narrow AI problem we must solve today. Close with the bootcamp bridge: we focus on ANI skills you can build and deploy. Next: open Chapter 2 from the chapter cover — AI history from Turing to LLMs.",
+    note: "Bridge to Chapter 2 — History of AI.",
     titleIcon: "warning",
   },
   {
@@ -245,29 +231,6 @@ export const slides = [
     ],
     speakerNote:
       "Open Chapter 2 — the full AI timeline. Emphasize boom-and-bust cycles. Total chapter ~25 min.",
-  },
-  {
-    title: "History of Artificial Intelligence",
-    subtitle: "From Ancient Ideas to Large Language Models",
-    body: "AI did not appear overnight. Its story spans centuries of philosophy and mathematics, decades of boom-and-bust cycles, and a modern renaissance powered by data, GPUs, and deep learning. This timeline explains how we arrived at today's generative AI era.",
-    table: {
-      title: "AI history at a glance",
-      headers: ["Era", "Period", "Key milestone"],
-      rows: [
-        ["Philosophical roots", "Pre-1950", "Logic, computation theory, Turing"],
-        ["Birth of AI", "1956", "Dartmouth Conference — term coined"],
-        ["First golden age", "1956–1960s", "Logic Theorist, ELIZA, optimism"],
-        ["First AI winter", "1970s", "Funding cuts, unmet promises"],
-        ["Expert systems", "1980s", "MYCIN, XCON, backpropagation"],
-        ["Second AI winter", "Late 1980s", "Market collapse, symbolic AI limits"],
-        ["Modern renaissance", "1990s–2012", "Deep Blue, big data, AlexNet"],
-        ["Deep learning & GenAI", "2012–today", "YOLO, Transformers, LLMs"],
-      ],
-    },
-    speakerNote:
-      "Walk the timeline table top to bottom — ~2 minutes. Emphasize the boom-bust pattern: winters follow hype. Trainees should see that today's LLM excitement has historical parallels. Ask: which era do you think we are in now?",
-    note: "History block opener — ~20–25 min total for the next 9 slides.",
-    titleIcon: "workflow",
   },
   {
     title: "Philosophical & Mathematical Roots",
@@ -524,8 +487,8 @@ export const slides = [
     imageAlt: "Transformer architecture — foundation of modern LLMs",
     conceptAnimation: "neural-network",
     speakerNote:
-      "This is the era trainees live in. YOLO = vision in production; Transformers = everything in NLP/GenAI. ChatGPT moment = third 'golden age' — but remember the winters. Next: map the major AI domains before we start building. ~3 minutes.",
-    note: "Bridge to AI domains block (~7 slides).",
+      "This is the era trainees live in. YOLO = vision in production; Transformers = everything in NLP/GenAI. ChatGPT moment = third 'golden age' — but remember the winters. Next: open Chapter 3 from the chapter cover — AI domains and branches. ~3 minutes.",
+    note: "Bridge to Chapter 3 — AI Domains.",
     titleIcon: "llm",
   },
   {
@@ -543,32 +506,6 @@ export const slides = [
     ],
     speakerNote:
       "Open Chapter 3 — map the field before diving into bootcamp sections. Total chapter ~18 min.",
-  },
-  {
-    title: "AI Domains & Branches",
-    subtitle: "How the Field Splits into Specializations",
-    body: "Artificial Intelligence is not one monolithic technology — it is a family of approaches and application areas. Understanding the map helps you choose the right tools and see where this bootcamp fits.",
-    table: {
-      title: "AI domains and bootcamp coverage",
-      headers: ["Domain", "Focus", "Bootcamp sections"],
-      rows: [
-        ["Machine Learning", "Patterns & algorithms from data", "S1–S6"],
-        ["Deep Learning", "Neural networks at scale", "S7"],
-        ["NLP", "Human language understanding & generation", "S8–S13"],
-        ["Generative AI / RAG / MLOps", "LLMs, retrieval, production systems", "S14–S16"],
-        ["Computer Vision", "Images, video, visual security", "S7 (CNN)"],
-        ["Robotics & Autonomous Systems", "Perception + planning + control", "Cross-cutting (CV + ML)"],
-        ["Expert Systems", "Rule-based decision making", "Historical context (intro)"],
-      ],
-    },
-    bullets: [
-      { text: "Deep Learning is a subset of Machine Learning; NLP and Vision often use DL today.", icon: "compare" },
-      { text: "Most modern products combine multiple domains (e.g., self-driving = CV + ML + robotics).", icon: "workflow" },
-    ],
-    speakerNote:
-      "Walk the table row by row — ~2 minutes. Emphasize nesting: DL ⊂ ML, and GenAI is largely NLP + DL. Point trainees to their bootcamp path in the right column. Ask which domain excites them most.",
-    note: "Domains block opener — taxonomy before deep dives.",
-    titleIcon: "workflow",
   },
   {
     title: "Machine Learning",
@@ -781,8 +718,8 @@ export const slides = [
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Mycin.gif",
     imageAlt: "MYCIN expert system — early rule-based medical AI",
     speakerNote:
-      "Connect back to the 1980s history slide — expert systems were the first AI gold rush in industry. Today ML dominates, but rules still matter (compliance, safety). Next: Generative AI — how the field looks today in products trainees actually use. ~2–3 minutes.",
-    note: "Bridge to Generative AI & modern applications block (~5 slides).",
+      "Connect back to the 1980s history slide — expert systems were the first AI gold rush in industry. Today ML dominates, but rules still matter (compliance, safety). Next: open Chapter 4 from the chapter cover — Generative AI and modern applications. ~2–3 minutes.",
+    note: "Bridge to Chapter 4 — GenAI & Modern Applications.",
     titleIcon: "compare",
   },
   {
@@ -798,25 +735,6 @@ export const slides = [
     ],
     speakerNote:
       "Open Chapter 4 — today's AI in products trainees use daily. Total chapter ~12 min.",
-  },
-  {
-    title: "Generative AI & Modern Applications",
-    subtitle: "From Prediction to Creation",
-    body: "Generative AI (GenAI) marks a shift from AI that classifies and predicts to AI that creates — text, images, code, audio, and video. These four slides map the revolution, the technology, industry use cases, and everyday productivity tools.",
-    table: {
-      title: "GenAI block roadmap",
-      headers: ["Topic", "Focus", "Bootcamp link"],
-      rows: [
-        ["Generative AI revolution", "Why creation changes everything", "S14 — GenAI"],
-        ["Large Language Models", "Conversation & context", "S8–S14 — NLP → GenAI"],
-        ["Industry applications", "Business, medicine, public security", "S15 — RAG, S16 — MLOps"],
-        ["Productivity tools", "Text, image, code generation", "Hands-on throughout bootcamp"],
-      ],
-    },
-    speakerNote:
-      "Set expectations for the final intro block — ~10 minutes. GenAI is what brought AI to mainstream attention in 2022–2023. This block connects intro concepts to sections S14–S16. ~1–2 minutes.",
-    note: "GenAI block opener — after domains, before Section 1.",
-    titleIcon: "llm",
   },
   {
     title: "The Generative AI Revolution",
@@ -967,8 +885,8 @@ export const slides = [
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/640px-Octicons-mark-github.svg.png",
     imageAlt: "GitHub — home of Copilot and open-source AI coding tools",
     speakerNote:
-      "Make it practical — trainees likely use 2–3 of these already. Code assistants accelerate learning but require review (models hallucinate APIs). Next: responsible AI, careers, and how to grow after this bootcamp. ~2–3 minutes.",
-    note: "Bridge to Ethics & Future block (~4 slides).",
+      "Make it practical — trainees likely use 2–3 of these already. Code assistants accelerate learning but require review (models hallucinate APIs). Next: open Chapter 5 from the chapter cover — ethics, careers, and your learning roadmap. ~2–3 minutes.",
+    note: "Bridge to Chapter 5 — Ethics & the Future.",
     titleIcon: "llm",
   },
   {
@@ -983,24 +901,6 @@ export const slides = [
     ],
     speakerNote:
       "Open Chapter 5 — close the intro responsibly. End with the learning roadmap, then Section 1. Total chapter ~10 min.",
-  },
-  {
-    title: "Ethics & the Future",
-    subtitle: "Responsible AI, Careers & Your Learning Path",
-    body: "Building and deploying AI carries social responsibility. These final intro slides cover ethical risks, the evolving job market, and a practical roadmap for developing your skills — before we start hands-on work in Section 1.",
-    table: {
-      title: "Closing intro topics",
-      headers: ["Topic", "Focus"],
-      rows: [
-        ["AI ethics", "Bias, privacy, deepfakes"],
-        ["Future of jobs", "Human + machine collaboration"],
-        ["Learning roadmap", "Start, practice, and grow in AI/ML"],
-      ],
-    },
-    speakerNote:
-      "Frame this as the responsible closing of the intro — not fear, but awareness. ~1 minute, then dive into ethics.",
-    note: "Ethics & Future block opener.",
-    titleIcon: "warning",
   },
   {
     title: "AI Ethics",

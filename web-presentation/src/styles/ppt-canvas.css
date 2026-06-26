@@ -45,13 +45,12 @@
   font-size: 1.4rem;
   line-height: 1.65;
   margin-bottom: 1rem;
-  padding-inline-start: 1.6rem;
+  padding-inline-start: 1.25rem;
+  border-inline-start-width: 4px;
 }
 
 .presentation.is-canvas-fitted .slide-bullet-list li::before {
-  width: 9px;
-  height: 9px;
-  top: 0.58em;
+  display: none;
 }
 
 .presentation.is-canvas-fitted .slide-bullet-list--compact li {

@@ -11,9 +11,10 @@
   margin: 0;
   font-family: var(--font-ui);
   font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--slide-subtitle-color, var(--muted));
 }
 
 .big-picture-title,
@@ -166,9 +167,9 @@
   margin: 0 0 0.35rem;
   font-family: var(--font-ui);
   font-size: var(--text-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--accent);
+  font-weight: 600;
+  text-transform: none;
+  color: var(--slide-subtitle-color, var(--muted));
 }
 
 .takeaway-reflection-question {
