@@ -48,8 +48,8 @@ function sliceSectionBlocks(
   const out: SlideRecord[] = [];
 
   if (includeIntro && jumps.length > 0) {
-    const firstSection = jumps.find((j) => j.tag.startsWith("Section"));
-    const introEnd = firstSection ? firstSection.slideIndex - 1 : 2;
+    const firstSection = jumps.find((j) => /^Section\s+\d+/i.test(j.tag));
+    const introEnd = firstSection ? firstSection.slideIndex - 1 : allSlides.length - 1;
     if (introEnd >= 0) {
       out.push(...allSlides.slice(0, introEnd + 1));
     }

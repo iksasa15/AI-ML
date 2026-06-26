@@ -1,6 +1,20 @@
 /** Pre-Week 1 — AI fundamentals intro (before Section 1) */
 export const slides = [
   {
+    type: "chapter-divider",
+    title: "Chapter 1",
+    chapterId: 1,
+    subtitle: "Introduction to Artificial Intelligence",
+    topics: [
+      "What Is AI — a simple, comprehensive definition",
+      "How Does a Computer Think? — traditional vs. AI programming",
+      "Data — the real fuel of AI",
+      "Three Types of AI — Narrow, General, and Super",
+    ],
+    speakerNote:
+      "Open Chapter 1. Preview the four topics — conceptual foundations before any coding. Total chapter ~20 min.",
+  },
+  {
     title: "Introduction to Artificial Intelligence",
     subtitle: "Pre-Week 1 · Foundations",
     body: "Before we dive into machine learning pipelines and models, we need a shared vocabulary: what AI is, how it differs from traditional software, why data matters, and what kinds of AI exist today versus in the future.",
@@ -216,6 +230,21 @@ export const slides = [
       "Keep ASI brief and grounded — it is theoretical. Pivot to ethics: bias in hiring algorithms is a Narrow AI problem we must solve today. Close with the bootcamp bridge: we focus on ANI skills you can build and deploy. Next: a detailed tour through AI history — from Turing to LLMs.",
     note: "Bridge to AI history block (~9 slides).",
     titleIcon: "warning",
+  },
+  {
+    type: "chapter-divider",
+    title: "Chapter 2",
+    chapterId: 2,
+    subtitle: "History of Artificial Intelligence",
+    topics: [
+      "Philosophical & mathematical roots — before computers",
+      "Birth of the field (1956) — Dartmouth & Alan Turing",
+      "First golden age & first AI winter (1970s)",
+      "Expert systems boom & second AI winter (1980s)",
+      "Modern renaissance (1990s–2012) & deep learning era",
+    ],
+    speakerNote:
+      "Open Chapter 2 — the full AI timeline. Emphasize boom-and-bust cycles. Total chapter ~25 min.",
   },
   {
     title: "History of Artificial Intelligence",
@@ -500,6 +529,22 @@ export const slides = [
     titleIcon: "llm",
   },
   {
+    type: "chapter-divider",
+    title: "Chapter 3",
+    chapterId: 3,
+    subtitle: "AI Domains & Branches",
+    topics: [
+      "Machine Learning — patterns & algorithms",
+      "Deep Learning — neural network simulation",
+      "NLP — how machines understand language",
+      "Computer Vision — images, video & security",
+      "Robotics & autonomous systems",
+      "Expert systems & decision making",
+    ],
+    speakerNote:
+      "Open Chapter 3 — map the field before diving into bootcamp sections. Total chapter ~18 min.",
+  },
+  {
     title: "AI Domains & Branches",
     subtitle: "How the Field Splits into Specializations",
     body: "Artificial Intelligence is not one monolithic technology — it is a family of approaches and application areas. Understanding the map helps you choose the right tools and see where this bootcamp fits.",
@@ -741,6 +786,20 @@ export const slides = [
     titleIcon: "compare",
   },
   {
+    type: "chapter-divider",
+    title: "Chapter 4",
+    chapterId: 4,
+    subtitle: "Generative AI & Modern Applications",
+    topics: [
+      "The Generative AI revolution",
+      "Large Language Models — conversation & context",
+      "Industry applications — business, medicine & public security",
+      "Daily productivity — text, image & code generation",
+    ],
+    speakerNote:
+      "Open Chapter 4 — today's AI in products trainees use daily. Total chapter ~12 min.",
+  },
+  {
     title: "Generative AI & Modern Applications",
     subtitle: "From Prediction to Creation",
     body: "Generative AI (GenAI) marks a shift from AI that classifies and predicts to AI that creates — text, images, code, audio, and video. These four slides map the revolution, the technology, industry use cases, and everyday productivity tools.",
@@ -911,6 +970,19 @@ export const slides = [
       "Make it practical — trainees likely use 2–3 of these already. Code assistants accelerate learning but require review (models hallucinate APIs). Next: responsible AI, careers, and how to grow after this bootcamp. ~2–3 minutes.",
     note: "Bridge to Ethics & Future block (~4 slides).",
     titleIcon: "llm",
+  },
+  {
+    type: "chapter-divider",
+    title: "Chapter 5",
+    chapterId: 5,
+    subtitle: "Ethics & the Future",
+    topics: [
+      "AI ethics — bias, privacy & deepfakes",
+      "Future of jobs — human–machine integration",
+      "Your learning roadmap — start & grow in AI/ML",
+    ],
+    speakerNote:
+      "Open Chapter 5 — close the intro responsibly. End with the learning roadmap, then Section 1. Total chapter ~10 min.",
   },
   {
     title: "Ethics & the Future",

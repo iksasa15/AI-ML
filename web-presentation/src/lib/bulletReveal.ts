@@ -1,3 +1,4 @@
+import { bulletTexts, normalizeBullets } from "./bulletItems";
 import { isDeckDivider } from "./slideDividers";
 import type { SlideRecord } from "./slideMarkup";
 import type { DeckScope } from "./traineeProgress";

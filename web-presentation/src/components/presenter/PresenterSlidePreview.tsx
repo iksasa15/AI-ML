@@ -3,6 +3,7 @@ import { renderSlideMath } from "../../lib/renderMath";
 import { SlideContent } from "../slides/SlideContent";
 import { SlideFrame } from "../slides/SlideFrame";
 import { isDeckDivider } from "../../lib/slideDividers";
+import type { SlideRecord } from "../../lib/slideMarkup";
 import type { UiLang } from "../../lib/uiStrings";
 
 type PresenterSlidePreviewProps = {
