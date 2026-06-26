@@ -1156,6 +1156,13 @@ body.is-print-export .print-deck {
   z-index: -1;
 }
 
+body[data-pdf-export="1"] .presentation,
+body[data-pdf-export="1"] .top-nav,
+body[data-pdf-export="1"] .translate-fab,
+body[data-pdf-export="1"] .trainee-progress {
+  visibility: hidden;
+}
+
 #slide-container:focus {
   outline: none;
 }

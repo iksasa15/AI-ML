@@ -454,6 +454,37 @@ export default function App() {
     })();
   }, [renderPrintDeck, uiLang, waitForPrintLayout]);
 
+  const pdfExportMode =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("pdfExport") === "1";
+
+  useEffect(() => {
+    if (!pdfExportMode || !booted || view !== "slides") return;
+    document.body.dataset.pdfExport = "1";
+
+    void (async () => {
+      document.body.classList.add("is-print-export");
+      try {
+        const pageCount = await renderPrintDeck();
+        const el = printRef.current;
+        if (el && pageCount > 0) {
+          el.dataset.printReady = "true";
+          el.dataset.pageCount = String(pageCount);
+        } else if (el) {
+          el.dataset.printError = "empty";
+        }
+      } catch {
+        if (printRef.current) {
+          printRef.current.dataset.printError = "failed";
+        }
+      }
+    })();
+
+    return () => {
+      delete document.body.dataset.pdfExport;
+    };
+  }, [pdfExportMode, booted, view, renderPrintDeck]);
+
   useEffect(() => {
     if (!booted || view !== "slides") return;
     const warmId = window.setTimeout(() => {
