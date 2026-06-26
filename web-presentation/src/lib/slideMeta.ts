@@ -1,9 +1,10 @@
 import { getActiveSectionLabel, type SlideRecord } from "./slideMarkup";
+import { isChapterDivider, isDeckDivider, parseChapterNumber } from "./slideDividers";
 
 export function countSlidesInSection(slides: SlideRecord[], dividerIndex: number): number {
   let count = 0;
   for (let i = dividerIndex + 1; i < slides.length; i += 1) {
-    if (slides[i].type === "section-divider") break;
+    if (isDeckDivider(slides[i])) break;
     count += 1;
   }
   return count;
@@ -18,9 +19,18 @@ function parseSectionNumber(tag: string): number | null {
   return match ? Number.parseInt(match[1], 10) : null;
 }
 
+function parseChapterNumberFromTitle(tag: string): number | null {
+  const match = tag.match(/Chapter\s+(\d+)/i);
+  return match ? Number.parseInt(match[1], 10) : null;
+}
+
 /** Eyebrow label for section dividers — e.g. WEEK 2 · SESSION 1 */
 export function getDividerEyebrow(slide: SlideRecord): string {
   const title = String(slide.title || "");
+  if (isChapterDivider(slide)) {
+    const chapterNum = parseChapterNumber(slide);
+    return chapterNum ? `PRE-WEEK 1 · CHAPTER ${chapterNum}` : "PRE-WEEK 1 · INTRO";
+  }
   if (/^Phase\s+\d+/i.test(title)) {
     return title.toUpperCase();
   }
@@ -63,7 +73,7 @@ export function getDividerTitleLines(slide: SlideRecord): string[] {
 export function getActiveSectionTag(slides: SlideRecord[], slideIndex: number): string {
   for (let i = slideIndex; i >= 0; i -= 1) {
     const slide = slides[i];
-    if (slide?.type === "section-divider") {
+    if (isDeckDivider(slide)) {
       return String(slide.title || "Section");
     }
   }
@@ -71,6 +81,8 @@ export function getActiveSectionTag(slides: SlideRecord[], slideIndex: number): 
 }
 
 function weekLabelFromTag(tag: string): string | null {
+  const chapterNum = parseChapterNumberFromTitle(tag);
+  if (chapterNum) return "Pre-Week 1";
   const sectionNum = parseSectionNumber(tag);
   if (!sectionNum) return null;
   if (sectionNum <= 6) return "Week 1";

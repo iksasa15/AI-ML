@@ -66,6 +66,18 @@ export function getSectionTheme(sectionId: number): SectionTheme {
   return THEMES[getSectionThemeGroup(sectionId)];
 }
 
+/** Intro chapter cover themes (Pre-Week 1, before Section 1). */
+export function getChapterTheme(chapterId: number): SectionTheme {
+  const sectionByChapter: Record<number, number> = {
+    1: 1,
+    2: 1,
+    3: 7,
+    4: 14,
+    5: 16,
+  };
+  return getSectionTheme(sectionByChapter[chapterId] ?? 1);
+}
+
 export function parseSectionIdFromDivider(slide: SlideRecord): number | null {
   if (typeof slide.sectionId === "number" && slide.sectionId > 0) {
     return slide.sectionId;

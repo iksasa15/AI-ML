@@ -1,4 +1,5 @@
 import type { SlideRecord } from "./slideMarkup";
+import { isChapterDivider, isSectionDividerSlide } from "./slideDividers";
 
 export type SectionJump = {
   id: string;
@@ -17,16 +18,22 @@ export type SectionNavItem = SectionJump & {
 /** فواصل فرعية داخل قسم Deep Learning — تُعرض كشرائح لكن لا تُدرَج في جدول الأقسام */
 const OUTLINE_EXCLUDED_DIVIDER_TITLES = new Set(["Phase 1", "Phase 2", "Phase 3", "Phase 4"]);
 
-/** فهرس الأقسام: مقدمة (قبل أول فاصل) + كل شريحة section-divider (ما عدا الفواصل المستبعدة) */
+function isOutlineSectionDivider(slide: SlideRecord): boolean {
+  if (!isSectionDividerSlide(slide)) return false;
+  const t = String(slide.title || "");
+  return !OUTLINE_EXCLUDED_DIVIDER_TITLES.has(t);
+}
+
+function isOutlineNavDivider(slide: SlideRecord): boolean {
+  return isChapterDivider(slide) || isOutlineSectionDivider(slide);
+}
+
+/** فهرس الأقسام: مقدمة (قبل أول فاصل) + فصول المقدمة + كل section-divider */
 export function buildSectionJumps(slides: SlideRecord[]): SectionJump[] {
   const jumps: SectionJump[] = [];
-  const firstDividerIdx = slides.findIndex((s) => {
-    if (s.type !== "section-divider") return false;
-    const t = String(s.title || "");
-    return !OUTLINE_EXCLUDED_DIVIDER_TITLES.has(t);
-  });
+  const firstNavIdx = slides.findIndex(isOutlineNavDivider);
 
-  if (firstDividerIdx > 0) {
+  if (firstNavIdx > 0) {
     jumps.push({
       id: "intro",
       label: "مقدمة وأساسيات الذكاء الاصطناعي",
@@ -36,9 +43,16 @@ export function buildSectionJumps(slides: SlideRecord[]): SectionJump[] {
   }
 
   slides.forEach((s, i) => {
-    if (s.type !== "section-divider") return;
-    const t = String(s.title || "");
-    if (OUTLINE_EXCLUDED_DIVIDER_TITLES.has(t)) return;
+    if (!isOutlineNavDivider(s)) return;
+    if (isChapterDivider(s)) {
+      jumps.push({
+        id: `chapter-${i}`,
+        label: String(s.subtitle || s.title || `Chapter ${jumps.length + 1}`),
+        tag: String(s.title || ""),
+        slideIndex: i,
+      });
+      return;
+    }
     jumps.push({
       id: `section-${i}`,
       label: String(s.subtitle || s.title || `قسم ${jumps.length + 1}`),

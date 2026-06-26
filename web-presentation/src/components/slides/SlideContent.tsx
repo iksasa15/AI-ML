@@ -195,7 +195,7 @@ export function SlideContent({
     return <BootcampTimelineSlide />;
   }
 
-  if (slide.type === "section-divider") {
+  if (slide.type === "section-divider" || slide.type === "chapter-divider") {
     return <SectionDivider slide={slide} slides={slides} slideIndex={slideIndex} />;
   }
 

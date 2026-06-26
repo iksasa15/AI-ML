@@ -5,10 +5,16 @@ import {
   getDividerTitleLines,
 } from "../../lib/slideMeta";
 import {
+  getChapterTheme,
   getSectionKeyTopics,
   getSectionTheme,
   parseSectionIdFromDivider,
 } from "../../lib/sectionTheme";
+import {
+  getDividerTopicsFromSlide,
+  isChapterDivider,
+  parseChapterNumber,
+} from "../../lib/slideDividers";
 import { AmpersandText } from "../ui/AmpersandText";
 import type { SlideRecord } from "../../lib/slideMarkup";
 import { SectionDividerIcon } from "./SectionDividerIcon";
@@ -20,11 +26,17 @@ type SectionDividerProps = {
 };
 
 export function SectionDivider({ slide, slides, slideIndex }: SectionDividerProps) {
+  const isChapter = isChapterDivider(slide);
+  const chapterId = parseChapterNumber(slide) ?? 0;
   const sectionId = parseSectionIdFromDivider(slide) ?? 0;
-  const theme = getSectionTheme(sectionId);
-  const keyTopics = getSectionKeyTopics(sectionId);
+  const theme = isChapter ? getChapterTheme(chapterId) : getSectionTheme(sectionId);
+  const slideTopics = getDividerTopicsFromSlide(slide);
+  const keyTopics = slideTopics.length
+    ? slideTopics
+    : getSectionKeyTopics(sectionId);
   const eyebrow = getDividerEyebrow(slide);
   const titleLines = getDividerTitleLines(slide);
+  const displayNumber = isChapter ? chapterId : sectionId;
   const slideCount = countSlidesInSection(slides, slideIndex);
   const minutes = estimateSectionMinutes(slideCount);
 
@@ -49,7 +61,7 @@ export function SectionDivider({ slide, slides, slideIndex }: SectionDividerProp
 
         <div className="section-divider-main">
           <div className="section-divider-number-wrap" aria-hidden="true">
-            <span className="section-divider-number">{sectionId || "·"}</span>
+            <span className="section-divider-number">{displayNumber || "·"}</span>
           </div>
 
           <div className="section-divider-copy">

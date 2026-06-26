@@ -6,10 +6,17 @@ import { isSlideIconId } from "./slideIconKeys";
 import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
 import { COURSE_WEEKS } from "./courseWeeks";
 import {
+  getChapterTheme,
   getSectionKeyTopics,
   getSectionTheme,
   parseSectionIdFromDivider,
 } from "./sectionTheme";
+import {
+  getDividerTopicsFromSlide,
+  isChapterDivider,
+  isDeckDivider,
+  parseChapterNumber,
+} from "./slideDividers";
 import {
   countSlidesInSection,
   estimateSectionMinutes,
@@ -194,9 +201,13 @@ function buildSectionDividerMarkup(
   slides: SlideRecord[],
   slideIndex: number
 ) {
+  const isChapter = isChapterDivider(slide);
+  const chapterId = parseChapterNumber(slide) ?? 0;
   const sectionId = parseSectionIdFromDivider(slide) ?? 0;
-  const theme = getSectionTheme(sectionId);
-  const keyTopics = getSectionKeyTopics(sectionId);
+  const theme = isChapter ? getChapterTheme(chapterId) : getSectionTheme(sectionId);
+  const slideTopics = getDividerTopicsFromSlide(slide);
+  const keyTopics = slideTopics.length ? slideTopics : getSectionKeyTopics(sectionId);
+  const displayNumber = isChapter ? chapterId : sectionId;
   const eyebrow = getDividerEyebrow(slide);
   const titleLines = getDividerTitleLines(slide);
   const slideCount = countSlidesInSection(slides, slideIndex);
@@ -211,7 +222,7 @@ function buildSectionDividerMarkup(
   return `
     <div class="section-divider-hero section-divider-hero--themed print-section-divider" style="--section-accent:${theme.color}">
       <p class="section-divider-eyebrow">${escapeHTML(eyebrow)} · ${escapeHTML(theme.label)}</p>
-      <p class="print-section-number" aria-hidden="true">${sectionId}</p>
+      <p class="print-section-number" aria-hidden="true">${displayNumber}</p>
       <div class="section-divider-titles">${titlesHTML}</div>
       ${topicsHTML ? `<ul class="section-divider-topics">${topicsHTML}</ul>` : ""}
       <p class="section-divider-meta">
@@ -331,7 +342,7 @@ function buildSlideInnerMarkup(slide: SlideRecord, slides: SlideRecord[], slideI
     return buildTimelinePrintMarkup();
   }
 
-  if (slide.type === "section-divider") {
+  if (slide.type === "section-divider" || slide.type === "chapter-divider") {
     return buildSectionDividerMarkup(slide, slides, slideIndex);
   }
 
