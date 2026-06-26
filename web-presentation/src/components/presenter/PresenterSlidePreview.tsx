@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { renderSlideMath } from "../../lib/renderMath";
 import { SlideContent } from "../slides/SlideContent";
 import { SlideFrame } from "../slides/SlideFrame";
-import type { SlideRecord } from "../../lib/slideMarkup";
+import { isDeckDivider } from "../../lib/slideDividers";
 import type { UiLang } from "../../lib/uiStrings";
 
 type PresenterSlidePreviewProps = {
@@ -56,7 +56,7 @@ export function PresenterSlidePreview({
             slideNumber={slideIndex + 1}
             totalSlides={totalSlides}
             progressPercent={progressPercent}
-            variant={slide.type === "section-divider" ? "divider" : "default"}
+            variant={isDeckDivider(slide) ? "divider" : "default"}
           >
             <SlideContent
               slide={slide}

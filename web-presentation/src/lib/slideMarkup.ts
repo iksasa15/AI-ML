@@ -554,14 +554,14 @@ export function buildSlideMarkup(
   return buildSlideFrameMarkup(
     options.frame,
     inner,
-    slide.type === "section-divider"
+    slide.type === "section-divider" || slide.type === "chapter-divider"
   );
 }
 
 export function getActiveSectionLabel(slides: SlideRecord[], slideIndex: number) {
   for (let i = slideIndex; i >= 0; i -= 1) {
     const s = slides[i];
-    if (s && s.type === "section-divider") {
+    if (s && isDeckDivider(s)) {
       return String(s.subtitle || s.title || "Overview");
     }
   }

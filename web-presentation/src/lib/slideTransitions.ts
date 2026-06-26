@@ -11,7 +11,7 @@ export function getSlideTransitionKind(
   if (toIndex < 0 || toIndex >= slides.length) return "slide";
 
   const target = slides[toIndex];
-  if (target?.type === "section-divider") return "divider-wipe";
+  if (target?.type === "section-divider" || target?.type === "chapter-divider") return "divider-wipe";
 
   if (fromIndex < 0 || fromIndex >= slides.length) return "slide";
 

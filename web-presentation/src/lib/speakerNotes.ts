@@ -73,7 +73,7 @@ export function getSpeakerNote(
 }
 
 export function generateSpeakerNote(slide: SlideRecord): string {
-  if (slide.type === "section-divider") {
+  if (slide.type === "section-divider" || slide.type === "chapter-divider") {
     const topic = String(slide.subtitle || slide.title || "this section");
     return `Open ${topic}: state learning goals, timing, and how it connects to prior sessions. Preview the 2–3 ideas trainees must leave with.`;
   }

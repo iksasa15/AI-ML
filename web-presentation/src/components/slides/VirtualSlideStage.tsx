@@ -3,7 +3,8 @@ import { useLiveSlidePagination } from "../../hooks/useLiveSlidePagination";
 import { useSlideFitScale } from "../../hooks/useSlideFitScale";
 import { LOADING_SLIDE_TYPE } from "../../lib/presentationLoader";
 import { getActiveSectionLabel, type SlideRecord } from "../../lib/slideMarkup";
-import { getSectionTheme, parseSectionIdFromDivider } from "../../lib/sectionTheme";
+import { isChapterDivider, isDeckDivider, parseChapterNumber } from "../../lib/slideDividers";
+import { getChapterTheme, getSectionTheme, parseSectionIdFromDivider } from "../../lib/sectionTheme";
 import { getActiveSectionTag } from "../../lib/slideMeta";
 import { transitionClassName, type SlideTransitionKind } from "../../lib/slideTransitions";
 import type { UiLang } from "../../lib/uiStrings";
@@ -91,8 +92,13 @@ export function VirtualSlideStage({
         const sectionLabel = getActiveSectionLabel(slides, index);
         const dividerSectionId =
           slide?.type === "section-divider" ? parseSectionIdFromDivider(slide) : null;
+        const chapterNum = isChapterDivider(slide) ? parseChapterNumber(slide) : null;
         const dividerTheme =
-          dividerSectionId !== null ? getSectionTheme(dividerSectionId) : null;
+          chapterNum !== null && chapterNum > 0
+            ? getChapterTheme(chapterNum)
+            : dividerSectionId !== null
+              ? getSectionTheme(dividerSectionId)
+              : null;
 
         const slideBody =
           slide && slide.type !== LOADING_SLIDE_TYPE ? (
@@ -102,7 +108,7 @@ export function VirtualSlideStage({
               slideNumber={index + 1}
               totalSlides={totalSlides}
               progressPercent={progressPercent}
-              variant={slide.type === "section-divider" ? "divider" : "default"}
+              variant={isDeckDivider(slide) ? "divider" : "default"}
             >
               <SlideContent
                 slide={slide}
@@ -137,7 +143,7 @@ export function VirtualSlideStage({
               className={`slide virtual-slide${isActive ? " is-active" : " is-cached"} ${transitionClassName(
                 transitionKind,
                 isActive && slideEntering
-              )}${slide?.type === "section-divider" ? " slide--divider" : ""}`}
+              )}${isDeckDivider(slide) ? " slide--divider" : ""}`}
               dir="ltr"
               lang="en"
               aria-hidden={!isActive}

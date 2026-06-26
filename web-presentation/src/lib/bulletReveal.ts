@@ -1,4 +1,4 @@
-import { bulletTexts, normalizeBullets } from "./bulletItems";
+import { isDeckDivider } from "./slideDividers";
 import type { SlideRecord } from "./slideMarkup";
 import type { DeckScope } from "./traineeProgress";
 
@@ -36,7 +36,7 @@ function groupFromBullets(
 }
 
 export function getSlideBulletGroups(slide: SlideRecord): BulletGroup[] {
-  if (!slide || slide.type === "section-divider") return [];
+  if (!slide || isDeckDivider(slide)) return [];
 
   const groups: BulletGroup[] = [];
 
