@@ -213,8 +213,531 @@ export const slides = [
       ],
     },
     speakerNote:
-      "Keep ASI brief and grounded — it is theoretical. Pivot to ethics: bias in hiring algorithms is a Narrow AI problem we must solve today. Close with the bootcamp bridge: we focus on ANI skills you can build and deploy. Transition: 'Next — Section 1: Foundations and Data Pre-Processing.'",
-    note: "Closing slide — bridge to Section 1 (S1). Total block ~15 min.",
+      "Keep ASI brief and grounded — it is theoretical. Pivot to ethics: bias in hiring algorithms is a Narrow AI problem we must solve today. Close with the bootcamp bridge: we focus on ANI skills you can build and deploy. Next: a detailed tour through AI history — from Turing to LLMs.",
+    note: "Bridge to AI history block (~9 slides).",
     titleIcon: "warning",
+  },
+  {
+    title: "History of Artificial Intelligence",
+    subtitle: "From Ancient Ideas to Large Language Models",
+    body: "AI did not appear overnight. Its story spans centuries of philosophy and mathematics, decades of boom-and-bust cycles, and a modern renaissance powered by data, GPUs, and deep learning. This timeline explains how we arrived at today's generative AI era.",
+    table: {
+      title: "AI history at a glance",
+      headers: ["Era", "Period", "Key milestone"],
+      rows: [
+        ["Philosophical roots", "Pre-1950", "Logic, computation theory, Turing"],
+        ["Birth of AI", "1956", "Dartmouth Conference — term coined"],
+        ["First golden age", "1956–1960s", "Logic Theorist, ELIZA, optimism"],
+        ["First AI winter", "1970s", "Funding cuts, unmet promises"],
+        ["Expert systems", "1980s", "MYCIN, XCON, backpropagation"],
+        ["Second AI winter", "Late 1980s", "Market collapse, symbolic AI limits"],
+        ["Modern renaissance", "1990s–2012", "Deep Blue, big data, AlexNet"],
+        ["Deep learning & GenAI", "2012–today", "YOLO, Transformers, LLMs"],
+      ],
+    },
+    speakerNote:
+      "Walk the timeline table top to bottom — ~2 minutes. Emphasize the boom-bust pattern: winters follow hype. Trainees should see that today's LLM excitement has historical parallels. Ask: which era do you think we are in now?",
+    note: "History block opener — ~20–25 min total for the next 9 slides.",
+    titleIcon: "workflow",
+  },
+  {
+    title: "Philosophical & Mathematical Roots",
+    subtitle: "Before Electronic Computers",
+    body: "Long before the word 'Artificial Intelligence' existed, thinkers asked whether reasoning could be mechanized — laying the intellectual foundation for modern AI.",
+    sections: [
+      {
+        heading: "17th–19th Century: Machines & Logic",
+        bullets: [
+          { text: "Gottfried Leibniz (1646–1716): dreamed of a universal calculus of reasoning.", icon: "idea" },
+          { text: "Charles Babbage & Ada Lovelace: Analytical Engine — first programmable machine concept.", icon: "workflow" },
+          { text: "George Boole (1847): Boolean algebra — logic as mathematics (AND, OR, NOT).", icon: "compare" },
+        ],
+      },
+      {
+        heading: "Early 20th Century: Formal Computation",
+        bullets: [
+          { text: "Kurt Gödel (1931): limits of formal systems — some truths are unprovable.", icon: "warning" },
+          { text: "Alonzo Church & Alan Turing (1936): what can be computed in principle?", icon: "neural-net" },
+          { text: "Turing Machine: abstract model of any computer — the blueprint for AI research.", icon: "model" },
+        ],
+      },
+      {
+        heading: "Why It Matters",
+        bullets: [
+          { text: "AI is not about robots — it starts with logic, math, and the limits of computation.", icon: "check" },
+          { text: "Every ML model today runs on Turing-equivalent hardware.", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Turing_machine.svg",
+    imageAlt: "Turing machine — foundational model of computation",
+    speakerNote:
+      "Connect philosophy to engineering: Leibniz asked 'can we calculate truth?' — 300 years later, we train neural nets on data. Mention Ada Lovelace as the first programmer. Budget ~2–3 minutes.",
+    note: "Pre-computer era — no electronic AI yet, only ideas and math.",
+    titleIcon: "idea",
+  },
+  {
+    title: "Birth of the Field (1956)",
+    subtitle: "Dartmouth Conference & Alan Turing's Legacy",
+    body: "Artificial Intelligence was officially born as a research discipline at the Dartmouth Summer Research Project on Artificial Intelligence (1956), organized by John McCarthy, Marvin Minsky, Nathaniel Rochester, and Claude Shannon.",
+    bullets: [
+      { text: "John McCarthy coined the term 'Artificial Intelligence' at Dartmouth (1956).", icon: "idea" },
+      { text: "Proposal: 'every aspect of learning or intelligence can in principle be precisely described and simulated by a machine.'", icon: "target" },
+      { text: "Alan Turing (1912–1954): WWII code-breaker; asked 'Can machines think?' in his 1950 paper.", icon: "compare" },
+      { text: "Turing Test: if a human cannot distinguish machine from human in conversation, the machine is intelligent.", icon: "check" },
+      { text: "Turing's work on computation and the Turing Test remain touchstones for AI ethics and evaluation.", icon: "workflow" },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/4/49/John_McCarthy_Stanford.jpg",
+    imageAlt: "John McCarthy — coined the term Artificial Intelligence",
+    speakerNote:
+      "Dartmouth was optimistic: 10 researchers, 8 weeks, bold claims. Turing died in 1954 — two years before Dartmouth — but his 1950 paper and 1936 computation work framed the entire field. Show McCarthy photo. ~2–3 minutes.",
+    note: "1956 = official birth year of AI as a field.",
+    titleIcon: "idea",
+  },
+  {
+    title: "The First Golden Age",
+    subtitle: "High Expectations & Early Programs (1950s–1960s)",
+    body: "The first decade after Dartmouth was marked by enormous enthusiasm. Researchers believed human-level AI was only 20 years away — a prediction that would prove premature.",
+    bullets: [
+      { text: "Logic Theorist (1956, Newell & Simon): first program to prove mathematical theorems — mimicked human problem-solving.", icon: "check" },
+      { text: "General Problem Solver (1957): heuristic search for any well-defined problem.", icon: "workflow" },
+      { text: "ELIZA (1966, Joseph Weizenbaum): chatbot simulating a Rogerian psychotherapist — fooled many users.", icon: "nlp" },
+      { text: "Perceptron (1958, Rosenblatt): early neural network for pattern recognition — initial excitement.", icon: "neural-net" },
+      { text: "Funding flowed from DARPA, NSF, and governments — AI was the 'next big thing.'", icon: "deploy" },
+      { text: "Hubris: Minsky (1967) — 'Within a generation … the problem of creating AI will substantially be solved.'", icon: "warning" },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/79/IBM7030Stretch.JPG",
+    imageAlt: "IBM 7030 Stretch — mainframe era when early AI programs ran",
+    speakerNote:
+      "ELIZA is a great demo story — users attributed understanding where none existed (a lesson for ChatGPT today). Logic Theorist proved theorems in Principia Mathematica. Contrast the optimism with what came next: the first AI winter. ~2 minutes.",
+    note: "Golden age = symbolic AI + early neural nets + massive optimism.",
+    titleIcon: "target",
+  },
+  {
+    title: "First AI Winter (1970s)",
+    subtitle: "Broken Promises & Funding Collapse",
+    body: "By the early 1970s, AI research had failed to deliver on its boldest promises. Governments and agencies cut funding sharply — the first 'AI winter' had arrived.",
+    sections: [
+      {
+        heading: "What Went Wrong",
+        bullets: [
+          { text: "Combinatorial explosion: search spaces grew faster than computers could explore.", icon: "warning" },
+          { text: "Brittle systems: symbolic programs failed on real-world noise and ambiguity.", icon: "compare" },
+          { text: "Minsky & Papert (1969): Perceptron book showed single-layer nets cannot solve XOR — neural net funding dropped.", icon: "neural-net" },
+        ],
+      },
+      {
+        heading: "Key Events",
+        bullets: [
+          { text: "Lighthill Report (1973, UK): criticized AI research; led to major UK funding cuts.", icon: "metric" },
+          { text: "DARPA reduced grants for undirected 'general AI' research in the mid-1970s.", icon: "deploy" },
+          { text: "Speech recognition and machine translation projects underperformed expectations.", icon: "nlp" },
+        ],
+      },
+      {
+        heading: "Lesson for Today",
+        bullets: [
+          { text: "Hype cycles are real — capability must match promises.", icon: "idea" },
+          { text: "Narrow, practical wins survive winters; grand claims do not.", icon: "check" },
+        ],
+      },
+    ],
+    table: {
+      title: "First AI winter — causes vs. effects",
+      headers: ["Cause", "Effect"],
+      rows: [
+        ["Overpromised timelines", "Loss of public and funder trust"],
+        ["Limited compute (1970s hardware)", "Could not scale symbolic search"],
+        ["Perceptron limitations exposed", "Neural network research stalled ~15 years"],
+        ["No big data yet", "Statistical methods lacked fuel"],
+      ],
+    },
+    speakerNote:
+      "The Lighthill Report is the classic cautionary tale — read one quote if time allows. Connect to today: every AI hype wave risks a winter if products disappoint. XOR/perceptron story explains why neural nets went quiet until backprop in 1986. ~2–3 minutes.",
+    note: "First winter ≈ 1974–1980 — funding drought, not end of research.",
+    titleIcon: "warning",
+  },
+  {
+    title: "Expert Systems Boom (1980s)",
+    subtitle: "Rule-Based AI & the Neural Network Revival",
+    type: "three-columns",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Mycin.gif",
+    imageAlt: "MYCIN expert system — rule-based medical diagnosis",
+    columns: [
+      {
+        heading: "Expert Systems",
+        bullets: [
+          { text: "IF-THEN rule engines encoding human domain expertise.", icon: "compare" },
+          { text: "MYCIN (1970s–80s): diagnosed blood infections — rivaled human experts.", icon: "check" },
+          { text: "XCON (1980): configured DEC VAX computers — saved millions annually.", icon: "deploy" },
+          { text: "Commercial boom: AI market reached ~$1B by mid-1980s.", icon: "metric" },
+        ],
+      },
+      {
+        heading: "Neural Networks Return",
+        bullets: [
+          { text: "Backpropagation popularized (Rumelhart, Hinton, Williams, 1986).", icon: "neural-net" },
+          { text: "Multi-layer networks could learn non-linear patterns (including XOR).", icon: "train" },
+          { text: "Parallel Distributed Processing (PDP) books reignited connectionist research.", icon: "idea" },
+          { text: "Still limited by data and compute — not yet mainstream.", icon: "warning" },
+        ],
+      },
+      {
+        heading: "Global Context",
+        bullets: [
+          { text: "Japan Fifth Generation Computer Project (1982): $400M push for AI supercomputers.", icon: "workflow" },
+          { text: "US and Europe responded with competing AI funding programs.", icon: "deploy" },
+          { text: "AI returned to fashion — but fragility of expert systems would soon show.", icon: "compare" },
+        ],
+      },
+    ],
+    speakerNote:
+      "Expert systems were the first AI commercial success — MYCIN and XCON are the canonical examples. Backpropagation is the algorithm still used to train deep nets today — mention Hinton's later Nobel (2024). Three columns ~3 minutes.",
+    note: "1980s = commercial AI via rules + quiet neural net revival.",
+    titleIcon: "compare",
+  },
+  {
+    title: "Second AI Winter (Late 1980s)",
+    subtitle: "Market Collapse & Hardware Limits",
+    body: "The expert-system bubble burst in the late 1980s. Maintaining rule bases proved expensive, hardware could not keep pace with ambitions, and symbolic AI hit a ceiling — triggering a second funding and market pullback.",
+    bullets: [
+      { text: "Expert systems were costly to update — rules drifted as domains changed.", icon: "warning" },
+      { text: "Desktop PCs replaced specialized Lisp machines — AI hardware startups failed.", icon: "compare" },
+      { text: "Japan Fifth Generation project fell short of goals by the early 1990s.", icon: "deploy" },
+      { text: "DARPA shifted funding toward specific applications, not general intelligence.", icon: "metric" },
+      { text: "AI company valuations collapsed; 'AI' became a risky label in boardrooms.", icon: "warning" },
+      { text: "Research continued quietly in universities — seeds for the next wave were planted.", icon: "idea" },
+    ],
+    table: {
+      title: "Two AI winters compared",
+      headers: ["", "First winter (1970s)", "Second winter (late 1980s)"],
+      rows: [
+        ["Trigger", "Lighthill Report, perceptron limits", "Expert system market crash"],
+        ["Main victim", "General AI / neural nets", "Commercial AI / Lisp machines"],
+        ["What survived", "Academic AI, expert systems niche", "Statistics, ML, backprop research"],
+        ["Lesson", "Don't overpromise timelines", "Don't overpromise commercial ROI"],
+      ],
+    },
+    speakerNote:
+      "Second winter is less famous but equally important — it cleared hype and set the stage for statistical ML in the 1990s. Draw parallel: both winters followed commercial booms. Research never fully stopped. ~2 minutes.",
+    note: "Late 1980s–early 1990s — AI rebranded as ML in many labs.",
+    titleIcon: "warning",
+  },
+  {
+    title: "Modern Renaissance (1990s–2012)",
+    subtitle: "Deep Blue, Big Data & the Deep Learning Spark",
+    body: "AI recovered not through grand symbolic promises but through statistics, data, and faster hardware — culminating in deep learning's breakthrough on ImageNet in 2012.",
+    sections: [
+      {
+        heading: "Landmark Victories",
+        bullets: [
+          { text: "Deep Blue beats Garry Kasparov at chess (1997, IBM) — Narrow AI triumph.", icon: "target" },
+          { text: "IBM Watson wins Jeopardy! (2011) — NLP + search at scale.", icon: "nlp" },
+        ],
+      },
+      {
+        heading: "Enablers of the Renaissance",
+        bullets: [
+          { text: "Internet era: massive datasets became available (web text, images, logs).", icon: "data" },
+          { text: "GPUs: parallel matrix ops made neural net training 10–100× faster.", icon: "neural-net" },
+          { text: "Statistical ML: SVMs, random forests, boosting dominated Kaggle and industry.", icon: "model" },
+        ],
+      },
+      {
+        heading: "The 2012 Turning Point",
+        bullets: [
+          { text: "ImageNet (2009, Fei-Fei Li): 14M labeled images — benchmark for vision.", icon: "data" },
+          { text: "AlexNet (2012, Krizhevsky et al.): deep CNN crushed ImageNet — error rate halved.", icon: "cnn" },
+          { text: "Deep learning era officially began — industry pivoted en masse.", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Deep_Blue.jpg",
+    imageAlt: "Deep Blue chess computer — 1997 Narrow AI milestone",
+    illustration: "ml-workflow",
+    speakerNote:
+      "Deep Blue is Narrow AI — brilliant at chess, useless for anything else. The real shift was data + GPU + ImageNet + AlexNet in 2012. Mention this bootcamp covers the stack that started here: CNNs (S7), NLP (S8–S13), GenAI (S14+). ~3 minutes.",
+    note: "1997 Deep Blue → 2012 AlexNet = path from symbolic wins to deep learning.",
+    titleIcon: "data",
+  },
+  {
+    title: "Deep Learning & Generative AI Era",
+    subtitle: "From YOLO to Large Language Models (2012–Today)",
+    body: "Since 2012, AI has advanced at unprecedented speed — from real-time object detection to transformers and chatbots used by hundreds of millions. This is the era this bootcamp prepares you to build in.",
+    sections: [
+      {
+        heading: "Computer Vision & Scale",
+        bullets: [
+          { text: "YOLO (2016): real-time object detection — AI in cameras, drones, autonomous vehicles.", icon: "cnn" },
+          { text: "ResNet, EfficientNet: ever-deeper and more efficient image classifiers.", icon: "neural-net" },
+          { text: "AlphaGo (2016): deep RL beats world Go champion — beyond explicit search.", icon: "target" },
+        ],
+      },
+      {
+        heading: "Language & Generative AI",
+        bullets: [
+          { text: "Transformers (2017, 'Attention Is All You Need'): parallel sequence modeling.", icon: "transformer" },
+          { text: "BERT (2018), GPT-2/3 (2019–2020): pre-trained language models at scale.", icon: "bert" },
+          { text: "ChatGPT (2022): 100M users in 2 months — GenAI enters mainstream.", icon: "llm" },
+          { text: "GPT-4, Claude, Gemini, multimodal models (2023–2025): text, image, code, voice.", icon: "llm" },
+        ],
+      },
+      {
+        heading: "Bootcamp Bridge",
+        bullets: [
+          { text: "You will learn the stack behind this era: ML → DL → NLP → GenAI → RAG → MLOps.", icon: "workflow" },
+          { text: "History teaches patience: winters follow hype — solid skills outlast trends.", icon: "check" },
+          { text: "Next: AI domains and branches — how the field splits into specializations.", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Transformer%2C_full_architecture.png/640px-Transformer%2C_full_architecture.png",
+    imageAlt: "Transformer architecture — foundation of modern LLMs",
+    conceptAnimation: "neural-network",
+    speakerNote:
+      "This is the era trainees live in. YOLO = vision in production; Transformers = everything in NLP/GenAI. ChatGPT moment = third 'golden age' — but remember the winters. Next: map the major AI domains before we start building. ~3 minutes.",
+    note: "Bridge to AI domains block (~7 slides).",
+    titleIcon: "llm",
+  },
+  {
+    title: "AI Domains & Branches",
+    subtitle: "How the Field Splits into Specializations",
+    body: "Artificial Intelligence is not one monolithic technology — it is a family of approaches and application areas. Understanding the map helps you choose the right tools and see where this bootcamp fits.",
+    table: {
+      title: "AI domains and bootcamp coverage",
+      headers: ["Domain", "Focus", "Bootcamp sections"],
+      rows: [
+        ["Machine Learning", "Patterns & algorithms from data", "S1–S6"],
+        ["Deep Learning", "Neural networks at scale", "S7"],
+        ["NLP", "Human language understanding & generation", "S8–S13"],
+        ["Generative AI / RAG / MLOps", "LLMs, retrieval, production systems", "S14–S16"],
+        ["Computer Vision", "Images, video, visual security", "S7 (CNN)"],
+        ["Robotics & Autonomous Systems", "Perception + planning + control", "Cross-cutting (CV + ML)"],
+        ["Expert Systems", "Rule-based decision making", "Historical context (intro)"],
+      ],
+    },
+    bullets: [
+      { text: "Deep Learning is a subset of Machine Learning; NLP and Vision often use DL today.", icon: "compare" },
+      { text: "Most modern products combine multiple domains (e.g., self-driving = CV + ML + robotics).", icon: "workflow" },
+    ],
+    speakerNote:
+      "Walk the table row by row — ~2 minutes. Emphasize nesting: DL ⊂ ML, and GenAI is largely NLP + DL. Point trainees to their bootcamp path in the right column. Ask which domain excites them most.",
+    note: "Domains block opener — taxonomy before deep dives.",
+    titleIcon: "workflow",
+  },
+  {
+    title: "Machine Learning",
+    subtitle: "Patterns, Algorithms & Data-Driven Decisions",
+    body: "Machine Learning (ML) enables computers to learn patterns from data without being explicitly programmed for every scenario. It is the foundation of modern AI and the starting point of this bootcamp.",
+    sections: [
+      {
+        heading: "Core Idea",
+        bullets: [
+          { text: "Learn a mapping from inputs (features) to outputs (labels or clusters).", icon: "model" },
+          { text: "Generalize from training examples to unseen data.", icon: "train" },
+          { text: "Evaluate with held-out test sets and proper metrics.", icon: "metric" },
+        ],
+      },
+      {
+        heading: "Learning Types",
+        bullets: [
+          { text: "Supervised: labeled data — classification & regression.", icon: "classification" },
+          { text: "Unsupervised: no labels — clustering, dimensionality reduction.", icon: "clustering" },
+          { text: "Reinforcement: reward signals — game playing, robotics control.", icon: "target" },
+        ],
+      },
+      {
+        heading: "Algorithms & Bootcamp",
+        bullets: [
+          { text: "Linear & logistic regression, decision trees, SVM, k-means, PCA.", icon: "tree" },
+          { text: "This bootcamp: Sections S1–S6 — preprocessing through classical ML.", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Machine_learning_workflow_diagram.png",
+    imageAlt: "Machine learning workflow — data to model to prediction",
+    illustration: "ml-workflow",
+    speakerNote:
+      "ML is the workhorse — most business AI is classical ML, not deep learning. Walk supervised vs unsupervised with one example each (spam filter vs customer segments). S1–S6 is where we build this muscle. ~2–3 minutes.",
+    note: "ML = patterns and algorithms — bootcamp Weeks/Days 1 focus.",
+    titleIcon: "model",
+  },
+  {
+    title: "Deep Learning",
+    subtitle: "Simulating Neural Networks Inspired by the Brain",
+    body: "Deep Learning (DL) uses multi-layer artificial neural networks to learn hierarchical representations — from edges in images to words in sentences. It powers the breakthroughs of the 2012–today era.",
+    sections: [
+      {
+        heading: "How It Works",
+        bullets: [
+          { text: "Artificial neurons: weighted inputs → activation → layered composition.", icon: "neural-net" },
+          { text: "Backpropagation adjusts weights to minimize prediction error.", icon: "backprop" },
+          { text: "Deep = many layers extract features automatically (no hand-crafted rules).", icon: "workflow" },
+        ],
+      },
+      {
+        heading: "Key Architectures",
+        bullets: [
+          { text: "CNNs: spatial patterns in images and video.", icon: "cnn" },
+          { text: "RNNs / LSTMs: sequential data (text, time series).", icon: "rnn" },
+          { text: "Transformers: parallel attention — foundation of GPT and BERT.", icon: "transformer" },
+        ],
+      },
+      {
+        heading: "Requirements & Bootcamp",
+        bullets: [
+          { text: "Needs large datasets, GPUs, and careful regularization.", icon: "data" },
+          { text: "This bootcamp: Section S7 — 7 labs from MLP to CNN and RNN.", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Colored_neural_network.svg/640px-Colored_neural_network.svg.png",
+    imageAlt: "Artificial neural network — layers of interconnected nodes",
+    conceptAnimation: "neural-network",
+    speakerNote:
+      "DL is ML with deep nets — not magic, just scalable function approximation. Show the animation: layers learn hierarchy. Mention compute cost honestly. S7 is the deep dive with hands-on TensorFlow/Keras labs. ~2–3 minutes.",
+    note: "DL ⊂ ML — neural networks with many layers.",
+    titleIcon: "neural-net",
+  },
+  {
+    title: "Natural Language Processing (NLP)",
+    subtitle: "How Machines Understand Human Language",
+    body: "NLP teaches computers to read, interpret, and generate human language — from tokenizing raw text to building chatbots and machine translation systems.",
+    sections: [
+      {
+        heading: "Core Tasks",
+        bullets: [
+          { text: "Text cleaning & tokenization: raw text → structured units.", icon: "token" },
+          { text: "Understanding: POS tagging, NER, sentiment analysis.", icon: "nlp" },
+          { text: "Generation: summarization, translation, conversational AI.", icon: "llm" },
+        ],
+      },
+      {
+        heading: "Evolution",
+        bullets: [
+          { text: "Classical: bag-of-words, n-grams, TF-IDF.", icon: "compare" },
+          { text: "Neural: word embeddings (Word2Vec), RNNs, attention.", icon: "embedding" },
+          { text: "Modern: pre-trained Transformers (BERT, GPT) — transfer learning for NLP.", icon: "transformer" },
+        ],
+      },
+      {
+        heading: "Applications & Bootcamp",
+        bullets: [
+          { text: "Chatbots, search, spam detection, document classification, code assistants.", icon: "target" },
+          { text: "This bootcamp: Sections S8–S13 — cleaning through Seq2Seq and attention.", icon: "deploy" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Natural_language_processing_concept.svg/640px-Natural_language_processing_concept.svg.png",
+    imageAlt: "NLP concept — text processing pipeline",
+    illustration: "nlp-pipeline",
+    speakerNote:
+      "NLP is where GenAI lives — but foundations matter (tokenization, embeddings). Demo mentally: 'Apple' the fruit vs company needs context. S8–S13 is the longest NLP arc in the bootcamp. ~2–3 minutes.",
+    note: "NLP — language understanding and generation.",
+    titleIcon: "nlp",
+  },
+  {
+    title: "Computer Vision",
+    subtitle: "Analyzing Images, Video & Visual Security Systems",
+    body: "Computer Vision (CV) enables machines to interpret visual data — photographs, video streams, medical scans, and surveillance feeds — extracting meaning from pixels.",
+    bullets: [
+      { text: "Image classification: what object is in this image? (ResNet, EfficientNet).", icon: "cnn" },
+      { text: "Object detection: where are objects and what are they? (YOLO, Faster R-CNN).", icon: "target" },
+      { text: "Segmentation: pixel-level boundaries for medical imaging and autonomous driving.", icon: "compare" },
+      { text: "Face recognition & biometrics: security systems, phone unlock, access control.", icon: "check" },
+      { text: "Video analytics: motion detection, crowd monitoring, anomaly alerts in CCTV.", icon: "workflow" },
+      { text: "Powered by CNNs and increasingly Vision Transformers (ViT).", icon: "neural-net" },
+      { text: "Bootcamp touchpoint: CNN labs and architectures in Section S7.", icon: "deploy" },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Object_detection_in_cluttered_environments.jpg/640px-Object_detection_in_cluttered_environments.jpg",
+    imageAlt: "Object detection — bounding boxes on detected objects in a scene",
+    speakerNote:
+      "CV is everywhere: phones, cars, hospitals, security cameras. YOLO made real-time detection practical. Security/surveillance is a sensitive application — mention ethics and privacy. CNN content is in S7. ~2 minutes.",
+    note: "CV — images, video, and visual security analytics.",
+    titleIcon: "cnn",
+  },
+  {
+    title: "Robotics & Autonomous Systems",
+    subtitle: "AI That Moves and Acts in the Physical World",
+    body: "Robotics combines AI with mechanical systems — sensors, actuators, and real-time control — to create machines that perceive, decide, and act autonomously in dynamic environments.",
+    sections: [
+      {
+        heading: "Core Components",
+        bullets: [
+          { text: "Perception: cameras, LiDAR, radar → CV + sensor fusion.", icon: "cnn" },
+          { text: "Planning: path finding, obstacle avoidance, task scheduling.", icon: "workflow" },
+          { text: "Control: motor commands executed in milliseconds.", icon: "target" },
+        ],
+      },
+      {
+        heading: "Applications",
+        bullets: [
+          { text: "Self-driving cars: detect lanes, pedestrians, signs — decide in real time.", icon: "deploy" },
+          { text: "Drones: aerial mapping, delivery, inspection.", icon: "target" },
+          { text: "Warehouse robots (Amazon, logistics): pick, pack, navigate shelves.", icon: "workflow" },
+          { text: "Surgical & industrial robots: precision tasks alongside humans.", icon: "check" },
+        ],
+      },
+      {
+        heading: "AI Domains Combined",
+        bullets: [
+          { text: "Robotics = CV + ML/DL + reinforcement learning + embedded systems.", icon: "compare" },
+          { text: "Bootcamp: cross-cutting skills from S1–S7 prepare you for robotics foundations.", icon: "idea" },
+        ],
+      },
+    ],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Vegas_Robot_by_Wirebeard.jpg/640px-Vegas_Robot_by_Wirebeard.jpg",
+    imageAlt: "Humanoid robot — AI embodied in physical systems",
+    speakerNote:
+      "Robotics is where AI meets physics — latency and safety matter more than benchmark scores. Self-driving is the headline example but warehouse bots are deployed at scale today. No dedicated robotics section, but S7 CNN + S1 ML feed into this domain. ~2 minutes.",
+    note: "Robotics — perception, planning, and autonomous action.",
+    titleIcon: "workflow",
+  },
+  {
+    title: "Expert Systems & Decision Making",
+    subtitle: "Rule-Based AI and Modern Alternatives",
+    body: "Expert Systems encode human domain knowledge as explicit IF-THEN rules — one of the first commercial AI successes. Understanding them clarifies why statistical ML and deep learning eventually superseded pure rule-based approaches.",
+    sections: [
+      {
+        heading: "How Expert Systems Work",
+        bullets: [
+          { text: "Knowledge base: facts and rules written by domain experts.", icon: "compare" },
+          { text: "Inference engine: applies rules to reach conclusions.", icon: "workflow" },
+          { text: "Examples: MYCIN (medical diagnosis), XCON (computer configuration).", icon: "check" },
+        ],
+      },
+      {
+        heading: "Strengths & Limits",
+        bullets: [
+          { text: "Strengths: interpretable, auditable, no training data required.", icon: "idea" },
+          { text: "Limits: brittle, expensive to maintain, cannot learn from data.", icon: "warning" },
+          { text: "1980s boom → late-1980s collapse (see AI history slides).", icon: "metric" },
+        ],
+      },
+      {
+        heading: "Today & Bootcamp Start",
+        bullets: [
+          { text: "Modern systems blend rules + ML (hybrid AI in finance, healthcare).", icon: "deploy" },
+          { text: "Decision trees in S4 bridge symbolic and statistical approaches.", icon: "tree" },
+          { text: "Intro complete — Section 1: Foundations and Data Pre-Processing (S1).", icon: "target" },
+        ],
+      },
+    ],
+    table: {
+      title: "Expert systems vs. machine learning",
+      headers: ["Aspect", "Expert Systems", "Machine Learning"],
+      rows: [
+        ["Knowledge source", "Human-written rules", "Learned from data"],
+        ["Maintenance", "Manual rule updates", "Retrain on new data"],
+        ["Interpretability", "High (explicit rules)", "Varies (trees high, DL low)"],
+        ["Best for", "Stable, well-defined domains", "Noisy, high-dimensional data"],
+      ],
+    },
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Mycin.gif",
+    imageAlt: "MYCIN expert system — early rule-based medical AI",
+    speakerNote:
+      "Connect back to the 1980s history slide — expert systems were the first AI gold rush in industry. Today ML dominates, but rules still matter (compliance, safety). Close the entire intro block: 'We have covered what AI is, its history, and its domains — now we build. Section 1 starts with data preprocessing.' ~2–3 minutes.",
+    note: "Final intro slide — bridge to Section 1 (S1). Total intro ~50–55 min.",
+    titleIcon: "compare",
   },
 ];
