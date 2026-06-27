@@ -1,6 +1,7 @@
 import katex from "katex";
 import { formatAmpersandHTML } from "./ampersandText";
 import { normalizeBullets } from "./bulletItems";
+import { ETRA_LOGO_URL } from "./brandAssets";
 import { buildConceptPrintMarkup, buildIllustrationPrintMarkup } from "./printVisuals";
 import { isSlideIconId } from "./slideIconKeys";
 import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
@@ -501,6 +502,9 @@ export function buildSlideFrameMarkup(meta: SlideFrameMeta, innerHTML: string, i
   if (isDivider) {
     return `
       <div class="slide-frame slide-frame--divider">
+        <div class="slide-frame-logo-wrap" aria-hidden="true">
+          <img src="${escapeHTML(ETRA_LOGO_URL)}" alt="" class="slide-frame-logo slide-frame-logo--divider" />
+        </div>
         <div class="slide-frame-divider-body">${innerHTML}</div>
         <footer class="slide-frame-footer slide-frame-footer--divider">
           <div class="slide-frame-progress">
@@ -519,11 +523,18 @@ export function buildSlideFrameMarkup(meta: SlideFrameMeta, innerHTML: string, i
           <span class="slide-frame-section-sep" aria-hidden="true">·</span>
           <span class="slide-frame-section-label">${escapeHTML(meta.sectionLabel)}</span>
         </div>
-        <span class="slide-frame-slide-num">
-          ${meta.slideNumber}<span class="slide-frame-slide-total"> / ${meta.totalSlides}</span>
-        </span>
+        <div class="slide-frame-header-end">
+          <span class="slide-frame-slide-num">
+            ${meta.slideNumber}<span class="slide-frame-slide-total"> / ${meta.totalSlides}</span>
+          </span>
+        </div>
       </header>
-      <div class="slide-frame-content">${innerHTML}</div>
+      <div class="slide-frame-content">
+        <div class="slide-content-logo" aria-hidden="true">
+          <img src="${escapeHTML(ETRA_LOGO_URL)}" alt="" class="slide-content-logo-img" />
+        </div>
+        ${innerHTML}
+      </div>
       <footer class="slide-frame-footer">
         <div class="slide-frame-progress">
           <div class="slide-frame-progress-fill" style="width:${meta.progressPercent}%"></div>

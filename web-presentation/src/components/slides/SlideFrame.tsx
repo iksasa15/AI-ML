@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ETRA_LOGO_URL } from "../../lib/brandAssets";
 
 type SlideFrameVariant = "default" | "divider";
 
@@ -24,6 +25,9 @@ export function SlideFrame({
   if (variant === "divider") {
     return (
       <div className="slide-frame slide-frame--divider">
+        <div className="slide-frame-logo-wrap" aria-hidden="true">
+          <img src={ETRA_LOGO_URL} alt="" className="slide-frame-logo slide-frame-logo--divider" />
+        </div>
         <div className="slide-frame-divider-body">{children}</div>
         <footer className="slide-frame-footer slide-frame-footer--divider" aria-hidden="true">
           <div
@@ -50,13 +54,20 @@ export function SlideFrame({
           </span>
           <span className="slide-frame-section-label">{sectionLabel}</span>
         </div>
-        <span className="slide-frame-slide-num">
-          {slideNumber}
-          <span className="slide-frame-slide-total"> / {totalSlides}</span>
-        </span>
+        <div className="slide-frame-header-end">
+          <span className="slide-frame-slide-num">
+            {slideNumber}
+            <span className="slide-frame-slide-total"> / {totalSlides}</span>
+          </span>
+        </div>
       </header>
 
-      <div className="slide-frame-content">{children}</div>
+      <div className="slide-frame-content">
+        <div className="slide-content-logo" aria-hidden="true">
+          <img src={ETRA_LOGO_URL} alt="" className="slide-content-logo-img" />
+        </div>
+        {children}
+      </div>
 
       <footer className="slide-frame-footer">
         <div

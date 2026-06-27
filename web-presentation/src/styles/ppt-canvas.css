@@ -13,6 +13,16 @@
   padding: 2rem 3.5rem 1.5rem;
 }
 
+.is-canvas-fitted .slide-content-logo {
+  top: 1.75rem;
+  inset-inline-end: 3.5rem;
+}
+
+.is-canvas-fitted .slide-content-logo-img {
+  height: 72px;
+  max-width: 180px;
+}
+
 .is-canvas-fitted .slide-frame-footer {
   padding: 0 2.5rem 0.65rem;
 }

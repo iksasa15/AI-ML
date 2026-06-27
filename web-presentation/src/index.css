@@ -299,6 +299,42 @@ html[data-theme="dark"] .day01-deck-btn {
   flex-shrink: 0;
 }
 
+.slide-frame-header-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.slide-frame-logo {
+  height: 36px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+html[data-theme="dark"] .slide-frame-logo {
+  height: 40px;
+}
+
+.slide-frame-logo-wrap {
+  position: absolute;
+  top: var(--space-2);
+  inset-inline-end: var(--space-3);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slide-frame-logo--divider {
+  height: 44px;
+  opacity: 0.95;
+}
+
+html[data-theme="dark"] .slide-frame-logo--divider {
+  height: 48px;
+}
+
 .slide-frame-slide-total {
   font-weight: 500;
   color: var(--muted);
@@ -310,6 +346,27 @@ html[data-theme="dark"] .day01-deck-btn {
   max-width: 860px;
   margin-inline: auto;
   padding: var(--space-4) var(--space-3) var(--space-3);
+  position: relative;
+}
+
+.slide-content-logo {
+  position: absolute;
+  top: var(--space-3);
+  inset-inline-end: var(--space-3);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.slide-content-logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 132px;
+  object-fit: contain;
+  display: block;
+}
+
+html[data-theme="dark"] .slide-content-logo-img {
+  height: 48px;
 }
 
 .slide-frame-footer {
@@ -335,6 +392,7 @@ html[data-theme="dark"] .day01-deck-btn {
 /* Divider variant — full dark hero */
 .slide-frame--divider {
   min-height: var(--slide-min-h);
+  position: relative;
 }
 
 .slide-frame-divider-body {
