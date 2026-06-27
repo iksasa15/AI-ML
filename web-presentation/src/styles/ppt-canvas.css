@@ -19,8 +19,13 @@
 }
 
 .is-canvas-fitted .slide-content-logo-img {
-  height: 72px;
-  max-width: 180px;
+  height: 140px;
+  max-width: 360px;
+}
+
+.is-canvas-fitted .slide-frame-logo--divider {
+  height: 128px;
+  max-width: 340px;
 }
 
 .is-canvas-fitted .slide-frame-footer {

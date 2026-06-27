@@ -241,8 +241,8 @@ function buildCourseMapPrintMarkup() {
   const cards = COURSE_WEEKS.map(
     (week) => `
       <article class="print-course-map-card">
-        <h3>${escapeHTML(week.label)} — ${escapeHTML(week.theme)}</h3>
-        <p>${week.days} days · ${escapeHTML(week.sections)}</p>
+        <h3>${escapeHTML(week.theme)}</h3>
+        <p>${escapeHTML(week.sections)}</p>
         <p>${escapeHTML(week.topic)}</p>
       </article>
     `
@@ -261,9 +261,8 @@ function buildTimelinePrintMarkup() {
   const columns = COURSE_WEEKS.map(
     (week) => `
       <div class="print-timeline-col">
-        <strong>W${week.id}</strong>
-        <p>${escapeHTML(week.theme)}</p>
-        <p>${week.days} days</p>
+        <p><strong>${escapeHTML(week.theme)}</strong></p>
+        <p>${escapeHTML(week.sections)}</p>
       </div>
     `
   ).join("");
@@ -271,7 +270,6 @@ function buildTimelinePrintMarkup() {
   return `
     <div class="print-bootcamp-timeline">
       <p class="print-intro-eyebrow">BOOTCAMP TIMELINE</p>
-      <h2>4-Week Arc</h2>
       <div class="print-timeline-grid">${columns}</div>
     </div>
   `;

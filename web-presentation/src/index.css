@@ -327,12 +327,12 @@ html[data-theme="dark"] .slide-frame-logo {
 }
 
 .slide-frame-logo--divider {
-  height: 44px;
+  height: 88px;
   opacity: 0.95;
 }
 
 html[data-theme="dark"] .slide-frame-logo--divider {
-  height: 48px;
+  height: 96px;
 }
 
 .slide-frame-slide-total {
@@ -358,15 +358,15 @@ html[data-theme="dark"] .slide-frame-logo--divider {
 }
 
 .slide-content-logo-img {
-  height: 44px;
+  height: 88px;
   width: auto;
-  max-width: 132px;
+  max-width: 240px;
   object-fit: contain;
   display: block;
 }
 
 html[data-theme="dark"] .slide-content-logo-img {
-  height: 48px;
+  height: 96px;
 }
 
 .slide-frame-footer {
@@ -1634,7 +1634,7 @@ html:has(.presentation.is-fullscreen) body {
 }
 
 .top-nav-logo {
-  height: 44px;
+  height: 60px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -1670,7 +1670,7 @@ html[data-theme="dark"] .top-nav {
 }
 
 html[data-theme="dark"] .top-nav-logo {
-  height: 52px;
+  height: 66px;
 }
 
 html[data-theme="dark"] .top-nav-pill-btn--primary {

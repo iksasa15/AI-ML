@@ -22,7 +22,6 @@ export const INTRO_SLIDES: SlideRecord[] = [
   {
     type: "bootcamp-timeline",
     title: "Bootcamp Timeline",
-    subtitle: "4-Week Arc",
     speakerNote:
       "Anchor the timeline: each week has a deliverable. Ask trainees which milestone they are most excited about.",
   },
