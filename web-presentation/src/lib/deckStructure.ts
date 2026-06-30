@@ -138,7 +138,7 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
   },
   {
     id: 7,
-    contentSlideCount: 51,
+    contentSlideCount: 28,
     divider: {
       type: "section-divider",
       title: "Section 7",

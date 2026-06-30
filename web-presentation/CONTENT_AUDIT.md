@@ -1,6 +1,6 @@
 # Content Audit — AI & ML Bootcamp
 
-Generated: 2026-06-19
+Generated: 2026-06-30
 
 | Rating | Meaning |
 |--------|--------|
@@ -198,7 +198,6 @@ Visual coverage: **100%** (28/28 with hasVisual)
 | Phase 4: Generative Models & Reconstruction | 🟢 | ✅ | custom | llm | Adequate depth for delivery |
 | Autoencoders (AE): Compression and Reconstruction | 🟢 | ✅ | custom | encoding | Adequate depth for delivery |
 
-
 ## Section 8 (section08-nlp-fundamentals.js)
 
 Summary: 🟢 19 · 🟡 0 · 🔴 0 · **19 slides**
@@ -268,7 +267,30 @@ Visual coverage: **100%** (32/32 with hasVisual)
 | Lemmatization with SpaCy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | Choosing Stemming vs Lemmatization | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 
-## Section 10 (section10-nlp-language-modeling.js)
+## Section 10 (section14-day01-nlp-intro.js)
+
+Summary: 🟢 14 · 🟡 0 · 🔴 0 · **14 slides**
+
+Visual coverage: **100%** (14/14 with hasVisual)
+
+| Slide | Rating | Visual | Notes | titleIcon | Note |
+|-------|--------|--------|-------|-----------|------|
+| Part-of-Speech (POS) Tagging | 🟢 | ✅ | custom | token | Adequate depth for delivery |
+| POS and Dependency Highlights in SpaCy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| POS/Dependency — Worked Example | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Named Entity Recognition (NER) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| NER with SpaCy — Basic Usage | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| NER — Worked Example (News Snippet) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Evaluating NER Quality | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Full SpaCy Pipeline Functionally | 🟢 | ✅ | custom | pipeline | Adequate depth for delivery |
+| Day Project — Product Review Analyzer | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| End-to-End Flow (Conceptual) | 🟢 | ✅ | custom | workflow | Adequate depth for delivery |
+| Practice Track — Exercises | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Curated Learning Resources | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Day 1 Readiness Checklist | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Day 1 Closing | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+
+## Section 11 (section10-nlp-language-modeling.js)
 
 Summary: 🟢 15 · 🟡 0 · 🔴 0 · **15 slides**
 
@@ -292,7 +314,7 @@ Visual coverage: **100%** (15/15 with hasVisual)
 | Perplexity Across N-gram Orders | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | Language Modeling Summary and Practice | 🟢 | ✅ | custom | model | Adequate depth for delivery |
 
-## Section 11 (section11-nlp-contextual-rnn.js)
+## Section 12 (section11-nlp-contextual-rnn.js)
 
 Summary: 🟢 10 · 🟡 0 · 🔴 0 · **10 slides**
 
@@ -311,7 +333,7 @@ Visual coverage: **100%** (10/10 with hasVisual)
 | Activation Functions in Recurrent/Deep Models | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
 | Contextual Embeddings and RNNs Summary | 🟢 | ✅ | custom | rnn | Adequate depth for delivery |
 
-## Section 12 (section12-nlp-seq2seq.js)
+## Section 13 (section12-nlp-seq2seq.js)
 
 Summary: 🟢 12 · 🟡 0 · 🔴 0 · **12 slides**
 
@@ -332,7 +354,7 @@ Visual coverage: **100%** (12/12 with hasVisual)
 | Seq2Seq and NMT Summary | 🟢 | ✅ | custom | seq2seq | Adequate depth for delivery |
 | Transformer Encoder-Decoder Overview | 🟢 | ✅ | custom | encoding | Adequate depth for delivery |
 
-## Section 13 (section13-generative-ai.js)
+## Section 14 (section13-generative-ai.js)
 
 Summary: 🟢 20 · 🟡 0 · 🔴 0 · **20 slides**
 
@@ -360,29 +382,6 @@ Visual coverage: **100%** (20/20 with hasVisual)
 | Long-Sequence Challenge in Transformers | 🟢 | ✅ | custom | attention | Adequate depth for delivery |
 | Scaling Laws and Compute-Optimal Training | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | Generative AI Practical Takeaways | 🟢 | ✅ | custom | llm | Adequate depth for delivery |
-
-## Section 14 (section14-day01-nlp-intro.js)
-
-Summary: 🟢 14 · 🟡 0 · 🔴 0 · **14 slides**
-
-Visual coverage: **100%** (14/14 with hasVisual)
-
-| Slide | Rating | Visual | Notes | titleIcon | Note |
-|-------|--------|--------|-------|-----------|------|
-| Part-of-Speech (POS) Tagging | 🟢 | ✅ | custom | token | Adequate depth for delivery |
-| POS and Dependency Highlights in SpaCy | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| POS/Dependency — Worked Example | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Named Entity Recognition (NER) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| NER with SpaCy — Basic Usage | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| NER — Worked Example (News Snippet) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Evaluating NER Quality | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Full SpaCy Pipeline Functionally | 🟢 | ✅ | custom | pipeline | Adequate depth for delivery |
-| Day Project — Product Review Analyzer | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| End-to-End Flow (Conceptual) | 🟢 | ✅ | custom | workflow | Adequate depth for delivery |
-| Practice Track — Exercises | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Curated Learning Resources | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Day 1 Readiness Checklist | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Day 1 Closing | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 
 ## Section 15 (section15-rag.js)
 
@@ -428,20 +427,20 @@ Visual coverage: **100%** (12/12 with hasVisual)
 
 ## Deck Totals
 
-- 🟢 Good: **288**
+- 🟢 Good: **268**
 - 🟡 Improve: **0**
 - 🔴 Rewrite: **0**
-- **288** content slides audited
+- **268** content slides audited
 
 ### Visual enrichment
 
-- ✅ hasVisual: **288** (100%)
+- ✅ hasVisual: **268** (100%)
 - ⬜ Missing: **0**
 
 ### Speaker notes
 
 - Template notes remaining: **0**
-- Custom notes: **288**
+- Custom notes: **268**
 
 ### Recommended next passes
 
