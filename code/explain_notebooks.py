@@ -304,7 +304,7 @@ def process_notebook(filepath):
     return output_path
 
 def main():
-    root_dir = "/Users/ahmed/Desktop/AI-ML/code"
+    root_dir = r"d:\AI-ML\code"
     processed_files = []
     
     for root, dirs, files in os.walk(root_dir):
