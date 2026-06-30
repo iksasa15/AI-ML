@@ -1,6 +1,6 @@
 # Pre-Publish QA Matrix
 
-Generated: 2026-06-05
+Generated: 2026-06-30
 
 Sample: first slide + first math-heavy + first visual per section (16 × 3 = 48 checks).
 
@@ -30,24 +30,24 @@ Sample: first slide + first math-heavy + first visual per section (16 × 3 = 48 
 | Section 8 | opener | NLP Fundamentals and Challenges | ok | custom |
 | Section 8 | math | NLP Fundamentals and Challenges | ok | custom |
 | Section 8 | visual | NLP Fundamentals and Challenges | ok | custom |
-| Section 9 | opener | NLP Tokenization Masterclass | ok | custom |
-| Section 9 | math | NLP Tokenization Masterclass | n/a | custom |
-| Section 9 | visual | NLP Tokenization Masterclass | ok | custom |
-| Section 10 | opener | NLP Language Modeling with N-grams | ok | custom |
-| Section 10 | math | NLP Language Modeling with N-grams | ok | custom |
-| Section 10 | visual | NLP Language Modeling with N-grams | ok | custom |
-| Section 11 | opener | NLP Contextualized Embeddings and RNNs | ok | custom |
-| Section 11 | math | NLP Contextualized Embeddings and RNNs | ok | custom |
-| Section 11 | visual | NLP Contextualized Embeddings and RNNs | ok | custom |
-| Section 12 | opener | NLP Seq2Seq for Neural Machine Translation | ok | custom |
-| Section 12 | math | NLP Seq2Seq for Neural Machine Translation | ok | custom |
-| Section 12 | visual | NLP Seq2Seq for Neural Machine Translation | ok | custom |
-| Section 13 | opener | Generative AI: Core Concepts | ok | custom |
-| Section 13 | math | BERT: Encoder-Only Bidirectional Understanding | ok | custom |
-| Section 13 | visual | Generative AI: Core Concepts | ok | custom |
-| Section 14 | opener | Day 1 — Course Overview & Objectives | ok | custom |
-| Section 14 | math | Real-World Applications — Concrete Input/Output  | ok | custom |
-| Section 14 | visual | Day 1 — Course Overview & Objectives | ok | custom |
+| Section 9 | opener | Tokenization Strategies | ok | custom |
+| Section 9 | math | Day 1 Lab — Tokenization Views | ok | custom |
+| Section 9 | visual | Tokenization Strategies | ok | custom |
+| Section 10 | opener | Part-of-Speech (POS) Tagging | ok | custom |
+| Section 10 | math | POS and Dependency Highlights in SpaCy | ok | custom |
+| Section 10 | visual | Part-of-Speech (POS) Tagging | ok | custom |
+| Section 11 | opener | NLP Language Modeling with N-grams | ok | custom |
+| Section 11 | math | NLP Language Modeling with N-grams | ok | custom |
+| Section 11 | visual | NLP Language Modeling with N-grams | ok | custom |
+| Section 12 | opener | NLP Contextualized Embeddings and RNNs | ok | custom |
+| Section 12 | math | NLP Contextualized Embeddings and RNNs | ok | custom |
+| Section 12 | visual | NLP Contextualized Embeddings and RNNs | ok | custom |
+| Section 13 | opener | NLP Seq2Seq for Neural Machine Translation | ok | custom |
+| Section 13 | math | NLP Seq2Seq for Neural Machine Translation | ok | custom |
+| Section 13 | visual | NLP Seq2Seq for Neural Machine Translation | ok | custom |
+| Section 14 | opener | Generative AI: Core Concepts | ok | custom |
+| Section 14 | math | BERT: Encoder-Only Bidirectional Understanding | ok | custom |
+| Section 14 | visual | Generative AI: Core Concepts | ok | custom |
 | Section 15 | opener | Why RAG? | ok | custom |
 | Section 15 | math | Why RAG? | n/a | custom |
 | Section 15 | visual | Why RAG? | ok | custom |

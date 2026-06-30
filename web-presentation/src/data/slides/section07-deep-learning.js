@@ -6,13 +6,13 @@ export const slides = [
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/e/e4/Artificial_neural_network.svg"
     ],
-    "body": "Each phase answers a different question: Phase 1 — why depth and what a neuron actually computes; Phase 2 — how training stays stable and generalizes; Phase 3 — which architecture matches images vs sequences; Phase 4 — generation, compression, and deployment.",
+    "body": "Each phase answers a different question: Phase 1 — why depth and what a neuron actually computes; Phase 2 — how training stays stable and generalizes; Phase 3 — which architecture matches images vs sequences; Phase 4 — generation and reconstruction.",
     "note": "Phase 1 focus: understand the “why” and the mathematical mechanics of a single neuron before scaling to layers and data.",
     "speakerNote": "Phase 1 focus: understand the “why” and the mathematical mechanics of a single neuron before scaling to layers and data.",
     "titleIcon": "neural-net",
     "bullets": [
       {
-        "text": "Four phases: foundations → optimization → architectures → deployment.",
+        "text": "Four phases: foundations → optimization → architectures → autoencoders.",
         "icon": "workflow"
       },
       {
@@ -20,7 +20,7 @@ export const slides = [
         "icon": "check"
       },
       {
-        "text": "Expect ~3 hours for Section 7 — phase breaks are intentional.",
+        "text": "Focus on deep learning basics — phase breaks are intentional.",
         "icon": "idea"
       }
     ]
@@ -110,149 +110,6 @@ export const slides = [
     },
     "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Deep learning learns a parameterized mapping from inputs to outputs by stacking  · Training = pick a loss that measures mistakes, then adjust weights with gradient. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
     "titleIcon": "neural-net"
-  },
-  {
-    "title": "Brief History: Eras That Shaped Deep Learning",
-    "subtitle": "Old Ideas — New Scale",
-    "bullets": [
-      {
-        "text": "Perceptrons (1950s–60s): proof-of-concept linear classifiers; optimism, then limits (XOR, single-layer).",
-        "icon": "regression"
-      },
-      {
-        "text": "Backpropagation & MLPs (1980s–90s): chain rule training for multilayer nets; practical on small data, still limited by compute and datasets.",
-        "icon": "train"
-      },
-      {
-        "text": "Deep CNN breakthrough (2012–): large labeled vision data + GPUs made depth trainable; depth became the default for perception.",
-        "icon": "train"
-      },
-      {
-        "text": "Today: transformers, generative models, and self-supervised pre-training—same gradient machinery, bigger models and data.",
-        "icon": "train"
-      }
-    ],
-    "table": {
-      "title": "Timeline (simplified)",
-      "headers": [
-        "Era",
-        "What changed"
-      ],
-      "rows": [
-        [
-          "1950s–70s",
-          "Perceptron, early optimism, XOR limitation"
-        ],
-        [
-          "1980s–90s",
-          "Backprop, MLPs, first real multilayer training"
-        ],
-        [
-          "2012+",
-          "AlexNet-scale CNNs; ImageNet as a benchmark catalyst"
-        ],
-        [
-          "2017+",
-          "Transformers; sequence modeling without recurrence"
-        ],
-        [
-          "2020+",
-          "Large-scale generative models; multimodal pre-training"
-        ]
-      ]
-    },
-    "note": "Many core ideas are decades old—data scale, compute, and stable training recipes made them dominant.",
-    "speakerNote": "Many core ideas are decades old—data scale, compute, and stable training recipes made them dominant.",
-    "titleIcon": "neural-net"
-  },
-  {
-    "title": "Why Classical ML Struggles: The Curse of Dimensionality",
-    "subtitle": "Geometry of High-Dimensional Spaces",
-    "bullets": [
-      {
-        "text": "Volume grows exponentially with dimension: a fixed number of samples fills an ever-smaller fraction of the input space—data look sparse even when n is large in absolute terms.",
-        "icon": "pca"
-      },
-      {
-        "text": "Local methods (k-NN, kernel density) need enough neighbors in every direction; in high-D, “nearby” points may not exist unless n is enormous.",
-        "icon": "svm"
-      },
-      {
-        "text": "Distance concentration: in very high-D, pairwise distances can look similar—distance-based reasoning weakens without structure.",
-        "icon": "pca"
-      },
-      {
-        "text": "Hand-crafted features for raw images, audio, or text do not scale in coverage; DL instead learns task-aligned features from examples.",
-        "icon": "scaling"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Phenomenon",
-        "Effect on classical ML",
-        "How deep learning helps"
-      ],
-      "rows": [
-        [
-          "Sparse coverage in high-D",
-          "Poor generalization with fixed n",
-          "Compositional layers reuse structure across positions and depth"
-        ],
-        [
-          "Unstructured raw inputs",
-          "Hard to design universal descriptors",
-          "Architectures match modality (CNN locality, RNN order, attention)"
-        ],
-        [
-          "Hierarchical patterns",
-          "Shallow models miss multi-level structure",
-          "Stacked nonlinearities build abstractions level by level"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Volume grows exponentially with dimension: a fixed number of samples fills an ev · Local methods (k-NN, kernel density) need enough neighbors in every direction; i. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
-    "titleIcon": "pca"
-  },
-  {
-    "title": "Curse of Dimensionality: A Quantitative Glimpse",
-    "subtitle": "Why “More Features” Is Not Free",
-    "formula": "\\text{Volume of } d\\text{-ball of radius } r \\propto r^{d}\\quad(\\text{exponential in } d)",
-    "bullets": [
-      {
-        "text": "Intuition: to maintain the same density of samples as dimension grows, required sample size can grow exponentially—unrealistic in raw pixel space.",
-        "icon": "pca"
-      },
-      {
-        "text": "That is why reducing raw dimension (PCA), or learning compressed representations (deep nets), is central to practical learning.",
-        "icon": "pca"
-      },
-      {
-        "text": "DL does not “remove” the curse magically—it exploits structure (smoothness, locality, compositionality) so not every direction in ℝᵈ must be explored independently.",
-        "icon": "check"
-      }
-    ],
-    "table": {
-      "headers": [
-        "If you only change…",
-        "Typical risk"
-      ],
-      "rows": [
-        [
-          "Add many raw features without more data",
-          "Overfitting, unstable validation, noisy metrics"
-        ],
-        [
-          "Keep model too simple for the signal",
-          "Underfitting—both train and val error stay high"
-        ],
-        [
-          "Match model capacity + regularization to data",
-          "Best chance of good generalization"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Intuition: to maintain the same density of samples as dimension grows, required  · That is why reducing raw dimension (PCA), or learning compressed representations. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "pca"
   },
   {
     "title": "AI, Machine Learning, and Deep Learning",
@@ -419,182 +276,86 @@ export const slides = [
         "icon": "feature"
       },
       {
-        "text": "Scale matters: too large → exploding activations; too small → vanishing signals—Xavier and He pick variance based on fan-in (and sometimes fan-out).",
+        "text": "Frameworks use formulas like He (Kaiming) for ReLU: variance = 2/n_in, and Xavier (Glorot) for Tanh: variance = 2/(n_in + n_out) to keep activation scale stable.",
         "icon": "scaling"
       }
     ],
     "table": {
       "headers": [
-        "Init",
-        "Problem it avoids"
+        "Init Scheme",
+        "Problem it avoids",
+        "Best suited for"
       ],
       "rows": [
         [
           "All zeros",
-          "Hidden units stay identical; no representation diversity"
+          "Hidden units stay identical; no representation diversity",
+          "None (always avoid for weights)"
         ],
         [
-          "Too high variance",
-          "Saturation (sigmoid/tanh) or exploding norms"
+          "Xavier (Glorot)",
+          "Vanishing or exploding variance across layers",
+          "Sigmoid / Tanh activations"
         ],
         [
-          "Too low variance",
-          "Tiny activations and gradients; slow learning"
+          "He (Kaiming)",
+          "Variance drop due to ReLU zeroing out half the signals",
+          "ReLU / Leaky ReLU activations"
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: If all weights in a layer start equal (especially zero), every hidden unit recei · Random initialization makes each unit walk a different path in parameter space s. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: If all weights in a layer start equal (especially zero), every hidden unit recei · Random initialization makes each unit walk a different path in parameter space s. Budget ~3 min. He and Xavier are standard math formulas used behind the scenes in frameworks like PyTorch and TensorFlow.",
     "titleIcon": "idea"
   },
   {
-    "title": "Xavier (Glorot) and He Initialization",
-    "subtitle": "Formulas You See in Frameworks",
-    "sections": [
-      {
-        "heading": "Xavier / Glorot",
-        "formula": "\\sigma_w^2 = \\frac{2}{n_{\\text{in}} + n_{\\text{out}}}\\quad\\text{(variance for uniform/normal draws)}",
-        "bullets": [
-          {
-            "text": "Keeps activation variance roughly stable across layers when using sigmoid/tanh/linear-like behavior—good default for older fully-connected stacks.",
-            "icon": "regression"
-          },
-          {
-            "text": "Balances signal flowing forward and gradients flowing backward at initialization.",
-            "icon": "formula"
-          }
-        ]
-      },
-      {
-        "heading": "He (Kaiming)",
-        "formula": "\\sigma_w^2 = \\frac{2}{n_{\\text{in}}}\\quad\\text{(common for ReLU family)}",
-        "bullets": [
-          {
-            "text": "ReLU zeros half the activations on average—He init compensates so variance does not shrink layer by layer.",
-            "icon": "neural-net"
-          },
-          {
-            "text": "Default for many ConvNet / MLP blocks with ReLU and derivatives.",
-            "icon": "formula"
-          }
-        ]
-      }
-    ],
-    "note": "Frameworks differ slightly (uniform vs normal, fan-in vs fan-out only)—always read the docstring for your layer.",
-    "speakerNote": "Frameworks differ slightly (uniform vs normal, fan-in vs fan-out only)—always read the docstring for your layer.",
-    "titleIcon": "formula",
-    "bullets": [
-      {
-        "text": "Xavier: scale for tanh/sigmoid — variance stays stable across layers.",
-        "icon": "formula"
-      },
-      {
-        "text": "He: scale for ReLU — accounts for half the activations being zero.",
-        "icon": "formula"
-      },
-      {
-        "text": "Poor init can stall or explode training before the first epoch completes.",
-        "icon": "warning"
-      }
-    ]
-  },
-  {
-    "title": "Activation Functions: Classics — Sigmoid and Tanh",
-    "subtitle": "Bounded, Smooth — Watch Saturation",
+    "title": "Activation Functions: Sigmoid, Tanh, and ReLU",
+    "subtitle": "Nonlinearity is the Key to Network Depth",
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/f/f1/Sigmoid-function.svg",
       "https://upload.wikimedia.org/wikipedia/commons/8/87/Hyperbolic_Tangent.svg"
     ],
-    "formula": "\\displaystyle \\sigma(z)=\\frac{1}{1+e^{-z}}",
+    "formula": "\\sigma(z)=\\frac{1}{1+e^{-z}},\\quad \\tanh(z) = \\frac{e^z-e^{-z}}{e^z+e^{-z}},\\quad \\mathrm{ReLU}(z)=\\max(0,z)",
     "bullets": [
       {
-        "text": "Sigmoid (formula above) maps ℝ to (0, 1)—useful as a binary probability; when |z| is large the derivative is tiny (vanishing gradient).",
+        "text": "Sigmoid: maps inputs to (0, 1)—useful for probabilities, but suffers from vanishing gradients when z is very large or very small (saturation).",
         "icon": "probability"
       },
       {
-        "text": "Tanh maps to (-1, 1) and is zero-centered—often nicer than sigmoid for hidden layers, still saturates.",
+        "text": "Tanh: zero-centered, maps inputs to (-1, 1)—often nicer than sigmoid for hidden layers but still saturates.",
         "icon": "neural-net"
       },
       {
-        "text": "Both are smooth; great for gates in LSTM/GRU; for deep hidden stacks, ReLU family often trains faster.",
+        "text": "ReLU: modern default for deep stacks—cheap to compute, avoids vanishing gradient on positive domain; leaky ReLU / ELU are variants.",
         "icon": "train"
       }
     ],
     "table": {
       "headers": [
-        "fn",
+        "Function",
         "Range",
-        "Typical role today"
+        "Primary Use-case"
       ],
       "rows": [
         [
           "Sigmoid",
           "(0, 1)",
-          "Binary logits, gates, calibration"
+          "Binary classification output layer, gating networks"
         ],
         [
           "Tanh",
           "(-1, 1)",
-          "Hidden activations in some RNNs; less common in new CV"
+          "Hidden layers (recurrent networks)"
+        ],
+        [
+          "ReLU",
+          "[0, ∞)",
+          "Default choice for hidden layers in MLPs and CNNs"
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Sigmoid (formula above) maps ℝ to (0, 1)—useful as a binary probability; when |z · Tanh maps to (-1, 1) and is zero-centered—often nicer than sigmoid for hidden la. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
+    "speakerNote": "Explain why linear layers stacked together compress to a single linear layer: f(g(x)) = W1(W2x + b2) + b1 = W_new x + b_new. Nonlinear activations prevent this collapse, giving networks representational capacity.",
     "titleIcon": "neural-net",
     "conceptAnimation": "sigmoid-threshold"
-  },
-  {
-    "title": "Activation Functions: ReLU, Swish, and GELU",
-    "subtitle": "Modern Defaults for Depth",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png"
-    ],
-    "formula": "\\mathrm{ReLU}(z)=\\max(0,z),\\quad \\mathrm{Swish}(z)=z\\cdot\\sigma(z),\\quad \\mathrm{GELU}(z)\\approx z\\cdot\\Phi(z)",
-    "bullets": [
-      {
-        "text": "ReLU: sparse, fast, avoids vanishing gradient for active neurons; dead ReLUs can stick at 0—leaky ReLU / ELU mitigate.",
-        "icon": "leakage"
-      },
-      {
-        "text": "Swish / SiLU: smooth, non-monotonic; often matches or beats ReLU on depth with similar cost.",
-        "icon": "neural-net"
-      },
-      {
-        "text": "GELU: used heavily in Transformers; smooth gating that behaves like a probabilistic rectifier.",
-        "icon": "attention"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Activation",
-        "Idea",
-        "Where you see it"
-      ],
-      "rows": [
-        [
-          "ReLU / leaky ReLU",
-          "Hard sparsity, cheap",
-          "CNNs, MLPs—default backbone"
-        ],
-        [
-          "Swish / SiLU",
-          "Smooth, trainable-like behavior",
-          "Some CV/NLP backbones"
-        ],
-        [
-          "GELU",
-          "Smooth gating",
-          "BERT, ViT, many modern transformers"
-        ],
-        [
-          "Softmax (vector)",
-          "K-way probabilities sum to 1",
-          "Multi-class output layer"
-        ]
-      ]
-    },
-    "note": "Stacking linear layers only collapses to one linear map—nonlinearity is what makes depth meaningful.",
-    "speakerNote": "Stacking linear layers only collapses to one linear map—nonlinearity is what makes depth meaningful.",
-    "titleIcon": "neural-net"
   },
   {
     "title": "The XOR Problem: Why Hidden Layers Are Logically Necessary",
@@ -683,7 +444,7 @@ export const slides = [
           "How many levels of composition (edges→textures→…)"
         ],
         [
-          "Skip / residual (later)",
+          "Skip / residual",
           "Ease of optimization in very deep nets"
         ]
       ]
@@ -827,10 +588,6 @@ export const slides = [
         [
           "Topological order",
           "Visit nodes after their successors—dynamic programming on the graph"
-        ],
-        [
-          "Higher-order",
-          "Rare in standard training; Hessians expensive"
         ]
       ]
     },
@@ -843,7 +600,7 @@ export const slides = [
     "subtitle": "Stable Optimization + Generalization",
     "bullets": [
       {
-        "text": "Phase 2 is about the art of training: diagnosing fit, controlling gradients, picking optimizers and normalization, regularizing sensibly, and scheduling learning rates.",
+        "text": "Phase 2 is about the art of training: diagnosing fit, controlling gradients, picking optimizers, normalizing, and regularizing.",
         "icon": "train"
       },
       {
@@ -860,19 +617,15 @@ export const slides = [
       "rows": [
         [
           "Optimization",
-          "SGD, Adam, AdamW, gradient clipping"
+          "SGD, Adam, gradient clipping"
         ],
         [
           "Stabilization",
-          "Batch/Layer norm, residual paths, init"
+          "Batch Norm, residual paths, initialization"
         ],
         [
           "Generalization",
-          "Dropout, weight decay, early stopping, data augmentation"
-        ],
-        [
-          "Schedules",
-          "Warm-up, cosine decay, restarts, batch size"
+          "Dropout, weight decay, early stopping"
         ]
       ]
     },
@@ -931,46 +684,6 @@ export const slides = [
     "titleIcon": "evaluate"
   },
   {
-    "title": "Learning Curves: What They Tell You",
-    "subtitle": "Plot Loss and Metrics Over Steps or Epochs",
-    "bullets": [
-      {
-        "text": "Smooth downward train loss with flat val loss early on often means you can still train longer or increase capacity.",
-        "icon": "train"
-      },
-      {
-        "text": "Train ↓ and val ↑ is the classic overfitting signature—freeze or regularize before wasting compute.",
-        "icon": "train"
-      },
-      {
-        "text": "Noisy val curves: try larger val set, moving average, or more seeds—do not chase single noisy points.",
-        "icon": "rag"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Curve pattern",
-        "Interpretation"
-      ],
-      "rows": [
-        [
-          "Both losses flat",
-          "LR too low or wrong normalization / frozen layers"
-        ],
-        [
-          "Train drops, val spikes periodically",
-          "LR may be high; try warmup or decay"
-        ],
-        [
-          "Sudden NaNs",
-          "Exploding gradients, bad init, or numerical issue in loss"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Smooth downward train loss with flat val loss early on often means you can still · Train ↓ and val ↑ is the classic overfitting signature—freeze or regularize befo. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
-    "titleIcon": "metric"
-  },
-  {
     "title": "Vanishing and Exploding Gradients",
     "subtitle": "Depth Multiplies Jacobians Layer by Layer",
     "bullets": [
@@ -1015,100 +728,86 @@ export const slides = [
     "titleIcon": "formula"
   },
   {
-    "title": "Advanced Optimizers: Beyond Plain SGD",
-    "subtitle": "Momentum, Adaptive Steps, and Decoupled Weight Decay",
+    "title": "Optimizers: SGD and Adam",
+    "subtitle": "Learning rate, Momentum, and Adaptive Steps",
     "bullets": [
       {
-        "text": "SGD + momentum: accumulate a velocity vector—dampens oscillations in ravines and speeds consistent directions.",
+        "text": "SGD + momentum: accumulates updates in a velocity vector to dampen oscillations in ravines and accelerate along consistent directions.",
         "icon": "embedding"
       },
       {
-        "text": "RMSProp: divide update by root-mean-square of recent squared gradients—per-parameter scale adapts to curvature (useful when gradients are sparse or non-stationary).",
-        "icon": "scaling"
-      },
-      {
-        "text": "Adam: combines momentum with second-moment estimates; low friction default for many research prototypes.",
+        "text": "Adam: tracks both first-moment (momentum) and second-moment (recent squared gradients) of gradients to adapt learning rates per parameter.",
         "icon": "regularization"
       },
       {
-        "text": "AdamW: weight decay applied directly to weights (decoupled), not mixed into the adaptive preconditioner—often better generalization.",
-        "icon": "regularization"
+        "text": "SGD is often preferred in computer vision for generalization, while Adam is the default starting point for Transformers and general MLPs.",
+        "icon": "train"
       }
     ],
     "table": {
       "headers": [
         "Optimizer",
-        "Core idea",
-        "When it helps"
+        "Core mechanism",
+        "When to use"
       ],
       "rows": [
         [
-          "SGD + momentum",
-          "Velocity-smoothed steps",
-          "Large-batch CV, well-tuned schedules"
+          "Vanilla SGD",
+          "Step in negative gradient direction",
+          "Rarely used alone today"
         ],
         [
-          "RMSProp",
-          "Scale by running avg of g²",
-          "RNNs historically; non-stationary signals"
+          "SGD + Momentum",
+          "Adds fraction of previous step direction",
+          "Standard for CV models"
         ],
         [
           "Adam",
-          "m + v estimates per parameter",
-          "Fast iteration, NLP/Transformer defaults"
-        ],
-        [
-          "AdamW",
-          "Adam + true weight decay",
-          "Often best default when using wd with Adam"
+          "Adapts learning rate per parameter based on gradients",
+          "Robust default for text/tabular/MLPs"
         ]
       ]
     },
-    "note": "Match optimizer to codebase and paper recipe—changing only optimizer without LR/wd can flip results.",
-    "speakerNote": "Match optimizer to codebase and paper recipe—changing only optimizer without LR/wd can flip results.",
+    "note": "Learning rate (LR) is the single most important hyperparameter to tune (typically searched on a log grid, e.g., 1e-4, 1e-3, 1e-2).",
+    "speakerNote": "Make sure students understand that Adam dynamically changes the learning rate per weight based on gradient history, while SGD updates weights uniformly.",
     "titleIcon": "regularization"
   },
   {
-    "title": "Normalization: Batch Norm vs Layer Norm",
+    "title": "Normalization: Batch Normalization",
     "subtitle": "Stabilize Activations and Speed Up Deep Training",
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png"
     ],
     "bullets": [
       {
-        "text": "Batch Norm (BN): for each channel, normalize across batch and spatial dims, then learn scale γ and shift β—reduces internal covariate shift; uses batch statistics at train, moving averages at eval.",
+        "text": "Batch Norm (BN): normalizes activations across the mini-batch for each channel, then learns scale γ and shift β.",
         "icon": "train"
       },
       {
-        "text": "Layer Norm (LN): normalize across features for each example independently—no batch dimension required; default in Transformers.",
+        "text": "It stabilizes internal activations, allowing higher learning rates and reducing dependency on precise initialization.",
         "icon": "scaling"
       },
       {
-        "text": "Group Norm: middle ground for small batches in CV—normalize within channel groups per instance.",
+        "text": "Alternative is Layer Norm (LN) which normalizes across features per example—standard in Transformers and sequence models.",
         "icon": "scaling"
       }
     ],
     "table": {
       "headers": [
         "Method",
-        "What is normalized",
-        "Typical use"
+        "Normalization dimension",
+        "Typical use-case"
       ],
       "rows": [
         [
           "Batch Norm",
-          "N×H×W per channel (batch + space)",
-          "ResNets, CNN classifiers with decent batch size"
+          "Across batch and spatial dimensions",
+          "CNN classifiers, ResNets"
         ],
         [
           "Layer Norm",
-          "Hidden dim per token/step",
-          "Transformers, RNNs with variable length"
-        ],
-        [
-          "Group Norm",
-          "Channels within groups per image",
-          "Detection/segmentation with small batches"
+          "Across features for a single token/example",
+          "Transformers, RNNs"
         ]
       ]
     },
@@ -1117,8 +816,8 @@ export const slides = [
     "conceptAnimation": "feature-scaling"
   },
   {
-    "title": "Regularization: Dropout, L1/L2, and Early Stopping",
-    "subtitle": "Constrain Capacity Without Changing the Architecture Forever",
+    "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+    "subtitle": "Constrain Capacity to Prevent Overfitting",
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/b/b4/Dropout.svg"
     ],
@@ -1127,25 +826,21 @@ export const slides = [
         "heading": "Dropout",
         "bullets": [
           {
-            "text": "Randomly zero hidden units during training so units cannot co-adapt; at inference, use expectation scaling or inverted dropout.",
+            "text": "Randomly zero out hidden units during training with probability p (e.g., 0.2-0.5) so neurons cannot co-adapt.",
             "icon": "train"
           },
           {
-            "text": "Strong implicit ensemble effect; typical rates 0.1–0.5 depending on layer width.",
+            "text": "Acts as a powerful implicit ensemble method; disabled during inference (evaluation mode).",
             "icon": "forest"
           }
         ]
       },
       {
-        "heading": "L1 / L2 weight penalties",
+        "heading": "Weight Decay (L2 regularization)",
         "bullets": [
           {
-            "text": "L2 (weight decay): shrink weights toward zero smoothly—standard with SGD; use AdamW-style decoupling with Adam.",
+            "text": "Adds a penalty to the loss proportional to the squared sum of weights to keep weights small and smooth.",
             "icon": "regularization"
-          },
-          {
-            "text": "L1: promotes sparsity; more common in linear models than full deep nets unless structured pruning is a goal.",
-            "icon": "regression"
           }
         ]
       },
@@ -1153,7 +848,7 @@ export const slides = [
         "heading": "Early stopping",
         "bullets": [
           {
-            "text": "Stop when validation metric stops improving for patience epochs; restore best weights—cheap, effective regularizer on wall-clock.",
+            "text": "Monitor validation loss during training and stop when it ceases to improve for a certain number of epochs (patience).",
             "icon": "test"
           }
         ]
@@ -1162,118 +857,29 @@ export const slides = [
     "table": {
       "headers": [
         "Technique",
-        "What it penalizes"
+        "Primary action",
+        "Inference behavior"
       ],
       "rows": [
         [
           "Dropout",
-          "Complex co-adaptations between units"
+          "Randomly drops connections",
+          "Turned OFF (weights scaled)"
         ],
         [
-          "L2 / wd",
-          "Large weight magnitudes"
+          "L2 Weight Decay",
+          "Shrinks weights toward zero",
+          "Turned ON (weights are static)"
         ],
         [
-          "Early stopping",
-          "Excessive training time / memorization"
+          "Early Stopping",
+          "Halts training at lowest val loss",
+          "N/A (model is checkpointed)"
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Randomly zero hidden units during training so units cannot co-adapt; at inferenc · Strong implicit ensemble effect; typical rates 0.1–0.5 depending on layer width.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
+    "speakerNote": "Make sure to explain that during evaluation/inference, we turn off dropout (e.g., model.eval() in PyTorch) so the predictions are deterministic.",
     "titleIcon": "regularization"
-  },
-  {
-    "title": "Learning-Rate Schedules, Warm-up, and Batch Size",
-    "subtitle": "Time-Varying LR and the Noise–Throughput Trade-off",
-    "bullets": [
-      {
-        "text": "Warm-up: linearly increase LR from a small value—stabilizes Transformers and large-batch training before aggressive updates.",
-        "icon": "train"
-      },
-      {
-        "text": "Decay: step decay (piecewise), exponential, or cosine annealing—reduce LR as you approach a minimum; cosine with restarts can escape shallow minima.",
-        "icon": "idea"
-      },
-      {
-        "text": "Batch size: larger batches give lower-gradient noise but need more memory; linear LR scaling (increase LR with batch size) is a heuristic, not a law—validate on your task.",
-        "icon": "test"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Schedule",
-        "Behavior",
-        "Typical setting"
-      ],
-      "rows": [
-        [
-          "Warm-up",
-          "LR rises over first k steps",
-          "Transformers, large batch"
-        ],
-        [
-          "Step decay",
-          "Drop LR by factor at milestones",
-          "CNN classifiers"
-        ],
-        [
-          "Cosine decay",
-          "Smooth decrease to near zero",
-          "Long training runs"
-        ],
-        [
-          "Batch size",
-          "Gradient noise vs throughput",
-          "As large as memory allows, then tune LR"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Warm-up: linearly increase LR from a small value—stabilizes Transformers and lar · Decay: step decay (piecewise), exponential, or cosine annealing—reduce LR as you. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Hyperparameter Tuning: Practical Search Strategies",
-    "bullets": [
-      {
-        "text": "Search learning rate on a log grid (1e-4 … 1e-1); it is usually the highest-leverage knob.",
-        "icon": "rag"
-      },
-      {
-        "text": "Tune dropout and weight decay together with capacity—wider nets often need stronger regularization.",
-        "icon": "idea"
-      },
-      {
-        "text": "Random search explores diverse combinations faster than exhaustive grids; Bayesian optimization helps when evaluations are expensive.",
-        "icon": "test"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Hyperparameter",
-        "Search tip"
-      ],
-      "rows": [
-        [
-          "LR",
-          "Log-uniform sampling; one-order-of-magnitude brackets"
-        ],
-        [
-          "Weight decay / dropout",
-          "Couple with width; watch val–train gap"
-        ],
-        [
-          "Depth / width",
-          "Grow until val returns diminish"
-        ],
-        [
-          "Schedules",
-          "Cosine vs step—compare same epoch budget"
-        ]
-      ]
-    },
-    "note": "Always fix seeds and data splits when comparing runs—otherwise you tune noise.",
-    "speakerNote": "Always fix seeds and data splits when comparing runs—otherwise you tune noise.",
-    "titleIcon": "idea"
   },
   {
     "title": "Phase 3: Specialized Architectures (Vision & Sequences)",
@@ -1394,11 +1000,7 @@ export const slides = [
         ],
         [
           "Padding",
-          "Keep spatial size (same padding) or control border artifacts"
-        ],
-        [
-          "Dilation",
-          "Expand receptive field without pooling"
+          "Keep spatial size (same padding) or control border"
         ]
       ]
     },
@@ -1406,7 +1008,7 @@ export const slides = [
     "titleIcon": "svm"
   },
   {
-    "title": "CNN Blocks: From AlexNet to ResNet",
+    "title": "CNN Blocks: From Conv-Pool to ResNet",
     "subtitle": "Depth, Regularization, and Residual Learning",
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png"
@@ -1414,32 +1016,32 @@ export const slides = [
     "formula": "y = \\mathcal{F}(x) + x\\quad\\text{(residual block learns }\\mathcal{F}\\text{, identity carries gradient)}",
     "bullets": [
       {
-        "text": "AlexNet (2012): ReLU + dropout + GPU scale—proved CNNs dominate ImageNet with end-to-end learning.",
-        "icon": "scaling"
-      },
-      {
-        "text": "VGG-style: deep stacks of small 3×3 convolutions—simple pattern, many parameters, needs care (init, BN, WD).",
+        "text": "Standard CNN: Alternates Conv2D, Activation (ReLU), and Pooling (Max Pool) layers to extract spatial features and downsample.",
         "icon": "cnn"
       },
       {
-        "text": "ResNet: skip connections let layers learn corrections around identity—much easier to optimize very deep nets.",
+        "text": "AlexNet (2012): First large-scale CNN to win ImageNet; used ReLU, dropout, and multi-GPU training.",
+        "icon": "scaling"
+      },
+      {
+        "text": "ResNet (2015): Introduced skip (shortcut) connections, allowing gradients to flow back easily through identity mappings. Enables training networks with 100+ layers.",
         "icon": "neural-net"
       }
     ],
     "table": {
       "title": "Landmark ideas (simplified)",
       "headers": [
-        "Era / model",
+        "Model / block",
         "Idea you should remember"
       ],
       "rows": [
         [
-          "AlexNet",
-          "Scale + ReLU + data aug on GPUs"
+          "Conv + MaxPool",
+          "Feature extraction + spatial downsampling"
         ],
         [
-          "VGG",
-          "Depth from repeated 3×3; shows depth helps with care"
+          "AlexNet",
+          "Scale + ReLU + data aug on GPUs"
         ],
         [
           "ResNet",
@@ -1447,225 +1049,51 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: AlexNet (2012): ReLU + dropout + GPU scale—proved CNNs dominate ImageNet with en · VGG-style: deep stacks of small 3×3 convolutions—simple pattern, many parameters. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. ResNet skip connections resolve the vanishing gradient issue in extremely deep networks.",
     "titleIcon": "cnn"
   },
   {
-    "title": "Computer Vision Tasks: Classification, Detection, Segmentation",
-    "subtitle": "Different Outputs Need Different Heads",
-    "bullets": [
-      {
-        "text": "Classification: one label (or multi-label) per image—global pooling then linear classifier.",
-        "icon": "regression"
-      },
-      {
-        "text": "Detection: objects as boxes + class scores—needs localization and handling many scales.",
-        "icon": "scaling"
-      },
-      {
-        "text": "Segmentation: dense per-pixel class—needs high-resolution maps; skip connections or dilated convs preserve detail.",
-        "icon": "classification"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Task",
-        "Output tensor / structure",
-        "Example stacks"
-      ],
-      "rows": [
-        [
-          "Image classification",
-          "Vector of class logits",
-          "ResNet, EfficientNet, ViT"
-        ],
-        [
-          "Object detection",
-          "Many boxes + scores + classes",
-          "YOLO, RetinaNet, Faster R-CNN"
-        ],
-        [
-          "Instance segmentation",
-          "Mask per object instance",
-          "Mask R-CNN"
-        ],
-        [
-          "Semantic segmentation",
-          "Per-pixel class map",
-          "U-Net, DeepLab"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Classification: one label (or multi-label) per image—global pooling then linear  · Detection: objects as boxes + class scores—needs localization and handling many . Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "classification"
-  },
-  {
-    "title": "Object Detection: Boxes, IoU, YOLO vs Faster R-CNN",
-    "subtitle": "Matching Predictions to Ground Truth",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/c/c7/Intersection_over_Union_-_visual_equation.png"
-    ],
-    "bullets": [
-      {
-        "text": "Bounding box formats: center (cx, cy, w, h) or corners—must be consistent in loss and decoding.",
-        "icon": "formula"
-      },
-      {
-        "text": "IoU = area(intersection) / area(union) between predicted and reference boxes—thresholds like 0.5 or 0.75 define positives in training and evaluation.",
-        "icon": "train"
-      },
-      {
-        "text": "Single-stage (YOLO family): predict boxes densely on a grid—very fast. Two-stage (Faster R-CNN): propose regions then refine—often more accurate, heavier.",
-        "icon": "cnn"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Family",
-        "Mechanism",
-        "Trade-off"
-      ],
-      "rows": [
-        [
-          "YOLO / SSD / RetinaNet",
-          "Dense predictions over feature maps",
-          "Speed vs fine localization"
-        ],
-        [
-          "Faster R-CNN / Mask R-CNN",
-          "RPN proposals + ROI align",
-          "Accuracy vs latency"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Bounding box formats: center (cx, cy, w, h) or corners—must be consistent in los · IoU = area(intersection) / area(union) between predicted and reference boxes—thr. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
-    "titleIcon": "cnn"
-  },
-  {
-    "title": "Image Segmentation and the U-Net Architecture",
-    "subtitle": "Pixel-Level Classification with Skip Connections",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/88/Convolutional_Neural_Network.png"
-    ],
-    "bullets": [
-      {
-        "text": "Semantic segmentation assigns a class label to every pixel—output has the same H×W as input (possibly downsampled then upsampled).",
-        "icon": "classification"
-      },
-      {
-        "text": "U-Net: encoder downsamples to capture context; decoder upsamples to recover resolution; skip connections concatenate fine encoder features to the decoder—sharp boundaries.",
-        "icon": "encoding"
-      },
-      {
-        "text": "Common in medical imaging, satellite imagery, and any task where object edges must be precise.",
-        "icon": "check"
-      }
-    ],
-    "table": {
-      "headers": [
-        "U-Net path",
-        "Role"
-      ],
-      "rows": [
-        [
-          "Encoder",
-          "Context: what is globally present"
-        ],
-        [
-          "Bottleneck",
-          "Compressed semantic code"
-        ],
-        [
-          "Decoder + skips",
-          "Localization: where boundaries are"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Semantic segmentation assigns a class label to every pixel—output has the same H · U-Net: encoder downsamples to capture context; decoder upsamples to recover reso. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
-    "titleIcon": "classification"
-  },
-  {
-    "title": "Transfer Learning with ImageNet-Scale Pretraining",
+    "title": "Transfer Learning with Pretrained Models",
     "subtitle": "Reuse Features, Adapt the Head",
     "bullets": [
       {
-        "text": "Pretraining on millions of labeled images learns general low/mid-level filters (edges, textures) transferable to new domains.",
+        "text": "Pretraining on millions of labeled images (e.g. ImageNet) learns general low/mid-level filters (edges, textures) transferable to new domains.",
         "icon": "train"
       },
       {
-        "text": "Typical recipe: replace classifier head; optionally freeze early layers for small datasets; use smaller LR on pretrained layers.",
+        "text": "Typical recipe: replace the final classifier head; freeze the pretrained backbone for small datasets, or fine-tune with a very small learning rate for larger datasets.",
         "icon": "train"
       },
       {
-        "text": "Self-supervised pretraining (contrastive, masked image modeling) reduces reliance on labels—same fine-tuning story afterward.",
+        "text": "Transfer learning dramatically reduces training time and required labeled samples for a new vision task.",
         "icon": "train"
       }
     ],
     "table": {
       "headers": [
-        "Scenario",
+        "Target Dataset Size",
         "Strategy"
       ],
       "rows": [
         [
           "Small target dataset",
-          "Freeze backbone, train head only or top blocks"
+          "Freeze backbone, train head only"
         ],
         [
           "Medium dataset",
-          "Unfreeze progressively (discriminative LR: lower layers smaller LR)"
+          "Fine-tune top blocks with a smaller learning rate"
         ],
         [
-          "Large domain shift",
-          "Full fine-tune with strong aug + careful monitoring"
+          "Large target dataset",
+          "Full fine-tune of all layers with a small learning rate"
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Pretraining on millions of labeled images learns general low/mid-level filters ( · Typical recipe: replace classifier head; optionally freeze early layers for smal. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
+    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Pretraining on millions of labeled images learns general low/mid-level filters. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
     "titleIcon": "idea"
   },
   {
-    "title": "Sequential Data: Why Order Matters",
-    "subtitle": "Shuffling Destroys Structure",
-    "bullets": [
-      {
-        "text": "Language, audio, time series, and video (frame order) are ordered; permuting tokens or frames usually destroys the label relationship.",
-        "icon": "token"
-      },
-      {
-        "text": "Models must summarize past context without seeing the future (in many online settings)—causal masking matters.",
-        "icon": "model"
-      },
-      {
-        "text": "Three families: recurrent networks, temporal convolutions, attention—trade memory, parallelism, and inductive bias.",
-        "icon": "cnn"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Example",
-        "What order carries"
-      ],
-      "rows": [
-        [
-          "Machine translation",
-          "Word order and agreement across long distances"
-        ],
-        [
-          "Speech",
-          "Phonemes over milliseconds"
-        ],
-        [
-          "Wearable sensors",
-          "Temporal patterns before an event"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Language, audio, time series, and video (frame order) are ordered; permuting tok · Models must summarize past context without seeing the future (in many online set. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
-    "titleIcon": "data"
-  },
-  {
-    "title": "Vanilla RNNs: Architecture and Memory Limits",
+    "title": "Sequential Data & Vanilla RNNs",
     "subtitle": "One Transition, Unfolded Through Time",
     "imageUrls": [
       "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg"
@@ -1673,35 +1101,35 @@ export const slides = [
     "formula": "h_t = \\phi\\big(W_{hh} h_{t-1} + W_{xh} x_t + b\\big)",
     "bullets": [
       {
-        "text": "The same weights are reused each timestep—parameter efficient and aligned with stationarity assumptions.",
+        "text": "Sequence modeling: text, audio, and sensor streams have order; shuffling them breaks their semantic meaning.",
+        "icon": "token"
+      },
+      {
+        "text": "Recurrent Neural Networks (RNN): maintain a recurrent state vector h_t that acts as a memory summary of the past.",
         "icon": "rnn"
       },
       {
-        "text": "Hidden state h_t is a lossy summary of the past; capacity is limited by hidden size and nonlinear squeezing.",
-        "icon": "regression"
-      },
-      {
-        "text": "Long-range dependencies suffer from vanishing/exploding dynamics through repeated Jacobians—motivates gates (LSTM/GRU) or attention.",
+        "text": "The same weights W_hh and W_xh are reused across all timesteps (parameter efficiency), but long-range dependencies suffer from vanishing/exploding gradients.",
         "icon": "rnn"
       }
     ],
     "table": {
       "headers": [
-        "Strength",
+        "Feature",
         "Limitation"
       ],
       "rows": [
         [
-          "Compact (one cell, many steps)",
-          "Sequential forward pass—harder to parallelize than conv/attention"
+          "Reuses parameters",
+          "Sequential execution (cannot parallelize steps)"
         ],
         [
-          "Built-in memory variable h_t",
-          "Vanishing gradients over long horizons in vanilla form"
+          "Tracks state h_t",
+          "Cannot hold long-term memories in practice"
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: The same weights are reused each timestep—parameter efficient and aligned with s · Hidden state h_t is a lossy summary of the past; capacity is limited by hidden s. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
+    "speakerNote": "Make sure students understand that vanilla RNNs struggle with long sentences because backpropagating through 50 timesteps is mathematically similar to multiplying a weight matrix 50 times, leading to vanishing or exploding gradients.",
     "titleIcon": "rnn"
   },
   {
@@ -1748,126 +1176,33 @@ export const slides = [
     "titleIcon": "rnn"
   },
   {
-    "title": "GRU: Fewer Gates, Often Similar Quality",
-    "subtitle": "Update and Reset Instead of Separate Cell",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg"
-    ],
+    "title": "Phase 4: Generative Models & Reconstruction",
+    "subtitle": "Generative Models and Representation Learning",
     "bullets": [
       {
-        "text": "GRU merges cell and hidden states compared with LSTM—fewer parameters per layer.",
-        "icon": "neural-net"
-      },
-      {
-        "text": "Reset gate controls how much past state influences the candidate; update gate blends old and new.",
-        "icon": "regression"
-      },
-      {
-        "text": "Often matches LSTM on many tasks with faster runtime—try both on your sequence benchmark.",
-        "icon": "rnn"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Compare",
-        "When to prefer"
-      ],
-      "rows": [
-        [
-          "LSTM",
-          "Very long dependencies, richer gating may help"
-        ],
-        [
-          "GRU",
-          "Smaller models, speed-sensitive deployment"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: GRU merges cell and hidden states compared with LSTM—fewer parameters per layer. · Reset gate controls how much past state influences the candidate; update gate bl. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "rnn"
-  },
-  {
-    "title": "Encoder–Decoder (Seq2Seq) for Translation and Beyond",
-    "subtitle": "Compress Source, Generate Target Step by Step",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg"
-    ],
-    "bullets": [
-      {
-        "text": "Encoder reads the entire source (words, phonemes, frames) into a vector or sequence of states.",
-        "icon": "encoding"
-      },
-      {
-        "text": "Decoder is autoregressive: predicts next target token conditioned on previous predictions and the encoder context.",
-        "icon": "encoding"
-      },
-      {
-        "text": "Attention (later generalized in Transformers) fixes the bottleneck of a single fixed context vector—critical for long sentences.",
-        "icon": "embedding"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Component",
-        "Role"
-      ],
-      "rows": [
-        [
-          "Encoder",
-          "Build representation of source sequence"
-        ],
-        [
-          "Context bridge",
-          "Fixed vector (early seq2seq) or attention-weighted mix"
-        ],
-        [
-          "Decoder",
-          "Generate target tokens one by one (teacher forcing during training)"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Encoder reads the entire source (words, phonemes, frames) into a vector or seque · Decoder is autoregressive: predicts next target token conditioned on previous pr. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "encoding",
-    "conceptAnimation": "encoding-comparison"
-  },
-  {
-    "title": "Phase 4: Generative Models & Deployment",
-    "subtitle": "Generative Models and Real-World Constraints",
-    "bullets": [
-      {
-        "text": "Phase 4 connects ideas to products: learn latent spaces (AE/VAE), adversarial generation (GANs), then shrink and accelerate models for phones, browsers, and embedded devices.",
+        "text": "Phase 4 explores unsupervised representation learning and basic generative frameworks.",
         "icon": "embedding"
       },
       {
-        "text": "A model that only trains well in the lab is incomplete—deployment constraints shape architecture, precision, and monitoring.",
+        "text": "Autoencoders are the foundation here: they learn to compress inputs to a low-dimensional bottleneck (latent space) and reconstruct them.",
         "icon": "train"
       }
     ],
     "table": {
       "headers": [
-        "Theme",
-        "Question it answers"
+        "Concept",
+        "Input",
+        "Goal"
       ],
       "rows": [
         [
-          "Autoencoders / VAEs",
-          "How do we compress data and sample new points?"
-        ],
-        [
-          "GANs",
-          "How do we learn a generator through a learned critic?"
-        ],
-        [
-          "Quantization / pruning",
-          "How small and fast can we make inference?"
-        ],
-        [
-          "Edge & DL-Ops",
-          "How do we run and monitor models in production?"
+          "Autoencoder",
+          "Unlabeled data x",
+          "Compress and reconstruct x̂ ≈ x"
         ]
       ]
     },
-    "speakerNote": "Phase 4 (~40 min): Generative Models & Deployment. Use the table as your agenda. After the overview, dive into the first technical slide without a separate divider pause.",
+    "speakerNote": "Phase 4 (~15 min): Autoencoders. Introduce the concept of reconstruction loss: penalizing the network for failing to restore its own inputs.",
     "titleIcon": "llm"
   },
   {
@@ -1913,263 +1248,5 @@ export const slides = [
     "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Encoder f maps input x to a low-dimensional code z = f(x); decoder g maps z back · The bottleneck forces a compressed representation—useful for denoising (train on. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
     "titleIcon": "encoding",
     "conceptAnimation": "encoding-comparison"
-  },
-  {
-    "title": "Variational Autoencoders (VAEs): A Latent Space You Can Sample",
-    "subtitle": "Probabilistic Encoder + Reparameterization Trick",
-    "formula": "\\mathcal{L}=\\mathbb{E}_{q_\\phi(z|x)}[\\log p_\\theta(x|z)]-D_{KL}\\big(q_\\phi(z|x)\\,\\|\\,p(z)\\big)",
-    "bullets": [
-      {
-        "text": "Instead of a single code z, infer a distribution q(z|x) (often Gaussian with learned μ, σ); sample z to reconstruct—enables generation by sampling z ~ prior p(z).",
-        "icon": "encoding"
-      },
-      {
-        "text": "KL term regularizes the posterior to stay close to a simple prior (e.g., N(0,I)) so the latent space is smooth and interpolatable.",
-        "icon": "encoding"
-      },
-      {
-        "text": "Reparameterization: z = μ + σε with ε ~ N(0,1) makes sampling differentiable w.r.t. φ—critical for backprop.",
-        "icon": "encoding"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Term",
-        "Role"
-      ],
-      "rows": [
-        [
-          "Reconstruction log-likelihood",
-          "Learn to decode samples from q(z|x)"
-        ],
-        [
-          "KL to prior",
-          "Organize latent space; avoid arbitrary codes"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Instead of a single code z, infer a distribution q(z|x) (often Gaussian with lea · KL term regularizes the posterior to stay close to a simple prior (e.g., N(0,I)). Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
-    "titleIcon": "encoding",
-    "conceptAnimation": "encoding-comparison"
-  },
-  {
-    "title": "Generative Adversarial Networks (GANs)",
-    "subtitle": "Generator vs Discriminator — A Two-Player Game",
-    "imageUrls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/83/Generative_adversarial_network.svg"
-    ],
-    "formula": "\\min_G \\max_D\\ \\mathbb{E}_{x\\sim p_{data}}[\\log D(x)]+\\mathbb{E}_{z\\sim p_z}[\\log(1-D(G(z)))]",
-    "bullets": [
-      {
-        "text": "Generator G maps noise z to fake samples; discriminator D assigns high score to real data and low to fakes.",
-        "icon": "data"
-      },
-      {
-        "text": "Training alternates (in practice) updating D and G toward this minimax—D provides a learned training signal for G.",
-        "icon": "train"
-      },
-      {
-        "text": "Failure modes: mode collapse (G ignores part of data), instability, non-convergence—mitigations include Wasserstein variants, spectral normalization, progressive growing, better architectures.",
-        "icon": "scaling"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Issue",
-        "Symptom",
-        "Directional fix"
-      ],
-      "rows": [
-        [
-          "Mode collapse",
-          "Generated diversity drops",
-          "Minibatch discrimination, unrolled GAN, better losses"
-        ],
-        [
-          "Training instability",
-          "Oscillating losses",
-          "LR tuning, architecture balance, regularize D"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Generator G maps noise z to fake samples; discriminator D assigns high score to  · Training alternates (in practice) updating D and G toward this minimax—D provide. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "llm"
-  },
-  {
-    "title": "Model Compression: Quantization (FP32 → INT8 and Beyond)",
-    "subtitle": "Smaller Weights, Faster Integer Arithmetic",
-    "bullets": [
-      {
-        "text": "Post-training quantization maps FP32 weights/activations to INT8 (or mixed FP16) using calibration on representative batches.",
-        "icon": "train"
-      },
-      {
-        "text": "Quantization-aware training (QAT) simulates low precision during training—usually recovers more accuracy than PTQ alone.",
-        "icon": "train"
-      },
-      {
-        "text": "Trade-off: fewer bits → smaller model and higher throughput, but risk of accuracy loss if outliers are poorly handled.",
-        "icon": "metric"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Precision",
-        "Typical benefit",
-        "Watch out for"
-      ],
-      "rows": [
-        [
-          "FP32",
-          "Reference training",
-          "Largest memory footprint"
-        ],
-        [
-          "FP16 / bfloat16",
-          "2× smaller activations; tensor cores",
-          "Numerical range (bf16 vs fp16)"
-        ],
-        [
-          "INT8",
-          "4× smaller weights; fast int ops",
-          "Calibration, per-channel scales, overflow"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Post-training quantization maps FP32 weights/activations to INT8 (or mixed FP16) · Quantization-aware training (QAT) simulates low precision during training—usuall. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
-    "titleIcon": "model"
-  },
-  {
-    "title": "Model Compression: Pruning and Distillation",
-    "subtitle": "Remove Weights or Train Smaller Student Networks",
-    "bullets": [
-      {
-        "text": "Unstructured pruning: zero tiny weights—sparse matrices need hardware support to actually speed up.",
-        "icon": "model"
-      },
-      {
-        "text": "Structured pruning: drop whole channels/filters—compatible with dense kernels on GPUs after fine-tuning.",
-        "icon": "svm"
-      },
-      {
-        "text": "Knowledge distillation: train a small student to mimic logits or features of a large teacher—accuracy retention with smaller compute.",
-        "icon": "train"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Technique",
-        "What shrinks",
-        "Often needs"
-      ],
-      "rows": [
-        [
-          "Unstructured prune",
-          "Individual weights",
-          "Sparse runtimes or retraining"
-        ],
-        [
-          "Structured prune",
-          "Channels / heads / layers",
-          "Fine-tune after pruning"
-        ],
-        [
-          "Distillation",
-          "Student architecture",
-          "Teacher outputs + temperature on softmax"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Unstructured pruning: zero tiny weights—sparse matrices need hardware support to · Structured pruning: drop whole channels/filters—compatible with dense kernels on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "model"
-  },
-  {
-    "title": "Inference Optimization and Edge AI (DL-Ops)",
-    "subtitle": "From Checkpoint to On-Device Runtime",
-    "bullets": [
-      {
-        "text": "Graph optimization: fuse ops (conv+bn+relu), pick kernels for target hardware, eliminate dead tensors.",
-        "icon": "svm"
-      },
-      {
-        "text": "Runtimes: TensorRT, ONNX Runtime, OpenVINO, Core ML, TensorFlow Lite—same weights, different execution engines.",
-        "icon": "idea"
-      },
-      {
-        "text": "Edge constraints: thermal limits, battery, no GPU—combine quantization, pruning, distillation, and sometimes smaller architectures (MobileNet-style).",
-        "icon": "train"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Concern",
-        "What to plan"
-      ],
-      "rows": [
-        [
-          "Latency",
-          "Batch=1 profiling, threading, accelerator choice"
-        ],
-        [
-          "Memory",
-          "Max activation footprint, mmap weights"
-        ],
-        [
-          "Correctness drift",
-          "Monitor inputs/outputs in prod; refresh data"
-        ],
-        [
-          "Versioning",
-          "Model + code + preprocessing hash together"
-        ]
-      ]
-    },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Graph optimization: fuse ops (conv+bn+relu), pick kernels for target hardware, e · Runtimes: TensorRT, ONNX Runtime, OpenVINO, Core ML, TensorFlow Lite—same weight. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Deep Learning Practical Checklist",
-    "subtitle": "Before You Ship",
-    "bullets": [
-      {
-        "text": "Reproducibility: fix seeds where possible; log library, CUDA, and data snapshot hashes.",
-        "icon": "data"
-      },
-      {
-        "text": "Metrics: report calibration, per-class performance, and worst cohorts—not only average accuracy.",
-        "icon": "rag"
-      },
-      {
-        "text": "Data: version datasets and augmentations; document leakage checks (duplicates across splits).",
-        "icon": "leakage"
-      },
-      {
-        "text": "Deployment: define SLOs (latency p99), memory caps, and fallback behavior; run shadow traffic before full rollout.",
-        "icon": "monitoring"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Stage",
-        "Minimum artifact"
-      ],
-      "rows": [
-        [
-          "Experiment",
-          "Config file + git commit + metric CSV"
-        ],
-        [
-          "Release",
-          "Signed model bundle + preprocessing spec"
-        ],
-        [
-          "Production",
-          "Dashboards for latency, errors, drift"
-        ]
-      ]
-    },
-    "note": "Solid engineering around experiments often beats marginal architecture tweaks.",
-    "speakerNote": "Solid engineering around experiments often beats marginal architecture tweaks.",
-    "titleIcon": "neural-net"
   }
 ];

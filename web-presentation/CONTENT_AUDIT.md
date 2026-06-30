@@ -163,25 +163,20 @@ Visual coverage: **100%** (9/9 with hasVisual)
 
 ## Section 7 (section07-deep-learning.js)
 
-Summary: 🟢 48 · 🟡 0 · 🔴 0 · **48 slides**
+Summary: 🟢 28 · 🟡 0 · 🔴 0 · **28 slides**
 
-Visual coverage: **100%** (48/48 with hasVisual)
+Visual coverage: **100%** (28/28 with hasVisual)
 
 | Slide | Rating | Visual | Notes | titleIcon | Note |
 |-------|--------|--------|-------|-----------|------|
 | Deep Learning: Introduction | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
 | Phase 1: Foundations & Neural Core | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
 | What Is Deep Learning? | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
-| Brief History: Eras That Shaped Deep Learning | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
-| Why Classical ML Struggles: The Curse of Dimensionality | 🟢 | ✅ | custom | pca | Adequate depth for delivery |
-| Curse of Dimensionality: A Quantitative Glimpse | 🟢 | ✅ | custom | pca | Adequate depth for delivery |
 | AI, Machine Learning, and Deep Learning | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
 | Use-Case Fit: When Deep Learning Shines — and When to Skip It | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
 | Single Neuron (Perceptron): Math, Weights, and Bias | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | Weight Initialization: Why Zeros Break Training | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Xavier (Glorot) and He Initialization | 🟢 | ✅ | custom | formula | Adequate depth for delivery |
-| Activation Functions: Classics — Sigmoid and Tanh | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
-| Activation Functions: ReLU, Swish, and GELU | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
+| Activation Functions: Sigmoid, Tanh, and ReLU | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
 | The XOR Problem: Why Hidden Layers Are Logically Necessary | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | From Perceptron to MLP (Multi-Layer Perceptron) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
 | Forward Propagation: The Engine of Inference | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
@@ -189,34 +184,20 @@ Visual coverage: **100%** (48/48 with hasVisual)
 | Backpropagation: Chain Rule on the Computational Graph | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
 | Phase 2: Optimization & Training Strategy | 🟢 | ✅ | custom | compare | Adequate depth for delivery |
 | Training Diagnostics: Underfitting, Good Fit, and Overfitting | 🟢 | ✅ | custom | evaluate | Adequate depth for delivery |
-| Learning Curves: What They Tell You | 🟢 | ✅ | custom | metric | Adequate depth for delivery |
 | Vanishing and Exploding Gradients | 🟢 | ✅ | custom | formula | Adequate depth for delivery |
-| Advanced Optimizers: Beyond Plain SGD | 🟢 | ✅ | custom | regularization | Adequate depth for delivery |
-| Normalization: Batch Norm vs Layer Norm | 🟢 | ✅ | custom | scaling | Adequate depth for delivery |
-| Regularization: Dropout, L1/L2, and Early Stopping | 🟢 | ✅ | custom | regularization | Adequate depth for delivery |
-| Learning-Rate Schedules, Warm-up, and Batch Size | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Hyperparameter Tuning: Practical Search Strategies | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Optimizers: SGD and Adam | 🟢 | ✅ | custom | regularization | Adequate depth for delivery |
+| Normalization: Batch Normalization | 🟢 | ✅ | custom | scaling | Adequate depth for delivery |
+| Regularization: Dropout, Weight Decay, and Early Stopping | 🟢 | ✅ | custom | regularization | Adequate depth for delivery |
 | Phase 3: Specialized Architectures (Vision & Sequences) | 🟢 | ✅ | custom | data | Adequate depth for delivery |
 | Image Data: How Computers “See” Pixels | 🟢 | ✅ | custom | data | Adequate depth for delivery |
 | Convolution: Kernels, Edge Filters, and Feature Maps | 🟢 | ✅ | custom | svm | Adequate depth for delivery |
-| CNN Blocks: From AlexNet to ResNet | 🟢 | ✅ | custom | cnn | Adequate depth for delivery |
-| Computer Vision Tasks: Classification, Detection, Segmentation | 🟢 | ✅ | custom | classification | Adequate depth for delivery |
-| Object Detection: Boxes, IoU, YOLO vs Faster R-CNN | 🟢 | ✅ | custom | cnn | Adequate depth for delivery |
-| Image Segmentation and the U-Net Architecture | 🟢 | ✅ | custom | classification | Adequate depth for delivery |
-| Transfer Learning with ImageNet-Scale Pretraining | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Sequential Data: Why Order Matters | 🟢 | ✅ | custom | data | Adequate depth for delivery |
-| Vanilla RNNs: Architecture and Memory Limits | 🟢 | ✅ | custom | rnn | Adequate depth for delivery |
+| CNN Blocks: From Conv-Pool to ResNet | 🟢 | ✅ | custom | cnn | Adequate depth for delivery |
+| Transfer Learning with Pretrained Models | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
+| Sequential Data & Vanilla RNNs | 🟢 | ✅ | custom | rnn | Adequate depth for delivery |
 | LSTM: Gates for Long-Term Memory | 🟢 | ✅ | custom | rnn | Adequate depth for delivery |
-| GRU: Fewer Gates, Often Similar Quality | 🟢 | ✅ | custom | rnn | Adequate depth for delivery |
-| Encoder–Decoder (Seq2Seq) for Translation and Beyond | 🟢 | ✅ | custom | encoding | Adequate depth for delivery |
-| Phase 4: Generative Models & Deployment | 🟢 | ✅ | custom | llm | Adequate depth for delivery |
+| Phase 4: Generative Models & Reconstruction | 🟢 | ✅ | custom | llm | Adequate depth for delivery |
 | Autoencoders (AE): Compression and Reconstruction | 🟢 | ✅ | custom | encoding | Adequate depth for delivery |
-| Variational Autoencoders (VAEs): A Latent Space You Can Sample | 🟢 | ✅ | custom | encoding | Adequate depth for delivery |
-| Generative Adversarial Networks (GANs) | 🟢 | ✅ | custom | llm | Adequate depth for delivery |
-| Model Compression: Quantization (FP32 → INT8 and Beyond) | 🟢 | ✅ | custom | model | Adequate depth for delivery |
-| Model Compression: Pruning and Distillation | 🟢 | ✅ | custom | model | Adequate depth for delivery |
-| Inference Optimization and Edge AI (DL-Ops) | 🟢 | ✅ | custom | idea | Adequate depth for delivery |
-| Deep Learning Practical Checklist | 🟢 | ✅ | custom | neural-net | Adequate depth for delivery |
+
 
 ## Section 8 (section08-nlp-fundamentals.js)
 

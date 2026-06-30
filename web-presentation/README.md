@@ -39,7 +39,7 @@
 | **4** | `section04-naive-bayes-trees.js` | Naive Bayes، أشجار القرار، Random Forest، التقييم | 12 |
 | **5** | `section05-svm.js` | SVM، الهامش، النواة (Kernel) | 9 |
 | **6** | `section06-clustering-pca.js` | التجميع (K-Means، Hierarchical) و PCA | 9 |
-| **7** | `section07-deep-learning.js` | التعلّم العميق، الشبكات العصبية، CNN، RNN | 48 |
+| **7** | `section07-deep-learning.js` | التعلّم العميق، الشبكات العصبية، CNN، RNN | 28 |
 | **8** | `section08-nlp-fundamentals.js` | أساسيات NLP، regex، تنظيف النص (عملي) | 19 |
 | **9** | `section09-nlp-tokenization.js` | Tokenization + labs (NLTK/SpaCy) | 32 |
 | **10** | `section14-day01-nlp-intro.js` | **تحليل نصي** — POS، NER، مشروع | 14 |
