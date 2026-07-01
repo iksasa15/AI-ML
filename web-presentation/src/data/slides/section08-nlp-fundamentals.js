@@ -435,247 +435,134 @@ export const slides = [
     "titleIcon": "idea"
   },
   {
-    "title": "Text Cleaning — Step 1: Conceptual Pipeline",
+    "title": "Text Cleaning — Conceptual Steps & Python Code",
+    "subtitle": "Conceptual stages matched with Python regex implementations",
     "table": {
       "headers": [
         "Stage",
-        "What happens",
+        "Python Implementation",
         "Goal"
       ],
       "rows": [
         [
-          "1",
-          "Decode entities + remove HTML",
-          "Keep readable content only"
+          "1. Decode & Clean HTML",
+          "html.unescape(text) & re.sub(r'<[^>]+>', '', text)",
+          "Keep readable text only"
         ],
         [
-          "2",
-          "Remove URLs / contacts / mentions",
-          "Drop metadata noise"
+          "2. Remove Contacts/URLs",
+          "re.sub(r'https?://\\S+|www\\.\\S+', '', text)",
+          "Drop URL metadata"
         ],
         [
-          "3",
-          "Remove emoji / odd symbols",
-          "Standardize character space"
+          "3. Remove Mentions/Socials",
+          "re.sub(r'@\\w+|#\\w+', '', text)",
+          "Remove handles & hashtags"
         ],
         [
-          "4",
-          "Normalize punctuation + spaces",
-          "Produce clean model-ready text"
+          "4. Drop Non-ASCII & Emoji",
+          "text.encode('ascii', 'ignore').decode('ascii')",
+          "Drop emoji/special symbols"
+        ],
+        [
+          "5. Normalize Whitespace",
+          "re.sub(r'\\s+', ' ', text).strip()",
+          "Normalize extra spaces"
         ]
       ]
     },
-    "note": "Teach the idea first, then execute one worked example.",
-    "speakerNote": "Teach the idea first, then execute one worked example.",
+    "note": "A regex-based cleaning function is usually the first stage in an NLP preprocessing pipeline.",
+    "speakerNote": "Walk the table to show how each cleaning stage corresponds to a Python/Regex operation.",
     "titleIcon": "pipeline"
   },
   {
-    "title": "Text Cleaning — Step 2: Raw Input Example",
+    "title": "Text Cleaning — Worked Example",
+    "subtitle": "Trace of raw input transitioning to clean text",
     "table": {
       "headers": [
-        "Item",
-        "Value"
-      ],
-      "rows": [
-        [
-          "Raw text",
-          "<p>John said: \"AI is amazing!!!! 🤖🔥\"</p> Visit: https://ai.com @john #AI Contact: +1-800-000-0000"
-        ],
-        [
-          "Contains",
-          "HTML + URL + @mention + hashtag + phone + emoji"
-        ]
-      ]
-    },
-    "note": "Use this as the starting point before running clean_text().",
-    "speakerNote": "Use this as the starting point before running clean_text().",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Text Cleaning — Python Function (Core)",
-    "table": {
-      "headers": [
-        "Step",
-        "Python line",
-        "Purpose"
-      ],
-      "rows": [
-        [
-          "1",
-          "text = html.unescape(text)",
-          "Decode HTML entities"
-        ],
-        [
-          "2",
-          "text = re.sub(r'<[^>]+>', '', text)",
-          "Remove HTML tags"
-        ],
-        [
-          "3",
-          "text = re.sub(r'https?://\\S+|www\\.\\S+', '', text)",
-          "Remove URLs"
-        ],
-        [
-          "4",
-          "text = re.sub(r'\\S+@\\S+', '', text)",
-          "Remove email addresses"
-        ],
-        [
-          "5",
-          "text = re.sub(r'\\+?[\\d\\-\\(\\)\\s]{9,}', '', text)",
-          "Remove phone numbers"
-        ],
-        [
-          "6",
-          "text = re.sub(r'@\\w+|#\\w+', '', text)",
-          "Remove mentions and hashtags"
-        ],
-        [
-          "7",
-          "text = text.encode('ascii', 'ignore').decode('ascii')",
-          "Drop emoji / non-ASCII"
-        ],
-        [
-          "8",
-          "text = re.sub(r'[^\\w\\s\\.\\!\\?]', ' ', text)",
-          "Keep letters/spaces/sentence punctuation"
-        ],
-        [
-          "9",
-          "text = re.sub(r'\\s+', ' ', text).strip()",
-          "Normalize extra whitespace"
-        ]
-      ]
-    },
-    "note": "This is the same clean_text() pipeline from Day01_NLP_Introduction_EN.md section 3.2.",
-    "speakerNote": "This is the same clean_text() pipeline from Day01_NLP_Introduction_EN.md section 3.2.",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Text Cleaning — Step 4: Transformation Trace",
-    "table": {
-      "headers": [
-        "Step",
-        "What we remove / change",
+        "Stage",
+        "Operation performed",
         "Text snapshot"
       ],
       "rows": [
         [
-          "0 (raw)",
-          "Original text",
-          "<p>John said: \"AI is amazing!!!! \" Visit: https://ai.com @john #AI Contact: +1-800-000-0000</p>"
+          "0. Raw Input",
+          "Original raw string",
+          "<p>John: \"AI is amazing!!!! 🤖🔥\" Visit: https://ai.com @john #AI</p>"
         ],
         [
-          "1",
-          "Remove HTML tags",
-          "John said: \"AI is amazing!!!! \" Visit: https://ai.com @john #AI Contact: +1-800-000-0000"
+          "1. Clean HTML",
+          "Decode entities & remove tags",
+          "John: \"AI is amazing!!!! 🤖🔥\" Visit: https://ai.com @john #AI"
         ],
         [
-          "2",
-          "Remove URL",
-          "John said: \"AI is amazing!!!! \" Visit:  @john #AI Contact: +1-800-000-0000"
+          "2. Remove URLs",
+          "Remove web addresses",
+          "John: \"AI is amazing!!!! 🤖🔥\" Visit:  @john #AI"
         ],
         [
-          "3",
-          "Remove @mention and #hashtag",
-          "John said: \"AI is amazing!!!! \" Visit:   Contact: +1-800-000-0000"
+          "3. Remove Socials",
+          "Remove @mentions and #hashtags",
+          "John: \"AI is amazing!!!! 🤖🔥\" Visit:  "
         ],
         [
-          "4",
-          "Remove phone number",
-          "John said: \"AI is amazing!!!! \" Visit:   Contact: "
-        ],
-        [
-          "5",
-          "Normalize punctuation + spaces",
-          "John said AI is amazing!!!! Visit"
+          "4. Drop Emoji/Symbols",
+          "ASCII-only encoding & cleanup",
+          "John AI is amazing!!!! Visit"
         ]
       ]
     },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
+    "note": "Text cleaning produces standard, noise-free input for tokenizer components.",
+    "speakerNote": "Walk through the worked example, showing how the raw input on row 0 is progressively cleaned until row 4.",
     "titleIcon": "idea"
   },
   {
-    "title": "Text Cleaning — Step 5: Final Before/After",
-    "table": {
-      "headers": [
-        "Case",
-        "Value"
-      ],
-      "rows": [
-        [
-          "Before",
-          "<p>John said: \"AI is amazing!!!! \" Visit: https://ai.com @john #AI Contact: +1-800-000-0000</p>"
-        ],
-        [
-          "After",
-          "John said AI is amazing!!!! Visit"
-        ]
-      ]
-    },
-    "note": "This is the exact expected output from the lesson example.",
-    "speakerNote": "This is the exact expected output from the lesson example.",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Lowercase Normalization",
+    "title": "Lowercase Normalization: Usage & Tradeoffs",
+    "subtitle": "Standardizing case while avoiding semantic signal loss",
     "bullets": [
       {
-        "text": "Lowercasing merges surface forms: \"NASA\" / \"nasa\" → same token for bag-of-words style tasks.",
+        "text": "Lowercasing merges surface forms: \"NASA\" / \"nasa\" → same token for bag-of-words.",
         "icon": "token"
       },
       {
         "text": "Risk: named-entity signal loss — \"Apple\" (company) vs \"apple\" (fruit).",
-        "icon": "formula"
+        "icon": "warning"
       },
       {
         "text": "For NER and MT, preserve case until you have a tokenizer/model policy.",
-        "icon": "token"
+        "icon": "check"
       }
     ],
-    "note": "Academic rule: lowercase for retrieval/classification, keep case for NER-sensitive pipelines.",
-    "speakerNote": "Academic rule: lowercase for retrieval/classification, keep case for NER-sensitive pipelines.",
-    "titleIcon": "scaling",
-    "conceptAnimation": "feature-scaling"
-  },
-  {
-    "title": "Lowercase Normalization — Step-by-Step Examples",
     "table": {
       "headers": [
-        "Step",
+        "Case",
         "Input text",
         "Python operation",
         "Output text"
       ],
       "rows": [
         [
-          "1",
+          "Standard Case",
           "Natural Language Processing",
           "normalize_case(text)",
           "natural language processing"
         ],
         [
-          "2",
-          "ARTIFICIAL INTELLIGENCE",
-          "normalize_case(text)",
-          "artificial intelligence"
-        ],
-        [
-          "3",
+          "Mixed Case",
           "iPhone vs Android",
           "normalize_case(text)",
           "iphone vs android"
         ],
         [
-          "4",
+          "Acronym Case",
           "NASA launched SpaceX",
           "normalize_case(text)",
           "nasa launched spacex"
         ]
       ]
     },
-    "note": "Use lowercasing carefully for NER tasks where capitalization carries meaning.",
-    "speakerNote": "Use lowercasing carefully for NER tasks where capitalization carries meaning.",
+    "note": "Academic rule: lowercase for retrieval/classification, keep case for NER-sensitive pipelines.",
+    "speakerNote": "Discuss the advantages and risks of case normalization, then use the table for examples.",
     "titleIcon": "scaling",
     "conceptAnimation": "feature-scaling"
   }

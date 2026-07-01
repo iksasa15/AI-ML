@@ -1,230 +1,6 @@
 /** Week 3 Session 2 — Tokenization theory + NLTK/SpaCy labs */
 export const slides = [
   {
-    "title": "Tokenization Strategies",
-    "bullets": [
-      {
-        "text": "Whitespace tokenization is simple and effective for many scripts.",
-        "icon": "token"
-      },
-      {
-        "text": "Character-level tokenization avoids OOV but can lengthen sequences.",
-        "icon": "token"
-      },
-      {
-        "text": "Subword tokenization balances vocabulary size and semantic coverage.",
-        "icon": "token"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Strategy",
-        "Strength",
-        "Tradeoff"
-      ],
-      "rows": [
-        [
-          "Word/space-based",
-          "Human-readable tokens",
-          "Weak on rare/compound words"
-        ],
-        [
-          "Character-based",
-          "No unknown words",
-          "Very long sequences"
-        ],
-        [
-          "Subword-based",
-          "Handles rare words and morphology",
-          "Tokenizer training complexity"
-        ]
-      ]
-    },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Whitespace tokenization is simple and effective for many scripts. · Character-level tokenization avoids OOV but can lengthen sequences.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Subword Tokenization Algorithms",
-    "table": {
-      "headers": [
-        "Algorithm",
-        "Base Idea",
-        "Common Usage"
-      ],
-      "rows": [
-        [
-          "BPE",
-          "Merge most frequent adjacent units iteratively",
-          "GPT-family style tokenizers"
-        ],
-        [
-          "WordPiece",
-          "Likelihood-driven merges",
-          "BERT-family models"
-        ],
-        [
-          "Unigram LM",
-          "Probabilistic token inventory pruning",
-          "T5/XLNet-style pipelines"
-        ],
-        [
-          "SentencePiece",
-          "Train on raw text without pre-tokenization",
-          "Multilingual pipelines"
-        ]
-      ]
-    },
-    "note": "Subword methods control vocabulary growth while preserving useful semantics.",
-    "speakerNote": "Subword methods control vocabulary growth while preserving useful semantics.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Unigram LM Tokenization Example",
-    "bullets": [
-      {
-        "text": "Model evaluates multiple candidate segmentations with token probabilities.",
-        "icon": "test"
-      },
-      {
-        "text": "Chooses segmentation with highest likelihood for each word context.",
-        "icon": "token"
-      },
-      {
-        "text": "EM training updates token probabilities and prunes weak tokens.",
-        "icon": "train"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Candidate Tokenization",
-        "Score"
-      ],
-      "rows": [
-        [
-          "basket + ball",
-          "0.30"
-        ],
-        [
-          "basketball",
-          "0.40"
-        ],
-        [
-          "bask + etball",
-          "0.06"
-        ]
-      ]
-    },
-    "note": "Highest-probability segmentation is selected in decoding.",
-    "speakerNote": "Highest-probability segmentation is selected in decoding.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "BPE Training Process",
-    "bullets": [
-      {
-        "text": "Start from character-level symbols.",
-        "icon": "regression"
-      },
-      {
-        "text": "Count adjacent symbol-pair frequencies.",
-        "icon": "token"
-      },
-      {
-        "text": "Merge most frequent pair into a new token.",
-        "icon": "token"
-      },
-      {
-        "text": "Repeat until target vocabulary size is reached.",
-        "icon": "token"
-      }
-    ],
-    "table": {
-      "headers": [
-        "Step",
-        "Operation"
-      ],
-      "rows": [
-        [
-          "1",
-          "Initialize symbol inventory"
-        ],
-        [
-          "2",
-          "Compute pair frequencies"
-        ],
-        [
-          "3",
-          "Merge best pair"
-        ],
-        [
-          "4",
-          "Rebuild sequence with merged token and iterate"
-        ]
-      ]
-    },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Start from character-level symbols. · Count adjacent symbol-pair frequencies.. Budget ~3 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Stemming vs Lemmatization",
-    "table": {
-      "headers": [
-        "Aspect",
-        "Stemming",
-        "Lemmatization"
-      ],
-      "rows": [
-        [
-          "Method",
-          "Rule-based suffix stripping",
-          "Vocabulary + morphology aware normalization"
-        ],
-        [
-          "Output quality",
-          "May produce non-words (studi)",
-          "Canonical dictionary forms (study)"
-        ],
-        [
-          "Context sensitivity",
-          "Low",
-          "Higher (POS-aware)"
-        ],
-        [
-          "Use case",
-          "Fast retrieval/indexing",
-          "Semantically cleaner linguistic analysis"
-        ]
-      ]
-    },
-    "note": "Choose based on task priority: speed and recall vs linguistic precision.",
-    "speakerNote": "Choose based on task priority: speed and recall vs linguistic precision.",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Lemmatization and Morphology Examples",
-    "bullets": [
-      {
-        "text": "Verb forms: am/are/is/was/were -> be.",
-        "icon": "idea"
-      },
-      {
-        "text": "Irregular nouns: mice -> mouse, children -> child.",
-        "icon": "idea"
-      },
-      {
-        "text": "POS-aware cases: better (adj) -> good, better (verb) -> better.",
-        "icon": "idea"
-      }
-    ],
-    "note": "Lemmatization preserves semantics better than aggressive stemming.",
-    "speakerNote": "Lemmatization preserves semantics better than aggressive stemming.",
-    "titleIcon": "idea"
-  },
-  {
     "title": "NLP Tokenization Masterclass",
     "subtitle": "From Word Splits to Subword Modeling",
     "bullets": [
@@ -247,318 +23,48 @@ export const slides = [
     "conceptAnimation": "tokenization-flow"
   },
   {
-    "title": "Space-Based vs Subword Tokenization",
-    "table": {
-      "headers": [
-        "Method",
-        "How It Splits",
-        "Best Use",
-        "Limitation"
-      ],
-      "rows": [
-        [
-          "Whitespace",
-          "Split by spaces",
-          "Simple corpora and fast baselines",
-          "Weak handling of rare/morphologically rich words"
-        ],
-        [
-          "Character",
-          "Each char is a token",
-          "No OOV failures",
-          "Very long token sequences"
-        ],
-        [
-          "Subword",
-          "Word pieces learned from corpus",
-          "Modern NLP/LLMs",
-          "Requires tokenizer training and tuning"
-        ]
-      ]
-    },
-    "note": "Subword tokenization is usually the best compromise for modern production NLP.",
-    "speakerNote": "Subword tokenization is usually the best compromise for modern production NLP.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Subword Algorithms Comparison",
-    "table": {
-      "headers": [
-        "Algorithm",
-        "Core Idea",
-        "Needs Pre-tokenization?",
-        "Common Models"
-      ],
-      "rows": [
-        [
-          "Unigram LM",
-          "Probabilistic token inventory",
-          "No",
-          "XLNet, T5"
-        ],
-        [
-          "WordPiece",
-          "Likelihood-based merge scoring",
-          "Yes",
-          "BERT family"
-        ],
-        [
-          "BPE",
-          "Frequent-pair iterative merges",
-          "Yes",
-          "GPT, RoBERTa style pipelines"
-        ],
-        [
-          "SentencePiece",
-          "Raw text tokenization framework",
-          "No",
-          "mBART, multilingual setups"
-        ]
-      ]
-    },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "token"
-  },
-  {
-    "title": "Unigram LM Example: Choosing Best Segmentation",
-    "body": "Input word: basketball",
-    "table": {
-      "headers": [
-        "Candidate Tokenization",
-        "Probability",
-        "Decision"
-      ],
-      "rows": [
-        [
-          "basket + ball",
-          "0.30",
-          "Possible"
-        ],
-        [
-          "basketball",
-          "0.40",
-          "Selected (highest likelihood)"
-        ],
-        [
-          "bask + etball",
-          "0.06",
-          "Rejected"
-        ]
-      ]
-    },
-    "bullets": [
-      {
-        "text": "Unigram LM keeps multiple candidates and scores them probabilistically.",
-        "icon": "idea"
-      },
-      {
-        "text": "EM training refines token probabilities and prunes weak tokens over time.",
-        "icon": "train"
-      }
-    ],
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Unigram LM keeps multiple candidates and scores them probabilistically. · EM training refines token probabilities and prunes weak tokens over time.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "BPE Walkthrough: low, lowest, lower",
-    "table": {
-      "headers": [
-        "Step",
-        "Action",
-        "Result"
-      ],
-      "rows": [
-        [
-          "1",
-          "Start with characters",
-          "l, o, w, e, s, t, r"
-        ],
-        [
-          "2",
-          "Merge most frequent pair l+o",
-          "lo"
-        ],
-        [
-          "3",
-          "Merge lo+w",
-          "low"
-        ],
-        [
-          "4",
-          "Continue frequent merges",
-          "lower, lowest become compact tokens"
-        ]
-      ]
-    },
-    "note": "BPE repeatedly merges frequent adjacent units until target vocabulary size is reached.",
-    "speakerNote": "BPE repeatedly merges frequent adjacent units until target vocabulary size is reached.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "BPE Tokenization Inference Example",
-    "body": "Given sentence: lowered the lowest curtain",
-    "table": {
-      "headers": [
-        "Word",
-        "Subword Output"
-      ],
-      "rows": [
-        [
-          "lowered",
-          "low + er + ed"
-        ],
-        [
-          "the",
-          "the"
-        ],
-        [
-          "lowest",
-          "low + est"
-        ],
-        [
-          "curtain",
-          "curtain (or further split if unseen)"
-        ]
-      ]
-    },
-    "bullets": [
-      {
-        "text": "Subword decomposition reduces out-of-vocabulary failures.",
-        "icon": "token"
-      },
-      {
-        "text": "Frequent morphemes become reusable building blocks across words.",
-        "icon": "token"
-      }
-    ],
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Subword decomposition reduces out-of-vocabulary failures. · Frequent morphemes become reusable building blocks across words.. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Why Subword Tokenization Matters in Practice",
-    "sections": [
-      {
-        "heading": "Operational Benefits",
-        "bullets": [
-          {
-            "text": "Handles rare and unseen words gracefully.",
-            "icon": "token"
-          },
-          {
-            "text": "Keeps vocabulary compact without losing compositional meaning.",
-            "icon": "token"
-          },
-          {
-            "text": "Improves transfer across domains and noisy user text.",
-            "icon": "token"
-          }
-        ]
-      },
-      {
-        "heading": "Bootcamp Takeaway",
-        "bullets": [
-          {
-            "text": "Tokenizer choice is a model-design decision, not just preprocessing.",
-            "icon": "token"
-          },
-          {
-            "text": "Always validate tokenization behavior on your real domain samples.",
-            "icon": "test"
-          }
-        ]
-      }
-    ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Open vocabulary: rare words decompose into known subwords. · Balances character-level flexibility with word-level efficiency.. Budget ~2 min. Quick check: ask one volunteer to paraphrase the first bullet.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow",
-    "bullets": [
-      {
-        "text": "Open vocabulary: rare words decompose into known subwords.",
-        "icon": "token"
-      },
-      {
-        "text": "Balances character-level flexibility with word-level efficiency.",
-        "icon": "compare"
-      }
-    ]
-  },
-  {
-    "title": "Tokenization Practice Exercise",
-    "subtitle": "Manual Tokenization Drill",
-    "body": "Corpus: \"go going gone goals\"",
-    "bullets": [
-      {
-        "text": "Task: tokenize sentence \"the goat is going to the goal\" using a subword strategy.",
-        "icon": "token"
-      },
-      {
-        "text": "Compare outputs under whitespace, BPE-style merges, and Unigram-style choices.",
-        "icon": "token"
-      },
-      {
-        "text": "Discuss which strategy gives better reuse and fewer unknown tokens.",
-        "icon": "token"
-      }
-    ],
-    "note": "Practice builds intuition for tokenizer behavior before model training.",
-    "speakerNote": "Practice builds intuition for tokenizer behavior before model training.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Day 1 Lab — Tokenization Fundamentals",
-    "subtitle": "Workshop view — complements Section 8 overview and Section 9 masterclass",
-    "bullets": [
-      {
-        "text": "Word: fast and interpretable; brittle on OOV and morphology.",
-        "icon": "token"
-      },
-      {
-        "text": "Character: no unknown tokens; very long sequences.",
-        "icon": "token"
-      },
-      {
-        "text": "Subword: balances vocabulary size with rare-word coverage — standard for LLMs.",
-        "icon": "token"
-      }
-    ],
+    "title": "Tokenization Granularities (Word, Char, Subword)",
+    "subtitle": "Comparing different levels of text splitting",
     "table": {
       "headers": [
         "Granularity",
-        "Example fragment",
-        "Idea"
+        "Strength",
+        "Tradeoff",
+        "Example output (for 'running')"
       ],
       "rows": [
         [
-          "Word",
-          "running → running",
-          "Whole-word units"
+          "Word / Space-based",
+          "Human-readable tokens",
+          "Weak on rare/compound words (OOV)",
+          "['running']"
         ],
         [
-          "Subword",
-          "running → run + ##ning",
-          "Shared roots across inflections"
+          "Character-based",
+          "No unknown words (no OOV)",
+          "Very long sequences, loss of meaning",
+          "['r', 'u', 'n', 'n', 'i', 'n', 'g']"
         ],
         [
-          "Sentence",
-          "One string per sentence",
-          "Segment before document models"
+          "Subword-based",
+          "Handles rare words, compact vocab",
+          "Requires tokenizer training/tuning",
+          "['run', '##ning']"
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Land: Word: fast and interpretable; brittle on OOV and morphology. · Character: no unknown tokens; very long sequences.. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
+    "note": "Subword tokenization is the industry standard for modern LLMs and neural NLP models.",
+    "speakerNote": "Use the table to compare the three granularities on vocabulary size and sequence length.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
   {
-    "title": "Day 1 Lab — Tokenization Views",
+    "title": "Tokenization Views (Code Examples)",
+    "subtitle": "Same sentence, word / char / subword splits side by side",
     "table": {
       "headers": [
-        "Tokenizer type",
-        "Python idea",
+        "Tokenizer Type",
+        "Python Implementation",
         "Result on \"I'm running to the store!\""
       ],
       "rows": [
@@ -570,7 +76,7 @@ export const slides = [
         [
           "Character",
           "list(text)",
-          "['I', \"'\", 'm', ' ', 'r', 'u', ... ]"
+          "['I', \"'\", 'm', ' ', 'r', 'u', 'n', 'n', 'i', 'n', 'g', ...]"
         ],
         [
           "Subword",
@@ -584,136 +90,199 @@ export const slides = [
         ]
       ]
     },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow",
-    "subtitle": "Same sentence, word / char / subword splits side by side"
-  },
-  {
-    "title": "NLTK Tokenization Essentials",
-    "bullets": [
-      {
-        "text": "word_tokenize handles contractions and punctuation boundaries.",
-        "icon": "token"
-      },
-      {
-        "text": "sent_tokenize splits paragraphs into sentences.",
-        "icon": "tree"
-      },
-      {
-        "text": "TweetTokenizer preserves hashtags, mentions, and emoticon tokens.",
-        "icon": "token"
-      }
-    ],
-    "note": "Download punkt (and punkt_tab where required) before first tokenize calls.",
-    "speakerNote": "Download punkt (and punkt_tab where required) before first tokenize calls.",
+    "speakerNote": "Point out how different tokenizers split contractions like 'I'm' and morphology like 'running'.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
   {
-    "title": "NLTK Tokenization — Practical Python Example",
+    "title": "NLTK Tokenizers (Word, Sentence, Tweet)",
+    "subtitle": "Common NLTK tokenization methods and code",
     "table": {
       "headers": [
-        "Step",
-        "Code call",
-        "Output (summary)"
+        "Tokenizer",
+        "Core Feature",
+        "Python Code"
       ],
       "rows": [
         [
-          "1",
-          "word_tokenize(text)",
-          "Splits words + punctuation and contractions"
+          "Word Tokenizer",
+          "Splits words, contractions, and punctuation",
+          "from nltk.tokenize import word_tokenize"
         ],
         [
-          "2",
-          "sent_tokenize(text)",
-          "Returns sentence list"
+          "Sentence Tokenizer",
+          "Splits paragraphs into sentence strings",
+          "from nltk.tokenize import sent_tokenize"
         ],
         [
-          "3",
-          "TweetTokenizer().tokenize(tweet)",
-          "Keeps @mentions, #hashtags, emoticons"
+          "Tweet Tokenizer",
+          "Preserves hashtags, @mentions, and emoticons",
+          "from nltk.tokenize import TweetTokenizer"
         ]
       ]
     },
-    "note": "This mirrors section 4.2 from the markdown file with concise outputs for slides.",
-    "speakerNote": "This mirrors section 4.2 from the markdown file with concise outputs for slides.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Day 1 Lab — Subword Tokenization for LLMs",
     "bullets": [
       {
-        "text": "Large word vocabularies miss typos, neologisms, and multi-lingual morphology.",
-        "icon": "missing-data"
-      },
-      {
-        "text": "Subwords reuse frequent pieces: \"unbelievably\" → learned merges.",
-        "icon": "token"
-      },
-      {
-        "text": "GPT-style BPE vs BERT WordPiece: different merge heuristics, same goal.",
-        "icon": "token"
+        "text": "Make sure to download 'punkt' resources (nltk.download('punkt')) before calling NLTK tokenizers.",
+        "icon": "warning"
       }
     ],
-    "table": {
-      "headers": [
-        "Tokenizer family",
-        "Representative models"
-      ],
-      "rows": [
-        [
-          "BPE merges",
-          "GPT-2, GPT-3, many open LLMs"
-        ],
-        [
-          "WordPiece",
-          "BERT, DistilBERT"
-        ],
-        [
-          "Unigram LM / SentencePiece",
-          "T5, multilingual pipelines"
-        ]
-      ]
-    },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Land: Large word vocabularies miss typos, neologisms, and multi-lingual morphology. · Subwords reuse frequent pieces: \"unbelievably\" → learned merges.. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow",
-    "subtitle": "BPE / WordPiece intuition for the Day 1 notebook"
+    "note": "Choose the right tokenizer family based on your domain data (e.g., use TweetTokenizer for social media).",
+    "speakerNote": "Walk through NLTK options. Mention TweetTokenizer as a great domain-specific example.",
+    "titleIcon": "token"
   },
   {
     "title": "Subword Tokenization (LLMs) — Why It Wins",
+    "subtitle": "How subwords solve core vocabulary challenges",
     "table": {
       "headers": [
-        "Problem with pure word tokens",
-        "Subword solution",
-        "Example"
+        "Word Tokenizer Issue",
+        "Subword Solution",
+        "Example Worked Out"
       ],
       "rows": [
         [
           "Huge vocabulary size",
-          "Reuse frequent pieces",
+          "Reuse frequent morphemes/pieces",
           "unbelievably → un + ##believe + ##ably"
         ],
         [
-          "New/OOV words",
+          "Out-of-Vocabulary (OOV) words",
           "Break unknown forms into known units",
-          "GPT-4 → G + PT + - + 4"
+          "ChatGPT → ['Chat', 'G', 'PT']"
         ],
         [
-          "Morphology variants",
-          "Shared roots reduce sparsity",
-          "running/runs/runner share run"
+          "Morphological variants",
+          "Shared roots reduce feature sparsity",
+          "running/runs/runner share 'run'"
         ]
       ]
     },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. Challenge: link this slide to the section opener in one sentence.",
+    "speakerNote": "Explain how subword tokenization enables infinite vocabulary coverage with a fixed vocabulary size.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
   {
+    "title": "Subword Tokenization Algorithms",
+    "subtitle": "Comparing training ideas and usage of subword methods",
+    "table": {
+      "headers": [
+        "Algorithm",
+        "Core Training Heuristic",
+        "Needs Pre-tokenization?",
+        "Common Models"
+      ],
+      "rows": [
+        [
+          "BPE (Byte Pair Encoding)",
+          "Merge most frequent adjacent units iteratively",
+          "Yes",
+          "GPT, RoBERTa, LLaMA"
+        ],
+        [
+          "WordPiece",
+          "Merge based on maximum corpus likelihood",
+          "Yes",
+          "BERT, DistilBERT"
+        ],
+        [
+          "Unigram LM",
+          "Start with large vocab, prune lowest probability tokens",
+          "No",
+          "T5, XLNet"
+        ],
+        [
+          "SentencePiece",
+          "Wrapper for BPE/Unigram treating spaces as characters",
+          "No",
+          "Multilingual LLMs"
+        ]
+      ]
+    },
+    "speakerNote": "Point out the difference: BPE starts from characters and merges; Unigram starts from words and prunes.",
+    "titleIcon": "token"
+  },
+  {
+    "title": "BPE Walkthrough & Inference Example",
+    "subtitle": "How Byte Pair Encoding learns merges and splits unseen words",
+    "bullets": [
+      {
+        "text": "Walkthrough: start with chars (l, o, w, e, s, t, r) -> merge l+o (lo) -> merge lo+w (low) -> compact vocabulary.",
+        "icon": "token"
+      },
+      {
+        "text": "Inference on 'lowered the lowest curtain': splits rare words to ['low', 'er', 'ed'] and ['low', 'est'] while keeping 'the' and 'curtain' whole.",
+        "icon": "token"
+      }
+    ],
+    "table": {
+      "headers": [
+        "Word",
+        "Subword Output",
+        "Explanation"
+      ],
+      "rows": [
+        [
+          "lowered",
+          "['low', 'er', 'ed']",
+          "Decomposes into learned root and suffix subwords"
+        ],
+        [
+          "lowest",
+          "['low', 'est']",
+          "Decomposes into base 'low' and suffix 'est'"
+        ]
+      ]
+    },
+    "note": "BPE repeatedly merges frequent adjacent units until target vocabulary size is reached.",
+    "speakerNote": "Explain both BPE training (merge rules) and BPE inference (splitting unseen words).",
+    "titleIcon": "token",
+    "conceptAnimation": "tokenization-flow"
+  },
+  {
+    "title": "Unigram LM Example: Choosing Best Segmentation",
+    "subtitle": "Probabilistic segmentation selection",
+    "body": "Input word: basketball",
+    "table": {
+      "headers": [
+        "Candidate Tokenization",
+        "Calculated Probability",
+        "Model Decision"
+      ],
+      "rows": [
+        [
+          "basket + ball",
+          "0.30",
+          "Possible candidate"
+        ],
+        [
+          "basketball",
+          "0.40",
+          "Selected (highest probability)"
+        ],
+        [
+          "bask + etball",
+          "0.06",
+          "Rejected candidate"
+        ]
+      ]
+    },
+    "bullets": [
+      {
+        "text": "Unigram LM keeps multiple candidate segmentations and scores them probabilistically.",
+        "icon": "idea"
+      },
+      {
+        "text": "Expectation-Maximization (EM) training iteratively prunes low-probability tokens.",
+        "icon": "train"
+      }
+    ],
+    "speakerNote": "Contrast this with BPE: BPE is deterministic during inference, while Unigram uses a probability model.",
+    "titleIcon": "idea"
+  },
+  {
     "title": "Subword Tokenization — BPE vs WordPiece (Example)",
+    "subtitle": "Different splitting heuristics in action",
     "table": {
       "headers": [
         "Word",
@@ -743,173 +312,141 @@ export const slides = [
         ]
       ]
     },
-    "note": "Exact tokens vary by vocabulary/version; the slide shows the same teaching intuition from the lesson.",
-    "speakerNote": "Exact tokens vary by vocabulary/version; the slide shows the same teaching intuition from the lesson.",
+    "note": "Note: WordPiece uses '##' to mark continuation characters, whereas BPE uses special prefix spaces.",
+    "speakerNote": "Compare BPE and WordPiece. Explain the '##' syntax in WordPiece which signifies continuation.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
   {
     "title": "Why Token Counts Matter",
+    "subtitle": "Operational impacts on APIs and context windows",
     "bullets": [
       {
-        "text": "API pricing and context windows are measured in tokens, not characters.",
+        "text": "API pricing and context windows are measured in tokens, not characters or words.",
         "icon": "token"
       },
       {
-        "text": "Technical prose and code usually cost more tokens than simple narrative.",
+        "text": "Technical prose and code usually cost more tokens due to frequent splits.",
         "icon": "token"
       },
       {
-        "text": "Tokenizer choice changes length → affects batching and truncation strategy.",
-        "icon": "token"
+        "text": "Tokenizer choice changes sequence length → affects model memory & speed.",
+        "icon": "warning"
       }
     ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: API pricing and context windows are measured in tokens, not characters. · Technical prose and code usually cost more tokens than simple narrative.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "Why Token Counts Matter — Practical Example",
     "table": {
       "headers": [
-        "Text sample",
-        "Approx token count",
-        "Comment"
+        "Text Sample",
+        "Approx Token Count",
+        "Sparsity Comment"
       ],
       "rows": [
         [
           "The cat sat on the mat.",
           "7",
-          "Simple sentence, low cost"
+          "Simple words, high vocab hit"
         ],
         [
           "Transformers use multi-head self-attention.",
           "11",
-          "Technical terms increase tokenization complexity"
+          "Technical terms split into sub-tokens"
         ],
         [
-          "def hello_world(): print('Hello, World!')",
-          "12",
-          "Code usually splits into many sub-tokens"
+          "def hello(): print('Hi!')",
+          "10",
+          "Code splits heavily due to syntax symbols"
         ]
       ]
     },
-    "note": "Exact count depends on tokenizer/version, but the cost pattern stays similar.",
-    "speakerNote": "Exact count depends on tokenizer/version, but the cost pattern stays similar.",
+    "speakerNote": "Emphasize that 100 words in English != 100 tokens. Technical content has a higher token multiplier.",
     "titleIcon": "token",
     "conceptAnimation": "tokenization-flow"
   },
   {
-    "title": "Stop Words — Removing Low-Information Tokens",
+    "title": "Stop Words: Purpose & Tradeoffs",
+    "subtitle": "Filtering low-information tokens from texts",
     "bullets": [
       {
-        "text": "Function words (the, is, and) dominate counts but often carry little topic signal.",
+        "text": "Function words (the, is, and) dominate word counts but carry minimal topic signal.",
         "icon": "token"
       },
       {
-        "text": "Removing them tightens bag-of-words / TF-IDF and classic retrieval setups.",
-        "icon": "rag"
+        "text": "Removing stop words reduces dimensionality for TF-IDF & Bag-of-Words.",
+        "icon": "scaling"
       },
       {
-        "text": "Always validate on a sample — domain-specific 'stop' lists are common.",
-        "icon": "test"
-      }
-    ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Function words (the, is, and) dominate counts but often carry little topic signa · Removing them tightens bag-of-words / TF-IDF and classic retrieval setups.. Budget ~2 min. Challenge: link this slide to the section opener in one sentence.",
-    "titleIcon": "token",
-    "conceptAnimation": "tokenization-flow"
-  },
-  {
-    "title": "NLTK Stop Words in Practice",
-    "bullets": [
-      {
-        "text": "stopwords.words('english') provides a baseline English set.",
-        "icon": "idea"
-      },
-      {
-        "text": "Filter after lowercasing and tokenization; often keep alphanumeric tokens only.",
-        "icon": "token"
-      },
-      {
-        "text": "Measure reduction: e.g. 17 → 9 tokens on a sample sentence.",
-        "icon": "token"
-      }
-    ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: stopwords.words('english') provides a baseline English set. · Filter after lowercasing and tokenization; often keep alphanumeric tokens only.. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Custom and Domain Stop Words",
-    "bullets": [
-      {
-        "text": "Sklearn TfidfVectorizer accepts custom stop word lists.",
-        "icon": "embedding"
-      },
-      {
-        "text": "Add boilerplate from your genre: click, read more, subscribe, etc.",
-        "icon": "idea"
-      },
-      {
-        "text": "Union standard + domain lists; cap size to avoid over-pruning.",
+        "text": "Critical Rule: NEVER remove stop words for language models (GPT/BERT), translation, or sentiment analysis where negation ('not') and syntax carry the core meaning.",
         "icon": "warning"
       }
     ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Sklearn TfidfVectorizer accepts custom stop word lists. · Add boilerplate from your genre: click, read more, subscribe, etc.. Budget ~2 min. Poll the room: who has used this in production? Invite one short story.",
-    "titleIcon": "idea"
+    "table": {
+      "headers": [
+        "Task Category",
+        "Stop Word Policy",
+        "Reasoning"
+      ],
+      "rows": [
+        [
+          "Search & Topic Modeling",
+          "Remove",
+          "Improves speed and focus on key words"
+        ],
+        [
+          "Large Language Models",
+          "Keep",
+          "Syntactic and semantic flow is vital"
+        ],
+        [
+          "Sentiment Analysis",
+          "Keep",
+          "Negations like 'not' reverse polarity"
+        ]
+      ]
+    },
+    "speakerNote": "Explain the classic NLP vs modern LLM divide on stop word removal policy.",
+    "titleIcon": "token",
+    "conceptAnimation": "tokenization-flow"
   },
   {
-    "title": "Custom Stop Words — Before / After Example",
+    "title": "Stop Words in Practice (NLTK & Custom)",
+    "subtitle": "Standard lists and domain-specific stop word filtering",
+    "bullets": [
+      {
+        "text": "NLTK provides default stop word lists for multiple languages.",
+        "icon": "idea"
+      },
+      {
+        "text": "For real-world corpora, you must add custom domain stops (e.g., 'click', 'subscribe').",
+        "icon": "warning"
+      }
+    ],
     "table": {
       "headers": [
         "Case",
-        "Tokens"
+        "Tokens list"
       ],
       "rows": [
         [
-          "Before custom domain stop words",
-          "['please','read','this','article','about','nlp','model','performance']"
+          "Original Tokens",
+          "['please', 'read', 'this', 'article', 'about', 'nlp', 'model', 'performance']"
         ],
         [
-          "After adding {'please','read','article'}",
-          "['this','about','nlp','model','performance']"
+          "After NLTK Stops Removed",
+          "['please', 'read', 'article', 'nlp', 'model', 'performance']"
+        ],
+        [
+          "After Custom Stops Removed",
+          "['nlp', 'model', 'performance']"
         ]
       ]
     },
-    "speakerNote": "Use the table as your agenda — roughly one row per minute. Anchor on the diagram or table before moving on. Budget ~3 min. 30-second think-pair-share: which bullet would you apply first?",
+    "note": "Filter stopwords after lowercasing to ensure correct string matching.",
+    "speakerNote": "Use the table to show how standard stop words vs custom domain stop words prune the token list.",
     "titleIcon": "idea"
   },
   {
-    "title": "When Not to Remove Stop Words",
-    "table": {
-      "headers": [
-        "Task type",
-        "Reason to keep stop words"
-      ],
-      "rows": [
-        [
-          "Language models (GPT/BERT)",
-          "Negation and function words carry syntax and meaning"
-        ],
-        [
-          "Machine translation",
-          "Grammar requires determiners and auxiliaries"
-        ],
-        [
-          "Sentiment",
-          "\"not bad\" ≠ \"bad\"; intensifiers matter"
-        ],
-        [
-          "QA / chatbots",
-          "Question words and politeness markers are contentful"
-        ]
-      ]
-    },
-    "note": "Classic IR and topic models still benefit from stop word pruning.",
-    "speakerNote": "Classic IR and topic models still benefit from stop word pruning.",
-    "titleIcon": "idea"
-  },
-  {
-    "title": "Day 1 Lab — Stemming vs Lemmatization",
+    "title": "Stemming vs Lemmatization",
+    "subtitle": "Normalizing words to their base forms",
     "table": {
       "headers": [
         "Aspect",
@@ -919,86 +456,96 @@ export const slides = [
       "rows": [
         [
           "Mechanism",
-          "Rule-based suffix cuts",
-          "Dictionary + morphology (often POS-aware)"
+          "Rule-based suffix chopping (heuristic)",
+          "Dictionary lookup + morphological analysis"
         ],
         [
           "Speed",
-          "Very fast",
-          "Slower"
+          "Very fast, computationally cheap",
+          "Slower, requires resource lookup"
         ],
         [
           "Output",
-          "May be non-words (studi)",
-          "Real lemmas (study)"
+          "Can be non-words (e.g., study -> studi)",
+          "Always dictionary words (e.g., study -> study)"
         ],
         [
-          "Best for",
-          "Large-scale indexing / recall",
-          "Higher-accuracy linguistic features"
+          "POS Awareness",
+          "No",
+          "Yes (e.g., saw -> see or saw depending on POS)"
         ]
       ]
     },
-    "speakerNote": "Start with the subtitle, then walk bullets in order. Anchor on the diagram or table before moving on. Budget ~3 min. Quick check: ask one volunteer to paraphrase the first bullet.",
-    "titleIcon": "idea",
-    "subtitle": "Hands-on comparison in the Day 1 track"
-  },
-  {
-    "title": "NLTK Stemmer Families",
-    "bullets": [
-      {
-        "text": "Porter: gentle, widely used default.",
-        "icon": "idea"
-      },
-      {
-        "text": "Lancaster: aggressive — can over-chop (organization → organ).",
-        "icon": "idea"
-      },
-      {
-        "text": "Snowball: language-aware family; good English compromise.",
-        "icon": "idea"
-      }
-    ],
-    "note": "Compare stems on your corpus before picking one for production indexing.",
-    "speakerNote": "Compare stems on your corpus before picking one for production indexing.",
+    "note": "Lemmatization preserves semantics better than aggressive stemming.",
+    "speakerNote": "Explain that stemming is just chopping characters, while lemmatization understands grammar.",
     "titleIcon": "idea"
   },
   {
-    "title": "Lemmatization with SpaCy",
+    "title": "Stemming & Lemmatization in Code (NLTK & SpaCy)",
+    "subtitle": "Implementation patterns in Python",
     "bullets": [
       {
-        "text": "en_core_web_sm gives lemmas, POS, dependencies, and NER in one nlp() call.",
+        "text": "NLTK Porter/Snowball: rule-based suffix cuts (fast default).",
         "icon": "idea"
       },
       {
-        "text": "Handles irregulars: mice → mouse; ran → run (verb).",
-        "icon": "idea"
-      },
-      {
-        "text": "Filter stops/punct before printing lemma tables for teaching clarity.",
+        "text": "SpaCy: performs full POS-aware lemmatization out-of-the-box (e.g. ran -> run).",
         "icon": "idea"
       }
     ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: en_core_web_sm gives lemmas, POS, dependencies, and NER in one nlp() call. · Handles irregulars: mice → mouse; ran → run (verb).. Budget ~2 min. 30-second think-pair-share: which bullet would you apply first?",
+    "table": {
+      "headers": [
+        "Input Word",
+        "Porter Stemmer",
+        "SpaCy Lemmatizer"
+      ],
+      "rows": [
+        [
+          "running (verb)",
+          "run",
+          "run"
+        ],
+        [
+          "mice (noun)",
+          "mice",
+          "mouse"
+        ],
+        [
+          "was (verb)",
+          "wa",
+          "be"
+        ],
+        [
+          "better (adj)",
+          "better",
+          "good"
+        ]
+      ]
+    },
+    "speakerNote": "Show the table entries: highlight how Porter fails on 'mice' and 'was' while Lemmatization maps them correctly.",
     "titleIcon": "idea"
   },
   {
-    "title": "Choosing Stemming vs Lemmatization",
+    "title": "Tokenization Practice Exercise",
+    "subtitle": "Manual Tokenization Drill",
+    "body": "Corpus: \"go going gone goals\"",
     "bullets": [
       {
-        "text": "Stemming: search-scale retrieval, rough clustering, strict latency budgets.",
-        "icon": "scaling"
+        "text": "Task: tokenize sentence \"the goat is going to the goal\" using a subword strategy.",
+        "icon": "token"
       },
       {
-        "text": "Lemmatization: classification features, QA preprocessing, linguistic analytics.",
-        "icon": "classification"
+        "text": "Compare outputs under whitespace, BPE-style merges, and Unigram-style choices.",
+        "icon": "token"
       },
       {
-        "text": "When unsure, prefer lemmatization if SpaCy (or similar) is available.",
-        "icon": "idea"
+        "text": "Discuss which strategy gives better reuse and fewer unknown tokens.",
+        "icon": "token"
       }
     ],
-    "speakerNote": "Walk the on-screen bullets top to bottom. Land: Stemming: search-scale retrieval, rough clustering, strict latency budgets. · Lemmatization: classification features, QA preprocessing, linguistic analytics.. Budget ~2 min. Pause for questions — if silent, pose a concrete scenario from the bullets.",
-    "titleIcon": "idea"
+    "note": "Practice builds intuition for tokenizer behavior before model training.",
+    "speakerNote": "Practice builds intuition for tokenizer behavior before model training.",
+    "titleIcon": "token",
+    "conceptAnimation": "tokenization-flow"
   }
 ];

@@ -27,7 +27,7 @@ const HASH_TO_SCOPE: Record<string, DeckScope> = Object.fromEntries(
 export const DECK_SCOPE_SECTION_IDS: Partial<Record<DeckScope, number[]>> = {
   "week1-ml": [1, 2, 3, 4, 5, 6],
   "week2-dl": [7],
-  "week3-nlp": [8, 9, 10, 11, 12, 13],
+  "week3-nlp": [8],
   "week4-genai": [14, 15, 16],
 };
 
