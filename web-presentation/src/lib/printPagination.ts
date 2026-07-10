@@ -9,6 +9,28 @@ function getFrameParts(frame: HTMLElement) {
   return { header, footer, content, dividerBody };
 }
 
+// When a section's bullets get split into per-item blocks (see
+// contentPagination.splitContentCard), several of those blocks can land on the
+// same page — each still carrying its own copy of the section <h3> for
+// cross-page context. Collapse consecutive duplicates so the heading doesn't
+// repeat above every single bullet on one page.
+function dedupeRepeatedHeadings(shell: HTMLElement) {
+  let lastHeading: string | null = null;
+  for (const child of Array.from(shell.children)) {
+    if (!(child instanceof HTMLElement) || !child.classList.contains("content-card")) {
+      lastHeading = null;
+      continue;
+    }
+    const heading = child.querySelector(":scope > h3");
+    const text = heading?.textContent ?? null;
+    if (heading && text && text === lastHeading) {
+      heading.remove();
+    } else if (text) {
+      lastHeading = text;
+    }
+  }
+}
+
 function buildPrintPage(
   frame: HTMLElement,
   contentBlocks: HTMLElement[],
@@ -49,6 +71,7 @@ function buildPrintPage(
     for (const block of contentBlocks) {
       contentShell.appendChild(block.cloneNode(true));
     }
+    dedupeRepeatedHeadings(contentShell);
     frameClone.appendChild(contentShell);
 
     if (footer) frameClone.appendChild(footer.cloneNode(true));

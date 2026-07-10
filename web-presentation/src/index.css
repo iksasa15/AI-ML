@@ -2681,6 +2681,14 @@ html[data-theme="dark"] .presentation {
   width: 100%;
 }
 
+/* Must match the min-height:0 override under @media print below, or pagination
+   decisions measure cards at the screen-grid height instead of the compact
+   printed size. */
+.print-measure-root .content-card,
+.print-measure-root .step-card {
+  min-height: 0;
+}
+
 @media print {
   @page {
     size: 20in 11.25in;
@@ -2896,6 +2904,10 @@ html[data-theme="dark"] .presentation {
   .print-page-canvas .content-card {
     background: var(--card-2);
     border: 1px solid var(--border);
+    /* Screen cards use --card-box-h to line up in a live grid; pagination
+       splits sections into standalone stacked chunks, so a fixed minimum
+       here just leaves empty space under short chunks. */
+    min-height: 0;
   }
 
   .print-page .formula,

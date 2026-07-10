@@ -11,6 +11,7 @@ import { usePresentationDeck } from "./hooks/usePresentationDeck";
 import { VirtualSlideStage } from "./components/slides/VirtualSlideStage";
 import { DAY01_FIRST_SLIDE_TITLE } from "./lib/day01Anchor";
 import { paginatePrintDeck } from "./lib/printPagination";
+import { waitForAssetsReady } from "./lib/contentPagination";
 import { renderMathInContainer, renderSlideMath } from "./lib/renderMath";
 import { usePresentationShortcuts } from "./hooks/usePresentationShortcuts";
 import {
@@ -423,6 +424,7 @@ export default function App() {
       .join("");
 
     renderMathInContainer(el);
+    await waitForAssetsReady(el);
     paginatePrintDeck(el);
     await waitForPrintLayout();
 

@@ -67,15 +67,17 @@ function renderTableCell(cell: string, html?: string) {
 
 export function buildTableMarkup(table: TableInput) {
   if (!table) return "";
+  const headers = table.headers || [];
+  const rows = table.rows || [];
+  if (!headers.length && !rows.length) return "";
+
   const titleHtml =
     typeof table._titleHtml === "string"
       ? table._titleHtml
       : table.title
         ? escapeHTML(table.title)
         : "";
-  const headers = table.headers || [];
   const headerHtml = table._headersHtml || [];
-  const rows = table.rows || [];
   const rowsHtml = table._rowsHtml || [];
 
   return `

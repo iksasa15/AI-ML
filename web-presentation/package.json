@@ -13,6 +13,7 @@
     "audit:images": "node scripts/check-slide-images.mjs",
     "generate:plots": "python scripts/generate-regression-plots.py",
     "export:pdf": "node scripts/export-pdf.mjs",
+    "export:pdf:dark": "PDF_THEME=dark node scripts/export-pdf.mjs",
     "audit:qa": "node scripts/prepublish-qa.mjs",
     "polish:content": "node scripts/prepublish-polish.mjs",
     "prepublish:check": "node scripts/prepublish-polish.mjs && npm run audit:content && npm run audit:math && npm run audit:qa && npm run audit:images && npm run build"

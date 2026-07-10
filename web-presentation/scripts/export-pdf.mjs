@@ -10,8 +10,15 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const distDir = path.join(root, "dist");
-const pdfPath = path.join(distDir, "AI-ML-Bootcamp-Slides.pdf");
-const printHtmlPath = path.join(distDir, "export-print.html");
+// `vite build` empties dist/ on every run, so a second export (e.g. the dark
+// theme) would wipe out a PDF already produced there. Keep finished PDFs in a
+// separate folder that build steps never touch.
+const exportsDir = path.join(root, "pdf-exports");
+const THEME = process.env.PDF_THEME === "dark" ? "dark" : "light";
+const pdfFileName = THEME === "dark" ? "AI-ML-Bootcamp-Slides-Dark.pdf" : "AI-ML-Bootcamp-Slides.pdf";
+const pdfPath = path.join(distDir, pdfFileName);
+const finalPdfPath = path.join(exportsDir, pdfFileName);
+const printHtmlPath = path.join(distDir, THEME === "dark" ? "export-print-dark.html" : "export-print.html");
 const PORT = 4173;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
@@ -78,8 +85,9 @@ function writePrintHtml({ html, styles }) {
   const stylesheetTags = styles
     .map((href) => `<link rel="stylesheet" href="${normalizeAssetHref(href)}">`)
     .join("\n    ");
+  const bg = THEME === "dark" ? "#0d0d1a" : "#fff";
   const doc = `<!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light">
+<html lang="en" dir="ltr" data-theme="${THEME}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -89,7 +97,7 @@ function writePrintHtml({ html, styles }) {
       html, body {
         margin: 0;
         padding: 0;
-        background: #fff;
+        background: ${bg};
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -133,7 +141,7 @@ async function main() {
 
     const browser = await playwright.chromium.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto(`${BASE_URL}/?pdfExport=1&theme=light`, {
+    await page.goto(`${BASE_URL}/?pdfExport=1&theme=${THEME}`, {
       waitUntil: "domcontentloaded",
       timeout: 120_000,
     });
@@ -158,8 +166,10 @@ async function main() {
     });
 
     await browser.close();
-    const sizeMb = (fs.statSync(pdfPath).size / (1024 * 1024)).toFixed(1);
-    console.log(`\nSaved: ${pdfPath} (${sizeMb} MB)`);
+    fs.mkdirSync(exportsDir, { recursive: true });
+    fs.copyFileSync(pdfPath, finalPdfPath);
+    const sizeMb = (fs.statSync(finalPdfPath).size / (1024 * 1024)).toFixed(1);
+    console.log(`\nSaved: ${finalPdfPath} (${sizeMb} MB)`);
     console.log(`Print HTML: ${printHtmlPath}`);
   } finally {
     server.kill("SIGTERM");

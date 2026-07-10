@@ -2,6 +2,33 @@ import { PPT_WIDTH_PX } from "./slideCanvas";
 
 const MEASURE_ROOT_CLASS = "print-measure-root";
 
+/**
+ * Pagination measures real DOM heights via getBoundingClientRect(), so it must
+ * run after web fonts have swapped in and slide <img> tags know their natural
+ * size — otherwise blocks measure smaller than their final rendered height and
+ * later overflow the fixed-height print page.
+ */
+export async function waitForAssetsReady(container: HTMLElement, timeoutMs = 8000): Promise<void> {
+  const fontsReady = document.fonts?.ready?.catch(() => undefined) ?? Promise.resolve();
+  const images = Array.from(container.querySelectorAll("img"));
+  const imagesReady = Promise.all(
+    images.map(
+      (img) =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise<void>((resolve) => {
+              img.addEventListener("load", () => resolve(), { once: true });
+              img.addEventListener("error", () => resolve(), { once: true });
+            })
+    )
+  );
+
+  await Promise.race([
+    Promise.all([fontsReady, imagesReady]),
+    new Promise<void>((resolve) => setTimeout(resolve, timeoutMs)),
+  ]);
+}
+
 export function createMeasureRoot(): HTMLElement {
   const existing = document.querySelector<HTMLElement>(`.${MEASURE_ROOT_CLASS}`);
   if (existing) return existing;
@@ -34,17 +61,36 @@ export function measureHeight(element: HTMLElement, width = PPT_WIDTH_PX): numbe
   return height;
 }
 
+function wrapWithHeading(card: HTMLElement, heading: HTMLElement | null, body: HTMLElement): HTMLElement {
+  const article = document.createElement("article");
+  article.className = card.className;
+  if (heading) article.appendChild(heading.cloneNode(true));
+  article.appendChild(body);
+  return article;
+}
+
 function splitContentCard(card: HTMLElement): HTMLElement[] {
   const heading = card.querySelector("h3");
   const chunks: HTMLElement[] = [];
 
   for (const child of Array.from(card.children)) {
     if (!(child instanceof HTMLElement) || child.tagName === "H3") continue;
-    const article = document.createElement("article");
-    article.className = card.className;
-    if (heading) article.appendChild(heading.cloneNode(true));
-    article.appendChild(child.cloneNode(true));
-    chunks.push(article);
+
+    if (child.tagName === "UL") {
+      // Split section bullet lists per-item too, so a heavy section doesn't
+      // force one oversized, unsplittable block that wastes the rest of a page.
+      // Only the first item repeats the heading — otherwise packBlocks would
+      // measure the heading's height once per bullet and overestimate the size.
+      Array.from(child.children).forEach((li, i) => {
+        const list = document.createElement("ul");
+        list.className = child.className;
+        list.appendChild(li.cloneNode(true));
+        chunks.push(wrapWithHeading(card, i === 0 ? heading : null, list));
+      });
+      continue;
+    }
+
+    chunks.push(wrapWithHeading(card, heading, child.cloneNode(true) as HTMLElement));
   }
 
   return chunks.length ? chunks : [card.cloneNode(true) as HTMLElement];
