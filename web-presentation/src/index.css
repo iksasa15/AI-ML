@@ -2693,6 +2693,8 @@ html[data-theme="dark"] .presentation {
     color: var(--text);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    overflow: visible !important;
+    height: auto !important;
   }
 
    #root,
