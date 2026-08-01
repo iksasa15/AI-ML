@@ -67,10 +67,11 @@ ML_PROCESS = {
             "number": "1",
             "title": "Data Pre-Processing",
             "bullets": [
-                "Import the data",
+                "Load the data",
                 "Clean the data",
+                "Scale numeric features",
+                "Encode categorical features",
                 "Split into training and test sets",
-                "Feature scaling",
             ],
         },
         {
@@ -101,7 +102,7 @@ TOPIC_CONTENT = {
         "body": "Data preprocessing before modeling — a repeatable checklist before you train.",
         "note": "Start by loading the dataset, then follow the workflow in order.",
         "detail": {
-            "title": "Standard Workflow",
+            "title": "Workflow Checklist",
             "kicker": "Data Preprocessing Template",
             "bullets": [
                 "Load the dataset.",
@@ -450,7 +451,7 @@ TOPIC_CONTENT = {
                 ],
             },
             "example_table": {
-                "title": "Example",
+                "title": "Example: Ordinal Encoding",
                 "kicker": "Ordinal Encoding",
                 "headers": ["Satisfaction level", "Encoded value"],
                 "rows": [
@@ -465,25 +466,6 @@ TOPIC_CONTENT = {
             "title": "How to Deal with Categorical Data (One-Hot Encoding)",
             "kicker": "What is One-Hot Encoding?",
             "body": "One-Hot Encoding converts each category into a separate binary column (0 or 1).",
-            "comparison_note": {
-                "title": "Encoding Comparison",
-                "kicker": "Choosing an encoding",
-                "lead": "Three ways to encode categorical variables",
-                "cards": [
-                    (
-                        "Label Encoding",
-                        "Maps each category to a unique integer. Simple, but can invent false order for nominal data.",
-                    ),
-                    (
-                        "One-Hot Encoding",
-                        "Creates a binary column per category. Safe for nominal data; increases feature count.",
-                    ),
-                    (
-                        "Ordinal Encoding",
-                        "Assigns integers that preserve a meaningful ranking for ordered categories.",
-                    ),
-                ],
-            },
             "howto": {
                 "title": "How to Apply One-Hot Encoding",
                 "kicker": "Practical steps",
@@ -495,7 +477,7 @@ TOPIC_CONTENT = {
                 ],
             },
             "example_table": {
-                "title": "Example",
+                "title": "Example: One-Hot Encoding",
                 "kicker": "One-Hot Encoding",
                 "headers": ["Payment method", "Cash", "Card", "Bank Transfer"],
                 "rows": [
@@ -625,7 +607,7 @@ TOPIC_CONTENT = {
             ],
             "types_table": {
                 "title": "Types of Missing Data",
-                "kicker": "MCAR · MAR · NMAR",
+                "kicker": "MCAR · MAR · MNAR",
                 "diagram": "missing-mcar-mar-mnar.png",
                 "diagram_only": True,
                 "headers": ["Type", "Meaning"],
@@ -639,7 +621,7 @@ TOPIC_CONTENT = {
                         "Missingness depends on other observed variables, but not on the missing value itself.",
                     ],
                     [
-                        "NMAR (Not Missing at Random)",
+                        "MNAR (Missing Not at Random)",
                         "Missingness depends on the missing value itself or unobserved factors.",
                     ],
                 ],
@@ -742,7 +724,7 @@ TOPIC_CONTENT = {
                     "note": "Both methods leverage observed features — exactly what MAR assumes is available and informative.",
                 },
                 "knn_example": {
-                    "title": "Example: kNN Imputation (k = 2)",
+                    "title": "kNN Imputation (k = 2)",
                     "kicker": "Handling Missing Data · MAR",
                     "lead": "For student C, the two nearest students based on Grade and Attendance are A and B.",
                     "diagram": "knn-neighbors.png",
@@ -752,7 +734,7 @@ TOPIC_CONTENT = {
                         "This works under MAR because missingness is explained by observed patterns, not by the missing value alone.",
                     ],
                     "example_table": {
-                        "title": "Example: kNN Imputation (k = 2)",
+                        "title": "kNN Neighbor Table",
                         "kicker": "Handling Missing Data · MAR",
                         "headers": ["Student", "Grade", "Attendance (%)", "Study Hours"],
                         "rows": [
@@ -764,7 +746,7 @@ TOPIC_CONTENT = {
                         "note": "Student C is closest to A and B on Grade and Attendance — so we ignore distant student D.",
                     },
                     "result": {
-                        "title": "Example: kNN Imputation (k = 2)",
+                        "title": "kNN Imputed Result",
                         "kicker": "Handling Missing Data · MAR",
                         "formula": "Study Hours_{C} = (8 + 7) / 2 = 7.5",
                         "lead": "Average the Study Hours of the two nearest neighbors (A and B) to fill the missing value for student C.",
@@ -786,7 +768,7 @@ TOPIC_CONTENT = {
                         "Iterate across features with missing values until predictions stabilize.",
                     ],
                     "result": {
-                        "title": "Example: MissForest",
+                        "title": "MissForest Result",
                         "kicker": "Handling Missing Data · MAR",
                         "formula": "Study Hours_{C} ≈ 7.6",
                         "lead": "The Random Forest prediction for student C’s missing Study Hours is approximately 7.6.",
@@ -796,7 +778,7 @@ TOPIC_CONTENT = {
                         ],
                     },
                     "example_table": {
-                        "title": "Example (Table)",
+                        "title": "Example: MAR Grades Table",
                         "kicker": "Handling Missing Data · MAR",
                         "headers": ["Student", "Grade (Observed)", "Study Hours"],
                         "rows": [
@@ -821,7 +803,7 @@ TOPIC_CONTENT = {
                     "Before treating MNAR like MAR/MCAR, validate the missingness mechanism with domain experts.",
                 ],
                 "example_table": {
-                    "title": "Example (Table)",
+                    "title": "Example: MNAR Stress Reports",
                     "kicker": "Handling Missing Data · MNAR",
                     "headers": ["Participant", "Reported Stress Level"],
                     "rows": [
@@ -850,6 +832,18 @@ TOPIC_CONTENT = {
                 },
             },
         },
+    },
+    "Data leakage": {
+        "title": "Data Leakage",
+        "kicker": "Keep the test set unseen",
+        "body": "Data leakage happens when information from outside the training process — especially the test set — influences model fitting or decisions.",
+        "diagram": "data-leakage.png",
+        "bullets": [
+            "Never use test labels or test-only signals when choosing features, models, or hyperparameters.",
+            "Fit scalers and encoders on the training set only, then transform train and test.",
+            "Peeking at the test set creates optimistic scores that will not hold in production.",
+        ],
+        "note": "Rule: treat the test set as future data you have not seen yet.",
     },
 }
 
@@ -1121,11 +1115,6 @@ def slide_topic(prs, total, index, topic_index, topic):
         if content.get("one_hot"):
             slide_topic_rich(prs, total, index + n, content["one_hot"])
             n += 1
-            if content["one_hot"].get("comparison_note"):
-                slide_encoding_comparison(
-                    prs, total, index + n, content["one_hot"]["comparison_note"]
-                )
-                n += 1
             if content["one_hot"].get("howto"):
                 slide_ordinal_howto(prs, total, index + n, content["one_hot"]["howto"])
                 n += 1
@@ -1213,46 +1202,30 @@ def slide_topic(prs, total, index, topic_index, topic):
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, topic, f"Topic {topic_index} of {len(s['topics'])}")
-
-    # Data leakage placeholder gets a warning diagram
-    if topic == "Data leakage":
-        add_diagram(slide, "data-leakage.png", MARGIN, Inches(2.3), Inches(12.0), Inches(3.0))
-        soft_card(slide, MARGIN, Inches(5.5), Inches(12.0), Inches(1.0), fill=SOFT)
-        add_text(
-            slide,
-            MARGIN + Inches(0.4),
-            Inches(5.7),
-            Inches(11.2),
-            Inches(0.65),
-            "Never let test-set information influence training, scaling, or feature choices.",
-            size=15,
-            color=INK,
-        )
-    else:
-        soft_card(slide, MARGIN, Inches(2.45), Inches(12.0), Inches(3.7), fill=SOFT)
-        add_text(
-            slide,
-            MARGIN + Inches(0.4),
-            Inches(3.7),
-            Inches(11.2),
-            Inches(0.55),
-            topic,
-            size=26,
-            bold=True,
-            color=PRIMARY,
-            align=PP_ALIGN.CENTER,
-        )
-        add_text(
-            slide,
-            MARGIN + Inches(0.4),
-            Inches(4.35),
-            Inches(11.2),
-            Inches(0.4),
-            s["focus"],
-            size=14,
-            color=MUTED,
-            align=PP_ALIGN.CENTER,
-        )
+    soft_card(slide, MARGIN, Inches(2.45), Inches(12.0), Inches(3.7), fill=SOFT)
+    add_text(
+        slide,
+        MARGIN + Inches(0.4),
+        Inches(3.7),
+        Inches(11.2),
+        Inches(0.55),
+        topic,
+        size=26,
+        bold=True,
+        color=PRIMARY,
+        align=PP_ALIGN.CENTER,
+    )
+    add_text(
+        slide,
+        MARGIN + Inches(0.4),
+        Inches(4.35),
+        Inches(11.2),
+        Inches(0.4),
+        s["focus"],
+        size=14,
+        color=MUTED,
+        align=PP_ALIGN.CENTER,
+    )
     content_footer(slide, index, total)
     return 1
 
@@ -1281,7 +1254,34 @@ def slide_topic_rich(prs, total, index, content):
         )
 
     if has_diagram:
-        if content.get("body"):
+        bullet_items = content.get("bullets") or []
+        if content.get("body") and bullet_items:
+            # Compact teaching layout: lead → diagram → bullets → note
+            soft_card(slide, MARGIN, Inches(2.15), Inches(12.0), Inches(0.7), fill=SOFT)
+            add_text(
+                slide,
+                MARGIN + Inches(0.35),
+                Inches(2.3),
+                Inches(11.3),
+                Inches(0.45),
+                content["body"],
+                size=14,
+                color=INK,
+            )
+            add_diagram(slide, content["diagram"], MARGIN, Inches(2.95), Inches(12.0), Inches(2.2))
+            bullets(slide, bullet_items[:3], top=Inches(5.25), size=13)
+            if content.get("note"):
+                add_text(
+                    slide,
+                    MARGIN,
+                    Inches(6.55),
+                    Inches(12),
+                    Inches(0.25),
+                    content["note"],
+                    size=12,
+                    color=MUTED,
+                )
+        elif content.get("body"):
             soft_card(slide, MARGIN, Inches(2.2), Inches(12.0), Inches(0.85), fill=SOFT)
             add_text(
                 slide,
@@ -1294,19 +1294,32 @@ def slide_topic_rich(prs, total, index, content):
                 color=INK,
             )
             add_diagram(slide, content["diagram"], MARGIN, Inches(3.2), Inches(12.0), Inches(3.0))
+            if content.get("note"):
+                add_text(
+                    slide,
+                    MARGIN,
+                    Inches(6.4),
+                    Inches(12),
+                    Inches(0.3),
+                    content["note"],
+                    size=13,
+                    color=MUTED,
+                )
         else:
             add_diagram(slide, content["diagram"], MARGIN, Inches(2.25), Inches(12.0), Inches(3.0))
-        if content.get("note"):
-            add_text(
-                slide,
-                MARGIN,
-                Inches(6.4),
-                Inches(12),
-                Inches(0.3),
-                content["note"],
-                size=13,
-                color=MUTED,
-            )
+            if bullet_items:
+                bullets(slide, bullet_items[:3], top=Inches(5.4), size=14)
+            if content.get("note"):
+                add_text(
+                    slide,
+                    MARGIN,
+                    Inches(6.4),
+                    Inches(12),
+                    Inches(0.3),
+                    content["note"],
+                    size=13,
+                    color=MUTED,
+                )
         content_footer(slide, index, total)
         return
 
@@ -2420,8 +2433,6 @@ def _topic_slide_count(topic: str) -> int:
             n += 1
     if content.get("one_hot"):
         n += 1
-        if content["one_hot"].get("comparison_note"):
-            n += 1
         if content["one_hot"].get("howto"):
             n += 1
         if content["one_hot"].get("example_table"):
