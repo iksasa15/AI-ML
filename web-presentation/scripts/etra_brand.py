@@ -60,6 +60,7 @@ def no_shadow(shape) -> None:
 
 # Formulas use a widely available face so subscripts/baselines render reliably.
 FORMULA_FONT = "Helvetica Neue"
+FORMULA_CACHE = ROOT / "public" / "assets" / "formula-cache"
 
 
 def set_run(run, size, *, bold=False, color=INK, font=None, subscript=False):
@@ -112,6 +113,231 @@ _FRAC_RE = re.compile(
     r"^(?P<lhs>.+?)\s*=\s*(?:(?P<prefix>1\s*[−\-]\s*))?\((?P<num>.+?)\)\s*/\s*\((?P<den>.+?)\)$"
 )
 
+# Average-sum: lhs = (1 / den) Σ_{limits} term
+_AVG_SUM_RE = re.compile(
+    r"^(?P<lhs>.+?)\s*=\s*\(\s*1\s*/\s*(?P<den>[^)]+?)\s*\)\s*"
+    r"(?P<sum>Σ|∑)(?:_\{(?P<lo>[^}]*)\})?(?:\^\{(?P<hi>[^}]*)\})?\s*"
+    r"(?P<term>.+)$"
+)
+
+# Inline division with optional 1− prefix: lhs = [1 −] (num) / (den)
+_INLINE_DIV_RE = re.compile(
+    r"^(?P<lhs>.+?)\s*=\s*(?P<prefix>1\s*[−\-]\s*)?\((?P<num>.+?)\)\s*/\s*\((?P<den>.+?)\)$"
+)
+
+# Product-style adj R²: lhs = 1 − (a)(b)/(c)  or  1 − (a)(b) / (c)
+_ADJ_R2_RE = re.compile(
+    r"^(?P<lhs>.+?)\s*=\s*1\s*[−\-]\s*"
+    r"\((?P<a>.+?)\)\s*\((?P<b>.+?)\)\s*/\s*\((?P<c>.+?)\)$"
+)
+
+
+def formula_to_latex(value: str) -> str:
+    """Convert presentation formula markup / unicode math into mathtext LaTeX."""
+    s = (value or "").strip()
+    if not s:
+        return s
+    if s.startswith("$") and s.endswith("$"):
+        return s[1:-1]
+    # Already looks like LaTeX
+    if "\\" in s and any(tok in s for tok in (r"\frac", r"\sum", r"\hat", r"\min", r"\lambda")):
+        return s
+
+    # Prefer structured patterns before generic unicode swaps
+    m = _AVG_SUM_RE.match(s)
+    if m:
+        lhs = _token_to_latex(m.group("lhs"))
+        den = _token_to_latex(m.group("den").strip())
+        lo = _token_to_latex((m.group("lo") or "").strip())
+        hi = _token_to_latex((m.group("hi") or "").strip())
+        term = _token_to_latex(m.group("term").strip())
+        # Infer common RF limits when missing
+        if not lo and not hi and "N" in den:
+            lo, hi = "t=1", den
+        limits = ""
+        if lo or hi:
+            limits = "_{%s}^{%s}" % (lo or "", hi or "")
+        elif lo:
+            limits = "_{%s}" % lo
+        return rf"{lhs} = \dfrac{{1}}{{{den}}} \sum{limits} {term}"
+
+    m = _ADJ_R2_RE.match(s)
+    if m:
+        lhs = _token_to_latex(m.group("lhs"))
+        a = _token_to_latex(m.group("a"))
+        b = _token_to_latex(m.group("b"))
+        c = _token_to_latex(m.group("c"))
+        return rf"{lhs} = 1 - \dfrac{{({a})({b})}}{{{c}}}"
+
+    m = _INLINE_DIV_RE.match(s)
+    if m:
+        lhs = _token_to_latex(m.group("lhs"))
+        prefix = (m.group("prefix") or "").replace("-", "−").strip()
+        num = _token_to_latex(m.group("num"))
+        den = _token_to_latex(m.group("den"))
+        if prefix:
+            return rf"{lhs} = 1 - \dfrac{{{num}}}{{{den}}}"
+        return rf"{lhs} = \dfrac{{{num}}}{{{den}}}"
+
+    # Generic unicode / markup conversion
+    return _token_to_latex(s)
+
+
+def _token_to_latex(token: str) -> str:
+    s = token.strip()
+    if not s:
+        return s
+
+    # Protect existing latex-ish braces content later via placeholders
+    reps = [
+        ("ŷ", r"\hat{y}"),
+        ("ȳ", r"\bar{y}"),
+        ("Σ", r"\sum"),
+        ("∑", r"\sum"),
+        ("∥", r"\|"),
+        ("≤", r"\leq"),
+        ("≥", r"\geq"),
+        ("⇒", r"\Rightarrow"),
+        ("⋯", r"\cdots"),
+        ("…", r"\ldots"),
+        ("−", r"-"),
+        ("½", r"\tfrac{1}{2}"),
+        ("ᵀ", r"^{\top}"),
+        ("φ", r"\varphi"),
+        ("ε", r"\varepsilon"),
+        ("ξ", r"\xi"),
+        ("λ", r"\lambda"),
+        ("β", r"\beta"),
+        ("Ω", r"\Omega"),
+        ("∈", r"\in"),
+        ("ᵢ", r"_i"),
+        ("ⱼ", r"_j"),
+        ("ₜ", r"_t"),
+        ("²", r"^2"),
+        ("³", r"^3"),
+    ]
+    # Handle R² before generic ² if still present
+    s = s.replace("R²", r"R^2")
+    for a, b in reps:
+        s = s.replace(a, b)
+    # Trailing star (slack variables): ξᵢ* → \xi_i^{*}
+    s = re.sub(r"(?<=[\w}])\*", r"^{*}", s)
+
+    # N_trees / S_leaf style identifiers → N_{trees}
+    s = re.sub(r"\bN_trees\b", r"N_{trees}", s)
+    s = re.sub(r"\bS_leaf\b", r"S_{leaf}", s)
+    s = re.sub(r"\bS_L\b", r"S_L", s)
+    s = re.sub(r"\bS_R\b", r"S_R", s)
+    s = re.sub(r"\bMSE_split\b", r"\mathrm{MSE}_{split}", s)
+    s = re.sub(r"\bMSE\b", r"\mathrm{MSE}", s)
+    s = re.sub(r"\bSS_res\b", r"SS_{res}", s)
+    s = re.sub(r"\bSS_tot\b", r"SS_{tot}", s)
+    s = re.sub(r"\bmin_β\b", r"\min_{\beta}", s)
+    s = re.sub(r"\bmin_\{w\}\b", r"\min_{w}", s)
+    s = re.sub(r"\bmin\b", r"\min", s)
+
+    # Σ_{i = 1 … n} or sum_{i = 1 … n} already partially converted
+    s = re.sub(
+        r"\\sum_\{i\s*=\s*1\s*\\ldots\s*n\}",
+        r"\\sum_{i=1}^{n}",
+        s,
+    )
+    s = re.sub(
+        r"\\sum_\{i\s*=\s*1\s*\.\.\.\s*n\}",
+        r"\\sum_{i=1}^{n}",
+        s,
+    )
+    s = re.sub(r"\\sum_\{i\s*\\in\s*S\}", r"\\sum_{i \\in S}", s)
+    s = re.sub(r"\\sum_\{i\s*\\in\s*S_\{leaf\}\}", r"\\sum_{i \\in S_{leaf}}", s)
+
+    # Bare sum without limits after average: leave as \sum
+    # Spaces around operators
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+def render_formula_png(
+    latex: str,
+    *,
+    fontsize: float = 30,
+    color: RGBColor | None = None,
+    cache_key: str | None = None,
+) -> Path | None:
+    """Render mathtext LaTeX to a transparent PNG (serif math look)."""
+    import hashlib
+
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    tex = latex.strip().strip("$")
+    if not tex:
+        return None
+
+    ink = color or INK
+    hex_color = f"#{ink[0]:02x}{ink[1]:02x}{ink[2]:02x}"
+    key_src = f"{tex}|{fontsize}|{hex_color}"
+    digest = hashlib.sha1((cache_key or key_src).encode("utf-8")).hexdigest()[:16]
+    FORMULA_CACHE.mkdir(parents=True, exist_ok=True)
+    out = FORMULA_CACHE / f"f-{digest}.png"
+    if out.is_file() and out.stat().st_size > 200:
+        return out
+
+    fig = plt.figure(figsize=(10, 1.6))
+    fig.patch.set_alpha(0.0)
+    try:
+        fig.text(
+            0.5,
+            0.5,
+            f"${tex}$",
+            fontsize=fontsize,
+            ha="center",
+            va="center",
+            color=hex_color,
+        )
+        fig.savefig(
+            out,
+            dpi=220,
+            transparent=True,
+            bbox_inches="tight",
+            pad_inches=0.18,
+        )
+    except Exception:
+        plt.close(fig)
+        return None
+    plt.close(fig)
+    return out if out.is_file() else None
+
+
+def _add_formula_image(slide, left, top, width, height, path: Path):
+    """Center a formula PNG inside the given box."""
+    from PIL import Image
+
+    with Image.open(path) as im:
+        px_w, px_h = im.size
+    if px_w <= 0 or px_h <= 0:
+        return None
+    aspect = px_w / px_h
+    max_w = width.inches if hasattr(width, "inches") else float(width)
+    max_h = height.inches if hasattr(height, "inches") else float(height)
+    left_in = left.inches if hasattr(left, "inches") else float(left)
+    top_in = top.inches if hasattr(top, "inches") else float(top)
+    fit_w = min(max_w, max_h * aspect)
+    fit_h = fit_w / aspect
+    if fit_h > max_h:
+        fit_h = max_h
+        fit_w = fit_h * aspect
+    x = left_in + (max_w - fit_w) / 2
+    y = top_in + (max_h - fit_h) / 2
+    return slide.shapes.add_picture(
+        str(path),
+        Inches(x),
+        Inches(y),
+        width=Inches(fit_w),
+        height=Inches(fit_h),
+    )
+
 
 def add_formula(
     slide,
@@ -126,13 +352,27 @@ def add_formula(
     color=PRIMARY,
     align=PP_ALIGN.LEFT,
     anchor=MSO_ANCHOR.TOP,
+    formula_tex: str | None = None,
+    math_image: bool = True,
 ):
     """
-    Add a formula. Markup: x_{min}.
-    Division forms like `x_{norm} = (x − x_{min}) / (x_{max} − x_{min})`
-    or `R² = 1 − (SS_{res}) / (SS_{tot})` render as a stacked fraction.
+    Add a display formula.
+    Prefer LaTeX-style math PNG (stacked fractions, Σ limits) over plain text.
+    Markup: x_{min}; optional formula_tex for exact mathtext.
     """
     text = value if isinstance(value, str) else str(value)
+    tex = (formula_tex or "").strip() or formula_to_latex(text)
+
+    if math_image and tex:
+        # Larger type for short formulas; slightly smaller for long ones
+        fs = 34 if len(tex) < 40 else 28 if len(tex) < 70 else 24
+        path = render_formula_png(tex, fontsize=fs, color=INK)
+        if path is not None:
+            pic = _add_formula_image(slide, left, top, width, height, path)
+            if pic is not None:
+                return pic
+
+    # Fallback: stacked-fraction shapes or plain text runs
     match = _FRAC_RE.match(text.strip())
     if match:
         return add_fraction_formula(
@@ -181,8 +421,7 @@ def add_fraction_formula(
     color=PRIMARY,
     prefix="",
 ):
-    """Visual stacked fraction: lhs = [prefix] num / den."""
-    # Left-hand side (+ optional prefix such as "1 −")
+    """Visual stacked fraction: lhs = [prefix] num / den (text fallback)."""
     lhs_w = width * 0.34 if prefix else width * 0.28
     lhs_box = slide.shapes.add_textbox(left, top, lhs_w, height)
     lhs_tf = lhs_box.text_frame
@@ -402,8 +641,15 @@ def title_block(slide, title: str, subtitle: str | None = None, *, top=Inches(1.
 
 
 def is_fraction_formula(value: str) -> bool:
-    """True when value matches a stacked-fraction formula pattern."""
-    return bool(_FRAC_RE.match((value or "").strip()))
+    """True when the formula needs a taller display box (fraction / sum / LaTeX)."""
+    s = (value or "").strip()
+    if not s:
+        return False
+    if _FRAC_RE.match(s) or _AVG_SUM_RE.match(s) or _ADJ_R2_RE.match(s):
+        return True
+    if any(tok in s for tok in ("Σ", "∑", "/", r"\frac", r"\sum", r"\dfrac")):
+        return True
+    return False
 
 
 def bullets(

@@ -169,6 +169,7 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Ordinary Least Squares (OLS)",
                 "body": "OLS chooses parameters by minimizing the total squared difference between actual and predicted values.",
                 "formula": "min Σ_{i = 1 … n} (y_{i} − ŷ_{i})²",
+                "formula_tex": r"\min \sum_{i=1}^{n} (y_i - \hat{y}_i)^2",
                 "formula_note": "Sum of squared residuals over all n training points",
                 "layout": "formula_example",
                 "bullets": [
@@ -196,6 +197,7 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Goodness of Fit",
                 "body": "R² measures how much variation in y is explained by the model inputs.",
                 "formula": "R² = 1 − (SS_{res}) / (SS_{tot})",
+                "formula_tex": r"R^{2} = 1 - \dfrac{SS_{res}}{SS_{tot}}",
                 "formula_note": "SS_res = residual SS  ·  SS_tot = total SS",
                 "bullets": [
                     "Near 1 → strong explanatory power.",
@@ -275,6 +277,7 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Goodness of Fit · Model Comparison",
                 "body": "Adjusted R² penalizes unnecessary predictors.",
                 "formula": "R²_{adj} = 1 − (1 − R²)(n − 1)/(n − p − 1)",
+                "formula_tex": r"R^{2}_{adj} = 1 - \dfrac{(1 - R^{2})(n - 1)}{n - p - 1}",
                 "formula_note": "n = samples  ·  p = predictors",
                 "layout": "formula_example",
                 "bullets": [
@@ -791,6 +794,7 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Node MSE",
                 "body": "CART picks the split that maximally reduces MSE (regression) or Gini/entropy (classification).",
                 "formula": "MSE(S) = (1 / |S|) Σ_{i ∈ S} (y_{i} − ȳ_S)²",
+                "formula_tex": r"\mathrm{MSE}(S) = \dfrac{1}{|S|} \sum_{i \in S} (y_i - \bar{y}_S)^2",
                 "formula_note": "Average squared distance from the node mean ȳ_S",
                 "layout": "formula_example",
                 "bullets": [
@@ -815,6 +819,7 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Regression Tree",
                 "body": "Once a region is pure enough to stop splitting, the leaf predicts a constant value for every point that lands there.",
                 "formula": "ŷ_leaf = (1 / |S_leaf|) Σ_{i ∈ S_leaf} y_{i}",
+                "formula_tex": r"\hat{y}_{leaf} = \dfrac{1}{|S_{leaf}|} \sum_{i \in S_{leaf}} y_i",
                 "formula_note": "Usually the mean of the training targets in that leaf region",
                 "layout": "formula_example",
                 "bullets": [
@@ -881,7 +886,8 @@ TOPIC_CONTENT: dict = {
         "title": "Random Forest Regression",
         "kicker": "What is Random Forest Regressor?",
         "body": "Ensemble of many trees — average their predictions.",
-        "formula": "ŷ_RF(x) = (1 / N_trees) Σ ŷ_t(x)",
+        "formula": "ŷ_{RF}(x) = (1 / N_{trees}) Σ_{t = 1}^{N_{trees}} ŷ_{t}(x)",
+        "formula_tex": r"\hat{y}_{RF}(x) = \dfrac{1}{N_{trees}} \sum_{t=1}^{N_{trees}} \hat{y}_t(x)",
         "formula_note": "Average of individual tree predictions",
         "bullets": [
             "Bootstrap samples → many trees.",
@@ -1442,7 +1448,9 @@ def slide_linear_intro(prs, total, index, content):
     has_plot = bool(plot_name)
     has_formula = bool(content.get("formula"))
     has_note = bool(content.get("note"))
-    is_frac = has_formula and is_fraction_formula(content["formula"])
+    is_frac = has_formula and (
+        is_fraction_formula(content["formula"]) or bool(content.get("formula_tex"))
+    )
 
     col_w = Inches(6.3) if has_plot else Inches(12.0)
     text_w = Inches(5.8) if has_plot else Inches(11.3)
@@ -1461,8 +1469,8 @@ def slide_linear_intro(prs, total, index, content):
     )
 
     if has_formula:
-        formula_card_h = 1.5 if is_frac else 1.25
-        formula_box_h = 0.7 if is_frac else 0.4
+        formula_card_h = 1.65 if is_frac else 1.35
+        formula_box_h = 0.95 if is_frac else 0.65
         soft_card(slide, MARGIN, Inches(3.55), col_w, Inches(formula_card_h), fill=SOFT)
         add_text(
             slide,
@@ -1485,6 +1493,7 @@ def slide_linear_intro(prs, total, index, content):
             size=18 if is_frac else 20,
             bold=True,
             color=PRIMARY,
+            formula_tex=content.get("formula_tex"),
         )
         if content.get("formula_note"):
             note_y = 3.9 + formula_box_h + 0.05
@@ -1561,7 +1570,9 @@ def slide_formula_example(prs, total, index, content):
 
     items = content.get("bullets") or []
     has_note = bool(content.get("note"))
-    is_frac = is_fraction_formula(content.get("formula") or "")
+    is_frac = is_fraction_formula(content.get("formula") or "") or bool(
+        content.get("formula_tex")
+    )
     dense = len(items) >= 3 or (len(items) >= 2 and has_note)
 
     body_top = Inches(2.15)
@@ -1581,19 +1592,20 @@ def slide_formula_example(prs, total, index, content):
     else:
         formula_top = Inches(2.25)
 
-    formula_h = 1.45 if is_frac else 1.15
+    formula_h = 1.55 if is_frac else 1.25
     soft_card(slide, MARGIN, formula_top, Inches(12.0), Inches(formula_h), fill=SOFT)
     add_formula(
         slide,
         MARGIN + Inches(0.4),
-        formula_top + Inches(0.15),
+        formula_top + Inches(0.12),
         Inches(11.2),
-        Inches(0.75 if is_frac else 0.5),
+        Inches(0.95 if is_frac else 0.7),
         content["formula"],
         size=24 if is_frac else 26,
         bold=True,
         color=PRIMARY,
         align=PP_ALIGN.CENTER,
+        formula_tex=content.get("formula_tex"),
     )
     if content.get("formula_note"):
         add_text(
