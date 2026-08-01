@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Build Week 1 · Session 3 presentation using official ETRA Design System.
+Build Week 1 · Session 4 presentation using official ETRA Design System.
 Content is filled incrementally as teaching blocks are pasted in.
 """
 
@@ -41,188 +41,205 @@ from etra_brand import (  # noqa: E402
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "pdf-exports" / "Week1-Session3-Classification-Basics.pptx"
+OUT = ROOT / "pdf-exports" / "Week1-Session4-Naive-Bayes-Trees-Evaluation.pptx"
 PLOTS = ROOT / "public" / "assets" / "plots"
-DIAGRAMS = ROOT / "public" / "assets" / "session3-diagrams"
+DIAGRAMS = ROOT / "public" / "assets" / "session4-diagrams"
 
 SESSION = {
-    "eyebrow": "Week 1  ·  Session 3",
-    "section_number": "03",
-    "section_tag": "S03",
+    "eyebrow": "Week 1  ·  Session 4",
+    "section_number": "04",
+    "section_tag": "S04",
     "section_title": "Classical ML",
-    "subtitle": "Classification basics — from labels to decision boundaries",
+    "subtitle": "Naive Bayes, trees, and evaluation metrics",
     "trainer_line": "AI & Machine Learning Bootcamp",
-    "focus": "Classification Basics",
+    "focus": "Naive Bayes, Trees, Evaluation",
     "topics": [
-        "Classification Basics",
-        "Logistic regression",
-        "K-NN",
-        "Decision boundaries",
-        "Threshold tuning",
+        "Naive Bayes",
+        "Decision trees",
+        "Random Forest",
+        "Precision / recall / F1",
     ],
 }
 
 TOPIC_CONTENT: dict = {
-    "Classification Basics": {
-        "title": "Classification Overview",
-        "kicker": "Classification Basics",
-        "body": "Classification is a supervised learning task used to assign a new observation to a predefined category based on learned patterns from labeled data.",
+    "Naive Bayes": {
+        "title": "Naive Bayes: Bayes' Theorem",
+        "kicker": "Core Probability Rule",
+        "body": "Bayes’ theorem updates our belief about A after observing evidence B.",
+        "formula": "P(A|B) = P(B|A) P(A) / P(B)",
+        "formula_tex": r"P(A\mid B)=\dfrac{P(B\mid A)\,P(A)}{P(B)}",
+        "formula_note": "Posterior ∝ Likelihood × Prior",
+        "layout": "formula_example",
         "bullets": [
-            "Output is a class label (e.g., 0/1, Yes/No).",
-            "Used in spam detection, medical diagnosis, fraud detection, and customer churn prediction.",
+            "P(A|B): posterior probability after observing evidence B.",
+            "P(A): prior belief before seeing evidence.",
+            "P(B|A): likelihood of evidence if class A is true.",
         ],
-        "plot_path": "classification-overview.png",
-        "note": "Features in → class label out. Probability models come next.",
-    },
-    "Logistic regression": {
-        "title": "Logistic Regression: Definition",
-        "kicker": "Binary Classification",
-        "body": "Logistic Regression is a supervised algorithm for binary classification that estimates the probability of class membership.",
-        "bullets": [
-            "Produces probabilities in the range [0, 1].",
-            "Final class is determined using a threshold (commonly 0.5).",
-            "Models the relationship between features and log-odds of the target.",
-        ],
-        "plot_path": "sigmoid-threshold.png",
-        "note": "Sigmoid & Threshold · Probability cutoff τ = 0.5 · P ≥ τ → class 1.",
+        "note": "P(B): evidence probability (normalization term). This theorem updates beliefs when new evidence appears.",
         "extra_slides": [
             {
-                "title": "Why Not Linear Regression for Classification?",
-                "kicker": "Motivation for Logistic Regression",
-                "body": "Linear regression predicts continuous values rather than discrete classes.",
-                "bullets": [
-                    "Predicted values can be < 0 or > 1 — invalid for probabilities.",
-                    "It does not naturally provide a robust classification boundary.",
-                ],
-                "plot_path": "linear-vs-logistic.png",
-                "note": "Logistic Regression maps the linear score to probability through a sigmoid.",
+                "title": "Bayes’ Theorem — Visual Map",
+                "kicker": "Core Probability Rule",
+                "body": "Prior × Likelihood → Posterior (normalized by evidence).",
+                "layout": "diagram",
+                "plot_path": "bayes-theorem.png",
+                "note": "Same rule as the formula slide — different view of the update.",
             },
             {
-                "title": "Sigmoid Mapping and Decision Threshold",
-                "kicker": "Sigmoid & Threshold",
-                "body": "Probability cutoff for classification · Decision threshold τ = 0.5",
-                "formula": "P(y=1|x) = σ(z) = 1 / (1 + e^{−z}),  z = β_{0} + βᵀx",
-                "formula_tex": r"P(y=1\mid x)=\sigma(z)=\dfrac{1}{1+e^{-z}},\quad z=\beta_0+\beta^{\top}x",
-                "formula_note": "If P ≥ τ → class 1 · if P < τ → class 0",
+                "title": "Why Is It Called 'Naive'?",
+                "kicker": "Conditional Independence Assumption",
+                "body": "Naive Bayes assumes features are conditionally independent given the class label.",
                 "bullets": [
-                    "Sigmoid converts any real-valued score into a valid probability.",
-                    "If probability ≥ 0.5, predict class 1; otherwise class 0.",
+                    "Simplifies parameter estimation and speeds up training.",
+                    "Works well in text classification and high-dimensional sparse data.",
+                    "Can still perform well even when independence is not fully true.",
                 ],
-                "plot_path": "sigmoid-threshold.png",
-                "note": "Threshold can be adjusted based on business/clinical needs.",
+                "plot_path": "naive-independence.png",
+                "note": "When comparing classes for the same X, P(X) is constant and can be ignored.",
             },
             {
-                "title": "Key Assumptions for Logistic Regression",
-                "kicker": "Model Assumptions",
-                "body": "Logistic regression models log-odds — check independence, collinearity, and linearity in logit space.",
-                "formula": "Odds = p / (1 − p),  Logit(p) = log(p / (1 − p))",
-                "formula_tex": r"\mathrm{Odds}=\dfrac{p}{1-p},\quad \mathrm{Logit}(p)=\log\!\left(\dfrac{p}{1-p}\right)",
-                "formula_note": "Decision threshold still applies after sigmoid · default τ = 0.5",
+                "title": "Naive Bayes: Practical Notes",
+                "kicker": "Variants & Implementation",
+                "layout": "table",
+                "table": {
+                    "headers": ["Variant", "Typical Data", "Key Idea"],
+                    "rows": [
+                        [
+                            "Gaussian NB",
+                            "Continuous",
+                            "Each feature ~ Gaussian given the class",
+                        ],
+                        [
+                            "Multinomial NB",
+                            "Count-based",
+                            "Common for document word counts",
+                        ],
+                        [
+                            "Bernoulli NB",
+                            "Binary",
+                            "Presence/absence features",
+                        ],
+                    ],
+                },
+                "note": "Handle zero-frequency with smoothing (e.g., Laplace). Scale/preprocess by feature type and variant.",
+            },
+        ],
+    },
+    "Decision trees": {
+        "title": "Decision Tree Classification (CART)",
+        "kicker": "Recursive Partitioning",
+        "body": "Decision Tree Classification predicts class labels by recursively splitting feature space into purer class regions.",
+        "bullets": [
+            "Internal nodes represent feature-based decisions.",
+            "Branches represent decision outcomes.",
+            "Leaf nodes output final class prediction.",
+        ],
+        "plot_path": "decision-tree-split.png",
+        "note": "Decision Tree Split · Root → branches → leaf nodes · split by feature threshold.",
+        "extra_slides": [
+            {
+                "title": "How Splits Are Chosen in Classification Trees",
+                "kicker": "Gini · Entropy · Information Gain",
+                "body": "Splits are chosen greedily to maximize information gain.",
+                "formula": "Gain = Impurity(parent) − weighted impurity(children)",
+                "formula_tex": r"\mathrm{Gain}=I(\mathrm{parent})-\sum_k \frac{|S_k|}{|S|}I(S_k)",
+                "formula_note": "Gini / Entropy measure impurity — lower is better",
+                "bullets": [
+                    "Choose the split that best separates classes at each node.",
+                    "Stop splitting using rules like max depth or minimum samples.",
+                    "Gini impurity and entropy measure node purity — lower is better.",
+                ],
                 "layout": "formula_example",
-                "bullets": [
-                    "Observations should be independent.",
-                    "Predictors should not have severe multicollinearity.",
-                    "Relationship should be approximately linear in the log-odds space.",
-                ],
+                "note": "Better splits reduce impurity and increase class purity in child nodes.",
             },
             {
-                "title": "Maximum Likelihood Estimation (MLE)",
-                "kicker": "How Logistic Regression Learns",
-                "body": "Logistic Regression parameters are estimated by maximizing the likelihood of observing the true class labels.",
-                "bullets": [
-                    "Different curves correspond to different parameter values.",
-                    "The optimal model is the one with the highest likelihood (or lowest log-loss).",
-                ],
-                "plot_path": "mle-sigmoid-curves.png",
-                "note": "Pick β that makes the observed labels most probable.",
-            },
-            {
-                "title": "Logistic Regression: Strengths and Limits",
-                "kicker": "When to Use It",
+                "title": "Decision Tree: Classification vs Regression",
+                "kicker": "Same Structure · Different Objectives",
                 "layout": "table",
                 "table": {
-                    "headers": ["Strengths", "Limitations"],
+                    "headers": ["Aspect", "Classification Tree", "Regression Tree"],
                     "rows": [
+                        ["Target", "Categorical class", "Continuous value"],
+                        ["Split criterion", "Gini / Entropy", "MSE / MAE"],
                         [
-                            "High interpretability of coefficients and odds ratios",
-                            "May underperform on complex non-linear boundaries",
-                        ],
-                        [
-                            "Fast training and strong baseline for binary tasks",
-                            "Sensitive when classes strongly overlap",
-                        ],
-                        [
-                            "Calibrated probabilities and clear feature coefficients",
-                            "Linear decision boundary in feature space",
+                            "Leaf output",
+                            "Class label or class probability",
+                            "Numeric mean/median",
                         ],
                     ],
                 },
-                "note": "For complex boundaries → polynomials or other models. Default threshold τ = 0.5.",
+                "note": "Both use recursive partitioning (Root → branches → leaves) but optimize different objectives.",
             },
             {
-                "title": "Multiclass Extension of Logistic Regression",
-                "kicker": "Beyond Binary",
-                "body": "Extend binary logistic regression to 3+ classes with Softmax or One-vs-All.",
-                "bullets": [
-                    "Multinomial (Softmax) Logistic Regression directly handles multiple classes.",
-                    "One-vs-All (OvA) trains one binary classifier per class.",
-                    "Final class is selected by highest predicted probability.",
-                ],
-                "plot_path": "multiclass-logistic.png",
-                "note": "Pick the class with max P(y=k|x).",
+                "title": "Gini Impurity and Entropy",
+                "kicker": "Node Purity Measures",
+                "body": "Gini (CART default) and entropy both measure node impurity — lower is better.",
+                "layout": "diagram",
+                "plot_path": "gini-entropy-formulas.png",
+                "note": "Better splits reduce impurity and increase class purity in child nodes.",
             },
         ],
     },
-    "K-NN": {
-        "title": "K-Nearest Neighbors (K-NN): Core Idea",
-        "kicker": "Instance-Based Learning",
-        "body": "K-NN is an instance-based, non-parametric algorithm that classifies a sample using the majority class among its nearest neighbors.",
+    "Random Forest": {
+        "title": "Random Forest Classification",
+        "kicker": "Ensemble Learning by Bagging",
+        "body": "Train many trees on bootstrap samples, then combine predictions by majority vote.",
+        "formula": "ŷ_RF(x) = mode{ŷ_1(x), ŷ_2(x), …, ŷ_T(x)}",
+        "formula_tex": r"\hat{y}_{RF}(x)=\operatorname{mode}\{\hat{y}_1(x),\hat{y}_2(x),\ldots,\hat{y}_T(x)\}",
+        "formula_note": "Majority vote across T trees",
         "bullets": [
-            "Choose K.",
-            "Compute distance to all training points.",
-            "Select K nearest points and apply majority voting.",
+            "Sample bootstrap data and train many trees.",
+            "Each tree predicts a class for the new sample.",
         ],
-        "plot_path": "knn-core-idea.png",
-        "note": "No explicit training of a parametric model — the training set is the model.",
+        "plot_path": "random-forest-ensemble.png",
+        "note": "Final class = majority vote (mode). Regression RF uses the mean instead.",
         "extra_slides": [
             {
-                "title": "K-NN: Choosing K and Distance Metric",
-                "kicker": "Hyperparameters",
-                "body": "K and the distance metric control the smoothness of the decision boundary.",
-                "bullets": [
-                    "Small K: lower bias, higher variance (sensitive to noise).",
-                    "Large K: smoother boundary, may miss local structure.",
-                    "Common metrics: Euclidean, Manhattan, Hamming.",
-                ],
-                "plot_path": "knn-k-tradeoff.png",
-                "note": "Use CV to choose K · scale numeric features before distance-based modeling.",
-            },
-            {
-                "title": "K-NN: Strengths and Limitations",
-                "kicker": "When to Use It",
+                "title": "Why Random Forest Often Outperforms a Single Tree",
+                "kicker": "Bias–Variance Tradeoff",
                 "layout": "table",
                 "table": {
-                    "headers": ["Strengths", "Limitations"],
+                    "headers": ["Property", "Single Decision Tree", "Random Forest"],
                     "rows": [
+                        ["Variance", "High", "Lower (averaging effect)"],
+                        ["Overfitting risk", "Higher", "Lower"],
+                        ["Interpretability", "High", "Moderate"],
                         [
-                            "Simple and intuitive",
-                            "Prediction can be slow on large datasets",
-                        ],
-                        [
-                            "Effective on smaller, well-separated datasets",
-                            "Sensitive to irrelevant features and class imbalance",
-                        ],
-                        [
-                            "Naturally supports multiclass classification",
-                            "Performance drops in high-dimensional spaces",
-                        ],
-                        [
-                            "No training phase — lazy learning, simple baseline",
-                            "Needs feature scaling before distance modeling",
+                            "Predictive robustness",
+                            "Sensitive to data noise",
+                            "More stable",
                         ],
                     ],
                 },
-                "note": "Strength: lazy baseline · Limit: slow inference, curse of dimensionality, needs scaling.",
+                "note": "Bagging + feature randomness → less variance without much extra bias.",
+            },
+        ],
+    },
+    "Precision / recall / F1": {
+        "title": "Classification Errors: FP and FN",
+        "kicker": "Error Types",
+        "body": "Not all mistakes are equal — False Positives and False Negatives carry different costs.",
+        "bullets": [
+            "False Positive (Type I): predict positive, actual is negative.",
+            "False Negative (Type II): predict negative, actual is positive.",
+            "Error impact depends on domain costs (healthcare vs spam).",
+        ],
+        "plot_path": "fp-fn-errors.png",
+        "note": "Model evaluation should consider error trade-offs, not accuracy alone.",
+        "extra_slides": [
+            {
+                "title": "Confusion Matrix and Accuracy",
+                "kicker": "Actual vs Predicted Counts",
+                "body": "Confusion matrix counts TP, FP, FN, TN — Accuracy is overall correctness.",
+                "formula": "Accuracy = (TP + TN) / (TP + TN + FP + FN)",
+                "formula_tex": r"\mathrm{Accuracy}=\dfrac{TP+TN}{TP+TN+FP+FN}",
+                "formula_note": "Correct predictions ÷ all predictions",
+                "bullets": [
+                    "TP / TN: correct positives / negatives.",
+                    "FP / FN: false alarms / missed detections.",
+                ],
+                "plot_path": "confusion-matrix-accuracy.png",
+                "note": "High accuracy can hide poor minority-class performance when data is imbalanced.",
             },
         ],
     },
@@ -230,8 +247,8 @@ TOPIC_CONTENT: dict = {
 
 BIG_PICTURE = {
     "title": "Where Are We in the Bootcamp?",
-    "focus": "After regression — learn models that predict class labels.",
-    "current": "S3",
+    "focus": "After classification basics — probabilistic models, trees, and metrics.",
+    "current": "S4",
     "weeks": [
         {
             "label": "Week 1",
