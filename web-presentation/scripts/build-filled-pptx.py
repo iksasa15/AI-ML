@@ -176,11 +176,22 @@ def text(
     return box
 
 
+def _no_shadow(shape):
+    """Force flat shapes — no theme/default drop shadow."""
+    spPr = shape._element.spPr
+    for child in list(spPr):
+        if child.tag.endswith("effectLst"):
+            spPr.remove(child)
+    # Empty effect list overrides PowerPoint theme shadows
+    spPr.append(spPr.makeelement(qn("a:effectLst"), {}))
+
+
 def rect(slide, left, top, width, height, fill):
     shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
     shape.fill.solid()
     shape.fill.fore_color.rgb = fill
     shape.line.fill.background()
+    _no_shadow(shape)
     return shape
 
 
@@ -193,6 +204,7 @@ def soft_card(slide, left, top, width, height):
         shape.adjustments[0] = 0.12
     except Exception:
         pass
+    _no_shadow(shape)
     return shape
 
 
@@ -277,11 +289,12 @@ def slide_big_picture(prs, total, index):
         for si, (sid, title) in enumerate(week["sessions"]):
             y = top + Inches(0.5) + Inches(si * 0.58)
             current = sid == bp["current"]
+            # Flat highlight only — no raised/shadow card
             if current:
-                soft_card(slide, x, y - Inches(0.05), col_w - Inches(0.1), Inches(0.5))
+                rect(slide, x, y + Inches(0.08), Inches(0.06), Inches(0.28), ACCENT)
             text(
                 slide,
-                x + Inches(0.12),
+                x + Inches(0.18),
                 y,
                 Inches(0.4),
                 Inches(0.4),
@@ -291,14 +304,13 @@ def slide_big_picture(prs, total, index):
                 color=ACCENT if current else SOFT,
                 anchor=MSO_ANCHOR.MIDDLE,
             )
-            short = title.replace(" & ", " & ")
             text(
                 slide,
-                x + Inches(0.55),
+                x + Inches(0.6),
                 y,
                 col_w - Inches(0.75),
                 Inches(0.4),
-                short,
+                title,
                 size=11,
                 bold=current,
                 color=TEXT if current else MUTED,

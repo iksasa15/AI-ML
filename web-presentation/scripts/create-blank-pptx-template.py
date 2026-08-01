@@ -60,11 +60,20 @@ def text(slide, left, top, width, height, value, *, size=18, bold=False, color=T
     return box
 
 
+def _no_shadow(shape):
+    spPr = shape._element.spPr
+    for child in list(spPr):
+        if child.tag.endswith("effectLst"):
+            spPr.remove(child)
+    spPr.append(spPr.makeelement(qn("a:effectLst"), {}))
+
+
 def rect(slide, left, top, width, height, fill):
     shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
     shape.fill.solid()
     shape.fill.fore_color.rgb = fill
     shape.line.fill.background()
+    _no_shadow(shape)
     return shape
 
 
@@ -77,6 +86,7 @@ def soft_card(slide, left, top, width, height):
         shape.adjustments[0] = 0.12
     except Exception:
         pass
+    _no_shadow(shape)
     return shape
 
 
