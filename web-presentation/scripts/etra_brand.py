@@ -401,8 +401,41 @@ def title_block(slide, title: str, subtitle: str | None = None, *, top=Inches(1.
         add_text(slide, MARGIN, top + Inches(0.6), Inches(11.2), Inches(0.4), subtitle, size=15, color=MUTED)
 
 
-def bullets(slide, items: list[str], *, top=Inches(2.2), size=18):
+def is_fraction_formula(value: str) -> bool:
+    """True when value matches a stacked-fraction formula pattern."""
+    return bool(_FRAC_RE.match((value or "").strip()))
+
+
+def bullets(
+    slide,
+    items: list[str],
+    *,
+    top=Inches(2.2),
+    size=18,
+    left=None,
+    width=None,
+    pitch=0.68,
+    item_height=None,
+):
+    """
+    Render a bullet list.
+    Optional left/width keep bullets in a column (e.g. beside a plot).
+    pitch is vertical spacing in inches between items.
+    """
+    left = MARGIN if left is None else left
+    width = Inches(11.2) if width is None else width
+    item_h = Inches(0.45) if item_height is None else item_height
+    text_w = max(width.inches - 0.4, 1.5)
     for i, item in enumerate(items):
-        y = top + Inches(i * 0.68)
-        add_text(slide, MARGIN, y, Inches(0.35), Inches(0.4), "–", size=size, color=SECONDARY)
-        add_text(slide, MARGIN + Inches(0.4), y, Inches(11.2), Inches(0.45), item, size=size, color=INK)
+        y = top + Inches(i * pitch)
+        add_text(slide, left, y, Inches(0.35), item_h, "–", size=size, color=SECONDARY)
+        add_text(
+            slide,
+            left + Inches(0.4),
+            y,
+            Inches(text_w),
+            item_h,
+            item,
+            size=size,
+            color=INK,
+        )

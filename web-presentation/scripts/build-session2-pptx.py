@@ -31,6 +31,7 @@ from etra_brand import (  # noqa: E402
     content_footer,
     content_header,
     gradient_fill,
+    is_fraction_formula,
     logo,
     paint_light,
     rect,
@@ -72,12 +73,11 @@ TOPIC_CONTENT: dict = {
         "formula": "y = b_{0} + b_{1}x",
         "formula_note": "b₀ = intercept (value of y when x = 0)  ·  b₁ = slope (change in y per unit change in x)",
         "bullets": [
-            "x = independent variable (input / feature)",
-            "y = dependent variable (target we want to predict)",
-            "The model finds the straight line that best fits the observed data points.",
+            "x = input feature · y = target to predict",
+            "Finds the straight line that best fits the data.",
         ],
         "plot": "slide-19-1.png",
-        "note": "One feature → one straight-line relationship. Multiple features come later (multiple linear regression).",
+        "note": "One feature → one straight-line fit. Multiple features come next.",
         "extra_slides": [
             {
                 "title": "Practical Example",
@@ -86,11 +86,10 @@ TOPIC_CONTENT: dict = {
                 "formula": "y = 40 + 5x",
                 "layout": "formula_example",
                 "bullets": [
-                    "Slope (b₁ = 5): each extra study hour increases predicted score by 5 points.",
-                    "Intercept (b₀ = 40): if study hours are 0, predicted score is 40.",
-                    "Example: study 3 hours → ŷ = 40 + 5(3) = 55.",
+                    "Slope b₁ = 5: +1 study hour → +5 score points.",
+                    "Intercept b₀ = 40: score when hours = 0.",
+                    "Example: 3 hours → ŷ = 40 + 5(3) = 55.",
                 ],
-                "note": "The regression line is the best-fit line that minimizes prediction errors.",
             },
             {
                 "title": "Meaning of Each Symbol",
@@ -115,25 +114,23 @@ TOPIC_CONTENT: dict = {
                 "formula_note": "Each bⱼ is the effect of feature xⱼ holding other features fixed.",
                 "layout": "formula_example",
                 "bullets": [
-                    "Purpose: predict the target y using multiple input factors.",
-                    "Compared with simple regression, it models more realistic multi-factor scenarios.",
-                    "Still a linear model — linear in the coefficients b₀, b₁, …, bₙ.",
+                    "Predict y from several inputs at once.",
+                    "Still linear in the coefficients b₀ … bₙ.",
                 ],
-                "note": "OLS still applies: choose coefficients that minimize the sum of squared residuals.",
+                "note": "OLS still minimizes the sum of squared residuals.",
             },
             {
                 "title": "House Price Example",
                 "kicker": "Multiple Linear Regression",
-                "body": "Suppose we want to predict house price using house size and number of bedrooms.",
+                "body": "Predict house price from size and bedrooms.",
                 "formula": "y = 50 + 2.5 x_{1} + 15 x_{2}",
-                "formula_note": "y = price  ·  x₁ = size (m²)  ·  x₂ = number of bedrooms",
+                "formula_note": "y = price  ·  x₁ = size (m²)  ·  x₂ = bedrooms",
                 "layout": "formula_example",
                 "bullets": [
-                    "For each additional 1 m², price increases by 2.5 (holding other variables constant).",
-                    "For each additional bedroom, price increases by 15 (holding other variables constant).",
-                    "Intercept 50: baseline predicted price when size and bedrooms are both 0 (often not realistic alone — focus on slopes).",
+                    "+1 m² → price +2.5 (other variables fixed).",
+                    "+1 bedroom → price +15 (other variables fixed).",
                 ],
-                "note": "“Holding other variables constant” is the key idea when interpreting each coefficient.",
+                "note": "Interpret each coefficient holding other variables constant.",
             },
             {
                 "title": "House Price Calculations",
@@ -161,12 +158,11 @@ TOPIC_CONTENT: dict = {
         "kicker": "Ordinary Least Squares (OLS)",
         "body": "Ordinary Least Squares is the most common method to fit a linear regression line by minimizing prediction errors.",
         "bullets": [
-            "OLS chooses the line that makes the total squared error as small as possible.",
-            "Error for one point: residual = actual y − predicted ŷ.",
-            "Goal: minimize the sum of squared residuals across all training points.",
-            "For simple linear regression, OLS has a closed-form solution for b₀ and b₁.",
+            "Chooses the line with the smallest total squared error.",
+            "Residual = actual y − predicted ŷ.",
+            "Simple linear case has a closed-form solution for b₀, b₁.",
         ],
-        "note": "Smaller squared errors → a better-fitting line on the training data.",
+        "note": "Smaller squared errors → better fit on the training data.",
         "extra_slides": [
             {
                 "title": "Sum of Squared Errors",
@@ -189,9 +185,8 @@ TOPIC_CONTENT: dict = {
                 "formula": "min_{w} L(w)",
                 "formula_note": "We search for the parameter w that makes the loss as small as possible.",
                 "bullets": [
-                    "Start with an initial guess for w.",
-                    "Move downhill on the loss surface (opposite the gradient).",
-                    "Stop when the updates become tiny — the algorithm has converged.",
+                    "Start with a guess for w, then move downhill.",
+                    "Stop when updates become tiny (converged).",
                 ],
                 "plot_path": "ols-loss-curve.png",
                 "note": "Converged: w = 2.00 · L(w) = 0.40",
@@ -199,28 +194,26 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "R-Squared (R²)",
                 "kicker": "Goodness of Fit",
-                "body": "R² is a goodness-of-fit metric in regression. It measures how much variation in y is explained by model inputs.",
+                "body": "R² measures how much variation in y is explained by the model inputs.",
                 "formula": "R² = 1 − (SS_{res}) / (SS_{tot})",
-                "formula_note": "SS_res = residual sum of squares  ·  SS_tot = total sum of squares",
+                "formula_note": "SS_res = residual SS  ·  SS_tot = total SS",
                 "bullets": [
-                    "R² close to 1 → the model explains most of the variation in y.",
-                    "R² close to 0 → the inputs explain little beyond predicting the mean of y.",
-                    "Higher R² means a better fit on the data used to compute it — not automatically better predictions on new data.",
+                    "Near 1 → strong explanatory power.",
+                    "Near 0 → little better than predicting the mean.",
                 ],
                 "plot": "slide-22-1.png",
-                "note": "R² = 1 means perfect fit on that sample; R² = 0 means no improvement over the mean baseline.",
+                "note": "High R² on training data ≠ guaranteed good new-data predictions.",
             },
             {
                 "title": "Interpreting R²",
                 "kicker": "Goodness of Fit",
-                "body": "Larger R² means better explanatory power — more of the variation in y is captured by the model.",
+                "body": "Larger R² means more of the variation in y is captured by the model.",
                 "bullets": [
-                    "R² = 1 → perfect fit (predictions match all observed y values).",
-                    "R² = 0 → mean-level prediction performance (no better than always predicting ȳ).",
-                    "Compare fits visually: points tightly around the line → higher R².",
+                    "R² = 1 → perfect fit on that sample.",
+                    "R² = 0 → mean-level baseline performance.",
                 ],
                 "plot": "r2-comparison.png",
-                "note": "Use R² to judge explanatory power on the fitted sample; validate generalization with hold-out metrics.",
+                "note": "Validate generalization with hold-out metrics, not R² alone.",
             },
             {
                 "title": "Residual Sum of Squares",
@@ -280,14 +273,13 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Adjusted R-Squared",
                 "kicker": "Goodness of Fit · Model Comparison",
-                "body": "Adjusted R² modifies R² so unnecessary predictors are penalized.",
+                "body": "Adjusted R² penalizes unnecessary predictors.",
                 "formula": "R²_{adj} = 1 − (1 − R²)(n − 1)/(n − p − 1)",
-                "formula_note": "n = number of samples  ·  p = number of predictors",
+                "formula_note": "n = samples  ·  p = predictors",
                 "layout": "formula_example",
                 "bullets": [
-                    "Adjusted R² penalizes unnecessary predictors.",
-                    "It is usually a better metric for comparing models with different numbers of predictors.",
-                    "If adding a variable does not help enough, Adjusted R² can fall even when R² rises.",
+                    "Better for comparing models with different p.",
+                    "Can fall when R² rises if the new variable is weak.",
                 ],
             },
             {
@@ -320,165 +312,120 @@ TOPIC_CONTENT: dict = {
     "Residual diagnostics": {
         "title": "Assumptions of Linear Regression",
         "kicker": "Overview",
-        "body": "Linear regression is most reliable when core assumptions are approximately satisfied.",
         "layout": "table",
         "table": {
             "headers": ["Assumption", "Meaning", "If Violated"],
             "rows": [
-                [
-                    "Linearity",
-                    "Relationship between y and each x is roughly linear.",
-                    "Biased predictions",
-                ],
-                [
-                    "Homoscedasticity",
-                    "Error variance is roughly constant across fitted values.",
-                    "Unstable standard errors",
-                ],
-                [
-                    "Normality of Errors",
-                    "Residuals are approximately normal.",
-                    "Inference becomes less reliable",
-                ],
-                [
-                    "Independence",
-                    "Observations/errors are independent.",
-                    "Biased significance tests",
-                ],
-                [
-                    "No Severe Multicollinearity",
-                    "Predictors are not highly redundant.",
-                    "Coefficients become unstable",
-                ],
-                [
-                    "Limited Outlier Influence",
-                    "Extreme points do not dominate the fit.",
-                    "Distorted regression line",
-                ],
+                ["Linearity", "y vs each x is roughly linear", "Biased predictions"],
+                ["Homoscedasticity", "Error variance roughly constant", "Unstable SEs"],
+                ["Normal Errors", "Residuals ≈ normal", "Weaker inference"],
+                ["Independence", "Errors are independent", "Biased tests"],
+                ["Low Multicollinearity", "Predictors not highly redundant", "Unstable coeffs"],
+                ["Limited Outliers", "Extremes do not dominate fit", "Distorted line"],
             ],
         },
-        "note": "Diagnostics in the next slides help check these assumptions in practice.",
+        "note": "Next slides: practical checks and residual plots.",
         "extra_slides": [
             {
                 "title": "Assumptions with Practical Examples",
                 "kicker": "Residual Diagnostics",
+                "layout": "diagram",
+                "body": "Each panel shows a practical picture of one assumption — and what “good” looks like.",
+                "plot_path": "assumption-examples-grid.png",
+                "note": "Checks: scatter/residuals · residuals vs fitted · histogram/Q-Q · design/DW · corr/VIF · Cook/leverage.",
+            },
+            {
+                "title": "Assumptions — Quick Reference",
+                "kicker": "Practical Examples",
                 "layout": "table",
                 "table": {
-                    "headers": ["Assumption", "Simple Example", "Practical Check"],
+                    "headers": ["Assumption", "Example", "Check"],
                     "rows": [
-                        [
-                            "Linearity",
-                            "Sales increase approximately linearly with ad spend.",
-                            "Scatter plot / residual plot",
-                        ],
-                        [
-                            "Homoscedasticity",
-                            "Prediction errors are similar for low and high sales values.",
-                            "Residuals vs fitted values",
-                        ],
-                        [
-                            "Normal Errors",
-                            "Most residuals are near zero, few at extremes.",
-                            "Histogram / Q-Q plot of residuals",
-                        ],
-                        [
-                            "Independence",
-                            "Customer records are independent.",
-                            "Study design / Durbin-Watson for time data",
-                        ],
-                        [
-                            "Low Multicollinearity",
-                            "TV_ads and radio_ads are not near-duplicates.",
-                            "Correlation matrix / VIF",
-                        ],
-                        [
-                            "Outlier Control",
-                            "One extreme house price should not define the whole model.",
-                            "Cook's distance / leverage diagnostics",
-                        ],
+                        ["Linearity", "Sales ≈ linear in ad spend", "Scatter / residual plot"],
+                        ["Homoscedasticity", "Similar errors high & low", "Residuals vs fitted"],
+                        ["Normal Errors", "Most residuals near zero", "Histogram / Q-Q"],
+                        ["Independence", "Independent customers", "Design / Durbin-Watson"],
+                        ["Low Multicollinearity", "Ads not near-duplicates", "Corr / VIF"],
+                        ["Outlier Control", "One house ≠ whole model", "Cook / leverage"],
                     ],
                 },
-                "note": "If one assumption is violated, use transformations, robust methods, feature engineering, or a different model.",
+                "note": "If violated: transforms, robust methods, or another model.",
+            },
+            {
+                "title": "Residual Patterns to Spot",
+                "kicker": "Assumption Checks",
+                "body": "Common residual-plot signatures for assumption problems.",
+                "bullets": [
+                    "Good: random cloud around zero.",
+                    "Fan / curve / outlier → investigate.",
+                ],
+                "plot_path": "residual-assumptions.png",
             },
             {
                 "title": "Residuals vs Fitted Values",
                 "kicker": "Practical Check · Homoscedasticity",
-                "body": "A residuals-vs-fitted plot is a common practical check: look for random scatter around zero with roughly constant spread.",
+                "body": "Look for random scatter around zero with roughly constant spread.",
                 "bullets": [
-                    "No clear curve → linearity looks reasonable.",
-                    "Fan shape (spread grows with fitted value) → possible heteroscedasticity.",
-                    "Large isolated points → check for influential outliers.",
+                    "No curve → linearity looks OK.",
+                    "Fan shape → possible heteroscedasticity.",
                 ],
                 "plot": "slide-25-1.png",
-                "note": "Static diagnostic plot from the course materials (slide image 1).",
             },
             {
                 "title": "Building a Regression Model",
                 "kicker": "Goal",
-                "body": "Model-building methods select the most relevant predictors to balance simplicity, interpretability, and predictive accuracy.",
                 "layout": "table",
                 "table": {
                     "headers": ["Method", "Core Idea", "Best Use Case"],
                     "rows": [
-                        [
-                            "All-in",
-                            "Use all predictors directly.",
-                            "Strong prior knowledge that all variables matter",
-                        ],
-                        [
-                            "Backward Elimination",
-                            "Start full and remove least significant variables.",
-                            "Many candidate predictors",
-                        ],
-                        [
-                            "Forward Selection",
-                            "Start empty and add most significant variables.",
-                            "Need a compact model from scratch",
-                        ],
-                        [
-                            "Bidirectional (Stepwise)",
-                            "Add and remove dynamically.",
-                            "Flexible search for balanced model",
-                        ],
+                        ["All-in", "Use all predictors", "Strong prior knowledge"],
+                        ["Backward", "Start full, remove weakest", "Many candidates"],
+                        ["Forward", "Start empty, add strongest", "Compact model"],
+                        ["Stepwise", "Add and remove dynamically", "Flexible search"],
                     ],
                 },
-                "note": "Choose a method that matches how many candidates you have and how strong your prior knowledge is.",
+                "note": "Match the method to candidate count and prior knowledge.",
+            },
+            {
+                "title": "Model-Building Flow",
+                "kicker": "All-in · Backward · Forward · Stepwise",
+                "body": "Different search paths for choosing predictors under a significance level.",
+                "bullets": [
+                    "Backward: prune a full model.",
+                    "Forward: grow from empty.",
+                    "Stepwise: add and remove as you go.",
+                ],
+                "plot_path": "model-building-flow.png",
             },
             {
                 "title": "Backward Elimination",
                 "kicker": "Model-Building Methods · Steps",
-                "body": "Start with the full model, then drop the least useful predictors one at a time.",
+                "body": "Start full, then drop the least useful predictors one at a time.",
                 "bullets": [
-                    "Set significance level (e.g., SL = 0.05).",
-                    "Fit model with all predictors.",
-                    "Remove highest p-value if p > SL.",
-                    "Refit and repeat until every remaining predictor has p ≤ SL.",
+                    "Set SL (e.g. 0.05) and fit all predictors.",
+                    "Remove highest p if p > SL; refit and repeat.",
                 ],
-                "note": "Best when you begin with many candidate predictors and want to prune the model.",
+                "note": "Best with many candidate predictors.",
             },
             {
                 "title": "Forward Selection",
                 "kicker": "Model-Building Methods · Steps",
-                "body": "Build the model from scratch by adding the strongest predictors one at a time.",
+                "body": "Grow the model from scratch by adding the strongest predictors.",
                 "bullets": [
-                    "Start with no predictors.",
-                    "Add the variable with the lowest p-value below SL.",
-                    "Continue one-by-one.",
-                    "Stop when no remaining variable qualifies (all p > SL).",
+                    "Start empty; add lowest p below SL.",
+                    "Stop when no remaining variable qualifies.",
                 ],
-                "note": "Best when you want a compact model and prefer to grow it carefully from an empty start.",
+                "note": "Best when you want a compact model from the start.",
             },
             {
                 "title": "Bidirectional (Stepwise)",
                 "kicker": "Model-Building Methods · Steps",
-                "body": "Combine forward and backward moves: add and remove predictors dynamically each iteration.",
+                "body": "Add and remove predictors dynamically each iteration.",
                 "bullets": [
-                    "Add significant variables (forward step).",
-                    "Remove non-significant ones (backward step).",
-                    "Repeat until adding or removing no longer improves the model under SL.",
-                    "Flexible search for a balanced model — often more adaptive than pure forward or backward alone.",
+                    "Forward step: add significant variables.",
+                    "Backward step: drop non-significant ones.",
                 ],
-                "note": "Useful when you want a flexible path that can correct earlier include/exclude decisions.",
+                "note": "More adaptive than pure forward or backward alone.",
             },
             {
                 "title": "Mini Example — Backward Elimination",
@@ -498,15 +445,15 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Significance Level and p-value",
                 "kicker": "Model Selection · Decision Rule",
-                "body": "Compare the p-value to alpha (significance level) to decide whether a predictor is statistically significant.",
+                "body": "Compare p to alpha to decide if a predictor is statistically significant.",
                 "formula": "0.03 < 0.05  ⇒  Reject H_{0}",
-                "formula_note": "Example: p = 0.03 and alpha = 0.05",
-                "layout": "formula_example",
+                "formula_note": "Example: p = 0.03 · alpha = 0.05",
                 "bullets": [
-                    "If p < alpha: reject H₀ (statistically significant).",
-                    "If p ≥ alpha: fail to reject H₀.",
+                    "p < alpha → reject H₀ (significant).",
+                    "p ≥ alpha → fail to reject H₀.",
                 ],
-                "note": "So the predictor is considered significant at the 5% level.",
+                "plot_path": "pvalue-alpha.png",
+                "note": "Predictor is significant at the 5% level in this example.",
             },
             {
                 "title": "Key Concepts: H₀, p-value, Alpha",
@@ -531,14 +478,13 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Why Is SL = 0.05 Common?",
                 "kicker": "Standard Choice",
-                "body": "SL = 0.05 is widely used because it balances sensitivity and false-positive risk.",
+                "body": "SL = 0.05 balances sensitivity and false-positive risk.",
                 "formula": "SL = 1 − Confidence Level",
-                "formula_note": "Example: 95% confidence  →  SL = 0.05",
+                "formula_note": "95% confidence → SL = 0.05",
                 "layout": "formula_example",
                 "bullets": [
-                    "α = 0.05 implies a 5% false-positive rate under the null hypothesis.",
-                    "It is a convention, not a law — adjust for domain risk (medical vs A/B tests).",
-                    "Report effect size and confidence intervals alongside p-values.",
+                    "Convention, not a law — adjust for domain risk.",
+                    "Report effect size and CIs with p-values.",
                 ],
             },
             {
@@ -579,25 +525,21 @@ TOPIC_CONTENT: dict = {
         "kicker": "Definition",
         "body": "Polynomial Regression extends linear regression to model non-linear relationships by adding polynomial terms.",
         "formula": "y = b_{0} + b_{1}x + b_{2}x² + b_{3}x³ + ⋯",
-        "formula_note": "Linear form: y = b_{0} + b_{1}x",
+        "formula_note": "Still linear in the coefficients",
         "layout": "formula_example",
         "bullets": [
-            "Linear regression: y = b₀ + b₁x",
-            "Polynomial regression: y = b₀ + b₁x + b₂x² + b₃x³ + …",
-            "It is still linear in parameters because coefficients remain linear.",
+            "Adds polynomial terms to capture curves.",
+            "Still linear in parameters b₀, b₁, …",
         ],
-        "note": "We transform features (x², x³, …), then fit ordinary linear regression on those features.",
+        "note": "Transform x → x², x³, … then fit linear regression.",
         "extra_slides": [
             {
                 "title": "Why Polynomial Regression?",
                 "kicker": "Motivation",
-                "body": "Simple linear regression fits only straight lines, but many real-world relationships are curved.",
+                "body": "Many real-world relationships are curved — a straight line underfits them.",
                 "bullets": [
-                    "Population growth over time",
-                    "Disease progression",
-                    "Sales and economic trends",
-                    "Rainfall vs crop yield relationships",
-                    "Curved or U-shaped data is often underfit by a straight line.",
+                    "Population growth · disease progression",
+                    "Sales trends · rainfall vs crop yield",
                 ],
             },
             {
@@ -620,17 +562,13 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Choosing the Polynomial Degree",
                 "kicker": "Model Complexity",
-                "body": "The polynomial degree controls model complexity.",
-                "layout": "table",
-                "table": {
-                    "headers": ["Degree Choice", "Effect"],
-                    "rows": [
-                        ["Too low", "Underfitting (model too simple)"],
-                        ["Too high", "Overfitting (fits noise, weak generalization)"],
-                        ["Balanced degree", "Better bias-variance trade-off"],
-                    ],
-                },
-                "note": "Use cross-validation · Compare adjusted R² · Compare validation/test error.",
+                "body": "Degree controls complexity — too low underfits, too high overfits.",
+                "bullets": [
+                    "Pick degree with CV / validation error.",
+                    "Also compare adjusted R².",
+                ],
+                "plot_path": "poly-degree-tradeoff.png",
+                "note": "Balanced degree → better bias-variance trade-off.",
             },
             {
                 "title": "When to Use Polynomial Regression",
@@ -678,41 +616,36 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Polynomial Regression Visual Explanation",
                 "kicker": "Linear vs Polynomial Fits",
-                "body": "This section compares linear and polynomial fits, and shows how model behavior changes with polynomial degree.",
+                "body": "Compare linear vs polynomial fits as degree changes.",
                 "bullets": [
-                    "Underfitting: degree too low — high bias.",
-                    "Overfitting: degree too high — high variance.",
-                    "Use validation curves to pick degree — not training error alone.",
+                    "Too low degree → high bias (underfit).",
+                    "Too high degree → high variance (overfit).",
                 ],
                 "plot": "slide-39-1.png",
-                "note": "Comparison plots are shown below.",
             },
             {
                 "title": "Effect of Polynomial Degree",
                 "kicker": "Visual Explanation",
-                "body": "As degree increases, the curve becomes more flexible — useful at first, then prone to fitting noise.",
+                "body": "Higher degree = more flexible curve — useful, then noisy.",
                 "bullets": [
-                    "Underfitting: degree too low — high bias.",
-                    "Overfitting: degree too high — high variance.",
-                    "Use validation curves to pick degree — not training error alone.",
+                    "Pick degree with validation curves.",
+                    "Do not trust training error alone.",
                 ],
                 "plot": "slide-39-2.png",
-                "note": "Comparison plots are shown below.",
             },
         ],
     },
     "SVR": {
         "title": "Support Vector Machine (SVM) and SVR",
         "kicker": "What is SVR?",
-        "body": "Support Vector Regression (SVR) is the regression version of SVM. It predicts a continuous target with a flat function and a tolerance margin.",
+        "body": "SVR is the regression version of SVM: a flat function with a tolerance margin (ε-tube).",
         "bullets": [
-            "SVM maximum margin: widest gap between classes; support vectors define the margin.",
-            "Used in disease progression prediction",
-            "Used in engineering curves (e.g., stress-strain)",
-            "Used in demand and trend forecasting",
-            "SVR uses an epsilon-insensitive zone where small errors are ignored.",
+            "SVM: widest margin; support vectors define it.",
+            "SVR ignores small errors inside the ε-tube.",
+            "Used in forecasting, engineering curves, disease progression.",
         ],
-        "note": "Classification SVM maximizes the margin between classes; SVR adapts that idea to continuous targets with an ε-tube.",
+        "plot_path": "svr-epsilon-tube.png",
+        "note": "SVM separates classes; SVR predicts continuous y with an ε-insensitive zone.",
         "extra_slides": [
             {
                 "title": "SVR Formulation and Equations",
@@ -729,28 +662,26 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Soft-Margin SVR Objective",
                 "kicker": "Optimization Objective",
-                "body": "Minimize model complexity while penalizing points that fall outside the epsilon tube.",
+                "body": "Keep the function flat while penalizing points outside the ε-tube.",
                 "formula": "min ½∥w∥² + C Σ (ξᵢ + ξᵢ*)",
-                "formula_note": "Over w, b, ξᵢ, ξᵢ*  ·  C trades flatness vs errors outside the tube",
+                "formula_note": "C trades flatness vs errors outside the tube",
                 "layout": "formula_example",
                 "bullets": [
-                    "½∥w∥² keeps the function flat (prefer smaller weights).",
-                    "C Σ(ξᵢ + ξᵢ*) penalizes residuals beyond the ε-insensitive zone.",
-                    "Larger C → fit training points more tightly; smaller C → smoother model.",
+                    "½∥w∥² → flatter function.",
+                    "Larger C → tighter fit; smaller C → smoother.",
                 ],
             },
             {
                 "title": "SVR Constraints",
                 "kicker": "Soft-Margin SVR",
-                "body": "Predictions may deviate from yᵢ by at most ε, unless a slack variable absorbs the excess error.",
+                "body": "Stay within ε of yᵢ, or pay with a slack variable.",
                 "formula": "yᵢ − (wᵀφ(xᵢ) + b) ≤ ε + ξᵢ",
-                "formula_note": "Upper side of the ε-tube (actual above prediction)",
-                "layout": "formula_example",
+                "formula_note": "Also: (wᵀφ(xᵢ)+b) − yᵢ ≤ ε + ξᵢ*  ·  ξᵢ, ξᵢ* ≥ 0",
                 "bullets": [
-                    "(wᵀφ(xᵢ) + b) − yᵢ ≤ ε + ξᵢ*",
-                    "ξᵢ, ξᵢ* ≥ 0",
-                    "Inside the tube → no penalty; outside → pay via the matching slack.",
+                    "Inside tube → no penalty.",
+                    "Outside tube → slack cost.",
                 ],
+                "plot_path": "svr-epsilon-tube.png",
             },
             {
                 "title": "SVR Hyperparameters",
@@ -780,50 +711,33 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Compared with Traditional Regression",
                 "layout": "table",
                 "table": {
-                    "headers": ["Aspect", "Traditional Regression", "SVR"],
+                    "headers": ["Aspect", "Traditional", "SVR"],
                     "rows": [
-                        [
-                            "Error handling",
-                            "Minimizes all residuals",
-                            "Ignores errors inside epsilon-tube",
-                        ],
-                        [
-                            "Outlier sensitivity",
-                            "Can be sensitive",
-                            "More robust when tube and C are tuned",
-                        ],
-                        [
-                            "Non-linear handling",
-                            "Needs explicit feature engineering",
-                            "Uses kernels directly",
-                        ],
-                        [
-                            "Large datasets",
-                            "Usually faster for very large data",
-                            "Can become expensive for very large sample sizes",
-                        ],
+                        ["Errors", "Minimize all residuals", "Ignore inside ε-tube"],
+                        ["Outliers", "Can be sensitive", "More robust if tuned"],
+                        ["Non-linear", "Hand-built features", "Kernels directly"],
+                        ["Large data", "Usually faster", "Can get expensive"],
                     ],
                 },
-                "note": "Use feature scaling before SVR. Start with RBF kernel, then tune C, epsilon, and kernel parameters.",
+                "note": "Scale features · start with RBF · tune C, ε, kernel params.",
             },
             {
                 "title": "SVR Visual Intuition",
                 "kicker": "Why SVR?",
-                "body": "The epsilon-tube ignores small residuals; only larger deviations pull the model.",
+                "body": "ε-tube ignores small residuals; larger deviations pull the fit.",
                 "bullets": [
-                    "Points inside the tube do not contribute to the loss.",
-                    "Kernels let SVR bend to non-linear patterns without hand-built features.",
+                    "Inside tube → no loss.",
+                    "Kernels capture curves without hand features.",
                 ],
                 "plot": "slide-42-1.png",
-                "note": "Comparison plots from the course materials.",
             },
             {
                 "title": "SVR Fit Example",
                 "kicker": "Why SVR?",
-                "body": "With a tuned tube and kernel, SVR can follow curved trends while staying robust to small noise.",
+                "body": "Tuned tube + kernel follows curves while resisting small noise.",
                 "bullets": [
-                    "Scale features before fitting.",
-                    "Validate C, ε, and kernel width on hold-out or CV folds.",
+                    "Scale features first.",
+                    "Tune C, ε, kernel with CV.",
                 ],
                 "plot": "slide-42-2.png",
             },
@@ -966,63 +880,40 @@ TOPIC_CONTENT: dict = {
     "Random Forest": {
         "title": "Random Forest Regression",
         "kicker": "What is Random Forest Regressor?",
-        "body": "Random Forest Regression is an ensemble method that combines many decision trees and averages their predictions.",
+        "body": "Ensemble of many trees — average their predictions.",
         "formula": "ŷ_RF(x) = (1 / N_trees) Σ ŷ_t(x)",
-        "formula_note": "Final prediction = average of the individual tree predictions",
+        "formula_note": "Average of individual tree predictions",
         "bullets": [
-            "Sample training data with bootstrap.",
-            "Build many trees on different samples.",
-            "Predict with all trees and average outputs.",
-            "Averaging reduces variance and usually improves generalization.",
+            "Bootstrap samples → many trees.",
+            "Averaging reduces variance vs one deep tree.",
         ],
         "plot_path": "random-forest-ensemble.png",
-        "note": "Static ensemble diagram · also see the fitted RF curve in course plots (slide-46-3).",
+        "note": "Also see fitted RF curve: slide-46-3.",
         "extra_slides": [
             {
                 "title": "Decision Tree vs Random Forest",
                 "kicker": "Regression Comparison",
-                "body": "Decision Tree Split: recursive partitioning by feature threshold · Root → branches → leaf nodes.",
                 "layout": "table",
                 "table": {
-                    "headers": [
-                        "Aspect",
-                        "Decision Tree Regressor",
-                        "Random Forest Regressor",
-                    ],
+                    "headers": ["Aspect", "Decision Tree", "Random Forest"],
                     "rows": [
-                        ["Model type", "Single tree", "Ensemble of many trees"],
-                        [
-                            "Split criterion",
-                            "MSE per split",
-                            "Trees split by MSE, then averaged",
-                        ],
-                        [
-                            "Overfitting risk",
-                            "Higher",
-                            "Lower (variance reduction)",
-                        ],
-                        [
-                            "Stability",
-                            "Sensitive to data changes",
-                            "More stable",
-                        ],
-                        [
-                            "Final prediction",
-                            "Output of one tree",
-                            "Mean of all tree outputs",
-                        ],
+                        ["Model", "Single tree", "Many trees averaged"],
+                        ["Split", "MSE per split", "MSE trees, then average"],
+                        ["Overfit risk", "Higher", "Lower"],
+                        ["Stability", "Sensitive", "More stable"],
+                        ["Prediction", "One tree output", "Mean of trees"],
                         ["Interpretability", "High", "Medium"],
                     ],
                 },
-                "note": "Use a single tree for interpretability; use random forest for stronger performance.",
+                "note": "Tree for interpretability · Forest for stronger performance.",
             },
             {
                 "title": "Feature Importance (Random Forest)",
                 "kicker": "Decision Tree vs Random Forest",
-                "body": "Random forests also provide useful feature-importance scores from how often/how strongly features are used across trees.",
+                "body": "Importance scores show how much each feature helped reduce error.",
                 "bullets": [
-                    "Higher importance → feature contributed more to reducing error.",
-                    "Use as a guide for insight — not as a causal proof.",
+                    "Higher bar → more contribution.",
+                    "Guide for insight — not causal proof.",
                 ],
                 "plot": "slide-48-1.png",
             },
@@ -1031,123 +922,100 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Key Performance Metrics",
                 "layout": "table",
                 "table": {
-                    "headers": ["Metric", "Formula", "What It Tells Us"],
+                    "headers": ["Metric", "Formula", "Tells Us"],
                     "rows": [
-                        [
-                            "MAE",
-                            "(1/n) Σ |yᵢ − ŷᵢ|",
-                            "Average prediction error magnitude",
-                        ],
-                        [
-                            "MSE",
-                            "(1/n) Σ (yᵢ − ŷᵢ)²",
-                            "Penalizes large errors more",
-                        ],
-                        [
-                            "RMSE",
-                            "√[(1/n) Σ (yᵢ − ŷᵢ)²]",
-                            "Error in original target scale",
-                        ],
-                        [
-                            "R²",
-                            "1 − SS_res / SS_tot",
-                            "Fraction of variance explained",
-                        ],
+                        ["MAE", "(1/n) Σ |yᵢ − ŷᵢ|", "Average error size"],
+                        ["MSE", "(1/n) Σ (yᵢ − ŷᵢ)²", "Penalizes large errors"],
+                        ["RMSE", "√MSE", "Error on y scale"],
+                        ["R²", "1 − SS_res/SS_tot", "Variance explained"],
                     ],
                 },
-                "note": "Evaluate using more than one metric (e.g., RMSE with R²) for balanced judgment.",
+                "note": "Use more than one metric (e.g. RMSE + R²).",
             },
         ],
     },
     "Ridge / Lasso": {
         "title": "Regularization Methods (Why Needed?)",
         "kicker": "Overfitting Problem",
-        "body": "When a model is too flexible, it may fit noise instead of true patterns.",
+        "body": "Too flexible → fits noise instead of true patterns.",
         "formula": "min_β  Σ (y_{i} − ŷ_{i})² + λ · Ω(β)",
-        "formula_note": "data loss  +  λ × penalty on coefficients",
+        "formula_note": "data loss + λ × penalty",
         "bullets": [
-            "Very low training error",
-            "Weak test performance",
-            "High variance and unstable predictions",
+            "Low train error, weak test performance.",
+            "High variance / unstable predictions.",
         ],
         "plot_path": "regularization-path.png",
-        "note": "Regularization controls complexity by penalizing large coefficients.",
+        "note": "Penalize large coefficients to control complexity.",
         "extra_slides": [
             {
                 "title": "Regularization Objective",
                 "kicker": "Data Loss + Penalty",
-                "body": "Trade off fitting the training data against keeping coefficients small.",
+                "body": "Trade off fit vs small coefficients.",
                 "formula": "min_β  data loss + λ · penalty",
-                "formula_note": "data loss = Σ(yᵢ − ŷᵢ)²   ·   penalty = Ω(β)",
+                "formula_note": "loss = Σ(yᵢ − ŷᵢ)²  ·  penalty = Ω(β)",
                 "layout": "formula_example",
                 "bullets": [
-                    "λ = 0 → ordinary least squares (no penalty).",
-                    "Larger λ → stronger shrinkage of coefficients.",
-                    "Choose λ with validation / cross-validation.",
+                    "λ = 0 → ordinary least squares.",
+                    "Larger λ → stronger shrinkage · tune with CV.",
                 ],
             },
             {
                 "title": "Ridge, Lasso, and Elastic Net",
                 "kicker": "Regularization Families",
-                "body": "Different penalties shrink coefficients differently as regularization strength increases.",
+                "body": "Different penalties shrink coefficients differently as λ grows.",
                 "bullets": [
-                    "Ridge (L2): shrinks all coefficients — good when many features correlate.",
-                    "Lasso (L1): can zero out coefficients — embedded feature selection.",
-                    "Elastic Net blends L1 + L2 for correlated sparse settings.",
-                    "Regularization path: coefficients shrink with regularization strength.",
+                    "Ridge (L2): shrink all — good with correlated features.",
+                    "Lasso (L1): can zero coeffs — feature selection.",
                 ],
                 "plot_path": "regularization-path.png",
-                "note": "Pick the penalty that matches your goal: stability (Ridge), sparsity (Lasso), or both (Elastic Net).",
+                "note": "Elastic Net blends L1 + L2 for correlated sparse settings.",
             },
             {
                 "title": "Without Regularization",
                 "kicker": "Ordinary Least Squares",
-                "body": "Fit only by minimizing squared prediction error — no penalty on coefficient size.",
+                "body": "Minimize squared error only — no coefficient penalty.",
                 "formula": "min_β  Σ (y_{i} − ŷ_{i})²",
-                "formula_note": "Can overfit when many features or highly correlated predictors are present",
+                "formula_note": "Same as λ = 0",
                 "layout": "formula_example",
                 "bullets": [
-                    "No shrinkage of coefficients.",
-                    "Equivalent to setting λ = 0 in the regularized objectives.",
+                    "No shrinkage.",
+                    "Can overfit with many / correlated features.",
                 ],
             },
             {
                 "title": "Ridge Regression (L2)",
                 "kicker": "Penalty: sum of squared coefficients",
-                "body": "Add an L2 penalty so large coefficients are discouraged, but usually none are forced exactly to zero.",
+                "body": "L2 penalty shrinks coefficients; rarely zeros them.",
                 "formula": "min_β  Σ (y_{i} − ŷ_{i})² + λ Σ βⱼ²",
-                "formula_note": "λ ≥ 0 controls shrinkage strength",
+                "formula_note": "λ ≥ 0 controls shrinkage",
                 "layout": "formula_example",
                 "bullets": [
-                    "Shrinks all coefficients toward zero smoothly.",
-                    "Good when many features are correlated.",
-                    "Does not perform hard feature selection (coefficients stay non-zero).",
+                    "Smooth shrinkage of all coefficients.",
+                    "Good when many features correlate.",
                 ],
             },
             {
                 "title": "Lasso Regression (L1)",
                 "kicker": "Penalty: sum of absolute coefficients",
-                "body": "Add an L1 penalty that can drive some coefficients exactly to zero — built-in feature selection.",
+                "body": "L1 penalty can set some coefficients exactly to zero.",
                 "formula": "min_β  Σ (y_{i} − ŷ_{i})² + λ Σ |βⱼ|",
-                "formula_note": "Larger λ → sparser models (more zeros)",
+                "formula_note": "Larger λ → sparser model",
                 "layout": "formula_example",
                 "bullets": [
-                    "Can zero out coefficients — embedded feature selection.",
-                    "Useful when you expect only a few predictors truly matter.",
-                    "With highly correlated features, Lasso may keep one and drop the others.",
+                    "Built-in feature selection.",
+                    "Best when few predictors truly matter.",
                 ],
             },
             {
                 "title": "Elastic Net (L1 + L2)",
                 "kicker": "Blend of Lasso and Ridge",
-                "body": "Combine L1 and L2 penalties to get sparsity with more stable behavior under correlation.",
+                "body": "Combine L1 + L2 for sparsity with more stable correlation behavior.",
                 "formula": "min_β  Σ (y_{i} − ŷ_{i})² + λ_{1} Σ |βⱼ| + λ_{2} Σ βⱼ²",
-                "formula_note": "λ₁ controls sparsity  ·  λ₂ controls ridge-style shrinkage",
+                "formula_note": "λ₁ → sparsity  ·  λ₂ → ridge shrinkage",
                 "layout": "formula_example",
                 "bullets": [
-                    "Elastic Net blends L1 + L2 for correlated sparse settings.",
-                    "Often preferred when groups of correlated features should be selected together.",
-                    "Tune both λ₁ and λ₂ (or the mixing ratio) with cross-validation.",
+                    "Good for correlated feature groups.",
+                    "Tune λ₁, λ₂ (or mix ratio) with CV.",
                 ],
             },
             {
@@ -1156,8 +1024,8 @@ TOPIC_CONTENT: dict = {
                 "body": "Match the penalty to the feature structure you expect.",
                 "bullets": [
                     "Ridge: many small/medium useful features.",
-                    "Lasso: only few important features expected.",
-                    "Elastic Net: correlated features and need both stability and sparsity.",
+                    "Lasso: few important features expected.",
+                    "Elastic Net: correlated features + need sparsity.",
                 ],
             },
             {
@@ -1202,33 +1070,33 @@ TOPIC_CONTENT: dict = {
                     "headers": ["Model", "Advantages", "Disadvantages"],
                     "rows": [
                         [
-                            "Linear Regression",
-                            "Simple, fast, easy to interpret, works well for linear patterns.",
-                            "Assumes linear relationship and is sensitive to outliers.",
+                            "Linear",
+                            "Simple, fast, interpretable",
+                            "Linear only; outlier-sensitive",
                         ],
                         [
-                            "Polynomial Regression",
-                            "Captures curved/non-linear relationships better than linear regression.",
-                            "Choosing degree is sensitive; high degrees may overfit.",
+                            "Polynomial",
+                            "Captures curves",
+                            "Degree sensitive; can overfit",
                         ],
                         [
                             "SVR",
-                            "Handles non-linear patterns with kernels; can be robust to noise with tuning.",
-                            "Needs feature scaling and careful tuning; slower on large datasets.",
+                            "Kernels; robust if tuned",
+                            "Needs scaling; slow on big data",
                         ],
                         [
                             "Decision Tree",
-                            "Interpretable rules, captures interactions, no feature scaling required.",
-                            "Can overfit easily and may be unstable with small data changes.",
+                            "Interpretable; no scaling",
+                            "Overfits; unstable",
                         ],
                         [
                             "Random Forest",
-                            "Higher accuracy and stability; reduces overfitting by averaging trees.",
-                            "Less interpretable and can be computationally heavier.",
+                            "Accurate; lower variance",
+                            "Less interpretable; heavier",
                         ],
                     ],
                 },
-                "note": "If interpretability is priority: Linear Regression or Decision Tree. If predictive performance is priority: Random Forest.",
+                "note": "Interpretability → Linear/Tree · Performance → Random Forest.",
             },
             {
                 "title": "Model Summary (Name + Equation)",
@@ -1258,14 +1126,13 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Visual Comparison of Regression Models",
                 "kicker": "Same Dataset · Different Fits",
-                "body": "This slide compares model behavior on the same dataset: Linear Regression, Polynomial Regression, SVR, Decision Tree Regression, and Random Forest Regression.",
+                "body": "Same data · five model families side by side.",
                 "bullets": [
-                    "Linear / Ridge: interpretable, fast — watch nonlinear patterns.",
-                    "SVR: margin-based with kernels — can be slow on huge data.",
-                    "Tree / RF: nonlinear, little scaling — weak at extrapolation.",
+                    "Linear/Ridge: fast · watch curves.",
+                    "Tree/RF: flexible · weak extrapolation.",
                 ],
                 "plot": "slide-54-1.png",
-                "note": "Visual output from Python code is shown below.",
+                "note": "Visual output from Python code.",
             },
             {
                 "title": "Model Families at a Glance",
@@ -1511,31 +1378,50 @@ def slide_topic_rich(prs, total, index, content):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, content["title"], content.get("kicker"))
 
+    items = content.get("bullets") or []
+    has_note = bool(content.get("note"))
+    dense = len(items) >= 4 or (len(items) >= 3 and has_note)
+    pitch = 0.50 if dense else 0.62
+    bsize = 14 if dense else 16
+
     if content.get("body"):
-        soft_card(slide, MARGIN, Inches(2.25), Inches(12.0), Inches(1.35), fill=SOFT)
+        soft_card(slide, MARGIN, Inches(2.25), Inches(12.0), Inches(1.15), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.35),
-            Inches(2.5),
+            Inches(2.45),
             Inches(11.3),
-            Inches(0.95),
+            Inches(0.8),
             content["body"],
-            size=16,
+            size=15,
             color=INK,
         )
-        bullets(slide, content.get("bullets") or [], top=Inches(3.9), size=16)
+        bullet_top = Inches(3.6)
     else:
-        bullets(slide, content.get("bullets") or [], top=Inches(2.35), size=17)
+        bullet_top = Inches(2.35)
+        bsize = 15 if dense else 17
+
+    # Keep bullets above the note/footer band
+    note_y = 6.35 if has_note else 6.7
+    max_items = max(1, int((note_y - bullet_top.inches - 0.1) / pitch))
+    bullets(
+        slide,
+        items[:max_items],
+        top=bullet_top,
+        size=bsize,
+        pitch=pitch,
+        width=Inches(11.2),
+    )
 
     if content.get("note"):
         add_text(
             slide,
             MARGIN,
-            Inches(6.35),
+            Inches(6.45),
             Inches(12),
             Inches(0.3),
             content["note"],
-            size=13,
+            size=12,
             color=MUTED,
         )
 
@@ -1551,27 +1437,39 @@ def slide_linear_intro(prs, total, index, content):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, content["title"], content.get("kicker"))
 
-    # Left column: definition + optional formula + bullets
-    soft_card(slide, MARGIN, Inches(2.2), Inches(6.3), Inches(1.35), fill=SOFT)
+    items = content.get("bullets") or []
+    plot_name = content.get("plot") or content.get("plot_path")
+    has_plot = bool(plot_name)
+    has_formula = bool(content.get("formula"))
+    has_note = bool(content.get("note"))
+    is_frac = has_formula and is_fraction_formula(content["formula"])
+
+    col_w = Inches(6.3) if has_plot else Inches(12.0)
+    text_w = Inches(5.8) if has_plot else Inches(11.3)
+    bullet_w = Inches(5.6) if has_plot else Inches(11.2)
+
+    soft_card(slide, MARGIN, Inches(2.2), col_w, Inches(1.2), fill=SOFT)
     add_text(
         slide,
         MARGIN + Inches(0.3),
-        Inches(2.4),
-        Inches(5.8),
-        Inches(1.05),
+        Inches(2.35),
+        text_w,
+        Inches(0.95),
         content.get("body") or "",
-        size=14,
+        size=13,
         color=INK,
     )
 
-    if content.get("formula"):
-        soft_card(slide, MARGIN, Inches(3.7), Inches(6.3), Inches(1.35), fill=SOFT)
+    if has_formula:
+        formula_card_h = 1.5 if is_frac else 1.25
+        formula_box_h = 0.7 if is_frac else 0.4
+        soft_card(slide, MARGIN, Inches(3.55), col_w, Inches(formula_card_h), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.3),
-            Inches(3.85),
-            Inches(5.8),
-            Inches(0.25),
+            Inches(3.65),
+            text_w,
+            Inches(0.22),
             "Formula",
             size=11,
             bold=True,
@@ -1580,41 +1478,60 @@ def slide_linear_intro(prs, total, index, content):
         add_formula(
             slide,
             MARGIN + Inches(0.3),
-            Inches(4.15),
-            Inches(5.8),
-            Inches(0.45),
+            Inches(3.9),
+            text_w,
+            Inches(formula_box_h),
             content["formula"],
-            size=22,
+            size=18 if is_frac else 20,
             bold=True,
             color=PRIMARY,
         )
         if content.get("formula_note"):
+            note_y = 3.9 + formula_box_h + 0.05
             add_text(
                 slide,
                 MARGIN + Inches(0.3),
-                Inches(4.6),
-                Inches(5.8),
-                Inches(0.35),
+                Inches(note_y),
+                text_w,
+                Inches(0.3),
                 content["formula_note"],
-                size=11,
+                size=10,
                 color=MUTED,
             )
-        bullets(slide, content.get("bullets") or [], top=Inches(5.25), size=13)
+        bullet_top = 3.55 + formula_card_h + 0.12
+        pitch = 0.46 if (has_note or len(items) >= 2) else 0.55
+        bsize = 12
     else:
-        bullets(slide, content.get("bullets") or [], top=Inches(3.75), size=14)
+        bullet_top = 3.55
+        pitch = 0.50 if (has_note or len(items) >= 3) else 0.58
+        bsize = 13
 
-    # Right column: plot
-    plot_name = content.get("plot") or content.get("plot_path")
+    note_band = 6.45 if has_note else 6.75
+    max_items = max(1, int((note_band - bullet_top - 0.05) / pitch))
+    # With formula+plot keep at most 2 bullets to avoid crowding
+    if has_formula and has_plot:
+        max_items = min(max_items, 2)
+    bullets(
+        slide,
+        items[:max_items],
+        top=Inches(bullet_top),
+        size=bsize,
+        left=MARGIN,
+        width=bullet_w,
+        pitch=pitch,
+        item_height=Inches(0.42),
+    )
+
     plot_folder = DIAGRAMS if content.get("plot_path") else PLOTS
     if plot_name:
-        soft_card(slide, Inches(7.15), Inches(2.2), Inches(5.45), Inches(4.3), fill=SOFT)
+        soft_card(slide, Inches(7.15), Inches(2.2), Inches(5.45), Inches(4.15), fill=SOFT)
         _add_plot(
             slide,
             plot_name,
             Inches(7.35),
-            Inches(2.45),
+            Inches(2.4),
             Inches(5.05),
-            Inches(3.9),
+            Inches(3.75),
             folder=plot_folder,
         )
 
@@ -1624,9 +1541,9 @@ def slide_linear_intro(prs, total, index, content):
             MARGIN,
             Inches(6.55),
             Inches(12),
-            Inches(0.25),
+            Inches(0.28),
             content["note"],
-            size=12,
+            size=11,
             color=MUTED,
         )
 
@@ -1642,28 +1559,38 @@ def slide_formula_example(prs, total, index, content):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, content["title"], content.get("kicker"))
 
+    items = content.get("bullets") or []
+    has_note = bool(content.get("note"))
+    is_frac = is_fraction_formula(content.get("formula") or "")
+    dense = len(items) >= 3 or (len(items) >= 2 and has_note)
+
+    body_top = Inches(2.15)
     if content.get("body"):
-        soft_card(slide, MARGIN, Inches(2.2), Inches(12.0), Inches(0.85), fill=SOFT)
+        soft_card(slide, MARGIN, body_top, Inches(12.0), Inches(0.7), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.35),
-            Inches(2.4),
+            Inches(2.28),
             Inches(11.3),
-            Inches(0.5),
+            Inches(0.45),
             content["body"],
-            size=16,
+            size=14,
             color=INK,
         )
+        formula_top = Inches(3.0)
+    else:
+        formula_top = Inches(2.25)
 
-    soft_card(slide, MARGIN, Inches(3.2), Inches(12.0), Inches(1.35), fill=SOFT)
+    formula_h = 1.45 if is_frac else 1.15
+    soft_card(slide, MARGIN, formula_top, Inches(12.0), Inches(formula_h), fill=SOFT)
     add_formula(
         slide,
         MARGIN + Inches(0.4),
-        Inches(3.45),
+        formula_top + Inches(0.15),
         Inches(11.2),
-        Inches(0.55),
+        Inches(0.75 if is_frac else 0.5),
         content["formula"],
-        size=28,
+        size=24 if is_frac else 26,
         bold=True,
         color=PRIMARY,
         align=PP_ALIGN.CENTER,
@@ -1672,26 +1599,41 @@ def slide_formula_example(prs, total, index, content):
         add_text(
             slide,
             MARGIN + Inches(0.4),
-            Inches(4.1),
+            formula_top + Inches(formula_h - 0.35),
             Inches(11.2),
-            Inches(0.3),
+            Inches(0.28),
             content["formula_note"],
-            size=13,
+            size=12,
             color=MUTED,
             align=PP_ALIGN.CENTER,
         )
 
-    bullets(slide, content.get("bullets") or [], top=Inches(4.8), size=16)
+    bullet_top = formula_top.inches + formula_h + 0.12
+    pitch = 0.46 if dense else 0.56
+    bsize = 13 if dense else 15
+    note_band = 6.45 if has_note else 6.75
+    max_items = max(1, int((note_band - bullet_top - 0.05) / pitch))
+    if has_note:
+        max_items = min(max_items, 3)
+    bullets(
+        slide,
+        items[:max_items],
+        top=Inches(bullet_top),
+        size=bsize,
+        pitch=pitch,
+        width=Inches(11.2),
+        item_height=Inches(0.42),
+    )
 
     if content.get("note"):
         add_text(
             slide,
             MARGIN,
-            Inches(6.5),
+            Inches(6.55),
             Inches(12),
             Inches(0.25),
             content["note"],
-            size=13,
+            size=12,
             color=MUTED,
         )
 
@@ -1711,34 +1653,48 @@ def slide_topic_table(prs, total, index, content):
 
     headers = table["headers"]
     rows = table["rows"]
-    compact = len(rows) >= 5
-    row_h = 0.42 if compact else 0.55
-    body_size = 12 if compact else 14
-    header_size = 11 if compact else 13
+    has_note = bool(content.get("note"))
+    n_rows = 1 + len(rows)
 
-    table_top = Inches(2.3)
-    if content.get("body"):
-        soft_card(slide, MARGIN, Inches(2.15), Inches(12.0), Inches(0.7), fill=SOFT)
+    # Prefer kicker over a long body when the table is dense
+    show_body = bool(content.get("body")) and len(rows) <= 4
+    compact = len(rows) >= 5 or (show_body and has_note and len(rows) >= 4)
+    body_size = 11 if compact else 13
+    header_size = 10 if compact else 12
+
+    table_top = 2.25
+    if show_body:
+        soft_card(slide, MARGIN, Inches(2.15), Inches(12.0), Inches(0.55), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.35),
-            Inches(2.28),
+            Inches(2.25),
             Inches(11.3),
-            Inches(0.45),
+            Inches(0.38),
             content["body"],
-            size=14,
+            size=13,
             color=INK,
         )
-        table_top = Inches(3.0)
+        table_top = 2.85
 
-    table_h = Inches(row_h * (1 + len(rows)))
+    footer_limit = 6.55
+    note_reserve = 0.55 if has_note else 0.0
+    available = footer_limit - table_top - note_reserve
+    row_h = min(0.52 if not compact else 0.40, available / n_rows)
+    row_h = max(0.30, row_h)
+    table_h = row_h * n_rows
+
+    # If note would still collide, drop the note rather than overlap the table
+    note_top = table_top + table_h + 0.08
+    render_note = has_note and (note_top + 0.45) <= 6.9
+
     shape = slide.shapes.add_table(
-        rows=1 + len(rows),
+        rows=n_rows,
         cols=len(headers),
         left=MARGIN,
-        top=table_top,
+        top=Inches(table_top),
         width=Inches(12.0),
-        height=table_h,
+        height=Inches(table_h),
     )
     tbl = shape.table
 
@@ -1769,19 +1725,67 @@ def slide_topic_table(prs, total, index, content):
             cell.fill.solid()
             cell.fill.fore_color.rgb = SOFT if r % 2 else SOFT_2
 
-    if content.get("note"):
-        note_top = table_top.inches + table_h.inches + 0.12
-        if note_top > 6.45:
-            note_top = 6.45
-        soft_card(slide, MARGIN, Inches(note_top), Inches(12.0), Inches(0.55), fill=SOFT)
+    if render_note:
+        soft_card(slide, MARGIN, Inches(note_top), Inches(12.0), Inches(0.45), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.35),
-            Inches(note_top + 0.12),
+            Inches(note_top + 0.08),
             Inches(11.3),
-            Inches(0.35),
+            Inches(0.32),
             content["note"],
+            size=12,
+            color=MUTED,
+        )
+
+    content_footer(slide, index, total)
+
+
+def slide_full_diagram(prs, total, index, content):
+    """Title + optional short body + full-width diagram."""
+    s = SESSION
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    paint_light(slide)
+    right_rail(slide)
+    content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
+    title_block(slide, content["title"], content.get("kicker"))
+
+    diagram_top = Inches(2.15)
+    if content.get("body"):
+        add_text(
+            slide,
+            MARGIN,
+            Inches(2.1),
+            Inches(12.0),
+            Inches(0.35),
+            content["body"],
             size=13,
+            color=MUTED,
+        )
+        diagram_top = Inches(2.45)
+
+    plot_name = content.get("plot_path") or content.get("plot")
+    folder = DIAGRAMS if content.get("plot_path") else PLOTS
+    soft_card(slide, MARGIN, diagram_top, Inches(12.0), Inches(4.35), fill=SOFT)
+    _add_plot(
+        slide,
+        plot_name,
+        Inches(MARGIN.inches + 0.2),
+        Inches(diagram_top.inches + 0.15),
+        Inches(11.6),
+        Inches(4.05),
+        folder=folder,
+    )
+
+    if content.get("note"):
+        add_text(
+            slide,
+            MARGIN,
+            Inches(6.9),
+            Inches(12),
+            Inches(0.25),
+            content["note"],
+            size=11,
             color=MUTED,
         )
 
@@ -1790,7 +1794,9 @@ def slide_topic_table(prs, total, index, content):
 
 def _render_content_slide(prs, total, index, content):
     layout = content.get("layout")
-    if layout == "table" or (content.get("table") and layout != "formula_example"):
+    if layout == "diagram":
+        slide_full_diagram(prs, total, index, content)
+    elif layout == "table" or (content.get("table") and layout not in ("formula_example", "diagram")):
         slide_topic_table(prs, total, index, content)
     elif layout == "formula_example":
         slide_formula_example(prs, total, index, content)
