@@ -154,11 +154,14 @@ def formula_to_latex(value: str) -> str:
         # Infer common RF limits when missing
         if not lo and not hi and "N" in den:
             lo, hi = "t=1", den
-        limits = ""
-        if lo or hi:
-            limits = "_{%s}^{%s}" % (lo or "", hi or "")
+        if lo and hi:
+            limits = "_{%s}^{%s}" % (lo, hi)
         elif lo:
             limits = "_{%s}" % lo
+        elif hi:
+            limits = "^{%s}" % hi
+        else:
+            limits = ""
         return rf"{lhs} = \dfrac{{1}}{{{den}}} \sum{limits} {term}"
 
     m = _ADJ_R2_RE.match(s)
@@ -187,6 +190,11 @@ def _token_to_latex(token: str) -> str:
     s = token.strip()
     if not s:
         return s
+
+    # Before unicode greek swaps (β → \beta would break these)
+    s = s.replace("min_β", r"\min_{\beta}")
+    s = s.replace("min_{w}", r"\min_{w}")
+    s = re.sub(r"\bmin\b", lambda _: r"\min", s)
 
     # Protect existing latex-ish braces content later via placeholders
     reps = [
@@ -224,31 +232,30 @@ def _token_to_latex(token: str) -> str:
     s = re.sub(r"(?<=[\w}])\*", r"^{*}", s)
 
     # N_trees / S_leaf style identifiers → N_{trees}
-    s = re.sub(r"\bN_trees\b", r"N_{trees}", s)
-    s = re.sub(r"\bS_leaf\b", r"S_{leaf}", s)
-    s = re.sub(r"\bS_L\b", r"S_L", s)
-    s = re.sub(r"\bS_R\b", r"S_R", s)
-    s = re.sub(r"\bMSE_split\b", r"\mathrm{MSE}_{split}", s)
-    s = re.sub(r"\bMSE\b", r"\mathrm{MSE}", s)
-    s = re.sub(r"\bSS_res\b", r"SS_{res}", s)
-    s = re.sub(r"\bSS_tot\b", r"SS_{tot}", s)
-    s = re.sub(r"\bmin_β\b", r"\min_{\beta}", s)
-    s = re.sub(r"\bmin_\{w\}\b", r"\min_{w}", s)
-    s = re.sub(r"\bmin\b", r"\min", s)
+    s = re.sub(r"\bN_trees\b", "N_{trees}", s)
+    s = re.sub(r"\bS_leaf\b", "S_{leaf}", s)
+    s = re.sub(r"\bMSE_split\b", lambda _: r"\mathrm{MSE}_{split}", s)
+    s = re.sub(r"\bMSE\b", lambda _: r"\mathrm{MSE}", s)
+    s = re.sub(r"\bSS_res\b", "SS_{res}", s)
+    s = re.sub(r"\bSS_tot\b", "SS_{tot}", s)
 
     # Σ_{i = 1 … n} or sum_{i = 1 … n} already partially converted
     s = re.sub(
         r"\\sum_\{i\s*=\s*1\s*\\ldots\s*n\}",
-        r"\\sum_{i=1}^{n}",
+        lambda _: r"\sum_{i=1}^{n}",
         s,
     )
     s = re.sub(
         r"\\sum_\{i\s*=\s*1\s*\.\.\.\s*n\}",
-        r"\\sum_{i=1}^{n}",
+        lambda _: r"\sum_{i=1}^{n}",
         s,
     )
-    s = re.sub(r"\\sum_\{i\s*\\in\s*S\}", r"\\sum_{i \\in S}", s)
-    s = re.sub(r"\\sum_\{i\s*\\in\s*S_\{leaf\}\}", r"\\sum_{i \\in S_{leaf}}", s)
+    s = re.sub(r"\\sum_\{i\s*\\in\s*S\}", lambda _: r"\sum_{i \in S}", s)
+    s = re.sub(
+        r"\\sum_\{i\s*\\in\s*S_\{leaf\}\}",
+        lambda _: r"\sum_{i \in S_{leaf}}",
+        s,
+    )
 
     # Bare sum without limits after average: leave as \sum
     # Spaces around operators
