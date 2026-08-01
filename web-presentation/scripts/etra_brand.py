@@ -5,6 +5,7 @@ Source: ETRA-Design-System.pdf (v1.0)
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from pptx.dml.color import RGBColor
@@ -12,6 +13,8 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Inches, Pt
+
+_FORMULA_SUB = re.compile(r"_\{([^}]+)\}")
 
 ROOT = Path(__file__).resolve().parents[1]
 LOGO = ROOT / "public" / "assets" / "etra-wordmark.png"
@@ -54,7 +57,7 @@ def no_shadow(shape) -> None:
     spPr.append(spPr.makeelement(qn("a:effectLst"), {}))
 
 
-def set_run(run, size, *, bold=False, color=INK, font=None):
+def set_run(run, size, *, bold=False, color=INK, font=None, subscript=False):
     fname = font or _font_name()
     run.font.name = fname
     run.font.size = Pt(size)
@@ -67,6 +70,66 @@ def set_run(run, size, *, bold=False, color=INK, font=None):
             el = rPr.makeelement(qn(f"a:{tag}"), {})
             rPr.append(el)
         el.set("typeface", fname)
+    for el in rPr.findall(qn("a:baseline")):
+        rPr.remove(el)
+    if subscript:
+        # PowerPoint baseline: -25% of font size ≈ subscript
+        rPr.append(rPr.makeelement(qn("a:baseline"), {"val": "-25000"}))
+
+
+def fill_formula_paragraph(paragraph, value, *, size=18, bold=True, color=PRIMARY):
+    """Render formula markup. Use _{sub} for subscripts, e.g. x_{min}."""
+    # Clear any default empty run
+    p_elem = paragraph._p
+    for child in list(p_elem):
+        if child.tag.endswith("}r"):
+            p_elem.remove(child)
+
+    pos = 0
+    for match in _FORMULA_SUB.finditer(value):
+        if match.start() > pos:
+            run = paragraph.add_run()
+            run.text = value[pos : match.start()]
+            set_run(run, size, bold=bold, color=color)
+        run = paragraph.add_run()
+        run.text = match.group(1)
+        set_run(run, max(size - 6, 11), bold=bold, color=color, subscript=True)
+        pos = match.end()
+    if pos < len(value):
+        run = paragraph.add_run()
+        run.text = value[pos:]
+        set_run(run, size, bold=bold, color=color)
+
+
+def add_formula(
+    slide,
+    left,
+    top,
+    width,
+    height,
+    value,
+    *,
+    size=18,
+    bold=True,
+    color=PRIMARY,
+    align=PP_ALIGN.LEFT,
+    anchor=MSO_ANCHOR.TOP,
+):
+    """Add a formula text box with proper PowerPoint subscripts for _{...}."""
+    box = slide.shapes.add_textbox(left, top, width, height)
+    tf = box.text_frame
+    tf.word_wrap = True
+    try:
+        tf._txBody.bodyPr.set(
+            "anchor",
+            {MSO_ANCHOR.TOP: "t", MSO_ANCHOR.MIDDLE: "ctr", MSO_ANCHOR.BOTTOM: "b"}[anchor],
+        )
+    except Exception:
+        pass
+    p = tf.paragraphs[0]
+    p.alignment = align
+    fill_formula_paragraph(p, value, size=size, bold=bold, color=color)
+    return box
 
 
 def add_text(

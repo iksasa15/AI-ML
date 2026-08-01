@@ -24,6 +24,7 @@ from etra_brand import (  # noqa: E402
     SOFT,
     SOFT_2,
     WHITE,
+    add_formula,
     add_text,
     bullets,
     content_footer,
@@ -224,7 +225,7 @@ TOPIC_CONTENT = {
                 "title": "1) Normalization (Min-Max Scaling)",
                 "kicker": "Feature Scaling Methods",
                 "lead": "Normalization transforms each value to a range between 0 and 1.",
-                "formula": "x_norm = (x − x_min) / (x_max − x_min)",
+                "formula": "x_{norm} = (x − x_{min}) / (x_{max} − x_{min})",
                 "bullets": [
                     "Useful for models that depend on distances or absolute magnitudes.",
                     "Common choice for algorithms such as KNN and K-Means.",
@@ -289,8 +290,8 @@ TOPIC_CONTENT = {
                     "Heights are comparable.",
                 ),
             ],
-            "formula": "x_norm = (x − x_min) / (x_max − x_min)",
-            "formula_note": "x_min = 20 · x_max = 100",
+            "formula": "x_{norm} = (x − x_{min}) / (x_{max} − x_{min})",
+            "formula_note": "x_{min} = 20 · x_{max} = 100",
             "values": [
                 ("20", "0.00"),
                 ("40", "0.25"),
@@ -301,11 +302,11 @@ TOPIC_CONTENT = {
             "table": {
                 "title": "Before vs After Normalization",
                 "kicker": "Feature Scaling Example",
-                "formula": "x_norm = (x − x_min) / (x_max − x_min)",
-                "formula_note": "x_min = 20 · x_max = 100",
+                "formula": "x_{norm} = (x − x_{min}) / (x_{max} − x_{min})",
+                "formula_note": "x_{min} = 20 · x_{max} = 100",
                 "headers": [
                     "Original value (x)",
-                    "Normalized value (x_norm)",
+                    "Normalized value (xₙₒᵣₘ)",
                 ],
                 "rows": [
                     ["20", "0.00"],
@@ -752,7 +753,7 @@ TOPIC_CONTENT = {
                     "result": {
                         "title": "Example: kNN Imputation (k = 2)",
                         "kicker": "Handling Missing Data · MAR",
-                        "formula": "Study Hours_C = (8 + 7) / 2 = 7.5",
+                        "formula": "Study Hours_{C} = (8 + 7) / 2 = 7.5",
                         "lead": "Average the Study Hours of the two nearest neighbors (A and B) to fill the missing value for student C.",
                         "bullets": [
                             "Neighbor A → Study Hours = 8",
@@ -774,7 +775,7 @@ TOPIC_CONTENT = {
                     "result": {
                         "title": "Example: MissForest",
                         "kicker": "Handling Missing Data · MAR",
-                        "formula": "Study Hours_C ≈ 7.6",
+                        "formula": "Study Hours_{C} ≈ 7.6",
                         "lead": "The Random Forest prediction for student C’s missing Study Hours is approximately 7.6.",
                         "bullets": [
                             "Uses non-linear patterns learned from complete rows.",
@@ -1523,7 +1524,7 @@ def slide_missing_formula(prs, total, index, result):
     title_block(slide, result["title"], result.get("kicker"))
 
     soft_card(slide, MARGIN, Inches(2.25), Inches(12.0), Inches(1.5), fill=SOFT)
-    add_text(
+    add_formula(
         slide,
         MARGIN + Inches(0.35),
         Inches(2.6),
@@ -1739,7 +1740,7 @@ def slide_norm_table(prs, total, index, table):
     title_block(slide, table["title"], table.get("kicker"))
 
     soft_card(slide, MARGIN, Inches(2.2), Inches(12.0), Inches(1.15), fill=SOFT)
-    add_text(
+    add_formula(
         slide,
         MARGIN + Inches(0.35),
         Inches(2.35),
@@ -1751,7 +1752,7 @@ def slide_norm_table(prs, total, index, table):
         color=PRIMARY,
     )
     if table.get("formula_note"):
-        add_text(
+        add_formula(
             slide,
             MARGIN + Inches(0.35),
             Inches(2.8),
@@ -1759,6 +1760,7 @@ def slide_norm_table(prs, total, index, table):
             Inches(0.3),
             table["formula_note"],
             size=13,
+            bold=False,
             color=MUTED,
         )
 
@@ -1866,7 +1868,7 @@ def slide_norm_example(prs, total, index, example):
             )
 
     soft_card(slide, MARGIN, Inches(3.95), Inches(12.0), Inches(1.15), fill=SOFT_2)
-    add_text(
+    add_formula(
         slide,
         MARGIN + Inches(0.35),
         Inches(4.1),
@@ -1878,7 +1880,7 @@ def slide_norm_example(prs, total, index, example):
         color=PRIMARY,
     )
     if example.get("formula_note"):
-        add_text(
+        add_formula(
             slide,
             MARGIN + Inches(0.35),
             Inches(4.55),
@@ -1886,6 +1888,7 @@ def slide_norm_example(prs, total, index, example):
             Inches(0.3),
             example["formula_note"],
             size=13,
+            bold=False,
             color=MUTED,
         )
 
@@ -2009,7 +2012,7 @@ def slide_method_detail(prs, total, index, detail):
         bold=True,
         color=SECONDARY,
     )
-    add_text(
+    add_formula(
         slide,
         MARGIN + Inches(0.4),
         Inches(3.45),
@@ -2021,7 +2024,7 @@ def slide_method_detail(prs, total, index, detail):
         color=PRIMARY,
     )
     if detail.get("formula_note"):
-        add_text(
+        add_formula(
             slide,
             MARGIN + Inches(0.4),
             Inches(3.95),
@@ -2029,6 +2032,7 @@ def slide_method_detail(prs, total, index, detail):
             Inches(0.3),
             detail["formula_note"],
             size=13,
+            bold=False,
             color=MUTED,
         )
 
