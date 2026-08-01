@@ -2,15 +2,25 @@
 
 :root {
   /* Colors — Etra light palette */
-  --color-bg: #f8f7fc;
-  --color-bg-subtle: #f0eef8;
+  /* ETRA Design System v1.0 */
+  --etra-primary: #5234b7;
+  --etra-secondary: #9e59cd;
+  --etra-surface: #faf8ff;
+  --etra-muted: #5a5470;
+  --etra-ink: #121018;
+  --etra-black: #0a0614;
+  --etra-soft: #eee8fa;
+  --etra-soft-2: #f5f1fc;
+
+  --color-bg: var(--etra-surface);
+  --color-bg-subtle: var(--etra-soft-2);
   --color-surface: #ffffff;
   --color-border: rgba(82, 52, 183, 0.22);
-  --color-text-primary: #1a1533;
-  --color-text-secondary: #6b6490;
-  --color-accent: #5234b7;
+  --color-text-primary: var(--etra-ink);
+  --color-text-secondary: var(--etra-muted);
+  --color-accent: var(--etra-primary);
   --color-accent-light: rgba(82, 52, 183, 0.1);
-  --color-accent-hover: #9e59cd;
+  --color-accent-hover: var(--etra-secondary);
   --color-gold: #9e59cd;
   --color-gold-light: rgba(158, 89, 205, 0.12);
   --color-success: #059669;
