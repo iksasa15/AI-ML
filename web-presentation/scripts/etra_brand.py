@@ -109,7 +109,7 @@ def fill_formula_paragraph(paragraph, value, *, size=18, bold=True, color=PRIMAR
 
 
 _FRAC_RE = re.compile(
-    r"^(?P<lhs>.+?)\s*=\s*\((?P<num>.+?)\)\s*/\s*\((?P<den>.+?)\)$"
+    r"^(?P<lhs>.+?)\s*=\s*(?:(?P<prefix>1\s*[−\-]\s*))?\((?P<num>.+?)\)\s*/\s*\((?P<den>.+?)\)$"
 )
 
 
@@ -130,7 +130,7 @@ def add_formula(
     """
     Add a formula. Markup: x_{min}.
     Division forms like `x_{norm} = (x − x_{min}) / (x_{max} − x_{min})`
-    render as a stacked fraction.
+    or `R² = 1 − (SS_{res}) / (SS_{tot})` render as a stacked fraction.
     """
     text = value if isinstance(value, str) else str(value)
     match = _FRAC_RE.match(text.strip())
@@ -147,6 +147,7 @@ def add_formula(
             size=size,
             bold=bold,
             color=color,
+            prefix=(match.group("prefix") or "").replace("-", "−").strip(),
         )
 
     box = slide.shapes.add_textbox(left, top, width, height)
@@ -178,10 +179,12 @@ def add_fraction_formula(
     size=18,
     bold=True,
     color=PRIMARY,
+    prefix="",
 ):
-    """Visual stacked fraction: lhs = num / den."""
-    # Left-hand side
-    lhs_box = slide.shapes.add_textbox(left, top, width * 0.28, height)
+    """Visual stacked fraction: lhs = [prefix] num / den."""
+    # Left-hand side (+ optional prefix such as "1 −")
+    lhs_w = width * 0.34 if prefix else width * 0.28
+    lhs_box = slide.shapes.add_textbox(left, top, lhs_w, height)
     lhs_tf = lhs_box.text_frame
     lhs_tf.word_wrap = False
     try:
@@ -190,10 +193,11 @@ def add_fraction_formula(
         pass
     lhs_p = lhs_tf.paragraphs[0]
     lhs_p.alignment = PP_ALIGN.RIGHT
-    fill_formula_paragraph(lhs_p, f"{lhs} =", size=size, bold=bold, color=color)
+    lhs_text = f"{lhs} = {prefix}" if prefix else f"{lhs} ="
+    fill_formula_paragraph(lhs_p, lhs_text, size=size, bold=bold, color=color)
 
-    frac_left = left + width * 0.30
-    frac_w = width * 0.68
+    frac_left = left + lhs_w + width * 0.02
+    frac_w = width - lhs_w - width * 0.02
     num_h = height * 0.38
     den_h = height * 0.38
     gap = height * 0.12
