@@ -317,6 +317,20 @@ def render_formula_png(
     return out if out.is_file() else None
 
 
+def to_inches(val) -> float:
+    """
+    Normalize a length to inches.
+    Accepts pptx Length (has .inches), EMU ints from Length arithmetic, or float inches.
+    """
+    if hasattr(val, "inches"):
+        return float(val.inches)
+    n = float(val)
+    # python-pptx Length + Length yields EMU ints (~914400 per inch)
+    if abs(n) >= 1000:
+        return n / 914400.0
+    return n
+
+
 def _add_formula_image(slide, left, top, width, height, path: Path):
     """Center a formula PNG inside the given box."""
     from PIL import Image
@@ -326,10 +340,10 @@ def _add_formula_image(slide, left, top, width, height, path: Path):
     if px_w <= 0 or px_h <= 0:
         return None
     aspect = px_w / px_h
-    max_w = width.inches if hasattr(width, "inches") else float(width)
-    max_h = height.inches if hasattr(height, "inches") else float(height)
-    left_in = left.inches if hasattr(left, "inches") else float(left)
-    top_in = top.inches if hasattr(top, "inches") else float(top)
+    max_w = to_inches(width)
+    max_h = to_inches(height)
+    left_in = to_inches(left)
+    top_in = to_inches(top)
     fit_w = min(max_w, max_h * aspect)
     fit_h = fit_w / aspect
     if fit_h > max_h:

@@ -1485,7 +1485,7 @@ def slide_linear_intro(prs, total, index, content):
         )
         add_formula(
             slide,
-            MARGIN + Inches(0.3),
+            Inches(MARGIN.inches + 0.3),
             Inches(3.9),
             text_w,
             Inches(formula_box_h),
@@ -1499,7 +1499,7 @@ def slide_linear_intro(prs, total, index, content):
             note_y = 3.9 + formula_box_h + 0.05
             add_text(
                 slide,
-                MARGIN + Inches(0.3),
+                Inches(MARGIN.inches + 0.3),
                 Inches(note_y),
                 text_w,
                 Inches(0.3),
@@ -1596,8 +1596,8 @@ def slide_formula_example(prs, total, index, content):
     soft_card(slide, MARGIN, formula_top, Inches(12.0), Inches(formula_h), fill=SOFT)
     add_formula(
         slide,
-        MARGIN + Inches(0.4),
-        formula_top + Inches(0.12),
+        Inches(MARGIN.inches + 0.4),
+        Inches(formula_top.inches + 0.12),
         Inches(11.2),
         Inches(0.95 if is_frac else 0.7),
         content["formula"],
@@ -1610,8 +1610,8 @@ def slide_formula_example(prs, total, index, content):
     if content.get("formula_note"):
         add_text(
             slide,
-            MARGIN + Inches(0.4),
-            formula_top + Inches(formula_h - 0.35),
+            Inches(MARGIN.inches + 0.4),
+            Inches(formula_top.inches + formula_h - 0.35),
             Inches(11.2),
             Inches(0.28),
             content["formula_note"],
