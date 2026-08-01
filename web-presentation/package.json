@@ -14,6 +14,8 @@
     "generate:plots": "python scripts/generate-regression-plots.py",
     "export:pdf": "node scripts/export-pdf.mjs",
     "export:pdf:dark": "PDF_THEME=dark node scripts/export-pdf.mjs",
+    "export:images": "python3 scripts/export-slides-as-images.py",
+    "export:images:from35": "python3 scripts/export-slides-as-images.py --start 35",
     "audit:qa": "node scripts/prepublish-qa.mjs",
     "polish:content": "node scripts/prepublish-polish.mjs",
     "prepublish:check": "node scripts/prepublish-polish.mjs && npm run audit:content && npm run audit:math && npm run audit:qa && npm run audit:images && npm run build"
