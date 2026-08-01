@@ -69,7 +69,7 @@ TOPIC_CONTENT: dict = {
         "body": "Classification is a supervised learning task used to assign a new observation to a predefined category based on learned patterns from labeled data.",
         "bullets": [
             "Output is a class label (e.g., 0/1, Yes/No).",
-            "Used in spam detection, medical diagnosis, fraud detection, and customer churn prediction.",
+            "Used in spam, diagnosis, fraud, and churn prediction.",
         ],
         "plot_path": "classification-overview.png",
         "note": "Features in → class label out. Probability models come next.",
@@ -77,61 +77,59 @@ TOPIC_CONTENT: dict = {
     "Logistic regression": {
         "title": "Logistic Regression: Definition",
         "kicker": "Binary Classification",
-        "body": "Logistic Regression is a supervised algorithm for binary classification that estimates the probability of class membership.",
+        "body": "Supervised binary classifier that estimates P(y=1|x) from features.",
         "bullets": [
-            "Produces probabilities in the range [0, 1].",
-            "Final class is determined using a threshold (commonly 0.5).",
-            "Models the relationship between features and log-odds of the target.",
+            "Outputs probabilities in [0, 1].",
+            "Class label comes from applying a threshold later.",
+            "Models features → log-odds of the positive class.",
         ],
         "plot_path": "sigmoid-threshold.png",
-        "note": "Sigmoid & Threshold · Probability cutoff τ = 0.5 · P ≥ τ → class 1.",
+        "note": "Maps a linear score to a probability via the sigmoid.",
         "extra_slides": [
             {
                 "title": "Why Not Linear Regression for Classification?",
                 "kicker": "Motivation for Logistic Regression",
                 "body": "Linear regression predicts continuous values rather than discrete classes.",
                 "bullets": [
-                    "Predicted values can be < 0 or > 1 — invalid for probabilities.",
-                    "It does not naturally provide a robust classification boundary.",
+                    "Predictions can fall outside [0, 1] — invalid as probabilities.",
+                    "No natural, stable class boundary for labels.",
                 ],
                 "plot_path": "linear-vs-logistic.png",
-                "note": "Logistic Regression maps the linear score to probability through a sigmoid.",
+                "note": "Sigmoid keeps outputs in [0, 1] and supports a clear cutoff.",
             },
             {
                 "title": "Sigmoid Mapping and Decision Threshold",
                 "kicker": "Sigmoid & Threshold",
-                "body": "Probability cutoff for classification · Decision threshold τ = 0.5",
+                "body": "Sigmoid turns the linear score z into a probability.",
                 "formula": "P(y=1|x) = σ(z) = 1 / (1 + e^{−z}),  z = β_{0} + βᵀx",
                 "formula_tex": r"P(y=1\mid x)=\sigma(z)=\dfrac{1}{1+e^{-z}},\quad z=\beta_0+\beta^{\top}x",
-                "formula_note": "If P ≥ τ → class 1 · if P < τ → class 0",
                 "bullets": [
-                    "Sigmoid converts any real-valued score into a valid probability.",
-                    "If probability ≥ 0.5, predict class 1; otherwise class 0.",
+                    "Default cutoff: P ≥ 0.5 → class 1, else class 0.",
+                    "τ is tunable for cost of false positives vs false negatives.",
                 ],
                 "plot_path": "sigmoid-threshold.png",
-                "note": "Threshold can be adjusted based on business/clinical needs.",
+                "note": "Tune τ to business/clinical risk — covered in Threshold tuning.",
             },
             {
                 "title": "Key Assumptions for Logistic Regression",
                 "kicker": "Model Assumptions",
-                "body": "Logistic regression models log-odds — check independence, collinearity, and linearity in logit space.",
+                "body": "Works on log-odds — check independence, collinearity, and linearity in logit space.",
                 "formula": "Odds = p / (1 − p),  Logit(p) = log(p / (1 − p))",
                 "formula_tex": r"\mathrm{Odds}=\dfrac{p}{1-p},\quad \mathrm{Logit}(p)=\log\!\left(\dfrac{p}{1-p}\right)",
-                "formula_note": "Decision threshold still applies after sigmoid · default τ = 0.5",
                 "layout": "formula_example",
                 "bullets": [
                     "Observations should be independent.",
-                    "Predictors should not have severe multicollinearity.",
-                    "Relationship should be approximately linear in the log-odds space.",
+                    "Avoid severe multicollinearity among predictors.",
+                    "Relationship ≈ linear in the log-odds space.",
                 ],
             },
             {
                 "title": "Maximum Likelihood Estimation (MLE)",
                 "kicker": "How Logistic Regression Learns",
-                "body": "Logistic Regression parameters are estimated by maximizing the likelihood of observing the true class labels.",
+                "body": "Parameters β are chosen to maximize the likelihood of the observed labels.",
                 "bullets": [
-                    "Different curves correspond to different parameter values.",
-                    "The optimal model is the one with the highest likelihood (or lowest log-loss).",
+                    "Each curve is a different β (different likelihood).",
+                    "Best fit: highest likelihood / lowest log-loss.",
                 ],
                 "plot_path": "mle-sigmoid-curves.png",
                 "note": "Pick β that makes the observed labels most probable.",
@@ -139,63 +137,48 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Logistic Regression: Strengths and Limits",
                 "kicker": "When to Use It",
-                "layout": "table",
-                "table": {
-                    "headers": ["Strengths", "Limitations"],
-                    "rows": [
-                        [
-                            "High interpretability of coefficients and odds ratios",
-                            "May underperform on complex non-linear boundaries",
-                        ],
-                        [
-                            "Fast training and strong baseline for binary tasks",
-                            "Sensitive when classes strongly overlap",
-                        ],
-                        [
-                            "Calibrated probabilities and clear feature coefficients",
-                            "Linear decision boundary in feature space",
-                        ],
-                    ],
-                },
-                "note": "For complex boundaries → polynomials or other models. Default threshold τ = 0.5.",
+                "body": "Strong baseline when classes are roughly linearly separable; weaker on complex shapes.",
+                "bullets": [
+                    "Strengths: interpretable odds, fast training, calibrated probabilities.",
+                    "Limits: linear boundary; struggles with overlap / non-linear shapes.",
+                ],
+                "plot_path": "logreg-strength-boundary.png",
+                "note": "For wiggly boundaries → polynomials, K-NN, or kernels.",
             },
             {
                 "title": "Multiclass Extension of Logistic Regression",
                 "kicker": "Beyond Binary",
                 "body": "Extend binary logistic regression to 3+ classes with Softmax or One-vs-All.",
                 "bullets": [
-                    "Multinomial (Softmax) Logistic Regression directly handles multiple classes.",
-                    "One-vs-All (OvA) trains one binary classifier per class.",
-                    "Final class is selected by highest predicted probability.",
+                    "Softmax: one multinomial model for all classes.",
+                    "One-vs-All: one binary classifier per class; pick max P.",
                 ],
                 "plot_path": "multiclass-logistic.png",
-                "note": "Pick the class with max P(y=k|x).",
+                "note": "Final label = argmax_k P(y=k|x).",
             },
         ],
     },
     "K-NN": {
         "title": "K-Nearest Neighbors (K-NN): Core Idea",
         "kicker": "Instance-Based Learning",
-        "body": "K-NN is an instance-based, non-parametric algorithm that classifies a sample using the majority class among its nearest neighbors.",
+        "body": "Non-parametric classifier: label by majority vote among the K nearest training points.",
         "bullets": [
-            "Choose K.",
-            "Compute distance to all training points.",
-            "Select K nearest points and apply majority voting.",
+            "Choose K and a distance metric.",
+            "Find K nearest neighbors; majority vote wins.",
         ],
         "plot_path": "knn-core-idea.png",
-        "note": "No explicit training of a parametric model — the training set is the model.",
+        "note": "Lazy learner — the training set is the model.",
         "extra_slides": [
             {
                 "title": "K-NN: Choosing K and Distance Metric",
                 "kicker": "Hyperparameters",
-                "body": "K and the distance metric control the smoothness of the decision boundary.",
+                "body": "K and distance control how smooth the decision boundary is.",
                 "bullets": [
-                    "Small K: lower bias, higher variance (sensitive to noise).",
-                    "Large K: smoother boundary, may miss local structure.",
-                    "Common metrics: Euclidean, Manhattan, Hamming.",
+                    "Small K: flexible, noise-sensitive.",
+                    "Large K: smoother; may miss local structure.",
                 ],
                 "plot_path": "knn-k-tradeoff.png",
-                "note": "Use CV to choose K · scale numeric features before distance-based modeling.",
+                "note": "Pick K with CV · scale features before distance modeling.",
             },
             {
                 "title": "K-NN: Strengths and Limitations",
@@ -206,25 +189,49 @@ TOPIC_CONTENT: dict = {
                     "rows": [
                         [
                             "Simple and intuitive",
-                            "Prediction can be slow on large datasets",
+                            "Slow prediction on large datasets",
                         ],
                         [
-                            "Effective on smaller, well-separated datasets",
-                            "Sensitive to irrelevant features and class imbalance",
+                            "Works well on small, separated data",
+                            "Sensitive to irrelevant features / imbalance",
                         ],
                         [
-                            "Naturally supports multiclass classification",
-                            "Performance drops in high-dimensional spaces",
+                            "Native multiclass support",
+                            "Curse of dimensionality",
                         ],
                         [
-                            "No training phase — lazy learning, simple baseline",
-                            "Needs feature scaling before distance modeling",
+                            "No training phase (lazy baseline)",
+                            "Needs feature scaling",
                         ],
                     ],
                 },
-                "note": "Strength: lazy baseline · Limit: slow inference, curse of dimensionality, needs scaling.",
+                "note": "Great baseline; watch cost at inference and high dimensions.",
             },
         ],
+    },
+    "Decision boundaries": {
+        "title": "Decision Boundaries Across Models",
+        "kicker": "Geometry of Classification",
+        "body": "A decision boundary is the surface where the predicted class flips — its shape depends on the model family.",
+        "bullets": [
+            "Logistic: linear boundary in feature space (unless you add features).",
+            "K-NN: local, piecewise boundary that follows nearest neighbors.",
+            "Kernel / RBF-like models: smooth curved boundaries.",
+        ],
+        "plot_path": "decision-boundaries.png",
+        "note": "Match model flexibility to how classes are separated in the data.",
+    },
+    "Threshold tuning": {
+        "title": "Threshold Tuning: Trading FP vs FN",
+        "kicker": "Operating Point",
+        "body": "The sigmoid gives P(y=1|x); τ turns that probability into a hard class label.",
+        "bullets": [
+            "Lower τ → more positives (↑ recall, ↑ false positives).",
+            "Higher τ → fewer positives (↑ precision, ↑ false negatives).",
+            "Default τ = 0.5 is a starting point, not a law.",
+        ],
+        "plot_path": "threshold-tuning.png",
+        "note": "Set τ from costs: missed fraud ≠ false spam alarm.",
     },
 }
 
@@ -379,14 +386,33 @@ def slide_section_divider(prs, total, index):
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
     add_text(slide, MARGIN, Inches(4.05), Inches(11), Inches(0.4), s["focus"], size=16, color=MUTED)
 
-    x = MARGIN
-    for topic in s["topics"]:
-        w = Inches(min(2.8, 0.12 * len(topic) + 1.1))
-        if x + w > Inches(12.4):
-            break
-        soft_card(slide, x, Inches(5.25), w, Inches(0.42), fill=SOFT)
-        add_text(slide, x, Inches(5.3), w, Inches(0.32), topic, size=11, color=PRIMARY, align=PP_ALIGN.CENTER)
-        x += w + Inches(0.14)
+    # Two rows of topic chips to avoid overlap on long labels
+    topics = s["topics"]
+    mid = (len(topics) + 1) // 2
+    rows = [topics[:mid], topics[mid:]]
+    for ri, row in enumerate(rows):
+        if not row:
+            continue
+        y = 5.05 + ri * 0.55
+        gap = 0.12
+        usable = 12.0
+        w = min(2.9, (usable - gap * (len(row) - 1)) / max(len(row), 1))
+        total_w = len(row) * w + (len(row) - 1) * gap
+        x0 = MARGIN.inches + (usable - total_w) / 2
+        for i, topic in enumerate(row):
+            x = Inches(x0 + i * (w + gap))
+            soft_card(slide, x, Inches(y), Inches(w), Inches(0.42), fill=SOFT)
+            add_text(
+                slide,
+                x,
+                Inches(y + 0.05),
+                Inches(w),
+                Inches(0.32),
+                topic,
+                size=10,
+                color=PRIMARY,
+                align=PP_ALIGN.CENTER,
+            )
 
     content_footer(slide, index, total)
 
@@ -513,29 +539,38 @@ def slide_linear_intro(prs, total, index, content):
     col_w = Inches(6.3) if has_plot else Inches(12.0)
     text_w = Inches(5.8) if has_plot else Inches(11.3)
     bullet_w = Inches(5.6) if has_plot else Inches(11.2)
+    body_h = 0.95 if has_plot else 1.15
 
-    soft_card(slide, MARGIN, Inches(2.2), col_w, Inches(1.2), fill=SOFT)
+    soft_card(slide, MARGIN, Inches(2.2), col_w, Inches(body_h), fill=SOFT)
     add_text(
         slide,
-        MARGIN + Inches(0.3),
-        Inches(2.35),
+        Inches(MARGIN.inches + 0.3),
+        Inches(2.32),
         text_w,
-        Inches(0.95),
+        Inches(body_h - 0.2),
         content.get("body") or "",
-        size=13,
+        size=12 if has_plot else 13,
         color=INK,
     )
 
+    # Fold formula_note into footer note to avoid colliding with formula PNG
+    footer_note = content.get("note") or ""
+    if content.get("formula_note"):
+        fn = content["formula_note"]
+        footer_note = f"{fn}  ·  {footer_note}" if footer_note else fn
+    has_note = bool(footer_note)
+
     if has_formula:
-        formula_card_h = 1.65 if is_frac else 1.35
-        formula_box_h = 0.95 if is_frac else 0.65
-        soft_card(slide, MARGIN, Inches(3.55), col_w, Inches(formula_card_h), fill=SOFT)
+        formula_top = 2.2 + body_h + 0.1
+        formula_card_h = 1.35 if is_frac else 1.1
+        formula_box_h = 0.85 if is_frac else 0.55
+        soft_card(slide, MARGIN, Inches(formula_top), col_w, Inches(formula_card_h), fill=SOFT)
         add_text(
             slide,
-            MARGIN + Inches(0.3),
-            Inches(3.65),
+            Inches(MARGIN.inches + 0.3),
+            Inches(formula_top + 0.08),
             text_w,
-            Inches(0.22),
+            Inches(0.2),
             "Formula",
             size=11,
             bold=True,
@@ -544,7 +579,7 @@ def slide_linear_intro(prs, total, index, content):
         add_formula(
             slide,
             Inches(MARGIN.inches + 0.3),
-            Inches(3.9),
+            Inches(formula_top + 0.28),
             text_w,
             Inches(formula_box_h),
             content["formula"],
@@ -553,31 +588,18 @@ def slide_linear_intro(prs, total, index, content):
             color=PRIMARY,
             formula_tex=content.get("formula_tex"),
         )
-        if content.get("formula_note"):
-            note_y = 3.9 + formula_box_h + 0.05
-            add_text(
-                slide,
-                Inches(MARGIN.inches + 0.3),
-                Inches(note_y),
-                text_w,
-                Inches(0.3),
-                content["formula_note"],
-                size=10,
-                color=MUTED,
-            )
-        bullet_top = 3.55 + formula_card_h + 0.12
-        pitch = 0.46 if (has_note or len(items) >= 2) else 0.55
+        bullet_top = formula_top + formula_card_h + 0.1
+        pitch = 0.42 if (has_note or len(items) >= 2) else 0.52
         bsize = 12
     else:
-        bullet_top = 3.55
-        pitch = 0.50 if (has_note or len(items) >= 3) else 0.58
+        bullet_top = 2.2 + body_h + 0.15
+        pitch = 0.48 if (has_note or len(items) >= 3) else 0.56
         bsize = 13
 
-    note_band = 6.45 if has_note else 6.75
+    note_band = 6.4 if has_note else 6.75
     max_items = max(1, int((note_band - bullet_top - 0.05) / pitch))
-    # With formula+plot keep at most 2 bullets to avoid crowding
-    if has_formula and has_plot:
-        max_items = min(max_items, 2)
+    if has_plot:
+        max_items = min(max_items, 2 if has_formula else 3)
     bullets(
         slide,
         items[:max_items],
@@ -586,7 +608,7 @@ def slide_linear_intro(prs, total, index, content):
         left=MARGIN,
         width=bullet_w,
         pitch=pitch,
-        item_height=Inches(0.42),
+        item_height=Inches(0.4),
     )
 
     plot_folder = DIAGRAMS if content.get("plot_path") else PLOTS
@@ -602,14 +624,14 @@ def slide_linear_intro(prs, total, index, content):
             folder=plot_folder,
         )
 
-    if content.get("note"):
+    if footer_note:
         add_text(
             slide,
             MARGIN,
             Inches(6.55),
             Inches(12),
             Inches(0.28),
-            content["note"],
+            footer_note,
             size=11,
             color=MUTED,
         )
@@ -650,14 +672,15 @@ def slide_formula_example(prs, total, index, content):
     else:
         formula_top = Inches(2.25)
 
-    formula_h = 1.55 if is_frac else 1.25
+    has_fnote = bool(content.get("formula_note"))
+    formula_h = 1.35 if is_frac else 1.1
     soft_card(slide, MARGIN, formula_top, Inches(12.0), Inches(formula_h), fill=SOFT)
     add_formula(
         slide,
         Inches(MARGIN.inches + 0.4),
-        Inches(formula_top.inches + 0.12),
+        Inches(formula_top.inches + 0.15),
         Inches(11.2),
-        Inches(0.95 if is_frac else 0.7),
+        Inches(1.0 if is_frac else 0.75),
         content["formula"],
         size=24 if is_frac else 26,
         bold=True,
@@ -665,11 +688,14 @@ def slide_formula_example(prs, total, index, content):
         align=PP_ALIGN.CENTER,
         formula_tex=content.get("formula_tex"),
     )
-    if content.get("formula_note"):
+
+    # formula_note sits BELOW the formula card (never inside over the PNG)
+    cursor = formula_top.inches + formula_h + 0.08
+    if has_fnote:
         add_text(
             slide,
             Inches(MARGIN.inches + 0.4),
-            Inches(formula_top.inches + formula_h - 0.35),
+            Inches(cursor),
             Inches(11.2),
             Inches(0.28),
             content["formula_note"],
@@ -677,14 +703,14 @@ def slide_formula_example(prs, total, index, content):
             color=MUTED,
             align=PP_ALIGN.CENTER,
         )
+        cursor += 0.32
 
-    bullet_top = formula_top.inches + formula_h + 0.12
-    pitch = 0.46 if dense else 0.56
-    bsize = 13 if dense else 15
-    note_band = 6.45 if has_note else 6.75
+    bullet_top = cursor + 0.06
+    pitch = 0.42 if dense else 0.52
+    bsize = 12 if dense else 14
+    note_band = 6.4 if has_note else 6.75
     max_items = max(1, int((note_band - bullet_top - 0.05) / pitch))
-    if has_note:
-        max_items = min(max_items, 3)
+    max_items = min(max_items, 3)
     bullets(
         slide,
         items[:max_items],
@@ -692,7 +718,7 @@ def slide_formula_example(prs, total, index, content):
         size=bsize,
         pitch=pitch,
         width=Inches(11.2),
-        item_height=Inches(0.42),
+        item_height=Inches(0.4),
     )
 
     if content.get("note"):
@@ -703,7 +729,7 @@ def slide_formula_example(prs, total, index, content):
             Inches(12),
             Inches(0.25),
             content["note"],
-            size=12,
+            size=11,
             color=MUTED,
         )
 
@@ -754,9 +780,9 @@ def slide_topic_table(prs, total, index, content):
     row_h = max(0.30, row_h)
     table_h = row_h * n_rows
 
-    # If note would still collide, drop the note rather than overlap the table
-    note_top = table_top + table_h + 0.08
-    render_note = has_note and (note_top + 0.45) <= 6.9
+    # Keep ≥0.15" gap between table bottom and note
+    note_top = table_top + table_h + 0.15
+    render_note = has_note and (note_top + 0.4) <= 6.9
 
     shape = slide.shapes.add_table(
         rows=n_rows,
