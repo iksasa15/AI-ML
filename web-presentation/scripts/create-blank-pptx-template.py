@@ -21,13 +21,11 @@ from etra_brand import (  # noqa: E402
     SLIDE_H,
     SLIDE_W,
     SOFT,
-    WHITE,
     add_text,
     content_footer,
     content_header,
     gradient_fill,
     logo,
-    paint_dark,
     paint_light,
     rect,
     right_rail,
@@ -43,16 +41,17 @@ def main() -> None:
     prs.slide_width = SLIDE_W
     prs.slide_height = SLIDE_H
 
-    # 01 Dark cover
+    # 01 Light cover
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    paint_dark(s)
+    paint_light(s)
+    right_rail(s)
     logo(s, height=Inches(0.4))
     add_text(s, MARGIN, Inches(2.3), Inches(11), Inches(0.35), "Week X  ·  Session Y", size=14, color=SECONDARY)
-    add_text(s, MARGIN, Inches(2.8), Inches(11.5), Inches(0.9), "Presentation title", size=44, bold=True, color=WHITE)
+    add_text(s, MARGIN, Inches(2.8), Inches(11.5), Inches(0.9), "Presentation title", size=44, bold=True, color=PRIMARY)
     bar = rect(s, MARGIN, Inches(3.9), Inches(1.4), Inches(0.06), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
-    add_text(s, MARGIN, Inches(4.25), Inches(10), Inches(0.45), "Subtitle — one clear line", size=17, color=SOFT)
-    add_text(s, MARGIN, Inches(6.7), Inches(4), Inches(0.3), "ETRA", size=12, bold=True, color=SECONDARY)
+    add_text(s, MARGIN, Inches(4.25), Inches(10), Inches(0.45), "Subtitle — one clear line", size=17, color=MUTED)
+    add_text(s, MARGIN, Inches(6.7), Inches(4), Inches(0.3), "ETRA", size=12, bold=True, color=PRIMARY)
 
     # 02 Bullets
     s = prs.slides.add_slide(prs.slide_layouts[6])
@@ -115,13 +114,14 @@ def main() -> None:
     )
     content_footer(s, 5, 6)
 
-    # 06 Dark closing
+    # 06 Closing
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    paint_dark(s)
+    paint_light(s)
+    right_rail(s)
     logo(s, height=Inches(0.4))
-    add_text(s, MARGIN, Inches(3.0), Inches(12), Inches(0.8), "Thank you", size=40, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+    add_text(s, MARGIN, Inches(3.0), Inches(12), Inches(0.8), "Thank you", size=40, bold=True, color=PRIMARY, align=PP_ALIGN.CENTER)
     add_text(s, MARGIN, Inches(3.9), Inches(12), Inches(0.4), "@etrahub", size=16, color=SECONDARY, align=PP_ALIGN.CENTER)
-    add_text(s, MARGIN, Inches(6.7), Inches(4), Inches(0.3), "ETRA", size=12, bold=True, color=SECONDARY)
+    content_footer(s, 6, 6)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     prs.save(OUT)

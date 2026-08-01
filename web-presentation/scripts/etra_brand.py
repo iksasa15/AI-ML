@@ -29,7 +29,6 @@ SOFT = RGBColor(0xEE, 0xE8, 0xFA)          # --etra-soft
 SOFT_2 = RGBColor(0xF5, 0xF1, 0xFC)        # --etra-soft-2
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 LINE = RGBColor(0xE4, 0xDC, 0xF4)
-HERO_MID = RGBColor(0x2A, 0x18, 0x60)      # dark hero radial mid
 
 # ── Layout (pages 09 / 13) ─────────────────────────────────────────────────
 SLIDE_W = Inches(13.333)
@@ -140,20 +139,9 @@ def paint_light(slide):
 
 
 def paint_dark(slide):
-    # Approximate dark hero: solid black + soft glow ellipse
+    """Flat dark hero — no decorative circles/orbs over content."""
     slide.background.fill.solid()
     slide.background.fill.fore_color.rgb = BLACK
-    glow = slide.shapes.add_shape(
-        MSO_SHAPE.OVAL,
-        Inches(3.5),
-        Inches(0.8),
-        Inches(6.5),
-        Inches(5.5),
-    )
-    glow.fill.solid()
-    glow.fill.fore_color.rgb = HERO_MID
-    glow.line.fill.background()
-    no_shadow(glow)
 
 
 def right_rail(slide, *, dark=False):

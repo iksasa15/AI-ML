@@ -14,7 +14,6 @@ from pptx.util import Inches
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from etra_brand import (  # noqa: E402
-    BLACK,
     INK,
     MARGIN,
     MUTED,
@@ -24,15 +23,12 @@ from etra_brand import (  # noqa: E402
     SLIDE_W,
     SOFT,
     SOFT_2,
-    SURFACE,
-    WHITE,
     add_text,
     bullets,
     content_footer,
     content_header,
     gradient_fill,
     logo,
-    paint_dark,
     paint_light,
     rect,
     right_rail,
@@ -137,15 +133,16 @@ BIG_PICTURE = {
 def slide_title(prs, total):
     s = SESSION
     slide = prs.slides.add_slide(prs.slide_layouts[6])
-    paint_dark(slide)
+    paint_light(slide)
+    right_rail(slide)
     logo(slide, height=Inches(0.4))
 
     add_text(slide, MARGIN, Inches(2.2), Inches(11), Inches(0.35), s["eyebrow"], size=14, color=SECONDARY)
-    add_text(slide, MARGIN, Inches(2.7), Inches(11.5), Inches(0.95), s["section_title"], size=44, bold=True, color=WHITE)
+    add_text(slide, MARGIN, Inches(2.7), Inches(11.5), Inches(0.95), s["section_title"], size=44, bold=True, color=PRIMARY)
     bar = rect(slide, MARGIN, Inches(3.8), Inches(1.4), Inches(0.06), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
-    add_text(slide, MARGIN, Inches(4.15), Inches(11), Inches(0.5), s["subtitle"], size=17, color=SOFT)
-    add_text(slide, MARGIN, Inches(6.7), Inches(6), Inches(0.3), "ETRA", size=12, bold=True, color=SECONDARY)
+    add_text(slide, MARGIN, Inches(4.15), Inches(11), Inches(0.5), s["subtitle"], size=17, color=MUTED)
+    add_text(slide, MARGIN, Inches(6.7), Inches(6), Inches(0.3), "ETRA", size=12, bold=True, color=PRIMARY)
     add_text(
         slide,
         Inches(8.5),
@@ -214,14 +211,15 @@ def slide_big_picture(prs, total, index):
 def slide_section_divider(prs, total, index):
     s = SESSION
     slide = prs.slides.add_slide(prs.slide_layouts[6])
-    paint_dark(slide)
+    paint_light(slide)
+    right_rail(slide)
     logo(slide, height=Inches(0.4))
 
     add_text(slide, MARGIN, Inches(2.15), Inches(11), Inches(0.35), s["eyebrow"], size=14, color=SECONDARY)
-    add_text(slide, MARGIN, Inches(2.65), Inches(11.5), Inches(0.9), s["section_title"], size=42, bold=True, color=WHITE)
+    add_text(slide, MARGIN, Inches(2.65), Inches(11.5), Inches(0.9), s["section_title"], size=42, bold=True, color=PRIMARY)
     bar = rect(slide, MARGIN, Inches(3.7), Inches(1.4), Inches(0.06), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
-    add_text(slide, MARGIN, Inches(4.05), Inches(11), Inches(0.4), s["focus"], size=16, color=SOFT)
+    add_text(slide, MARGIN, Inches(4.05), Inches(11), Inches(0.4), s["focus"], size=16, color=MUTED)
 
     x = MARGIN
     for topic in s["topics"]:
@@ -229,11 +227,10 @@ def slide_section_divider(prs, total, index):
         if x + w > Inches(12.4):
             break
         soft_card(slide, x, Inches(5.25), w, Inches(0.42), fill=SOFT)
-        # soft cards on dark look odd with light fill — intentional chips
         add_text(slide, x, Inches(5.3), w, Inches(0.32), topic, size=11, color=PRIMARY, align=PP_ALIGN.CENTER)
         x += w + Inches(0.14)
 
-    add_text(slide, MARGIN, Inches(6.7), Inches(3), Inches(0.3), "ETRA", size=12, bold=True, color=SECONDARY)
+    content_footer(slide, index, total)
 
 
 def slide_agenda(prs, total, index):
