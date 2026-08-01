@@ -288,20 +288,27 @@ def diagram_missing_types() -> None:
         ax.set_title(title, fontsize=13, color=PRIMARY, fontweight="bold")
 
         # grid of cells: rows=samples, cols=features X,Y
+        # MAR: mark high-X rows; MNAR: mark that Y itself is the cause (high Y hidden)
         for r in range(5):
+            x_high = r in (0, 1)
             for c, feat in enumerate(["X", "Y"]):
                 missing = False
+                cell_label = feat
                 if kind == "mcar":
                     missing = (r, c) in {(1, 0), (2, 1), (4, 0)}
                 elif kind == "mar":
-                    # missing Y when X is high (right-ish conceptually: higher row index as proxy)
+                    # Y missing when X is high (observed driver)
+                    missing = c == 1 and x_high
+                    if c == 0 and x_high:
+                        cell_label = "X↑"
+                else:  # mnar — Y missing because Y would be high
                     missing = c == 1 and r in (0, 1)
-                else:  # mnar — missing Y when Y would be high (rows 0,1)
-                    missing = c == 1 and r in (0, 1)
+                    if missing:
+                        cell_label = "Y↑?"
 
                 x, y = c * 1.7 + 0.6, 4.2 - r * 0.75
-                fc = "#F3D6D0" if missing else SOFT
-                ec = ACCENT_WARN if missing else PRIMARY
+                fc = "#F3D6D0" if missing else (SOFT_2 if cell_label == "X↑" else SOFT)
+                ec = ACCENT_WARN if missing else (SECONDARY if cell_label == "X↑" else PRIMARY)
                 ax.add_patch(
                     FancyBboxPatch(
                         (x, y),
@@ -313,8 +320,16 @@ def diagram_missing_types() -> None:
                         lw=1.3,
                     )
                 )
-                label = "?" if missing else ("·" if c == 0 else "·")
-                ax.text(x + 0.67, y + 0.27, "Missing" if missing else feat, ha="center", va="center", fontsize=8, color=ACCENT_WARN if missing else MUTED, fontweight="bold")
+                ax.text(
+                    x + 0.67,
+                    y + 0.27,
+                    "Missing" if missing and kind != "mnar" else ("Missing" if missing else cell_label),
+                    ha="center",
+                    va="center",
+                    fontsize=8,
+                    color=ACCENT_WARN if missing else MUTED,
+                    fontweight="bold",
+                )
 
         ax.text(2, -0.15, cap, ha="center", va="top", fontsize=10, color=MUTED)
 
