@@ -1016,11 +1016,11 @@ def slide_ml_process_overview(prs, total, index):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, mp["title"], mp["subtitle"])
 
-    add_diagram(slide, "ml-process.png", MARGIN, Inches(2.2), Inches(12.0))
+    add_diagram(slide, "ml-process.png", MARGIN, Inches(2.2), Inches(12.0), Inches(2.2))
 
     col_w = Inches(3.75)
     gap = Inches(0.22)
-    top = Inches(4.55)
+    top = Inches(4.6)
 
     for i, step in enumerate(mp["steps"]):
         x = MARGIN + i * (col_w + gap)
@@ -1060,7 +1060,7 @@ def slide_ml_process_step(prs, total, index, step):
     title_block(slide, f"Step {step['number']}: {step['title']}", "The Machine Learning Process")
     bullets(slide, step["bullets"], top=Inches(2.35), size=18)
     if step["number"] == "1":
-        add_diagram(slide, "preprocess-pipeline.png", MARGIN, Inches(4.7), Inches(12.0))
+        add_diagram(slide, "preprocess-pipeline.png", MARGIN, Inches(5.0), Inches(12.0), Inches(1.8))
     content_footer(slide, index, total)
 
 
@@ -1216,14 +1216,14 @@ def slide_topic(prs, total, index, topic_index, topic):
 
     # Data leakage placeholder gets a warning diagram
     if topic == "Data leakage":
-        add_diagram(slide, "data-leakage.png", MARGIN, Inches(2.3), Inches(12.0))
-        soft_card(slide, MARGIN, Inches(5.35), Inches(12.0), Inches(1.15), fill=SOFT)
+        add_diagram(slide, "data-leakage.png", MARGIN, Inches(2.3), Inches(12.0), Inches(3.0))
+        soft_card(slide, MARGIN, Inches(5.5), Inches(12.0), Inches(1.0), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.4),
-            Inches(5.6),
+            Inches(5.7),
             Inches(11.2),
-            Inches(0.7),
+            Inches(0.65),
             "Never let test-set information influence training, scaling, or feature choices.",
             size=15,
             color=INK,
@@ -1293,14 +1293,14 @@ def slide_topic_rich(prs, total, index, content):
                 size=15,
                 color=INK,
             )
-            add_diagram(slide, content["diagram"], MARGIN, Inches(3.25), Inches(12.0))
+            add_diagram(slide, content["diagram"], MARGIN, Inches(3.2), Inches(12.0), Inches(3.0))
         else:
-            add_diagram(slide, content["diagram"], MARGIN, Inches(2.25), Inches(12.0))
+            add_diagram(slide, content["diagram"], MARGIN, Inches(2.25), Inches(12.0), Inches(3.0))
         if content.get("note"):
             add_text(
                 slide,
                 MARGIN,
-                Inches(6.35),
+                Inches(6.4),
                 Inches(12),
                 Inches(0.3),
                 content["note"],
@@ -1392,10 +1392,10 @@ def slide_topic_detail(prs, total, index, detail):
     has_diagram = bool(detail.get("diagram"))
 
     if has_diagram:
-        add_diagram(slide, detail["diagram"], MARGIN, Inches(2.2), Inches(12.0))
+        add_diagram(slide, detail["diagram"], MARGIN, Inches(2.2), Inches(12.0), Inches(3.0))
         # Compact bullets under the diagram
         if bullet_items:
-            bullets(slide, bullet_items[:3], top=Inches(5.15), size=14)
+            bullets(slide, bullet_items[:3], top=Inches(5.4), size=14)
         content_footer(slide, index, total)
         return
 
@@ -1459,13 +1459,13 @@ def slide_topic_table(prs, total, index, table):
 
     # Diagram-first teaching slides (skip dense table when flagged)
     if table.get("diagram") and table.get("diagram_only"):
-        add_diagram(slide, table["diagram"], MARGIN, Inches(2.2), Inches(12.0))
+        add_diagram(slide, table["diagram"], MARGIN, Inches(2.2), Inches(12.0), Inches(3.0))
         if table.get("note"):
-            soft_card(slide, MARGIN, Inches(5.55), Inches(12.0), Inches(0.95), fill=SOFT)
+            soft_card(slide, MARGIN, Inches(5.45), Inches(12.0), Inches(0.95), fill=SOFT)
             add_text(
                 slide,
                 MARGIN + Inches(0.35),
-                Inches(5.75),
+                Inches(5.65),
                 Inches(11.3),
                 Inches(0.55),
                 table["note"],
@@ -1477,8 +1477,8 @@ def slide_topic_table(prs, total, index, table):
 
     table_top = Inches(2.3)
     if table.get("diagram"):
-        add_diagram(slide, table["diagram"], MARGIN, Inches(2.15), Inches(12.0))
-        table_top = Inches(4.85)
+        add_diagram(slide, table["diagram"], MARGIN, Inches(2.15), Inches(12.0), Inches(2.4))
+        table_top = Inches(4.7)
 
     headers = table["headers"]
     rows = table["rows"]
@@ -1613,10 +1613,10 @@ def slide_missing_mechanism(prs, total, index, mechanism):
                 size=14,
                 color=INK,
             )
-            add_diagram(slide, mechanism["diagram"], MARGIN, Inches(3.05), Inches(12.0))
+            add_diagram(slide, mechanism["diagram"], MARGIN, Inches(3.05), Inches(12.0), Inches(2.6))
         else:
-            add_diagram(slide, mechanism["diagram"], MARGIN, Inches(2.2), Inches(12.0))
-        bullets(slide, (mechanism.get("bullets") or [])[:2], top=Inches(5.85), size=14)
+            add_diagram(slide, mechanism["diagram"], MARGIN, Inches(2.2), Inches(12.0), Inches(3.0))
+        bullets(slide, (mechanism.get("bullets") or [])[:2], top=Inches(5.9), size=14)
         content_footer(slide, index, total)
         return
 
@@ -1759,7 +1759,7 @@ def slide_encoding_comparison(prs, total, index, comparison):
                 size=14,
                 color=MUTED,
             )
-        add_diagram(slide, comparison["diagram"], MARGIN, Inches(2.5), Inches(12.0))
+        add_diagram(slide, comparison["diagram"], MARGIN, Inches(2.5), Inches(12.0), Inches(3.0))
         cards = comparison.get("cards") or []
         if cards:
             # One-line takeaway under the diagram
@@ -1767,7 +1767,7 @@ def slide_encoding_comparison(prs, total, index, comparison):
             add_text(
                 slide,
                 MARGIN,
-                Inches(6.2),
+                Inches(5.75),
                 Inches(12),
                 Inches(0.35),
                 summary,
@@ -2177,7 +2177,7 @@ def slide_method_detail(prs, total, index, detail):
             bold=True,
             color=PRIMARY,
         )
-        add_diagram(slide, detail["diagram"], Inches(6.4), Inches(2.65), Inches(6.2))
+        add_diagram(slide, detail["diagram"], Inches(6.4), Inches(2.65), Inches(6.2), Inches(2.2))
         bullets(slide, detail.get("bullets") or [], top=Inches(5.3), size=15)
     else:
         soft_card(slide, MARGIN, Inches(2.85), Inches(12.0), Inches(2.05), fill=SOFT)
@@ -2308,7 +2308,7 @@ def slide_preprocess_workflow(prs, total, index, workflow):
         )
 
     if workflow.get("diagram"):
-        add_diagram(slide, workflow["diagram"], MARGIN, Inches(2.55), Inches(12.0))
+        add_diagram(slide, workflow["diagram"], MARGIN, Inches(2.55), Inches(12.0), Inches(2.2))
 
     steps = workflow.get("steps") or []
     if steps:

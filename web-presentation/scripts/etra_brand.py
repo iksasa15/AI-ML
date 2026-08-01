@@ -326,16 +326,44 @@ def logo(slide, *, dark=False, height=Inches(0.35)):
     return pic
 
 
-def add_diagram(slide, name, left, top, width, height=None):
-    """Embed a Session 1 classroom diagram PNG (aspect preserved if height is None)."""
+def add_diagram(slide, name, left, top, width, max_height):
+    """
+    Embed a Session 1 classroom diagram PNG fitted inside a width × max_height box.
+    Preserves aspect ratio and centers horizontally within the box.
+    """
+    from PIL import Image
+
     path = DIAGRAMS / name
     if not path.is_file() and not str(name).endswith(".png"):
         path = DIAGRAMS / f"{name}.png"
     if not path.is_file():
         return None
-    if height is None:
-        return slide.shapes.add_picture(str(path), left, top, width=width)
-    return slide.shapes.add_picture(str(path), left, top, width=width, height=height)
+
+    with Image.open(path) as im:
+        px_w, px_h = im.size
+    if px_w <= 0 or px_h <= 0:
+        return None
+
+    aspect = px_w / px_h
+    max_w_in = width.inches if hasattr(width, "inches") else float(width)
+    max_h_in = max_height.inches if hasattr(max_height, "inches") else float(max_height)
+    left_in = left.inches if hasattr(left, "inches") else float(left)
+    top_in = top.inches if hasattr(top, "inches") else float(top)
+
+    fit_w_in = min(max_w_in, max_h_in * aspect)
+    fit_h_in = fit_w_in / aspect
+    if fit_h_in > max_h_in:
+        fit_h_in = max_h_in
+        fit_w_in = fit_h_in * aspect
+
+    x_in = left_in + (max_w_in - fit_w_in) / 2
+    return slide.shapes.add_picture(
+        str(path),
+        Inches(x_in),
+        Inches(top_in),
+        width=Inches(fit_w_in),
+        height=Inches(fit_h_in),
+    )
 
 
 def content_header(slide, kicker: str, slide_num: str):
