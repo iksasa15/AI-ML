@@ -729,7 +729,7 @@ TOPIC_CONTENT: dict = {
                     "Inside tube → no loss.",
                     "Kernels capture curves without hand features.",
                 ],
-                "plot": "slide-42-1.png",
+                "plot_path": "svr-epsilon-tube.png",
             },
             {
                 "title": "SVR Fit Example",

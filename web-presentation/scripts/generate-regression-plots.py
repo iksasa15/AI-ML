@@ -96,6 +96,8 @@ def slide_42() -> None:
     x = np.linspace(0, 10, 25)
     y = np.sin(x) + RNG.normal(0, 0.15, x.size)
     xs = np.linspace(0, 10, 300)
+
+    # Bias–variance intuition (side-by-side)
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
     under = np.polyfit(x, y, 1)
     over = np.polyfit(x, y, 12)
@@ -108,6 +110,47 @@ def slide_42() -> None:
     for ax in axes:
         ax.grid(alpha=0.25)
     save("slide-42-1.png")
+
+    # SVR fit example with ε-tube
+    x_svr = np.linspace(0, 10, 40)
+    y_svr = np.sin(x_svr) + 0.3 * x_svr + RNG.normal(0, 0.35, x_svr.size)
+    model = SVR(kernel="rbf", C=100, epsilon=0.45, gamma=0.35).fit(
+        x_svr.reshape(-1, 1), y_svr
+    )
+    xs_svr = np.linspace(0, 10, 400).reshape(-1, 1)
+    pred = model.predict(xs_svr)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.fill_between(
+        xs_svr.ravel(),
+        pred - model.epsilon,
+        pred + model.epsilon,
+        color="#9e59cd",
+        alpha=0.18,
+        label="ε-tube",
+    )
+    ax.scatter(x_svr, y_svr, color="#5234b7", alpha=0.75, s=36, label="Data", zorder=3)
+    ax.plot(xs_svr.ravel(), pred, color="#5234b7", linewidth=2.6, label="SVR (RBF)", zorder=4)
+    ax.plot(
+        xs_svr.ravel(),
+        pred + model.epsilon,
+        color="#9e59cd",
+        linewidth=1.2,
+        linestyle="--",
+        alpha=0.9,
+    )
+    ax.plot(
+        xs_svr.ravel(),
+        pred - model.epsilon,
+        color="#9e59cd",
+        linewidth=1.2,
+        linestyle="--",
+        alpha=0.9,
+    )
+    ax.set_title("SVR Fit Example (RBF + ε-tube)")
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.legend(loc="upper left", framealpha=0.95)
+    ax.grid(alpha=0.25)
     save("slide-42-2.png")
 
 
