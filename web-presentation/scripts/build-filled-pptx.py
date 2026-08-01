@@ -24,6 +24,7 @@ from etra_brand import (  # noqa: E402
     SOFT,
     SOFT_2,
     WHITE,
+    add_diagram,
     add_formula,
     add_text,
     bullets,
@@ -114,6 +115,7 @@ TOPIC_CONTENT = {
             "title": "Standard Workflow",
             "kicker": "Data Preprocessing Template",
             "lead": "Data preprocessing before modeling",
+            "diagram": "preprocess-pipeline.png",
             "steps": [
                 ("1", "Clean", "Handle missing values, errors, and noise."),
                 ("2", "Scale", "Normalize or standardize numeric features."),
@@ -127,6 +129,7 @@ TOPIC_CONTENT = {
         "kicker": "Key Idea",
         "headline": "Train / Test Split",
         "body": "Hold-out partition — train wide, test narrow",
+        "diagram": "train-test-split.png",
         "stats": [
             ("Train", "80%"),
             ("Test", "20%"),
@@ -135,6 +138,7 @@ TOPIC_CONTENT = {
         "detail": {
             "title": "Training Set and Test Set",
             "kicker": "Definitions",
+            "diagram": "train-test-split.png",
             "cards": [
                 (
                     "Training Set",
@@ -156,9 +160,11 @@ TOPIC_CONTENT = {
         "title": "Feature Scaling",
         "kicker": "What is Feature Scaling?",
         "body": "Feature scaling means adjusting feature values to a similar range using methods like standardization and normalization.",
+        "diagram": "scaling-before-after.png",
         "detail": {
             "title": "Feature Scaling",
             "kicker": "Why it matters",
+            "diagram": "scaling-before-after.png",
             "cards": [
                 (
                     "Comparable range",
@@ -226,6 +232,7 @@ TOPIC_CONTENT = {
                 "kicker": "Feature Scaling Methods",
                 "lead": "Normalization transforms each value to a range between 0 and 1.",
                 "formula": "x_{norm} = (x − x_{min}) / (x_{max} − x_{min})",
+                "diagram": "normalization-scale.png",
                 "bullets": [
                     "Useful for models that depend on distances or absolute magnitudes.",
                     "Common choice for algorithms such as KNN and K-Means.",
@@ -237,6 +244,7 @@ TOPIC_CONTENT = {
                 "lead": "Standardization centers data around 0 with a standard deviation of 1.",
                 "formula": "z = (x − μ) / (σ)",
                 "formula_note": "μ = mean of the feature · σ = standard deviation of the feature",
+                "diagram": "standardization-curve.png",
                 "bullets": [
                     "Preferred when features are close to a Gaussian distribution.",
                     "Works well with Logistic Regression, SVM, and Linear Regression.",
@@ -415,6 +423,7 @@ TOPIC_CONTENT = {
                 "title": "Encoding Comparison",
                 "kicker": "Choosing an encoding",
                 "lead": "Three ways to encode categorical variables",
+                "diagram": "encoding-label-vs-onehot.png",
                 "cards": [
                     (
                         "Label Encoding",
@@ -617,6 +626,8 @@ TOPIC_CONTENT = {
             "types_table": {
                 "title": "Types of Missing Data",
                 "kicker": "MCAR · MAR · NMAR",
+                "diagram": "missing-mcar-mar-mnar.png",
+                "diagram_only": True,
                 "headers": ["Type", "Meaning"],
                 "rows": [
                     [
@@ -632,6 +643,7 @@ TOPIC_CONTENT = {
                         "Missingness depends on the missing value itself or unobserved factors.",
                     ],
                 ],
+                "note": "MCAR = random · MAR = explained by observed features · MNAR = tied to the missing value itself.",
             },
             "causes": {
                 "title": "Why Do We Have Missing Data?",
@@ -733,6 +745,7 @@ TOPIC_CONTENT = {
                     "title": "Example: kNN Imputation (k = 2)",
                     "kicker": "Handling Missing Data · MAR",
                     "lead": "For student C, the two nearest students based on Grade and Attendance are A and B.",
+                    "diagram": "knn-neighbors.png",
                     "bullets": [
                         "Use observed features (Grade, Attendance) to find the nearest neighbors.",
                         "Impute student C’s missing value from students A and B (e.g. average).",
@@ -823,6 +836,8 @@ TOPIC_CONTENT = {
                 "preserve_pattern_table": {
                     "title": "Practical Tip: Preserve Missingness Pattern",
                     "kicker": "Handling Missing Data · MNAR",
+                    "diagram": "missingness-indicator.png",
+                    "diagram_only": True,
                     "headers": ["Participant", "Stress (Imputed)", "Stress_Was_Missing"],
                     "rows": [
                         ["1", "2.0", "0"],
@@ -1001,38 +1016,37 @@ def slide_ml_process_overview(prs, total, index):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, mp["title"], mp["subtitle"])
 
+    add_diagram(slide, "ml-process.png", MARGIN, Inches(2.2), Inches(12.0))
+
     col_w = Inches(3.75)
     gap = Inches(0.22)
-    top = Inches(2.35)
+    top = Inches(4.55)
 
     for i, step in enumerate(mp["steps"]):
         x = MARGIN + i * (col_w + gap)
-        soft_card(slide, x, top, col_w, Inches(4.15), fill=SOFT_2 if i % 2 else SOFT)
+        soft_card(slide, x, top, col_w, Inches(1.85), fill=SOFT_2 if i % 2 else SOFT)
         add_text(
             slide,
-            x + Inches(0.35),
-            top + Inches(0.35),
-            Inches(3),
-            Inches(0.3),
-            f"Step {step['number']}",
-            size=12,
-            color=SECONDARY,
-        )
-        add_text(
-            slide,
-            x + Inches(0.35),
-            top + Inches(0.75),
-            Inches(3.1),
-            Inches(0.55),
-            step["title"],
-            size=17,
+            x + Inches(0.25),
+            top + Inches(0.25),
+            Inches(3.2),
+            Inches(0.35),
+            f"Step {step['number']}  ·  {step['title']}",
+            size=13,
             bold=True,
             color=PRIMARY,
         )
-        for bi, bullet in enumerate(step["bullets"]):
-            by = top + Inches(1.55) + Inches(bi * 0.5)
-            add_text(slide, x + Inches(0.35), by, Inches(0.25), Inches(0.35), "–", size=14, color=SECONDARY)
-            add_text(slide, x + Inches(0.6), by, Inches(2.9), Inches(0.4), bullet, size=13, color=MUTED)
+        preview = " · ".join(step["bullets"][:2])
+        add_text(
+            slide,
+            x + Inches(0.25),
+            top + Inches(0.75),
+            Inches(3.2),
+            Inches(0.9),
+            preview,
+            size=12,
+            color=MUTED,
+        )
 
     content_footer(slide, index, total)
 
@@ -1044,7 +1058,9 @@ def slide_ml_process_step(prs, total, index, step):
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, f"Step {step['number']}: {step['title']}", "The Machine Learning Process")
-    bullets(slide, step["bullets"], top=Inches(2.4), size=20)
+    bullets(slide, step["bullets"], top=Inches(2.35), size=18)
+    if step["number"] == "1":
+        add_diagram(slide, "preprocess-pipeline.png", MARGIN, Inches(4.7), Inches(12.0))
     content_footer(slide, index, total)
 
 
@@ -1197,29 +1213,46 @@ def slide_topic(prs, total, index, topic_index, topic):
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, topic, f"Topic {topic_index} of {len(s['topics'])}")
-    soft_card(slide, MARGIN, Inches(2.45), Inches(12.0), Inches(3.7), fill=SOFT)
-    add_text(
-        slide,
-        MARGIN + Inches(0.4),
-        Inches(3.7),
-        Inches(11.2),
-        Inches(0.55),
-        topic,
-        size=26,
-        bold=True,
-        color=PRIMARY,
-        align=PP_ALIGN.CENTER,
-    )
-    add_text(
-        slide,
-        MARGIN + Inches(0.4),
-        Inches(4.35),
-        Inches(11.2),
-        Inches(0.4),
-        s["focus"],
-        size=14,
-        color=MUTED,
-    )
+
+    # Data leakage placeholder gets a warning diagram
+    if topic == "Data leakage":
+        add_diagram(slide, "data-leakage.png", MARGIN, Inches(2.3), Inches(12.0))
+        soft_card(slide, MARGIN, Inches(5.35), Inches(12.0), Inches(1.15), fill=SOFT)
+        add_text(
+            slide,
+            MARGIN + Inches(0.4),
+            Inches(5.6),
+            Inches(11.2),
+            Inches(0.7),
+            "Never let test-set information influence training, scaling, or feature choices.",
+            size=15,
+            color=INK,
+        )
+    else:
+        soft_card(slide, MARGIN, Inches(2.45), Inches(12.0), Inches(3.7), fill=SOFT)
+        add_text(
+            slide,
+            MARGIN + Inches(0.4),
+            Inches(3.7),
+            Inches(11.2),
+            Inches(0.55),
+            topic,
+            size=26,
+            bold=True,
+            color=PRIMARY,
+            align=PP_ALIGN.CENTER,
+        )
+        add_text(
+            slide,
+            MARGIN + Inches(0.4),
+            Inches(4.35),
+            Inches(11.2),
+            Inches(0.4),
+            s["focus"],
+            size=14,
+            color=MUTED,
+            align=PP_ALIGN.CENTER,
+        )
     content_footer(slide, index, total)
     return 1
 
@@ -1232,7 +1265,9 @@ def slide_topic_rich(prs, total, index, content):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, content["title"], content.get("kicker"))
 
-    if content.get("headline"):
+    has_diagram = bool(content.get("diagram"))
+
+    if content.get("headline") and not has_diagram:
         add_text(
             slide,
             MARGIN,
@@ -1244,6 +1279,37 @@ def slide_topic_rich(prs, total, index, content):
             bold=True,
             color=PRIMARY,
         )
+
+    if has_diagram:
+        if content.get("body"):
+            soft_card(slide, MARGIN, Inches(2.2), Inches(12.0), Inches(0.85), fill=SOFT)
+            add_text(
+                slide,
+                MARGIN + Inches(0.35),
+                Inches(2.4),
+                Inches(11.3),
+                Inches(0.5),
+                content["body"],
+                size=15,
+                color=INK,
+            )
+            add_diagram(slide, content["diagram"], MARGIN, Inches(3.25), Inches(12.0))
+        else:
+            add_diagram(slide, content["diagram"], MARGIN, Inches(2.25), Inches(12.0))
+        if content.get("note"):
+            add_text(
+                slide,
+                MARGIN,
+                Inches(6.35),
+                Inches(12),
+                Inches(0.3),
+                content["note"],
+                size=13,
+                color=MUTED,
+            )
+        content_footer(slide, index, total)
+        return
+
     if content.get("body"):
         soft_card(slide, MARGIN, Inches(2.95), Inches(12.0), Inches(1.6), fill=SOFT)
         add_text(
@@ -1323,6 +1389,16 @@ def slide_topic_detail(prs, total, index, detail):
 
     cards = detail.get("cards") or []
     bullet_items = detail.get("bullets") or []
+    has_diagram = bool(detail.get("diagram"))
+
+    if has_diagram:
+        add_diagram(slide, detail["diagram"], MARGIN, Inches(2.2), Inches(12.0))
+        # Compact bullets under the diagram
+        if bullet_items:
+            bullets(slide, bullet_items[:3], top=Inches(5.15), size=14)
+        content_footer(slide, index, total)
+        return
+
     cards_top = Inches(2.3)
     bullets_top = Inches(4.3)
 
@@ -1381,18 +1457,44 @@ def slide_topic_table(prs, total, index, table):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, table["title"], table.get("kicker"))
 
+    # Diagram-first teaching slides (skip dense table when flagged)
+    if table.get("diagram") and table.get("diagram_only"):
+        add_diagram(slide, table["diagram"], MARGIN, Inches(2.2), Inches(12.0))
+        if table.get("note"):
+            soft_card(slide, MARGIN, Inches(5.55), Inches(12.0), Inches(0.95), fill=SOFT)
+            add_text(
+                slide,
+                MARGIN + Inches(0.35),
+                Inches(5.75),
+                Inches(11.3),
+                Inches(0.55),
+                table["note"],
+                size=14,
+                color=MUTED,
+            )
+        content_footer(slide, index, total)
+        return
+
+    table_top = Inches(2.3)
+    if table.get("diagram"):
+        add_diagram(slide, table["diagram"], MARGIN, Inches(2.15), Inches(12.0))
+        table_top = Inches(4.85)
+
     headers = table["headers"]
     rows = table["rows"]
     long_text = any(len(str(cell)) > 28 for row in rows for cell in row)
-    row_h = Inches(0.85) if long_text else Inches(0.55)
-    table_h = Inches(0.5) + row_h * len(rows)
+    row_h = Inches(0.55) if table.get("diagram") else (Inches(0.85) if long_text else Inches(0.55))
+    if table.get("diagram"):
+        long_text = False
+    table_h = Inches(0.45) + row_h * len(rows)
+    max_h = Inches(1.7) if table.get("diagram") else Inches(3.6)
     shape = slide.shapes.add_table(
         rows=1 + len(rows),
         cols=len(headers),
         left=MARGIN,
-        top=Inches(2.3),
+        top=table_top,
         width=Inches(12.0),
-        height=min(table_h, Inches(3.6)),
+        height=min(table_h, max_h),
     )
     tbl = shape.table
     align = PP_ALIGN.LEFT if long_text else PP_ALIGN.CENTER
@@ -1424,8 +1526,8 @@ def slide_topic_table(prs, total, index, table):
             cell.fill.solid()
             cell.fill.fore_color.rgb = SOFT if r % 2 else SOFT_2
 
-    if table.get("note"):
-        note_top = Inches(2.5) + min(table_h, Inches(3.6)) + Inches(0.2)
+    if table.get("note") and not table.get("diagram"):
+        note_top = table_top + min(table_h, max_h) + Inches(0.15)
         soft_card(slide, MARGIN, note_top, Inches(12.0), Inches(0.9), fill=SOFT)
         add_text(
             slide,
@@ -1497,6 +1599,26 @@ def slide_missing_mechanism(prs, total, index, mechanism):
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, mechanism["title"], mechanism.get("kicker"))
+
+    if mechanism.get("diagram"):
+        if mechanism.get("lead"):
+            soft_card(slide, MARGIN, Inches(2.15), Inches(12.0), Inches(0.75), fill=SOFT)
+            add_text(
+                slide,
+                MARGIN + Inches(0.35),
+                Inches(2.3),
+                Inches(11.3),
+                Inches(0.5),
+                mechanism["lead"],
+                size=14,
+                color=INK,
+            )
+            add_diagram(slide, mechanism["diagram"], MARGIN, Inches(3.05), Inches(12.0))
+        else:
+            add_diagram(slide, mechanism["diagram"], MARGIN, Inches(2.2), Inches(12.0))
+        bullets(slide, (mechanism.get("bullets") or [])[:2], top=Inches(5.85), size=14)
+        content_footer(slide, index, total)
+        return
 
     if mechanism.get("lead"):
         soft_card(slide, MARGIN, Inches(2.25), Inches(12.0), Inches(1.35), fill=SOFT)
@@ -1624,6 +1746,36 @@ def slide_encoding_comparison(prs, total, index, comparison):
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, comparison["title"], comparison.get("kicker"))
+
+    if comparison.get("diagram"):
+        if comparison.get("lead"):
+            add_text(
+                slide,
+                MARGIN,
+                Inches(2.15),
+                Inches(12),
+                Inches(0.3),
+                comparison["lead"],
+                size=14,
+                color=MUTED,
+            )
+        add_diagram(slide, comparison["diagram"], MARGIN, Inches(2.5), Inches(12.0))
+        cards = comparison.get("cards") or []
+        if cards:
+            # One-line takeaway under the diagram
+            summary = "  ·  ".join(title for title, _ in cards[:3])
+            add_text(
+                slide,
+                MARGIN,
+                Inches(6.2),
+                Inches(12),
+                Inches(0.35),
+                summary,
+                size=13,
+                color=MUTED,
+            )
+        content_footer(slide, index, total)
+        return
 
     if comparison.get("lead"):
         add_text(
@@ -1992,52 +2144,79 @@ def slide_method_detail(prs, total, index, detail):
     add_text(
         slide,
         MARGIN,
-        Inches(2.3),
+        Inches(2.2),
         Inches(12),
-        Inches(0.45),
+        Inches(0.35),
         detail["lead"],
-        size=16,
+        size=15,
         color=MUTED,
     )
 
-    # Formula card — tall enough for a stacked fraction
-    soft_card(slide, MARGIN, Inches(2.85), Inches(12.0), Inches(2.05), fill=SOFT)
-    add_text(
-        slide,
-        MARGIN + Inches(0.4),
-        Inches(2.95),
-        Inches(11.2),
-        Inches(0.28),
-        "Formula",
-        size=12,
-        bold=True,
-        color=SECONDARY,
-    )
-    add_formula(
-        slide,
-        MARGIN + Inches(0.4),
-        Inches(3.25),
-        Inches(11.2),
-        Inches(1.2),
-        detail["formula"],
-        size=24,
-        bold=True,
-        color=PRIMARY,
-    )
-    if detail.get("formula_note"):
+    if detail.get("diagram"):
+        # Formula on the left, diagram on the right
+        soft_card(slide, MARGIN, Inches(2.65), Inches(5.5), Inches(2.35), fill=SOFT)
+        add_text(
+            slide,
+            MARGIN + Inches(0.3),
+            Inches(2.8),
+            Inches(5.0),
+            Inches(0.25),
+            "Formula",
+            size=11,
+            bold=True,
+            color=SECONDARY,
+        )
+        add_formula(
+            slide,
+            MARGIN + Inches(0.25),
+            Inches(3.15),
+            Inches(5.1),
+            Inches(1.4),
+            detail["formula"],
+            size=16,
+            bold=True,
+            color=PRIMARY,
+        )
+        add_diagram(slide, detail["diagram"], Inches(6.4), Inches(2.65), Inches(6.2))
+        bullets(slide, detail.get("bullets") or [], top=Inches(5.3), size=15)
+    else:
+        soft_card(slide, MARGIN, Inches(2.85), Inches(12.0), Inches(2.05), fill=SOFT)
+        add_text(
+            slide,
+            MARGIN + Inches(0.4),
+            Inches(2.95),
+            Inches(11.2),
+            Inches(0.28),
+            "Formula",
+            size=12,
+            bold=True,
+            color=SECONDARY,
+        )
         add_formula(
             slide,
             MARGIN + Inches(0.4),
-            Inches(4.5),
+            Inches(3.25),
             Inches(11.2),
-            Inches(0.28),
-            detail["formula_note"],
-            size=13,
-            bold=False,
-            color=MUTED,
+            Inches(1.2),
+            detail["formula"],
+            size=24,
+            bold=True,
+            color=PRIMARY,
         )
+        if detail.get("formula_note"):
+            add_formula(
+                slide,
+                MARGIN + Inches(0.4),
+                Inches(4.5),
+                Inches(11.2),
+                Inches(0.28),
+                detail["formula_note"],
+                size=13,
+                bold=False,
+                color=MUTED,
+            )
+        bullets(slide, detail.get("bullets") or [], top=Inches(5.15), size=16)
 
-    bullets(slide, detail.get("bullets") or [], top=Inches(5.15), size=16)
     content_footer(slide, index, total)
 
 
@@ -2120,57 +2299,86 @@ def slide_preprocess_workflow(prs, total, index, workflow):
         add_text(
             slide,
             MARGIN,
-            Inches(2.2),
+            Inches(2.15),
             Inches(12.0),
-            Inches(0.35),
+            Inches(0.3),
             workflow["lead"],
             size=15,
             color=MUTED,
         )
 
+    if workflow.get("diagram"):
+        add_diagram(slide, workflow["diagram"], MARGIN, Inches(2.55), Inches(12.0))
+
     steps = workflow.get("steps") or []
     if steps:
         card_w = Inches(2.8)
         gap = Inches(0.2)
-        top = Inches(2.75)
+        top = Inches(5.0) if workflow.get("diagram") else Inches(2.75)
+        card_h = Inches(1.45) if workflow.get("diagram") else Inches(3.2)
         for i, (number, label, body) in enumerate(steps):
             x = MARGIN + i * (card_w + gap)
-            soft_card(slide, x, top, card_w, Inches(3.2), fill=SOFT)
-            add_text(
-                slide,
-                x + Inches(0.25),
-                top + Inches(0.35),
-                card_w - Inches(0.5),
-                Inches(0.45),
-                number,
-                size=28,
-                bold=True,
-                color=PRIMARY,
-                align=PP_ALIGN.CENTER,
-            )
-            add_text(
-                slide,
-                x + Inches(0.25),
-                top + Inches(1.05),
-                card_w - Inches(0.5),
-                Inches(0.4),
-                label,
-                size=18,
-                bold=True,
-                color=INK,
-                align=PP_ALIGN.CENTER,
-            )
-            add_text(
-                slide,
-                x + Inches(0.25),
-                top + Inches(1.65),
-                card_w - Inches(0.5),
-                Inches(1.2),
-                body,
-                size=13,
-                color=MUTED,
-                align=PP_ALIGN.CENTER,
-            )
+            soft_card(slide, x, top, card_w, card_h, fill=SOFT)
+            if workflow.get("diagram"):
+                add_text(
+                    slide,
+                    x + Inches(0.15),
+                    top + Inches(0.25),
+                    card_w - Inches(0.3),
+                    Inches(0.35),
+                    f"{number}. {label}",
+                    size=14,
+                    bold=True,
+                    color=PRIMARY,
+                    align=PP_ALIGN.CENTER,
+                )
+                add_text(
+                    slide,
+                    x + Inches(0.15),
+                    top + Inches(0.7),
+                    card_w - Inches(0.3),
+                    Inches(0.6),
+                    body,
+                    size=11,
+                    color=MUTED,
+                    align=PP_ALIGN.CENTER,
+                )
+            else:
+                add_text(
+                    slide,
+                    x + Inches(0.25),
+                    top + Inches(0.35),
+                    card_w - Inches(0.5),
+                    Inches(0.45),
+                    number,
+                    size=28,
+                    bold=True,
+                    color=PRIMARY,
+                    align=PP_ALIGN.CENTER,
+                )
+                add_text(
+                    slide,
+                    x + Inches(0.25),
+                    top + Inches(1.05),
+                    card_w - Inches(0.5),
+                    Inches(0.4),
+                    label,
+                    size=18,
+                    bold=True,
+                    color=INK,
+                    align=PP_ALIGN.CENTER,
+                )
+                add_text(
+                    slide,
+                    x + Inches(0.25),
+                    top + Inches(1.65),
+                    card_w - Inches(0.5),
+                    Inches(1.2),
+                    body,
+                    size=13,
+                    color=MUTED,
+                    align=PP_ALIGN.CENTER,
+                )
 
     content_footer(slide, index, total)
 

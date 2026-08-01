@@ -19,6 +19,7 @@ _FORMULA_SUB = re.compile(r"_\{([^}]+)\}")
 ROOT = Path(__file__).resolve().parents[1]
 LOGO = ROOT / "public" / "assets" / "etra-wordmark.png"
 LOGO_FALLBACK = ROOT / "public" / "assets" / "etra-logo.png"
+DIAGRAMS = ROOT / "public" / "assets" / "session1-diagrams"
 FONT_DIR = ROOT / "public" / "font" / "din-next"
 
 # ── Colors (page 06 / 07) ──────────────────────────────────────────────────
@@ -323,6 +324,18 @@ def logo(slide, *, dark=False, height=Inches(0.35)):
     # Keep logo in top-right safe area (page 13)
     pic = slide.shapes.add_picture(str(path), Inches(11.55), Inches(0.45), height=height)
     return pic
+
+
+def add_diagram(slide, name, left, top, width, height=None):
+    """Embed a Session 1 classroom diagram PNG (aspect preserved if height is None)."""
+    path = DIAGRAMS / name
+    if not path.is_file() and not str(name).endswith(".png"):
+        path = DIAGRAMS / f"{name}.png"
+    if not path.is_file():
+        return None
+    if height is None:
+        return slide.shapes.add_picture(str(path), left, top, width=width)
+    return slide.shapes.add_picture(str(path), left, top, width=width, height=height)
 
 
 def content_header(slide, kicker: str, slide_num: str):
