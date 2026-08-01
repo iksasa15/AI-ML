@@ -57,6 +57,10 @@ def no_shadow(shape) -> None:
     spPr.append(spPr.makeelement(qn("a:effectLst"), {}))
 
 
+# Formulas use a widely available face so subscripts/baselines render reliably.
+FORMULA_FONT = "Helvetica Neue"
+
+
 def set_run(run, size, *, bold=False, color=INK, font=None, subscript=False):
     fname = font or _font_name()
     run.font.name = fname
@@ -70,16 +74,18 @@ def set_run(run, size, *, bold=False, color=INK, font=None, subscript=False):
             el = rPr.makeelement(qn(f"a:{tag}"), {})
             rPr.append(el)
         el.set("typeface", fname)
+    # Remove incorrect child-element baselines from older builds
     for el in rPr.findall(qn("a:baseline")):
         rPr.remove(el)
+    # OOXML: baseline is an attribute on a:rPr (−25000 = subscript)
     if subscript:
-        # PowerPoint baseline: -25% of font size ≈ subscript
-        rPr.append(rPr.makeelement(qn("a:baseline"), {"val": "-25000"}))
+        rPr.set("baseline", "-25000")
+    elif "baseline" in rPr.attrib:
+        del rPr.attrib["baseline"]
 
 
-def fill_formula_paragraph(paragraph, value, *, size=18, bold=True, color=PRIMARY):
+def fill_formula_paragraph(paragraph, value, *, size=18, bold=True, color=PRIMARY, font=FORMULA_FONT):
     """Render formula markup. Use _{sub} for subscripts, e.g. x_{min}."""
-    # Clear any default empty run
     p_elem = paragraph._p
     for child in list(p_elem):
         if child.tag.endswith("}r"):
@@ -90,15 +96,20 @@ def fill_formula_paragraph(paragraph, value, *, size=18, bold=True, color=PRIMAR
         if match.start() > pos:
             run = paragraph.add_run()
             run.text = value[pos : match.start()]
-            set_run(run, size, bold=bold, color=color)
+            set_run(run, size, bold=bold, color=color, font=font)
         run = paragraph.add_run()
         run.text = match.group(1)
-        set_run(run, max(size - 6, 11), bold=bold, color=color, subscript=True)
+        set_run(run, max(size - 4, 12), bold=bold, color=color, font=font, subscript=True)
         pos = match.end()
     if pos < len(value):
         run = paragraph.add_run()
         run.text = value[pos:]
-        set_run(run, size, bold=bold, color=color)
+        set_run(run, size, bold=bold, color=color, font=font)
+
+
+_FRAC_RE = re.compile(
+    r"^(?P<lhs>.+?)\s*=\s*\((?P<num>.+?)\)\s*/\s*\((?P<den>.+?)\)$"
+)
 
 
 def add_formula(
@@ -115,7 +126,28 @@ def add_formula(
     align=PP_ALIGN.LEFT,
     anchor=MSO_ANCHOR.TOP,
 ):
-    """Add a formula text box with proper PowerPoint subscripts for _{...}."""
+    """
+    Add a formula. Markup: x_{min}.
+    Division forms like `x_{norm} = (x − x_{min}) / (x_{max} − x_{min})`
+    render as a stacked fraction.
+    """
+    text = value if isinstance(value, str) else str(value)
+    match = _FRAC_RE.match(text.strip())
+    if match:
+        return add_fraction_formula(
+            slide,
+            left,
+            top,
+            width,
+            height,
+            match.group("lhs"),
+            match.group("num"),
+            match.group("den"),
+            size=size,
+            bold=bold,
+            color=color,
+        )
+
     box = slide.shapes.add_textbox(left, top, width, height)
     tf = box.text_frame
     tf.word_wrap = True
@@ -128,8 +160,79 @@ def add_formula(
         pass
     p = tf.paragraphs[0]
     p.alignment = align
-    fill_formula_paragraph(p, value, size=size, bold=bold, color=color)
+    fill_formula_paragraph(p, text, size=size, bold=bold, color=color)
     return box
+
+
+def add_fraction_formula(
+    slide,
+    left,
+    top,
+    width,
+    height,
+    lhs,
+    numerator,
+    denominator,
+    *,
+    size=18,
+    bold=True,
+    color=PRIMARY,
+):
+    """Visual stacked fraction: lhs = num / den."""
+    # Left-hand side
+    lhs_box = slide.shapes.add_textbox(left, top, width * 0.28, height)
+    lhs_tf = lhs_box.text_frame
+    lhs_tf.word_wrap = False
+    try:
+        lhs_tf._txBody.bodyPr.set("anchor", "ctr")
+    except Exception:
+        pass
+    lhs_p = lhs_tf.paragraphs[0]
+    lhs_p.alignment = PP_ALIGN.RIGHT
+    fill_formula_paragraph(lhs_p, f"{lhs} =", size=size, bold=bold, color=color)
+
+    frac_left = left + width * 0.30
+    frac_w = width * 0.68
+    num_h = height * 0.38
+    den_h = height * 0.38
+    gap = height * 0.12
+
+    num_box = slide.shapes.add_textbox(frac_left, top, frac_w, num_h)
+    num_tf = num_box.text_frame
+    num_tf.word_wrap = False
+    try:
+        num_tf._txBody.bodyPr.set("anchor", "b")
+    except Exception:
+        pass
+    num_p = num_tf.paragraphs[0]
+    num_p.alignment = PP_ALIGN.CENTER
+    fill_formula_paragraph(num_p, numerator, size=size, bold=bold, color=color)
+
+    line_y = top + num_h + gap * 0.35
+    line = slide.shapes.add_shape(
+        MSO_SHAPE.RECTANGLE,
+        frac_left + frac_w * 0.05,
+        line_y,
+        frac_w * 0.90,
+        Inches(0.02),
+    )
+    line.fill.solid()
+    line.fill.fore_color.rgb = color
+    line.line.fill.background()
+    no_shadow(line)
+
+    den_box = slide.shapes.add_textbox(frac_left, top + num_h + gap, frac_w, den_h)
+    den_tf = den_box.text_frame
+    den_tf.word_wrap = False
+    try:
+        den_tf._txBody.bodyPr.set("anchor", "t")
+    except Exception:
+        pass
+    den_p = den_tf.paragraphs[0]
+    den_p.alignment = PP_ALIGN.CENTER
+    fill_formula_paragraph(den_p, denominator, size=size, bold=bold, color=color)
+
+    return lhs_box
 
 
 def add_text(

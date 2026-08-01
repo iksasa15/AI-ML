@@ -235,7 +235,7 @@ TOPIC_CONTENT = {
                 "title": "2) Standardization (Z-score Scaling)",
                 "kicker": "Feature Scaling Methods",
                 "lead": "Standardization centers data around 0 with a standard deviation of 1.",
-                "formula": "z = (x − μ) / σ",
+                "formula": "z = (x − μ) / (σ)",
                 "formula_note": "μ = mean of the feature · σ = standard deviation of the feature",
                 "bullets": [
                     "Preferred when features are close to a Gaussian distribution.",
@@ -332,7 +332,7 @@ TOPIC_CONTENT = {
                     "Heights are comparable.",
                 ),
             ],
-            "formula": "z = (x − μ) / σ",
+            "formula": "z = (x − μ) / (σ)",
             "formula_note": "Mean: μ = 60 · Standard deviation: σ = 28.28",
             "values": [
                 ("20", "−1.41"),
@@ -344,7 +344,7 @@ TOPIC_CONTENT = {
             "table": {
                 "title": "Before vs After Standardization",
                 "kicker": "Feature Scaling Example",
-                "formula": "z = (x − μ) / σ",
+                "formula": "z = (x − μ) / (σ)",
                 "formula_note": "Mean: μ = 60 · Standard deviation: σ = 28.28",
                 "headers": [
                     "Original value (x)",
@@ -1527,13 +1527,14 @@ def slide_missing_formula(prs, total, index, result):
     add_formula(
         slide,
         MARGIN + Inches(0.35),
-        Inches(2.6),
+        Inches(2.55),
         Inches(11.3),
-        Inches(0.5),
+        Inches(0.7),
         result["formula"],
-        size=22,
+        size=26,
         bold=True,
         color=PRIMARY,
+        align=PP_ALIGN.CENTER,
     )
     if result.get("lead"):
         add_text(
@@ -1739,15 +1740,15 @@ def slide_norm_table(prs, total, index, table):
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
     title_block(slide, table["title"], table.get("kicker"))
 
-    soft_card(slide, MARGIN, Inches(2.2), Inches(12.0), Inches(1.15), fill=SOFT)
+    soft_card(slide, MARGIN, Inches(2.15), Inches(12.0), Inches(1.55), fill=SOFT)
     add_formula(
         slide,
         MARGIN + Inches(0.35),
-        Inches(2.35),
+        Inches(2.25),
         Inches(11.3),
-        Inches(0.35),
+        Inches(1.05),
         table["formula"],
-        size=18,
+        size=20,
         bold=True,
         color=PRIMARY,
     )
@@ -1755,11 +1756,11 @@ def slide_norm_table(prs, total, index, table):
         add_formula(
             slide,
             MARGIN + Inches(0.35),
-            Inches(2.8),
+            Inches(3.3),
             Inches(11.3),
-            Inches(0.3),
+            Inches(0.28),
             table["formula_note"],
-            size=13,
+            size=12,
             bold=False,
             color=MUTED,
         )
@@ -1770,9 +1771,9 @@ def slide_norm_table(prs, total, index, table):
         rows=1 + len(rows),
         cols=len(headers),
         left=MARGIN,
-        top=Inches(3.55),
+        top=Inches(3.9),
         width=Inches(12.0),
-        height=Inches(2.45),
+        height=Inches(2.2),
     )
     tbl = shape.table
 
@@ -1867,15 +1868,15 @@ def slide_norm_example(prs, total, index, example):
                 color=MUTED,
             )
 
-    soft_card(slide, MARGIN, Inches(3.95), Inches(12.0), Inches(1.15), fill=SOFT_2)
+    soft_card(slide, MARGIN, Inches(3.55), Inches(12.0), Inches(1.55), fill=SOFT_2)
     add_formula(
         slide,
         MARGIN + Inches(0.35),
-        Inches(4.1),
+        Inches(3.65),
         Inches(11.3),
-        Inches(0.35),
+        Inches(1.05),
         example["formula"],
-        size=18,
+        size=20,
         bold=True,
         color=PRIMARY,
     )
@@ -1883,11 +1884,11 @@ def slide_norm_example(prs, total, index, example):
         add_formula(
             slide,
             MARGIN + Inches(0.35),
-            Inches(4.55),
+            Inches(4.7),
             Inches(11.3),
-            Inches(0.3),
+            Inches(0.28),
             example["formula_note"],
-            size=13,
+            size=12,
             bold=False,
             color=MUTED,
         )
@@ -1898,7 +1899,7 @@ def slide_norm_example(prs, total, index, example):
         cell_w = Inches(12.0) / n
         for i, (raw, scaled) in enumerate(values):
             x = MARGIN + i * cell_w
-            soft_card(slide, x + Inches(0.05), Inches(5.3), cell_w - Inches(0.1), Inches(1.15), fill=SOFT)
+            soft_card(slide, x + Inches(0.05), Inches(5.2), cell_w - Inches(0.1), Inches(1.15), fill=SOFT)
             add_text(
                 slide,
                 x + Inches(0.1),
@@ -1999,14 +2000,14 @@ def slide_method_detail(prs, total, index, detail):
         color=MUTED,
     )
 
-    # Formula card
-    soft_card(slide, MARGIN, Inches(2.9), Inches(12.0), Inches(1.55), fill=SOFT)
+    # Formula card — tall enough for a stacked fraction
+    soft_card(slide, MARGIN, Inches(2.85), Inches(12.0), Inches(2.05), fill=SOFT)
     add_text(
         slide,
         MARGIN + Inches(0.4),
-        Inches(3.1),
+        Inches(2.95),
         Inches(11.2),
-        Inches(0.3),
+        Inches(0.28),
         "Formula",
         size=12,
         bold=True,
@@ -2015,11 +2016,11 @@ def slide_method_detail(prs, total, index, detail):
     add_formula(
         slide,
         MARGIN + Inches(0.4),
-        Inches(3.45),
+        Inches(3.25),
         Inches(11.2),
-        Inches(0.45),
+        Inches(1.2),
         detail["formula"],
-        size=22,
+        size=24,
         bold=True,
         color=PRIMARY,
     )
@@ -2027,16 +2028,16 @@ def slide_method_detail(prs, total, index, detail):
         add_formula(
             slide,
             MARGIN + Inches(0.4),
-            Inches(3.95),
+            Inches(4.5),
             Inches(11.2),
-            Inches(0.3),
+            Inches(0.28),
             detail["formula_note"],
             size=13,
             bold=False,
             color=MUTED,
         )
 
-    bullets(slide, detail.get("bullets") or [], top=Inches(4.75), size=16)
+    bullets(slide, detail.get("bullets") or [], top=Inches(5.15), size=16)
     content_footer(slide, index, total)
 
 
