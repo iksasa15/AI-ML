@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Build Week 1 · Session 4 presentation using official ETRA Design System.
+Build Week 1 · Session 5 presentation using official ETRA Design System.
 Content is filled incrementally as teaching blocks are pasted in.
 """
 
@@ -41,228 +41,256 @@ from etra_brand import (  # noqa: E402
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "pdf-exports" / "Week1-Session4-Naive-Bayes-Trees-Evaluation.pptx"
+OUT = ROOT / "pdf-exports" / "Week1-Session5-SVM-Kernel-Methods.pptx"
 PLOTS = ROOT / "public" / "assets" / "plots"
-DIAGRAMS = ROOT / "public" / "assets" / "session4-diagrams"
+DIAGRAMS = ROOT / "public" / "assets" / "session5-diagrams"
 
 SESSION = {
-    "eyebrow": "Week 1  ·  Session 4",
-    "section_number": "04",
-    "section_tag": "S04",
+    "eyebrow": "Week 1  ·  Session 5",
+    "section_number": "05",
+    "section_tag": "S05",
     "section_title": "Classical ML",
-    "subtitle": "Naive Bayes, trees, and evaluation metrics",
+    "subtitle": "SVM and kernel methods for classification",
     "trainer_line": "AI & Machine Learning Bootcamp",
-    "focus": "Naive Bayes, Trees, Evaluation",
+    "focus": "SVM · Kernel Methods",
     "topics": [
-        "Naive Bayes",
-        "Decision trees",
-        "Random Forest",
-        "Precision / recall / F1",
+        "Margin maximization",
+        "Kernel trick",
+        "Support vectors",
+        "Linear vs RBF",
     ],
 }
 
 TOPIC_CONTENT: dict = {
-    "Naive Bayes": {
-        "title": "Naive Bayes: Bayes' Theorem",
-        "kicker": "Core Probability Rule",
-        "body": "Bayes’ theorem updates our belief about A after observing evidence B.",
-        "formula": "P(A|B) = P(B|A) P(A) / P(B)",
-        "formula_tex": r"P(A\mid B)=\dfrac{P(B\mid A)\,P(A)}{P(B)}",
-        "formula_note": "Posterior ∝ Likelihood × Prior",
-        "layout": "formula_example",
+    "Margin maximization": {
+        "title": "Support Vector Machine (SVM): Core Idea",
+        "kicker": "Maximum Margin Classifier",
+        "body": "SVM is a supervised method that finds the best separating boundary (hyperplane) between classes.",
         "bullets": [
-            "P(A|B): posterior probability after observing evidence B.",
-            "P(A): prior belief before seeing evidence.",
-            "P(B|A): likelihood of evidence if class A is true.",
+            "It maximizes the margin between classes.",
+            "Only support vectors (closest points) determine the boundary.",
+            "A larger margin usually improves generalization.",
         ],
-        "note": "P(B): evidence probability (normalization term). This theorem updates beliefs when new evidence appears.",
+        "plot_path": "svm-maximum-margin.png",
+        "note": "SVM Maximum Margin · widest gap between classes · support vectors define the margin.",
         "extra_slides": [
             {
-                "title": "Bayes’ Theorem — Visual Map",
-                "kicker": "Core Probability Rule",
-                "body": "Prior × Likelihood → Posterior (normalized by evidence).",
-                "layout": "diagram",
-                "plot_path": "bayes-theorem.png",
-                "note": "Same rule as the formula slide — different view of the update.",
-            },
-            {
-                "title": "Why Is It Called 'Naive'?",
-                "kicker": "Conditional Independence Assumption",
-                "body": "Naive Bayes assumes features are conditionally independent given the class label.",
-                "bullets": [
-                    "Simplifies parameter estimation and speeds up training.",
-                    "Works well in text classification and high-dimensional sparse data.",
-                    "Can still perform well even when independence is not fully true.",
-                ],
-                "plot_path": "naive-independence.png",
-                "note": "When comparing classes for the same X, P(X) is constant and can be ignored.",
-            },
-            {
-                "title": "Naive Bayes: Practical Notes",
-                "kicker": "Variants & Implementation",
-                "layout": "table",
-                "table": {
-                    "headers": ["Variant", "Typical Data", "Key Idea"],
-                    "rows": [
-                        [
-                            "Gaussian NB",
-                            "Continuous",
-                            "Each feature ~ Gaussian given the class",
-                        ],
-                        [
-                            "Multinomial NB",
-                            "Count-based",
-                            "Common for document word counts",
-                        ],
-                        [
-                            "Bernoulli NB",
-                            "Binary",
-                            "Presence/absence features",
-                        ],
-                    ],
-                },
-                "note": "Handle zero-frequency with smoothing (e.g., Laplace). Scale/preprocess by feature type and variant.",
-            },
-        ],
-    },
-    "Decision trees": {
-        "title": "Decision Tree Classification (CART)",
-        "kicker": "Recursive Partitioning",
-        "body": "Decision Tree Classification predicts class labels by recursively splitting feature space into purer class regions.",
-        "bullets": [
-            "Internal nodes represent feature-based decisions.",
-            "Branches represent decision outcomes.",
-            "Leaf nodes output final class prediction.",
-        ],
-        "plot_path": "decision-tree-split.png",
-        "note": "Decision Tree Split · Root → branches → leaf nodes · split by feature threshold.",
-        "extra_slides": [
-            {
-                "title": "How Splits Are Chosen in Classification Trees",
-                "kicker": "Gini · Entropy · Information Gain",
-                "body": "Splits are chosen greedily to maximize information gain.",
-                "formula": "Gain = Impurity(parent) − weighted impurity(children)",
-                "formula_tex": r"\mathrm{Gain}=I(\mathrm{parent})-\sum_k \frac{|S_k|}{|S|}I(S_k)",
-                "formula_note": "Gini / Entropy measure impurity — lower is better",
-                "bullets": [
-                    "Choose the split that best separates classes at each node.",
-                    "Stop splitting using rules like max depth or minimum samples.",
-                    "Gini impurity and entropy measure node purity — lower is better.",
-                ],
+                "title": "How SVM Classification Works",
+                "kicker": "Decision Function",
+                "body": "New points are classified by the side of the hyperplane they fall on.",
+                "formula": "f(x) = wᵀx + b,  ŷ = sign(f(x))",
+                "formula_tex": r"f(x)=w^{\top}x+b,\quad \hat{y}=\operatorname{sign}(f(x))",
+                "formula_note": "f(x)>0 → class +1 · f(x)<0 → class −1",
                 "layout": "formula_example",
-                "note": "Better splits reduce impurity and increase class purity in child nodes.",
-            },
-            {
-                "title": "Decision Tree: Classification vs Regression",
-                "kicker": "Same Structure · Different Objectives",
-                "layout": "table",
-                "table": {
-                    "headers": ["Aspect", "Classification Tree", "Regression Tree"],
-                    "rows": [
-                        ["Target", "Categorical class", "Continuous value"],
-                        ["Split criterion", "Gini / Entropy", "MSE / MAE"],
-                        [
-                            "Leaf output",
-                            "Class label or class probability",
-                            "Numeric mean/median",
-                        ],
-                    ],
-                },
-                "note": "Both use recursive partitioning (Root → branches → leaves) but optimize different objectives.",
-            },
-            {
-                "title": "Gini Impurity and Entropy",
-                "kicker": "Node Purity Measures",
-                "body": "Gini (CART default) and entropy both measure node impurity — lower is better.",
-                "layout": "diagram",
-                "plot_path": "gini-entropy-formulas.png",
-                "note": "Better splits reduce impurity and increase class purity in child nodes.",
-            },
-        ],
-    },
-    "Random Forest": {
-        "title": "Random Forest Classification",
-        "kicker": "Ensemble Learning by Bagging",
-        "body": "Train many trees on bootstrap samples, then combine predictions by majority vote.",
-        "formula": "ŷ_RF(x) = mode{ŷ_1(x), ŷ_2(x), …, ŷ_T(x)}",
-        "formula_tex": r"\hat{y}_{RF}(x)=\operatorname{mode}\{\hat{y}_1(x),\hat{y}_2(x),\ldots,\hat{y}_T(x)\}",
-        "formula_note": "Majority vote across T trees",
-        "bullets": [
-            "Sample bootstrap data and train many trees.",
-            "Each tree predicts a class for the new sample.",
-        ],
-        "plot_path": "random-forest-ensemble.png",
-        "note": "Final class = majority vote (mode). Regression RF uses the mean instead.",
-        "extra_slides": [
-            {
-                "title": "Why Random Forest Often Outperforms a Single Tree",
-                "kicker": "Bias–Variance Tradeoff",
-                "layout": "table",
-                "table": {
-                    "headers": ["Property", "Single Decision Tree", "Random Forest"],
-                    "rows": [
-                        ["Variance", "High", "Lower (averaging effect)"],
-                        ["Overfitting risk", "Higher", "Lower"],
-                        ["Interpretability", "High", "Moderate"],
-                        [
-                            "Predictive robustness",
-                            "Sensitive to data noise",
-                            "More stable",
-                        ],
-                    ],
-                },
-                "note": "Bagging + feature randomness → less variance without much extra bias.",
-            },
-        ],
-    },
-    "Precision / recall / F1": {
-        "title": "Classification Errors: FP and FN",
-        "kicker": "Error Types",
-        "body": "Not all mistakes are equal — False Positives and False Negatives carry different costs.",
-        "bullets": [
-            "False Positive (Type I): predict positive, actual is negative.",
-            "False Negative (Type II): predict negative, actual is positive.",
-            "Error impact depends on domain costs (healthcare vs spam).",
-        ],
-        "plot_path": "fp-fn-errors.png",
-        "note": "Model evaluation should consider error trade-offs, not accuracy alone.",
-        "extra_slides": [
-            {
-                "title": "Confusion Matrix and Accuracy",
-                "kicker": "Actual vs Predicted Counts",
-                "body": "Confusion matrix counts TP, FP, FN, TN — Accuracy is overall correctness.",
-                "formula": "Accuracy = (TP + TN) / (TP + TN + FP + FN)",
-                "formula_tex": r"\mathrm{Accuracy}=\dfrac{TP+TN}{TP+TN+FP+FN}",
-                "formula_note": "Correct predictions ÷ all predictions",
                 "bullets": [
-                    "TP / TN: correct positives / negatives.",
-                    "FP / FN: false alarms / missed detections.",
+                    "Hard margin: no misclassification allowed (strict separation).",
+                    "Soft margin: allows violations for better robustness with overlap/noise.",
                 ],
-                "plot_path": "confusion-matrix-accuracy.png",
-                "note": "High accuracy can hide poor minority-class performance when data is imbalanced.",
+                "note": "Soft-margin SVM adds penalty C to control the margin–violation tradeoff.",
             },
             {
-                "title": "Confusion Matrix Cells",
-                "kicker": "Metric Meanings",
+                "title": "Why SVM Is Powerful",
+                "kicker": "When SVM Shines",
                 "layout": "table",
                 "table": {
-                    "headers": ["Metric", "Meaning"],
+                    "headers": ["Capability", "Why It Matters"],
                     "rows": [
-                        ["TP", "Correctly predicted positives"],
-                        ["TN", "Correctly predicted negatives"],
-                        ["FP", "Incorrectly predicted positives"],
-                        ["FN", "Incorrectly predicted negatives"],
+                        [
+                            "Maximum-margin principle",
+                            "Better robustness to small perturbations",
+                        ],
+                        [
+                            "Kernel support",
+                            "Handles non-linear class boundaries",
+                        ],
+                        [
+                            "High-dimensional performance",
+                            "Works well in text and sparse feature spaces",
+                        ],
                     ],
                 },
-                "note": "These four counts are the building blocks of precision, recall, and F1.",
+                "note": "Common in text/image features · often effective on small-to-medium datasets. Support vectors define the margin.",
+            },
+        ],
+    },
+    "Kernel trick": {
+        "title": "Kernel Trick: From Non-Linear to Linear Separation",
+        "kicker": "Feature Mapping Without Explicit φ(x)",
+        "body": "When data is not linearly separable in original space, SVM uses kernel functions to separate it in a transformed feature space.",
+        "bullets": [
+            "Avoids explicit high-dimensional mapping in many cases.",
+            "Computes similarity using kernel function K(xᵢ, xⱼ).",
+        ],
+        "plot_path": "kernel-trick.png",
+        "note": "Work with K(xᵢ, xⱼ) = ⟨φ(xᵢ), φ(xⱼ)⟩ instead of building φ(x) by hand.",
+        "extra_slides": [
+            {
+                "title": "Kernel Similarity K(xᵢ, xⱼ)",
+                "kicker": "Kernel Trick",
+                "body": "Avoids explicit high-dimensional mapping · computes similarity with K(xᵢ, xⱼ).",
+                "layout": "diagram",
+                "plot_path": "kernel-similarity.png",
+                "note": "SVM decision depends on kernel similarities to support vectors — not on building φ(x).",
             },
             {
-                "title": "Precision, Recall, and F1-Score",
-                "kicker": "Beyond Accuracy",
-                "body": "Precision and recall trade off · F1 balances both when classes are imbalanced.",
-                "layout": "diagram",
-                "plot_path": "precision-recall-f1.png",
-                "note": "Use F1 especially when class distribution is imbalanced.",
+                "title": "RBF Kernel in SVM",
+                "kicker": "Gaussian Similarity",
+                "body": "RBF measures how close x is to a landmark lᵢ — a common default for non-linear SVM.",
+                "formula": "K(x, lᵢ) = exp(−∥x − lᵢ∥² / (2σ²))",
+                "formula_tex": r"K(x,l_i)=\exp\!\left(-\dfrac{\|x-l_i\|^2}{2\sigma^2}\right)",
+                "formula_note": "Close to lᵢ → K≈1 · far → K≈0",
+                "layout": "formula_example",
+                "bullets": [
+                    "If x is close to landmark lᵢ, similarity is near 1.",
+                    "If x is far, similarity approaches 0.",
+                    "RBF is a common default for non-linear SVM.",
+                ],
+                "note": "Effect of σ: large → smoother, wider boundary (higher bias) · small → tighter, complex boundary (higher variance).",
+            },
+            {
+                "title": "Effect of Sigma (σ) in RBF",
+                "kicker": "Bias–Variance of the Kernel Width",
+                "body": "σ controls how far a landmark’s influence reaches.",
+                "bullets": [
+                    "Large sigma: smoother, wider decision boundary (higher bias).",
+                    "Small sigma: tighter, complex boundary (higher variance / overfitting risk).",
+                ],
+                "plot_path": "rbf-sigma-effect.png",
+                "note": "Tune σ (or gamma) with cross-validation together with C.",
+            },
+            {
+                "title": "Common SVM Kernels",
+                "kicker": "Choosing K(xᵢ, xⱼ)",
+                "layout": "table",
+                "table": {
+                    "headers": ["Kernel", "Typical Use", "Notes"],
+                    "rows": [
+                        [
+                            "Linear",
+                            "High-dimensional sparse data",
+                            "Fast and interpretable margin",
+                        ],
+                        [
+                            "RBF (Gaussian)",
+                            "General non-linear patterns",
+                            "Strong baseline in many tasks",
+                        ],
+                        [
+                            "Polynomial",
+                            "Polynomial-like interactions",
+                            "Degree controls complexity",
+                        ],
+                        [
+                            "Sigmoid",
+                            "Neural-style boundary behavior",
+                            "Less common in practice",
+                        ],
+                    ],
+                },
+                "note": "Start with Linear (text/sparse) or RBF (general). Support vectors still define the margin.",
+            },
+            {
+                "title": "When to Use SVM / When Not",
+                "kicker": "Practical Guidance",
+                "layout": "table",
+                "table": {
+                    "headers": ["Use SVM When", "Avoid SVM When"],
+                    "rows": [
+                        [
+                            "Data is high-dimensional or moderately sized",
+                            "Dataset is very large (training can be expensive)",
+                        ],
+                        [
+                            "Classes are reasonably separable",
+                            "Data is extremely noisy with weak class structure",
+                        ],
+                        [
+                            "You need non-linear boundaries via kernels",
+                            "Kernel matrix becomes too costly (features × samples)",
+                        ],
+                    ],
+                },
+                "note": "Use: medium data, clear margin, high-dim text · Avoid: massive data, heavy noise without tuning.",
+            },
+        ],
+    },
+    "Support vectors": {
+        "title": "Support Vectors — Why They Matter",
+        "kicker": "Sparse Decision Boundary",
+        "body": "Only the points on (or inside) the margin shape the SVM — the rest can be removed without changing the boundary.",
+        "bullets": [
+            "Support vectors define the margin edges.",
+            "Decision depends on a sparse subset of training points.",
+            "Removing non-support points usually leaves the model unchanged.",
+        ],
+        "plot_path": "svm-maximum-margin.png",
+        "note": "Wider margin · fewer influential points · often better generalization.",
+    },
+    "Linear vs RBF": {
+        "title": "SVM vs Logistic Regression vs K-NN",
+        "kicker": "Model Comparison",
+        "layout": "table",
+        "table": {
+            "headers": ["Aspect", "SVM", "Logistic Regression", "K-NN"],
+            "rows": [
+                [
+                    "Primary task",
+                    "Classification (and SVR)",
+                    "Classification",
+                    "Classification",
+                ],
+                [
+                    "Non-linearity",
+                    "Yes, with kernels",
+                    "Limited in linear form",
+                    "Yes (distance-based)",
+                ],
+                [
+                    "Compute profile",
+                    "Can be heavy on large data",
+                    "Usually efficient",
+                    "Heavy at prediction",
+                ],
+                [
+                    "Best for",
+                    "Complex margins, high-dim spaces",
+                    "Fast interpretable baseline",
+                    "Local neighborhood patterns",
+                ],
+            ],
+        },
+        "note": "LogReg: probabilities + τ=0.5 · SVM: max-margin · K-NN: local votes.",
+        "extra_slides": [
+            {
+                "title": "SVM Practical Hyperparameters",
+                "kicker": "What to Tune",
+                "layout": "table",
+                "table": {
+                    "headers": ["Parameter", "Role", "Typical Tuning Direction"],
+                    "rows": [
+                        [
+                            "C",
+                            "Penalty for margin violations",
+                            "Higher C → stricter fit · lower C → smoother margin",
+                        ],
+                        [
+                            "Kernel",
+                            "Similarity function",
+                            "Start with RBF · compare linear/polynomial",
+                        ],
+                        [
+                            "gamma (RBF)",
+                            "Locality of influence",
+                            "Higher gamma → tighter boundary",
+                        ],
+                        [
+                            "degree (poly)",
+                            "Polynomial complexity",
+                            "Increase only when needed",
+                        ],
+                    ],
+                },
+                "note": "Scale features first · tune with CV · support vectors define the margin.",
             },
         ],
     },
@@ -270,8 +298,8 @@ TOPIC_CONTENT: dict = {
 
 BIG_PICTURE = {
     "title": "Where Are We in the Bootcamp?",
-    "focus": "After classification basics — probabilistic models, trees, and metrics.",
-    "current": "S4",
+    "focus": "After trees and metrics — maximum-margin classifiers and kernels.",
+    "current": "S5",
     "weeks": [
         {
             "label": "Week 1",
