@@ -3,8 +3,13 @@
 
 from __future__ import annotations
 
+import io
+import urllib.request
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Rectangle
@@ -12,6 +17,34 @@ from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Rectangl
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "assets" / "session-w3s1-diagrams"
 OUT.mkdir(parents=True, exist_ok=True)
+
+WIKI_UA = "ETRA-NLP-Slides/1.0 (educational classroom deck; Week 3 Session 1)"
+WIKI_ORIGINALS = [
+    (
+        "linguistic-levels.png",
+        "https://upload.wikimedia.org/wikipedia/commons/7/79/Major_levels_of_linguistic_structure.svg",
+    ),
+    (
+        "google-ngram.png",
+        "https://upload.wikimedia.org/wikipedia/commons/c/c2/Google_Ngram.png",
+    ),
+    (
+        "rnn-unfold.png",
+        "https://upload.wikimedia.org/wikipedia/commons/b/b5/Recurrent_neural_network_unfold.svg",
+    ),
+    (
+        "gru-cell.png",
+        "https://upload.wikimedia.org/wikipedia/commons/5/5f/Gated_Recurrent_Unit.svg",
+    ),
+    (
+        "attention-architecture.png",
+        "https://upload.wikimedia.org/wikipedia/commons/4/49/Attention_Is_All_You_Need_-_Encoder-decoder_Architecture.png",
+    ),
+    (
+        "seq2seq-attention.png",
+        "https://upload.wikimedia.org/wikipedia/commons/3/37/Seq2seq_with_RNN_and_attention_mechanism.gif",
+    ),
+]
 
 PRIMARY = "#5234B7"
 SECONDARY = "#9E59CD"
@@ -24,6 +57,54 @@ WHITE = "#FFFFFF"
 LINE = "#E4DCF4"
 ACCENT_OK = "#3D8B6E"
 ACCENT_WARN = "#C45C26"
+
+
+def _http_get(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": WIKI_UA})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return resp.read()
+
+
+def _svg_to_png(data: bytes, dest: Path, width: int = 1600) -> None:
+    import cairosvg
+
+    cairosvg.svg2png(bytestring=data, write_to=str(dest), output_width=width)
+
+
+def _raster_to_png(data: bytes, dest: Path, *, gif_frame: float = 0.65) -> None:
+    from PIL import Image as PILImage
+
+    im = PILImage.open(io.BytesIO(data))
+    if getattr(im, "is_animated", False) and getattr(im, "n_frames", 1) > 1:
+        idx = min(im.n_frames - 1, max(0, int(im.n_frames * gif_frame)))
+        im.seek(idx)
+        im = im.convert("RGBA")
+    elif im.mode not in ("RGB", "RGBA"):
+        im = im.convert("RGBA")
+    elif im.mode == "P":
+        im = im.convert("RGBA")
+    w, h = im.size
+    if w > 1800:
+        h = int(h * (1800 / w))
+        im = im.resize((1800, max(1, h)), PILImage.Resampling.LANCZOS)
+    im.save(dest, format="PNG")
+
+
+def fetch_wikimedia_originals() -> None:
+    """Download the workshop Wikimedia figures students will recognize elsewhere."""
+    for name, url in WIKI_ORIGINALS:
+        dest = OUT / name
+        print(f"  fetching {name}")
+        data = _http_get(url)
+        lower = url.lower()
+        if lower.endswith(".svg"):
+            _svg_to_png(data, dest)
+        else:
+            _raster_to_png(data, dest)
+        from PIL import Image as PILImage
+
+        with PILImage.open(dest) as im:
+            print(f"  wrote {name} ({im.size[0]}x{im.size[1]})")
 
 
 def style_ax(ax, *, spines=False):
@@ -678,7 +759,7 @@ def diagram_transformer() -> None:
 
 def main() -> None:
     print(f"Generating Week 3 Session 1 diagrams → {OUT}")
-    diagram_linguistic_levels()
+    fetch_wikimedia_originals()
     diagram_ambiguity()
     diagram_regex()
     diagram_cleaning()
@@ -688,20 +769,15 @@ def main() -> None:
     diagram_pos()
     diagram_ner()
     diagram_spacy()
-    diagram_google_ngram()
     diagram_ngram()
     diagram_log_probs()
     diagram_embedding_space()
     diagram_static_contextual()
-    diagram_rnn_unfold()
     diagram_rnn_patterns()
-    diagram_gru()
     diagram_seq2seq()
     diagram_encoding_comparison()
     diagram_bottleneck_attention()
-    diagram_attention_architecture()
     diagram_greedy_beam()
-    diagram_seq2seq_attention()
     diagram_transformer()
     print("Done.")
 
