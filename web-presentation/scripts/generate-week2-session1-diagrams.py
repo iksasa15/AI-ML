@@ -781,55 +781,141 @@ def diagram_transfer() -> None:
 
 
 def diagram_rnn_unfold() -> None:
-    fig, ax = plt.subplots(figsize=(10, 3.6))
+    """Wikimedia RNN unfold (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(11.2, 4.15))
     style_ax(ax)
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 3.6)
+    ax.set_xlim(0, 11.2)
+    ax.set_ylim(0, 4.15)
 
-    rounded_box(ax, 0.35, 1.35, 1.7, 1.15, "RNN\ncell", fontsize=12, fc=PRIMARY, color=WHITE)
+    def node(x, y, label, *, fill=SOFT, tc=INK, r=0.22):
+        ax.add_patch(Circle((x, y), r, fc=fill, ec=PRIMARY, lw=1.5, zorder=3))
+        ax.text(x, y, label, ha="center", va="center", fontsize=11, color=tc, fontweight="bold", zorder=4)
+
+    def vstack(x, labels, fills):
+        ys = [0.85, 2.05, 3.2]
+        pts = []
+        for y, lab, fill in zip(ys, labels, fills):
+            tc = WHITE if fill == PRIMARY else PRIMARY
+            node(x, y, lab, fill=fill, tc=tc)
+            pts.append((x, y))
+        return pts
+
+    # Rolled network
+    rx, rh, ro = vstack(1.15, [r"$x$", r"$h$", r"$o$"], [SOFT, PRIMARY, SOFT])
+    arrow(ax, rx[0], rx[1] + 0.24, rh[0], rh[1] - 0.24, lw=1.6)
+    arrow(ax, rh[0], rh[1] + 0.24, ro[0], ro[1] - 0.24, lw=1.6)
+    ax.text(1.48, 1.42, r"$U$", fontsize=10, color=SECONDARY, fontweight="bold")
+    ax.text(1.48, 2.58, r"$V$", fontsize=10, color=SECONDARY, fontweight="bold")
     ax.annotate(
         "",
-        xy=(0.55, 2.7),
-        xytext=(1.85, 2.7),
-        arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=2, mutation_scale=12, connectionstyle="arc3,rad=0.7"),
+        xy=(0.72, 2.28),
+        xytext=(0.72, 1.82),
+        arrowprops=dict(arrowstyle="-|>", color=PRIMARY, lw=1.6, mutation_scale=11, connectionstyle="arc3,rad=0.9"),
     )
-    ax.text(1.2, 3.05, "h", ha="center", fontsize=10, color=SECONDARY, fontweight="bold")
-    ax.text(1.2, 0.95, "rolled", ha="center", fontsize=10, color=MUTED)
+    ax.text(0.28, 2.05, r"$W$", fontsize=10, color=PRIMARY, fontweight="bold")
+    ax.text(1.15, 0.38, "rolled", ha="center", fontsize=10, color=MUTED)
 
-    ax.text(2.4, 1.9, "=", fontsize=18, color=PRIMARY, fontweight="bold", ha="center")
+    ax.text(2.35, 2.05, "=", fontsize=20, color=PRIMARY, fontweight="bold", ha="center", va="center")
+    ax.text(2.35, 3.55, "Unfold", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
 
-    xs = [3.0, 5.15, 7.3]
-    labels = [r"$x_{t-1}$", r"$x_t$", r"$x_{t+1}$"]
-    hs = [r"$h_{t-1}$", r"$h_t$", r"$h_{t+1}$"]
-    for i, (x, xt, ht) in enumerate(zip(xs, labels, hs)):
-        rounded_box(ax, x, 1.45, 1.55, 0.95, "RNN", fontsize=12, fc=SOFT)
-        ax.text(x + 0.77, 0.85, xt, ha="center", fontsize=11, color=MUTED)
-        arrow(ax, x + 0.77, 1.2, x + 0.77, 1.42, color=MUTED, lw=1.6)
-        ax.text(x + 0.77, 2.7, ht, ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
-        arrow(ax, x + 0.77, 2.42, x + 0.77, 2.55, color=PRIMARY, lw=1.6)
-        if i < 2:
-            arrow(ax, x + 1.6, 1.92, xs[i + 1] - 0.05, 1.92)
-    ax.text(6.1, 3.3, "Unfolded through time — shared weights", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    # Unfolded copies
+    xs = [3.55, 5.85, 8.15]
+    xlabels = [r"$x_{t-1}$", r"$x_t$", r"$x_{t+1}$"]
+    hlabels = [r"$h_{t-1}$", r"$h_t$", r"$h_{t+1}$"]
+    olabels = [r"$o_{t-1}$", r"$o_t$", r"$o_{t+1}$"]
+    pts = []
+    for x, xl, hl, ol in zip(xs, xlabels, hlabels, olabels):
+        p = vstack(x, [xl, hl, ol], [SOFT, PRIMARY, SOFT])
+        pts.append(p)
+        arrow(ax, p[0][0], p[0][1] + 0.24, p[1][0], p[1][1] - 0.24, lw=1.5)
+        arrow(ax, p[1][0], p[1][1] + 0.24, p[2][0], p[2][1] - 0.24, lw=1.5)
+        ax.text(x + 0.32, 1.42, r"$U$", fontsize=9, color=SECONDARY, fontweight="bold")
+        ax.text(x + 0.32, 2.58, r"$V$", fontsize=9, color=SECONDARY, fontweight="bold")
+
+    for a, b in zip(pts, pts[1:]):
+        arrow(ax, a[1][0] + 0.24, a[1][1], b[1][0] - 0.24, b[1][1])
+        ax.text((a[1][0] + b[1][0]) / 2, 2.28, r"$W$", ha="center", fontsize=9, color=PRIMARY, fontweight="bold")
+
+    ax.text(2.95, 2.05, "…", fontsize=16, color=MUTED, ha="center", va="center")
+    ax.text(9.55, 2.05, "…", fontsize=16, color=MUTED, ha="center", va="center")
+    ax.text(5.85, 3.92, "Unfolded through time — shared weights", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
     save(fig, "rnn-unfold.png")
 
 
 def diagram_lstm() -> None:
-    fig, ax = plt.subplots(figsize=(10, 3.5))
+    """Wikimedia LSTM unit (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(11.2, 4.2))
     style_ax(ax)
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 3.5)
+    ax.set_xlim(0, 11.2)
+    ax.set_ylim(0, 4.2)
 
-    gates = [
-        ("Forget  fₜ", "erase old cell"),
-        ("Input  iₜ", "write new info"),
-        ("Output  oₜ", "expose as hₜ"),
-    ]
-    for i, (title, body) in enumerate(gates):
-        x = 0.45 + i * 3.2
-        rounded_box(ax, x, 0.7, 2.95, 2.15, "", fc=SOFT if i != 1 else SOFT_2)
-        ax.text(x + 1.47, 2.4, title, ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
-        ax.text(x + 1.47, 1.5, body, ha="center", fontsize=12, color=INK)
-    ax.text(5, 3.2, "LSTM gates control a linear memory path cₜ", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    def gate(x, y, label, *, fill=PRIMARY):
+        ax.add_patch(Circle((x, y), 0.28, fc=fill, ec=PRIMARY, lw=1.4, zorder=4))
+        ax.text(x, y, label, ha="center", va="center", fontsize=10, color=WHITE, fontweight="bold", zorder=5)
+
+    def op(x, y, label):
+        ax.add_patch(Circle((x, y), 0.20, fc=SOFT_2, ec=SECONDARY, lw=1.4, zorder=4))
+        ax.text(x, y, label, ha="center", va="center", fontsize=11, color=PRIMARY, fontweight="bold", zorder=5)
+
+    # Cell-state highway
+    ax.plot([0.55, 10.55], [3.45, 3.45], color=PRIMARY, lw=2.6, zorder=1)
+    ax.annotate(
+        "",
+        xy=(10.7, 3.45),
+        xytext=(10.45, 3.45),
+        arrowprops=dict(arrowstyle="-|>", color=PRIMARY, lw=2.4, mutation_scale=12),
+    )
+    ax.text(0.55, 3.72, r"$c_{t-1}$", fontsize=12, color=PRIMARY, fontweight="bold", ha="left")
+    ax.text(10.55, 3.72, r"$c_t$", fontsize=12, color=PRIMARY, fontweight="bold", ha="right")
+    ax.text(5.6, 3.92, "cell state (additive path)", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+
+    # Inputs
+    ax.text(0.55, 0.42, r"$x_t$", fontsize=12, color=INK, fontweight="bold")
+    ax.text(0.55, 1.22, r"$h_{t-1}$", fontsize=12, color=INK, fontweight="bold")
+    ax.plot([1.15, 2.35], [0.48, 0.48], color=MUTED, lw=1.4)
+    ax.plot([1.25, 2.35], [1.28, 1.28], color=MUTED, lw=1.4)
+    ax.plot([2.35, 2.35], [0.48, 2.55], color=MUTED, lw=1.4)
+
+    # Forget / input / candidate / output gates
+    gate(3.15, 2.55, r"$\sigma$")
+    ax.text(3.15, 2.08, r"$f_t$", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+    ax.plot([2.35, 2.87], [2.55, 2.55], color=MUTED, lw=1.3)
+
+    gate(4.85, 1.55, r"$\sigma$")
+    ax.text(4.85, 1.08, r"$i_t$", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+    ax.plot([2.35, 4.57], [1.55, 1.55], color=MUTED, lw=1.3)
+
+    gate(6.15, 1.55, r"tanh", fill=SECONDARY)
+    ax.text(6.15, 1.08, r"$\tilde g$", ha="center", fontsize=11, color=SECONDARY, fontweight="bold")
+    ax.plot([2.35, 2.35, 5.87], [0.48, 0.85, 1.55], color=MUTED, lw=1.3)
+
+    gate(8.35, 2.15, r"$\sigma$")
+    ax.text(8.35, 1.68, r"$o_t$", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+    ax.plot([2.35, 8.07], [2.15, 2.15], color=MUTED, lw=1.3)
+
+    # Pointwise ops on the highway
+    op(3.15, 3.45, r"$\times$")
+    ax.plot([3.15, 3.15], [2.83, 3.25], color=SECONDARY, lw=1.4)
+
+    op(6.85, 1.55, r"$\times$")
+    ax.plot([5.13, 6.65], [1.55, 1.55], color=SECONDARY, lw=1.3)
+    ax.plot([6.43, 6.65], [1.55, 1.55], color=SECONDARY, lw=1.3)
+
+    op(6.85, 3.45, r"$+$")
+    ax.plot([6.85, 6.85], [1.75, 3.25], color=SECONDARY, lw=1.4)
+
+    gate(8.35, 3.45, r"tanh", fill=SECONDARY)
+    ax.plot([7.05, 8.07], [3.45, 3.45], color=PRIMARY, lw=1.6)
+
+    op(9.25, 2.80, r"$\times$")
+    ax.plot([8.35, 8.35], [2.43, 3.17], color=SECONDARY, lw=1.3)
+    ax.plot([8.63, 9.05], [3.45, 2.92], color=SECONDARY, lw=1.3)
+    ax.plot([8.63, 9.05], [2.15, 2.68], color=SECONDARY, lw=1.3)
+
+    arrow(ax, 9.45, 2.80, 10.35, 2.80)
+    ax.text(10.55, 2.80, r"$h_t$", fontsize=12, color=PRIMARY, fontweight="bold", ha="left", va="center")
+
+    ax.text(5.6, 0.28, "LSTM unit — forget, input, output around a linear cell path", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
     save(fig, "lstm-gates.png")
 
 
@@ -984,6 +1070,42 @@ def diagram_hierarchical() -> None:
     save(fig, "hierarchical-features.png")
 
 
+def diagram_autoencoder() -> None:
+    """Encoder → bottleneck → decoder for the Autoencoders opener."""
+    fig, ax = plt.subplots(figsize=(10.6, 3.8))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.8)
+
+    def layer(x, n, fill, r=0.16):
+        ys = np.linspace(0.85, 2.75, n)
+        pts = []
+        for y in ys:
+            ax.add_patch(Circle((x, y), r, fc=fill, ec=PRIMARY, lw=1.3, zorder=3))
+            pts.append((x, y))
+        return pts
+
+    x_in = layer(1.15, 6, SOFT)
+    enc = layer(3.05, 4, SOFT_2)
+    z = layer(5.3, 2, PRIMARY, r=0.20)
+    dec = layer(7.55, 4, SOFT_2)
+    x_hat = layer(9.45, 6, SOFT)
+
+    for a, b in zip([x_in, enc, z, dec], [enc, z, dec, x_hat]):
+        for xa, ya in a:
+            for xb, yb in b:
+                ax.plot([xa + 0.16, xb - 0.16], [ya, yb], color=SECONDARY, lw=0.55, alpha=0.45, zorder=0)
+
+    ax.text(1.15, 3.15, r"$x$", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(3.05, 3.15, "Encoder  $f$", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 3.15, r"$z = f(x)$", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax.text(7.55, 3.15, "Decoder  $g$", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax.text(9.45, 3.15, r"$\hat{x}$", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 0.42, "bottleneck", ha="center", fontsize=11, color=MUTED)
+    ax.text(5.3, 3.55, "Encoder → bottleneck → decoder", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "autoencoder.png")
+
+
 def main() -> None:
     print(f"Generating Week 2 Session 1 diagrams → {OUT}")
     diagram_ai_ml_dl()
@@ -1011,6 +1133,7 @@ def main() -> None:
     diagram_ann_intro()
     diagram_four_phases()
     diagram_hierarchical()
+    diagram_autoencoder()
     print("Done.")
 
 

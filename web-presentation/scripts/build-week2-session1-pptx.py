@@ -902,55 +902,92 @@ TOPIC_CONTENT: dict = {
                 },
             },
             {
-                "title": "CNN Blocks: Conv–Pool to ResNet",
-                "kicker": "Depth, Downsampling, Residual Learning",
-                "body": "A standard CNN alternates convolution, ReLU, and pooling, then a fully connected head.",
-                "layout": "diagram",
-                "plot_path": "cnn-stack.png",
-                "note": "Max-pool keeps the strongest local response and shrinks the map.",
-            },
-            {
-                "title": "Residual Block",
-                "kicker": "Learn F(x), Keep an Identity Path",
-                "body": "Skip connections let gradients flow backward through identity — this is how 100+ layer nets train.",
+                "title": "CNN Blocks: From Conv-Pool to ResNet",
+                "kicker": "Depth, Regularization, and Residual Learning",
+                "layout": "formula_example",
                 "formula": "y = F(x) + x",
                 "formula_tex": r"y=\mathcal{F}(x)+x",
-                "formula_note": "The block learns the residual F; x is copied forward",
-                "layout": "formula_example",
-                "bullets": [
-                    "AlexNet (2012): scale + ReLU + dropout + GPUs on ImageNet.",
-                    "ResNet (2015): residual mapping F(x)+x; skip paths help gradients.",
-                ],
-                "note": "If F learns zero, the block still acts as identity — easier than learning identity from scratch.",
+                "formula_note": "(residual block learns F, identity carries gradient)",
             },
             {
-                "title": "Residual Path",
-                "kicker": "Shortcut Around the Convolutions",
+                "title": "CNN Blocks: From Conv-Pool to ResNet",
+                "kicker": "Depth, Regularization, and Residual Learning",
+                "layout": "diagram",
+                "plot_path": "cnn-architecture.png",
+            },
+            {
+                "title": "CNN Blocks: From Conv-Pool to ResNet",
+                "kicker": "Depth, Regularization, and Residual Learning",
                 "layout": "diagram",
                 "plot_path": "residual-block.png",
-                "note": "The add node is why early layers still receive a usable gradient.",
+            },
+            {
+                "title": "CNN Blocks: From Conv-Pool to ResNet",
+                "kicker": "Depth, Regularization, and Residual Learning",
+                "bullets": [
+                    "Standard CNN: Alternates Conv2D, Activation (ReLU), and Pooling (Max Pool) layers to extract spatial features and downsample.",
+                    "AlexNet (2012): First large-scale CNN to win ImageNet; used ReLU, dropout, and multi-GPU training.",
+                    "ResNet (2015): Introduced skip (shortcut) connections, allowing gradients to flow back easily through identity mappings. Enables training networks with 100+ layers.",
+                ],
+            },
+            {
+                "title": "CNN Blocks: From Conv-Pool to ResNet",
+                "kicker": "Landmark ideas (simplified)",
+                "layout": "table",
+                "table": {
+                    "headers": ["Model / block", "Idea you should remember"],
+                    "rows": [
+                        [
+                            "Conv + MaxPool",
+                            "Feature extraction + spatial downsampling",
+                        ],
+                        [
+                            "AlexNet",
+                            "Scale + ReLU + data aug on GPUs",
+                        ],
+                        [
+                            "ResNet",
+                            "Residual mapping F(x)+x; skip paths help gradients",
+                        ],
+                    ],
+                },
             },
             {
                 "title": "Transfer Learning with Pretrained Models",
                 "kicker": "Reuse Features, Adapt the Head",
-                "body": "Pretraining on ImageNet learns general filters you can reuse on a smaller target task.",
-                "layout": "diagram",
-                "plot_path": "transfer-learning.png",
-                "note": "Freeze the backbone when data is scarce; fine-tune top blocks when you have more labels.",
+                "bullets": [
+                    "Pretraining on millions of labeled images (e.g. ImageNet) learns general low/mid-level filters (edges, textures) transferable to new domains.",
+                    "Typical recipe: replace the final classifier head; freeze the pretrained backbone for small datasets, or fine-tune with a very small learning rate for larger datasets.",
+                    "Transfer learning dramatically reduces training time and required labeled samples for a new vision task.",
+                ],
             },
             {
-                "title": "Transfer Recipe by Dataset Size",
-                "kicker": "How Much of the Backbone to Touch",
+                "title": "Transfer Learning with Pretrained Models",
+                "kicker": "Reuse Features, Adapt the Head",
+                "layout": "diagram",
+                "plot_path": "transfer-learning.png",
+            },
+            {
+                "title": "Transfer Learning with Pretrained Models",
+                "kicker": "Reuse Features, Adapt the Head",
                 "layout": "table",
                 "table": {
-                    "headers": ["Target dataset", "Strategy"],
+                    "headers": ["Target Dataset Size", "Strategy"],
                     "rows": [
-                        ["Small", "Freeze backbone, train head only"],
-                        ["Medium", "Fine-tune top blocks with a smaller LR"],
-                        ["Large", "Full fine-tune of all layers with a small LR"],
+                        [
+                            "Small target dataset",
+                            "Freeze backbone, train head only",
+                        ],
+                        [
+                            "Medium dataset",
+                            "Fine-tune top blocks with a smaller learning rate",
+                        ],
+                        [
+                            "Large target dataset",
+                            "Full fine-tune of all layers with a small learning rate",
+                        ],
                     ],
                 },
-                "note": "Transfer learning cuts labeled-data need and wall-clock time on most vision tasks.",
             },
         ],
     },
@@ -1000,45 +1037,136 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Sequential Data & Vanilla RNNs",
                 "kicker": "One Transition, Unfolded Through Time",
-                "body": "Text, audio, and sensors have order. Shuffling them destroys meaning.",
+                "layout": "formula_example",
                 "formula": "hₜ = φ(W_hh hₜ₋₁ + W_xh xₜ + b)",
                 "formula_tex": r"h_t=\varphi(W_{hh}h_{t-1}+W_{xh}x_t+b)",
-                "formula_note": "Same weights at every timestep  ·  hₜ is a running memory of the past",
-                "layout": "formula_example",
-                "bullets": [
-                    "Parameter sharing across time is efficient — but long sequences multiply Jacobians.",
-                    "Vanilla RNNs struggle with long-range dependencies (vanishing / exploding gradients).",
-                ],
-                "note": "Backprop through 50 steps ≈ multiplying a matrix 50 times.",
             },
             {
-                "title": "RNN Unfolded Through Time",
-                "kicker": "Rolled Cell = Shared Weights Across Steps",
+                "title": "Sequential Data & Vanilla RNNs",
+                "kicker": "One Transition, Unfolded Through Time",
                 "layout": "diagram",
                 "plot_path": "rnn-unfold.png",
-                "note": "Cannot fully parallelize timesteps — each hₜ waits on hₜ₋₁.",
+            },
+            {
+                "title": "Sequential Data & Vanilla RNNs",
+                "kicker": "One Transition, Unfolded Through Time",
+                "bullets": [
+                    "Sequence modeling: text, audio, and sensor streams have order; shuffling them breaks their semantic meaning.",
+                    "Recurrent Neural Networks (RNN): maintain a recurrent state vector hₜ that acts as a memory summary of the past.",
+                    "The same weights W_hh and W_xh are reused across all timesteps (parameter efficiency), but long-range dependencies suffer from vanishing/exploding gradients.",
+                ],
+            },
+            {
+                "title": "Sequential Data & Vanilla RNNs",
+                "kicker": "One Transition, Unfolded Through Time",
+                "layout": "table",
+                "table": {
+                    "headers": ["Feature", "Limitation"],
+                    "rows": [
+                        [
+                            "Reuses parameters",
+                            "Sequential execution (cannot parallelize steps)",
+                        ],
+                        [
+                            "Tracks state hₜ",
+                            "Cannot hold long-term memories in practice",
+                        ],
+                    ],
+                },
             },
             {
                 "title": "LSTM: Gates for Long-Term Memory",
                 "kicker": "Forget, Input, Output — Cell State Flows Linearly",
-                "body": "LSTM adds a cell state cₜ with an additive path, so signal can travel many steps without vanishing.",
                 "layout": "diagram",
                 "plot_path": "lstm-gates.png",
-                "note": "GRU is a simpler cousin (two gates). Transformers later replace recurrence with attention.",
             },
             {
-                "title": "LSTM Gates",
-                "kicker": "What Each Gate Controls",
+                "title": "LSTM: Gates for Long-Term Memory",
+                "kicker": "Forget, Input, Output — Cell State Flows Linearly",
+                "bullets": [
+                    "Cell state cₜ can accumulate information with an additive path—mitigates vanishing signal compared with plain tanh RNNs.",
+                    "Forget gate fₜ decides how much past cell content to erase; input gate iₜ and candidate g̃ control new information written.",
+                    "Output gate oₜ filters what becomes hidden state hₜ exposed to the next layer or timestep.",
+                ],
+            },
+            {
+                "title": "LSTM: Gates for Long-Term Memory",
+                "kicker": "Forget, Input, Output — Cell State Flows Linearly",
                 "layout": "table",
                 "table": {
                     "headers": ["Gate", "Role (intuition)"],
                     "rows": [
-                        ["Forget  fₜ", "Erase irrelevant history from the cell"],
-                        ["Input  iₜ", "Allow new candidate information in"],
-                        ["Output  oₜ", "Expose part of the cell as hₜ"],
+                        ["fₜ", "Erase irrelevant history from the cell"],
+                        ["iₜ", "Allow new candidate information in"],
+                        ["oₜ", "Expose part of the cell as hₜ"],
                     ],
                 },
-                "note": "The cell is the highway; the gates are the on-ramps and off-ramps.",
+            },
+            {
+                "title": "Phase 4: Generative Models & Reconstruction",
+                "kicker": "Generative Models and Representation Learning",
+                "bullets": [
+                    "Phase 4 explores unsupervised representation learning and basic generative frameworks.",
+                    "Autoencoders are the foundation here: they learn to compress inputs to a low-dimensional bottleneck (latent space) and reconstruct them.",
+                ],
+            },
+            {
+                "title": "Phase 4: Generative Models & Reconstruction",
+                "kicker": "Generative Models and Representation Learning",
+                "layout": "table",
+                "table": {
+                    "headers": ["Concept", "Input", "Goal"],
+                    "rows": [
+                        [
+                            "Autoencoder",
+                            "Unlabeled data x",
+                            "Compress and reconstruct x̂ ≈ x",
+                        ],
+                    ],
+                },
+            },
+            {
+                "title": "Autoencoders (AE): Compression and Reconstruction",
+                "kicker": "Encoder → Bottleneck → Decoder",
+                "layout": "diagram",
+                "plot_path": "ann-intro.png",
+            },
+            {
+                "title": "Autoencoders (AE): Compression and Reconstruction",
+                "kicker": "Encoder → Bottleneck → Decoder",
+                "layout": "diagram",
+                "plot_path": "autoencoder.png",
+            },
+            {
+                "title": "Autoencoders (AE): Compression and Reconstruction",
+                "kicker": "Encoder → Bottleneck → Decoder",
+                "bullets": [
+                    "Encoder f maps input x to a low-dimensional code z = f(x); decoder g maps z back to x̂ ≈ x.",
+                    "The bottleneck forces a compressed representation—useful for denoising (train on noisy→clean), anomaly detection (high recon error = abnormal).",
+                    "Linear AE with MSE relates to PCA when constraints align—nonlinear AE learns curved manifolds.",
+                ],
+            },
+            {
+                "title": "Autoencoders (AE): Compression and Reconstruction",
+                "kicker": "Encoder → Bottleneck → Decoder",
+                "layout": "table",
+                "table": {
+                    "headers": ["Variant", "Idea"],
+                    "rows": [
+                        [
+                            "Denoising AE",
+                            "Corrupt input, reconstruct clean—robust features",
+                        ],
+                        [
+                            "Sparse AE",
+                            "Penalty on activations—encourages informative sparse codes",
+                        ],
+                        [
+                            "Contractive AE",
+                            "Penalize sensitivity of code to small input changes—smoother latent map",
+                        ],
+                    ],
+                },
             },
         ],
     },
