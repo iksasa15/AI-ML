@@ -85,23 +85,34 @@ def arrow(ax, x1, y1, x2, y2, color=SECONDARY, lw=2.2):
 
 
 def diagram_linguistic_levels() -> None:
-    fig, ax = plt.subplots(figsize=(10.6, 3.6))
+    """Wikimedia major linguistic levels (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(7.2, 4.4))
     style_ax(ax)
-    ax.set_xlim(0, 10.6)
-    ax.set_ylim(0, 3.6)
+    ax.set_xlim(0, 7.2)
+    ax.set_ylim(0, 4.4)
     levels = [
-        ("Form", "characters · tokens · syntax"),
-        ("Meaning", "senses · entities · relations"),
-        ("Context", "pragmatics · domain · culture"),
+        ("PRAGMATICS", "meaning in context of discourse"),
+        ("SEMANTICS", "literal meaning of phrases and sentences"),
+        ("SYNTAX", "phrases and sentences"),
+        ("MORPHOLOGY", "words and signs"),
+        ("PHONOLOGY", "phonemes and cheremes"),
+        ("PHONETICS", "speech and sign components"),
     ]
-    for i, (title, body) in enumerate(levels):
-        x = 0.4 + i * 3.4
-        rounded_box(ax, x, 0.55, 3.1, 2.4, "", fc=SOFT if i != 1 else SOFT_2)
-        ax.add_patch(Circle((x + 0.45, 2.5), 0.22, fc=PRIMARY, ec=PRIMARY))
-        ax.text(x + 0.45, 2.5, str(i + 1), ha="center", va="center", fontsize=11, color=WHITE, fontweight="bold")
-        ax.text(x + 1.7, 2.5, title, ha="center", va="center", fontsize=14, color=PRIMARY, fontweight="bold")
-        ax.text(x + 1.55, 1.35, body, ha="center", va="center", fontsize=12, color=INK, linespacing=1.45)
-    ax.text(5.3, 3.3, "NLP must model form, meaning, and context together", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    n = len(levels)
+    cy, top, bottom = 3.6, 3.95, 0.28
+    for i, (title, cap) in enumerate(levels):
+        t = i / (n - 1)
+        half = 1.15 + t * 1.85
+        y1 = top - (i + 1) * ((top - bottom) / n)
+        y0 = top - i * ((top - bottom) / n)
+        xs = [cy - half, cy + half, cy + half + 0.22, cy - half - 0.22]
+        ys = [y0 - 0.02, y0 - 0.02, y1 + 0.02, y1 + 0.02]
+        fc = PRIMARY if i == 0 else (SOFT_2 if i % 2 else SOFT)
+        tc = WHITE if i == 0 else PRIMARY
+        ax.fill(xs, ys, facecolor=fc, edgecolor=PRIMARY, linewidth=1.35, zorder=2)
+        ax.text(cy, (y0 + y1) / 2 + 0.08, title, ha="center", va="center", fontsize=11, color=tc, fontweight="bold", zorder=3)
+        ax.text(cy, (y0 + y1) / 2 - 0.14, cap, ha="center", va="center", fontsize=8, color=WHITE if i == 0 else MUTED, zorder=3)
+    ax.text(3.6, 4.22, "Major levels of linguistic structure", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
     save(fig, "linguistic-levels.png")
 
 

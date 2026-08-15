@@ -72,15 +72,9 @@ TOPIC_CONTENT: dict = {
             "Meaning often depends on pragmatics, domain, and cultural background.",
             "The same sentence can map to multiple valid interpretations.",
         ],
+        "plot_path": "linguistic-levels.png",
         "note": "NLP systems must model form, meaning, and context simultaneously.",
         "extra_slides": [
-            {
-                "title": "NLP Fundamentals and Challenges",
-                "kicker": "Why Natural Language Is Difficult for Machines",
-                "layout": "diagram",
-                "plot_path": "linguistic-levels.png",
-                "note": "NLP systems must model form, meaning, and context simultaneously.",
-            },
             {
                 "title": "Ambiguity in Language: Practical Examples",
                 "kicker": "One String, Two Readings",
