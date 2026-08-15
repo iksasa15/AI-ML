@@ -648,6 +648,69 @@ def diagram_convolution() -> None:
     save(fig, "convolution.png")
 
 
+def diagram_sobel() -> None:
+    """Wikimedia Sobel Y (slide image 2), framed in ETRA colors."""
+    from PIL import Image as PILImage
+
+    src = OUT / "sobel-y-source.png"
+    img = np.asarray(PILImage.open(src).convert("L"), dtype=float)
+    img = 1.0 - (img / 255.0)
+
+    fig, axes = plt.subplots(
+        1,
+        2,
+        figsize=(10.6, 4.05),
+        gridspec_kw={"width_ratios": [1.0, 1.85], "wspace": 0.18},
+    )
+    ax_k, ax_im = axes
+    style_ax(ax_k)
+    ax_k.set_xlim(0, 4)
+    ax_k.set_ylim(0, 4)
+
+    kernel = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+    cell = 0.85
+    ox, oy = 0.72, 0.85
+    for i in range(3):
+        for j in range(3):
+            val = int(kernel[i, j])
+            x = ox + j * cell
+            y = oy + (2 - i) * cell
+            if val == 0:
+                fc, tc = SOFT, MUTED
+            elif val > 0:
+                fc, tc = PRIMARY, WHITE
+            else:
+                fc, tc = SOFT_2, PRIMARY
+            ax_k.add_patch(Rectangle((x, y), cell, cell, facecolor=fc, edgecolor=PRIMARY, lw=1.4))
+            ax_k.text(
+                x + cell / 2,
+                y + cell / 2,
+                f"{val:+d}" if val != 0 else "0",
+                ha="center",
+                va="center",
+                fontsize=14,
+                color=tc,
+                fontweight="bold",
+            )
+    ax_k.text(2.0, 3.62, "Sobel Y kernel", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax_k.text(2.0, 0.38, "Fixed 3×3 filter", ha="center", fontsize=10, color=MUTED)
+
+    ax_im.set_facecolor(SURFACE)
+    for s in ax_im.spines.values():
+        s.set_visible(False)
+    ax_im.set_xticks([])
+    ax_im.set_yticks([])
+    cmap = plt.matplotlib.colors.LinearSegmentedColormap.from_list(
+        "etra_sobel",
+        [WHITE, SOFT, SECONDARY, PRIMARY],
+    )
+    ax_im.imshow(img, cmap=cmap, aspect="auto")
+    ax_im.set_title("Sobel Y on a photograph", fontsize=12, color=PRIMARY, fontweight="bold", pad=8)
+
+    fig.suptitle("Classical edge detector — a kernel that is not learned", fontsize=13, color=PRIMARY, fontweight="bold", y=1.02)
+    save(fig, "sobel-y.png")
+
+
 def diagram_cnn_stack() -> None:
     fig, ax = plt.subplots(figsize=(10, 3.2))
     style_ax(ax)
@@ -937,6 +1000,7 @@ def main() -> None:
     diagram_fit_regimes()
     diagram_cnn_architecture()
     diagram_convolution()
+    diagram_sobel()
     diagram_cnn_stack()
     diagram_residual()
     diagram_transfer()

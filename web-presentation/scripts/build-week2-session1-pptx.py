@@ -830,6 +830,7 @@ TOPIC_CONTENT: dict = {
                 "bullets": [
                     "A color image is usually a tensor of shape H×W×3 (RGB); each entry is an intensity discretized into 8 bits (0–255) before normalization.",
                     "Meaning lives in local neighborhoods: small patches reveal edges; larger contexts reveal objects—hierarchical composition.",
+                    "Augmentation (crop, flip, color jitter) teaches invariance; normalization (e.g., ImageNet mean/std) stabilizes optimization.",
                 ],
             },
             {
@@ -839,27 +840,66 @@ TOPIC_CONTENT: dict = {
                 "plot_path": "cnn-architecture.png",
             },
             {
-                "title": "Convolution: Kernels and Feature Maps",
-                "kicker": "Sliding Linear Filters + Nonlinearity",
-                "body": "A kernel is a small learnable matrix (often 3×3). Multiple kernels produce a stack of feature maps.",
-                "layout": "diagram",
-                "plot_path": "convolution.png",
-                "note": "Classical Sobel filters are fixed. CNNs learn task-specific filters from data.",
+                "title": "Image Data: How Computers “See” Pixels",
+                "kicker": "Tensors, Channels, and Local Structure",
+                "layout": "table",
+                "table": {
+                    "headers": ["Stage", "What happens"],
+                    "rows": [
+                        [
+                            "Raw sensor",
+                            "Quantized intensities per channel per pixel",
+                        ],
+                        [
+                            "Preprocess",
+                            "Resize, crop, normalize, augment",
+                        ],
+                        [
+                            "Model input",
+                            "Batch × C × H × W tensor fed to stem convolutions",
+                        ],
+                    ],
+                },
             },
             {
-                "title": "Convolution Hyperparameters",
-                "kicker": "Neighborhood, Stride, Border",
+                "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
+                "kicker": "Sliding Linear Filters + Nonlinearity",
+                "layout": "diagram",
+                "plot_path": "cnn-architecture.png",
+            },
+            {
+                "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
+                "kicker": "Sliding Linear Filters + Nonlinearity",
+                "bullets": [
+                    "A kernel is a small learnable matrix (e.g., 3×3) that responds to local patterns; multiple kernels produce a stack of feature maps.",
+                    "Classical edge detectors (Sobel, shown) are fixed kernels; CNNs learn task-specific filters from data.",
+                    "Deep stacks widen the receptive field: early layers ≈ edges/textures; late layers ≈ object parts and semantics.",
+                ],
+            },
+            {
+                "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
+                "kicker": "Sliding Linear Filters + Nonlinearity",
+                "layout": "diagram",
+                "plot_path": "convolution.png",
+            },
+            {
+                "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
+                "kicker": "Sliding Linear Filters + Nonlinearity",
+                "layout": "diagram",
+                "plot_path": "sobel-y.png",
+            },
+            {
+                "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
+                "kicker": "Sliding Linear Filters + Nonlinearity",
                 "layout": "table",
                 "table": {
                     "headers": ["Hyperparameter", "Effect"],
                     "rows": [
-                        ["Kernel size", "Immediate neighborhood (3×3 is common)"],
-                        ["Stride", "Downsample spatially when > 1"],
-                        ["Padding", "Keep spatial size (same) or control the border"],
-                        ["Channels / filters", "How many distinct patterns this layer can detect"],
+                        ["Kernel size", "Immediate neighborhood size (3×3 common)"],
+                        ["Stride", "Downsample spatially when >1"],
+                        ["Padding", "Keep spatial size (same padding) or control border"],
                     ],
                 },
-                "note": "Deep stacks widen the receptive field: early ≈ edges; late ≈ object parts.",
             },
             {
                 "title": "CNN Blocks: Conv–Pool to ResNet",
