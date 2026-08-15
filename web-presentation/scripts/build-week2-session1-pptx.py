@@ -764,15 +764,34 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Normalization: Batch Normalization",
                 "kicker": "Stabilize Activations and Speed Up Deep Training",
-                "body": "BN normalizes each channel across the mini-batch, then learns a scale γ and shift β.",
+                "body": "Batch Norm (BN): normalizes activations across the mini-batch for each channel, then learns scale γ and shift β.",
                 "formula": "x̂ = (x − μ_B) / √(σ²_B + ε),   y = γ x̂ + β",
                 "formula_tex": r"\hat{x}=\dfrac{x-\mu_B}{\sqrt{\sigma_B^2+\varepsilon}},\quad y=\gamma\hat{x}+\beta",
                 "layout": "formula_example",
                 "bullets": [
-                    "Stabilizes internal activations and allows a higher learning rate.",
-                    "Layer Norm normalizes across features per example — standard in Transformers and RNNs.",
+                    "It stabilizes internal activations, allowing higher learning rates and reducing dependency on precise initialization.",
+                    "Alternative is Layer Norm (LN) which normalizes across features per example—standard in Transformers and sequence models.",
                 ],
-                "note": "BN uses batch statistics at train time and running averages at inference.",
+            },
+            {
+                "title": "Normalization: Batch Normalization",
+                "kicker": "Stabilize Activations and Speed Up Deep Training",
+                "layout": "table",
+                "table": {
+                    "headers": ["Method", "Normalization dimension", "Typical use-case"],
+                    "rows": [
+                        [
+                            "Batch Norm",
+                            "Across batch and spatial dimensions",
+                            "CNN classifiers, ResNets",
+                        ],
+                        [
+                            "Layer Norm",
+                            "Across features for a single token/example",
+                            "Transformers, RNNs",
+                        ],
+                    ],
+                },
             },
         ],
     },
@@ -865,26 +884,47 @@ TOPIC_CONTENT: dict = {
         ],
     },
     "RNNs & regularization": {
-        "title": "Regularization: Dropout, Weight Decay, Early Stopping",
-        "kicker": "Constrain Capacity to Generalize",
-        "body": "Regularization is how we stop the network from memorizing noise.",
-        "layout": "diagram",
+        "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+        "kicker": "Constrain Capacity to Prevent Overfitting",
+        "body": "Dropout",
+        "bullets": [
+            "Randomly zero out hidden units during training with probability p (e.g., 0.2-0.5) so neurons cannot co-adapt.",
+        ],
         "plot_path": "dropout.png",
-        "note": "Turn dropout OFF at inference (model.eval()) so predictions are deterministic.",
         "extra_slides": [
             {
-                "title": "Regularization Toolkit",
-                "kicker": "Three Levers You Will Use Together",
+                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+                "kicker": "Constrain Capacity to Prevent Overfitting",
+                "bullets": [
+                    "Dropout acts as a powerful implicit ensemble method; disabled during inference (evaluation mode).",
+                    "Weight Decay (L2 regularization): adds a penalty to the loss proportional to the squared sum of weights to keep weights small and smooth.",
+                    "Early stopping: monitor validation loss during training and stop when it ceases to improve for a certain number of epochs (patience).",
+                ],
+            },
+            {
+                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+                "kicker": "Constrain Capacity to Prevent Overfitting",
                 "layout": "table",
                 "table": {
-                    "headers": ["Technique", "Primary action", "At inference"],
+                    "headers": ["Technique", "Primary action", "Inference behavior"],
                     "rows": [
-                        ["Dropout", "Randomly drop hidden units (p ≈ 0.2–0.5)", "Off (weights scaled)"],
-                        ["L2 weight decay", "Shrink weights toward zero", "On (weights are static)"],
-                        ["Early stopping", "Stop at lowest validation loss", "N/A — checkpoint the best"],
+                        [
+                            "Dropout",
+                            "Randomly drops connections",
+                            "Turned OFF (weights scaled)",
+                        ],
+                        [
+                            "L2 Weight Decay",
+                            "Shrinks weights toward zero",
+                            "Turned ON (weights are static)",
+                        ],
+                        [
+                            "Early Stopping",
+                            "Halts training at lowest val loss",
+                            "N/A (model is checkpointed)",
+                        ],
                     ],
                 },
-                "note": "Dropout is an implicit ensemble. Weight decay is a smoothness prior. Early stopping is free.",
             },
             {
                 "title": "Sequential Data & Vanilla RNNs",
