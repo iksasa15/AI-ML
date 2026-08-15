@@ -67,14 +67,19 @@ TOPIC_CONTENT: dict = {
     "NLP Fundamentals": {
         "title": "NLP Fundamentals and Challenges",
         "kicker": "Why Natural Language Is Difficult for Machines",
-        "bullets": [
-            "Natural language is ambiguous, context-dependent, and full of idioms.",
-            "Meaning often depends on pragmatics, domain, and cultural background.",
-            "The same sentence can map to multiple valid interpretations.",
-        ],
+        "layout": "diagram",
         "plot_path": "linguistic-levels.png",
-        "note": "NLP systems must model form, meaning, and context simultaneously.",
         "extra_slides": [
+            {
+                "title": "NLP Fundamentals and Challenges",
+                "kicker": "Why Natural Language Is Difficult for Machines",
+                "bullets": [
+                    "Natural language is ambiguous, context-dependent, and full of idioms.",
+                    "Meaning often depends on pragmatics, domain, and cultural background.",
+                    "The same sentence can map to multiple valid interpretations.",
+                ],
+                "note": "NLP systems must model form, meaning, and context simultaneously.",
+            },
             {
                 "title": "Ambiguity in Language: Practical Examples",
                 "layout": "table",
@@ -333,13 +338,18 @@ TOPIC_CONTENT: dict = {
     "Language Modeling": {
         "title": "NLP Language Modeling with N-grams",
         "kicker": "From Count-Based Prediction to Evaluation",
-        "bullets": [
-            "Language models estimate probabilities over word sequences.",
-            "N-gram models predict the next token from a limited context window.",
-            "This module connects N-gram intuition to modern LLM generation.",
-        ],
+        "layout": "diagram",
         "plot_path": "google-ngram.png",
         "extra_slides": [
+            {
+                "title": "NLP Language Modeling with N-grams",
+                "kicker": "From Count-Based Prediction to Evaluation",
+                "bullets": [
+                    "Language models estimate probabilities over word sequences.",
+                    "N-gram models predict the next token from a limited context window.",
+                    "This module connects N-gram intuition to modern LLM generation.",
+                ],
+            },
             {
                 "title": "Formal Language Modeling Objective",
                 "formula": "P(w₁,…,w_T) = Π P(w_t | w₁,…,w_{t-1})",
@@ -412,11 +422,16 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "How Contextualized Embeddings Work",
                 "kicker": "Words as vectors in embedding space",
+                "layout": "diagram",
+                "plot_path": "embedding-space.png",
+            },
+            {
+                "title": "How Contextualized Embeddings Work",
+                "kicker": "Words as vectors in embedding space",
                 "bullets": [
                     "Static embeddings: one vector per word type.",
                     "Contextual: vector depends on surrounding tokens (ELMo, BERT-style).",
                 ],
-                "plot_path": "embedding-space.png",
             },
             {
                 "title": "How Contextualized Embeddings Work",
@@ -439,6 +454,11 @@ TOPIC_CONTENT: dict = {
                 "title": "RNN Mechanism and Weight Sharing",
                 "formula": "h_t = f(W_x x_t + W_h h_{t-1} + b)",
                 "formula_tex": r"h_t = f(W_x x_t + W_h h_{t-1} + b)",
+                "layout": "formula_example",
+            },
+            {
+                "title": "RNN Mechanism and Weight Sharing",
+                "layout": "diagram",
                 "plot_path": "rnn-unfold.png",
             },
             {
@@ -785,8 +805,11 @@ def content_title(slide, title: str, subtitle: str | None = None):
         )
 
 
-def content_top(title: str) -> float:
-    return 2.42 if len(title or "") > 46 else 2.18
+def content_top(title: str, kicker: str | None = None) -> float:
+    long = len(title or "") > 46
+    title_h = 0.80 if long else 0.62
+    kicker_h = 0.38 if kicker else 0.0
+    return 1.12 + title_h + kicker_h + 0.16
 
 
 def _chars_per_line(width_in: float, size: float) -> int:
@@ -872,7 +895,7 @@ def slide_topic_rich(prs, total, index, content):
     bsize = 14 if dense else 16
 
     if content.get("body"):
-        top = content_top(content["title"])
+        top = content_top(content["title"], content.get("kicker"))
         soft_card(slide, MARGIN, Inches(top), Inches(12.0), Inches(1.15), fill=SOFT)
         add_text(
             slide,
@@ -887,7 +910,7 @@ def slide_topic_rich(prs, total, index, content):
         bullet_top = Inches(top + 1.35)
         bsize = 14 if dense else 15
     else:
-        bullet_top = Inches(content_top(content["title"]))
+        bullet_top = Inches(content_top(content["title"], content.get("kicker")))
         bsize = 14 if dense else 15
 
     item_h, pitch = _bullet_box(items, 11.2, bsize)
@@ -940,7 +963,7 @@ def slide_linear_intro(prs, total, index, content):
     text_w = Inches(5.8) if has_plot else Inches(11.3)
     bullet_w = Inches(5.6) if has_plot else Inches(11.2)
 
-    y_after = content_top(content["title"])
+    y_after = content_top(content["title"], content.get("kicker"))
     if has_body:
         soft_card(slide, MARGIN, Inches(y_after), col_w, Inches(1.2), fill=SOFT)
         add_text(
@@ -1059,7 +1082,7 @@ def slide_formula_example(prs, total, index, content):
     )
     dense = len(items) >= 3 or (len(items) >= 2 and has_note)
 
-    body_top = Inches(content_top(content["title"]))
+    body_top = Inches(content_top(content["title"], content.get("kicker")))
     if content.get("body"):
         soft_card(slide, MARGIN, body_top, Inches(12.0), Inches(0.7), fill=SOFT)
         add_text(
@@ -1158,7 +1181,7 @@ def slide_topic_table(prs, total, index, content):
     body_size = 11 if compact else 13
     header_size = 10 if compact else 12
 
-    table_top = content_top(content["title"])
+    table_top = content_top(content["title"], content.get("kicker"))
     if show_body:
         soft_card(slide, MARGIN, Inches(table_top), Inches(12.0), Inches(0.55), fill=SOFT)
         add_text(
@@ -1242,9 +1265,10 @@ def slide_full_diagram(prs, total, index, content):
     paint_light(slide)
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
-    content_title(slide, content["title"], content.get("kicker"))
+    kicker = content.get("kicker")
+    content_title(slide, content["title"], kicker)
 
-    diagram_top = Inches(content_top(content["title"]))
+    diagram_top = Inches(content_top(content["title"], kicker))
     if content.get("body"):
         add_text(
             slide,
@@ -1260,22 +1284,31 @@ def slide_full_diagram(prs, total, index, content):
 
     plot_name = content.get("plot_path") or content.get("plot")
     folder = DIAGRAMS if content.get("plot_path") else PLOTS
-    soft_card(slide, MARGIN, diagram_top, Inches(12.0), Inches(4.35), fill=SOFT)
-    _add_plot(
+    footer_y = 7.05
+    has_note = bool(content.get("note"))
+    note_band = 0.40 if has_note else 0.10
+    card_h = max(2.6, footer_y - note_band - diagram_top.inches)
+    pad = 0.12
+    soft_card(slide, MARGIN, diagram_top, Inches(12.0), Inches(card_h), fill=SOFT)
+    pic = _add_plot(
         slide,
         plot_name,
         Inches(MARGIN.inches + 0.2),
-        Inches(diagram_top.inches + 0.15),
+        Inches(diagram_top.inches + pad),
         Inches(11.6),
-        Inches(4.05),
+        Inches(card_h - 2 * pad),
         folder=folder,
     )
+    if pic is not None:
+        extra = (card_h - 2 * pad) - pic.height.inches
+        if extra > 0.04:
+            pic.top = Inches(diagram_top.inches + pad + extra / 2)
 
-    if content.get("note"):
+    if has_note:
         add_text(
             slide,
             MARGIN,
-            Inches(6.9),
+            Inches(footer_y - 0.36),
             Inches(12),
             Inches(0.25),
             content["note"],

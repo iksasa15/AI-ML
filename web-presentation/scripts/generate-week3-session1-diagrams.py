@@ -415,22 +415,49 @@ def diagram_rnn_patterns() -> None:
 
 
 def diagram_gru() -> None:
-    """Wikimedia GRU unit (slide image 1), redrawn in ETRA colors."""
+    """Wikimedia GRU unit (slide image 1), redrawn in ETRA colors with connected wires."""
     fig, ax = plt.subplots(figsize=(10.6, 3.8))
     style_ax(ax)
     ax.set_xlim(0, 10.6)
     ax.set_ylim(0, 3.8)
-    ax.plot([0.4, 10.1], [2.85, 2.85], color=PRIMARY, lw=2.4)
-    ax.annotate("", xy=(10.25, 2.85), xytext=(10.05, 2.85), arrowprops=dict(arrowstyle="-|>", color=PRIMARY, lw=2.2, mutation_scale=12))
-    ax.text(0.45, 3.12, r"$h_{t-1}$", fontsize=12, color=PRIMARY, fontweight="bold")
-    ax.text(10.15, 3.12, r"$h_t$", fontsize=12, color=PRIMARY, fontweight="bold", ha="right")
-    ax.text(0.45, 0.55, r"$x_t$", fontsize=12, color=INK, fontweight="bold")
-    ax.plot([0.85, 2.2], [0.62, 0.62], color=MUTED, lw=1.4)
-    ax.plot([2.2, 2.2], [0.62, 2.2], color=MUTED, lw=1.4)
-    gates = [(3.15, r"$r$  reset", r"$\sigma$"), (5.35, r"$z$  update", r"$\sigma$"), (7.55, "candidate", r"$\tanh$")]
-    for x, name, op in gates:
-        rounded_box(ax, x, 1.15, 1.85, 1.35, f"{op}\n{name}", fontsize=12, fc=SOFT if "tanh" not in op else SOFT_2)
-    ax.text(5.3, 3.5, "GRU cell — fewer gates than LSTM, same shared-weight recurrence", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 3.58, "GRU cell — fewer gates than LSTM, same shared-weight recurrence", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+
+    rail_y = 3.08
+    ax.plot([0.55, 9.55], [rail_y, rail_y], color=PRIMARY, lw=2.3)
+    ax.annotate("", xy=(10.15, rail_y), xytext=(9.55, rail_y), arrowprops=dict(arrowstyle="-|>", color=PRIMARY, lw=2.2, mutation_scale=12))
+    ax.text(0.45, 3.28, r"$h_{t-1}$", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax.text(10.2, 3.28, r"$h_t$", fontsize=12, color=PRIMARY, fontweight="bold", ha="right")
+
+    gates = [
+        (1.85, r"$\sigma$", r"$r$  reset", SOFT),
+        (4.25, r"$\sigma$", r"$z$  update", SOFT),
+        (6.65, r"$\tanh$", "candidate", SOFT_2),
+    ]
+    box_w, box_h, box_y = 1.95, 1.15, 1.22
+    for x, op, name, fc in gates:
+        rounded_box(ax, x, box_y, box_w, box_h, f"{op}\n{name}", fontsize=12, fc=fc)
+        cx = x + box_w / 2
+        ax.plot([cx, cx], [rail_y, box_y + box_h], color=SECONDARY, lw=1.5)
+        ax.plot([cx, cx], [0.58, box_y], color=MUTED, lw=1.4)
+
+    ax.text(0.35, 0.42, r"$x_t$", fontsize=12, color=INK, fontweight="bold")
+    ax.plot([0.85, 7.62], [0.50, 0.50], color=MUTED, lw=1.5)
+
+    mix_x = 9.05
+    ax.add_patch(Circle((mix_x, rail_y), 0.16, fc=WHITE, ec=PRIMARY, lw=1.6, zorder=4))
+    ax.text(mix_x, rail_y, "+", ha="center", va="center", fontsize=12, color=PRIMARY, fontweight="bold", zorder=5)
+    cand_top = (6.65 + box_w / 2, box_y + box_h)
+    ax.add_patch(
+        FancyArrowPatch(
+            cand_top,
+            (mix_x, rail_y - 0.16),
+            connectionstyle="arc3,rad=-0.18",
+            arrowstyle="-|>",
+            mutation_scale=12,
+            lw=1.8,
+            color=ACCENT_WARN,
+        )
+    )
     save(fig, "gru-cell.png")
 
 
@@ -488,99 +515,83 @@ def diagram_bottleneck_attention() -> None:
 
 def diagram_attention_architecture() -> None:
     """Wikimedia Attention Is All You Need encoder-decoder (slide image 1), redrawn in ETRA colors."""
-    fig, ax = plt.subplots(figsize=(9.4, 5.8))
+    fig, ax = plt.subplots(figsize=(10.6, 3.85))
     style_ax(ax)
-    ax.set_xlim(0, 9.4)
-    ax.set_ylim(0, 5.8)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.85)
 
     attn_fc, ffn_fc, norm_fc = SOFT, SOFT_2, "#F6EBD4"
     emb_fc, lin_fc, sm_fc = "#F3DCC8", "#E8D4F2", "#DCEBE4"
 
-    def layer(x, y, w, h, text, fc, ec=PRIMARY, fs=9.5, color=INK):
-        rounded_box(ax, x, y, w, h, text, fc=fc, ec=ec, fontsize=fs, color=color, lw=1.3)
+    def layer(x, y, w, h, text, fc, ec=PRIMARY, fs=8.5, color=INK):
+        rounded_box(ax, x, y, w, h, text, fc=fc, ec=ec, fontsize=fs, color=color, lw=1.15)
 
     def skip(x, y0, y1):
         ax.annotate(
             "",
-            xy=(x + 0.12, y1),
-            xytext=(x + 0.12, y0),
-            arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.15, mutation_scale=8, connectionstyle="arc3,rad=-0.55"),
+            xy=(x - 0.12, y1 + 0.08),
+            xytext=(x - 0.12, y0),
+            arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.0, mutation_scale=7, connectionstyle="arc3,rad=-0.85"),
         )
 
-    def up(x, y0, y1):
-        arrow(ax, x, y0, x, y1, color=PRIMARY, lw=1.35)
-
-    # Encoder
-    ex, ew = 0.35, 3.85
-    layer(ex + 0.45, 0.22, 2.95, 0.38, "Input Embedding", emb_fc, ACCENT_WARN, fs=10)
-    ax.add_patch(Circle((ex + 1.925, 0.78), 0.13, fc=WHITE, ec=PRIMARY, lw=1.2, zorder=3))
-    ax.text(ex + 1.925, 0.78, "+", ha="center", va="center", fontsize=10, color=PRIMARY, fontweight="bold", zorder=4)
-    ax.text(ex + 2.45, 0.78, "positional encoding", fontsize=8, color=MUTED, va="center")
-    ax.text(ex + 1.925, 0.08, "Inputs", ha="center", fontsize=9, color=MUTED)
-
+    # Encoder column
+    ex, ew, cx = 0.22, 4.55, 2.48
+    ax.text(cx, 3.68, "Encoder", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
     enc = FancyBboxPatch(
-        (ex, 1.05), ew, 2.55, boxstyle="round,pad=0.02,rounding_size=0.1",
-        linewidth=1.4, edgecolor=PRIMARY, facecolor=WHITE, linestyle="--",
+        (ex, 0.92), ew, 2.58, boxstyle="round,pad=0.02,rounding_size=0.08",
+        linewidth=1.3, edgecolor=PRIMARY, facecolor=WHITE, linestyle="--",
     )
     ax.add_patch(enc)
-    layer(ex + 0.35, 1.22, 3.15, 0.42, "Multi-Head Attention", attn_fc)
-    layer(ex + 0.35, 1.78, 3.15, 0.38, "Add & Norm", norm_fc, ACCENT_WARN)
-    skip(ex + 0.35, 1.43, 1.78)
-    layer(ex + 0.35, 2.32, 3.15, 0.42, "Feed Forward", ffn_fc, SECONDARY)
-    layer(ex + 0.35, 2.88, 3.15, 0.38, "Add & Norm", norm_fc, ACCENT_WARN)
-    skip(ex + 0.35, 2.53, 2.88)
-    up(ex + 1.925, 0.60, 0.65)
-    up(ex + 1.925, 0.91, 1.22)
-    up(ex + 1.925, 1.64, 1.78)
-    up(ex + 1.925, 2.16, 2.32)
-    up(ex + 1.925, 2.74, 2.88)
-    ax.text(ex + ew + 0.08, 2.32, r"$N\times$", fontsize=12, color=PRIMARY, fontweight="bold", va="center")
-    ax.text(ex + 1.925, 3.48, "Encoder", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(ex + ew - 0.18, 3.32, r"$N\times$", fontsize=10, color=PRIMARY, fontweight="bold", ha="right")
+    layer(ex + 0.45, 1.02, 3.55, 0.42, "Multi-Head Attention", attn_fc)
+    layer(ex + 0.45, 1.52, 3.55, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
+    skip(ex + 0.45, 1.23, 1.52)
+    layer(ex + 0.45, 1.98, 3.55, 0.42, "Feed Forward", ffn_fc, SECONDARY)
+    layer(ex + 0.45, 2.48, 3.55, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
+    skip(ex + 0.45, 2.19, 2.48)
+    arrow(ax, cx, 2.86, cx, 2.82, color=PRIMARY, lw=1.2)
+    layer(ex + 0.55, 0.42, 3.35, 0.34, "Input Embedding", emb_fc, ACCENT_WARN, fs=9)
+    ax.add_patch(Circle((cx, 0.84), 0.10, fc=WHITE, ec=PRIMARY, lw=1.1, zorder=3))
+    ax.text(cx, 0.84, "+", ha="center", va="center", fontsize=8, color=PRIMARY, fontweight="bold", zorder=4)
+    ax.text(cx + 0.55, 0.84, "PE", fontsize=8, color=MUTED, va="center")
+    ax.text(cx, 0.18, "Inputs", ha="center", fontsize=8.5, color=MUTED)
+    arrow(ax, cx, 0.76, cx, 0.92, color=PRIMARY, lw=1.2)
 
-    # Decoder
-    dx, dw = 5.15, 3.95
-    layer(dx + 0.5, 0.22, 2.95, 0.38, "Output Embedding", emb_fc, ACCENT_WARN, fs=10)
-    ax.add_patch(Circle((dx + 1.975, 0.78), 0.13, fc=WHITE, ec=PRIMARY, lw=1.2, zorder=3))
-    ax.text(dx + 1.975, 0.78, "+", ha="center", va="center", fontsize=10, color=PRIMARY, fontweight="bold", zorder=4)
-    ax.text(dx + 0.22, 0.08, "Outputs (shifted right)", ha="center", fontsize=8.5, color=MUTED)
-
+    # Decoder column
+    dx, dw, dcx = 5.55, 4.75, 7.90
+    ax.text(dcx, 3.68, "Decoder", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    layer(dcx - 1.55, 3.28, 3.10, 0.28, "Softmax", sm_fc, ACCENT_OK, fs=8.5)
+    layer(dcx - 1.55, 2.94, 3.10, 0.28, "Linear", lin_fc, SECONDARY, fs=8.5)
     dec = FancyBboxPatch(
-        (dx, 1.05), dw, 3.55, boxstyle="round,pad=0.02,rounding_size=0.1",
-        linewidth=1.4, edgecolor=PRIMARY, facecolor=WHITE, linestyle="--",
+        (dx, 0.92), dw, 1.92, boxstyle="round,pad=0.02,rounding_size=0.08",
+        linewidth=1.3, edgecolor=PRIMARY, facecolor=WHITE, linestyle="--",
     )
     ax.add_patch(dec)
-    layer(dx + 0.32, 1.18, 3.3, 0.40, "Masked Multi-Head Attention", attn_fc)
-    layer(dx + 0.32, 1.70, 3.3, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
-    skip(dx + 0.32, 1.38, 1.70)
-    layer(dx + 0.32, 2.16, 3.3, 0.40, "Multi-Head Attention", PRIMARY, PRIMARY, fs=10, color=WHITE)
-    layer(dx + 0.32, 2.68, 3.3, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
-    skip(dx + 0.32, 2.36, 2.68)
-    layer(dx + 0.32, 3.14, 3.3, 0.40, "Feed Forward", ffn_fc, SECONDARY)
-    layer(dx + 0.32, 3.66, 3.3, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
-    skip(dx + 0.32, 3.34, 3.66)
-    up(dx + 1.975, 0.60, 0.65)
-    up(dx + 1.975, 0.91, 1.18)
-    up(dx + 1.975, 1.58, 1.70)
-    up(dx + 1.975, 2.04, 2.16)
-    up(dx + 1.975, 2.50, 2.68)
-    up(dx + 1.975, 3.02, 3.14)
-    up(dx + 1.975, 3.54, 3.66)
-    layer(dx + 0.55, 4.18, 2.85, 0.36, "Linear", lin_fc, SECONDARY)
-    layer(dx + 0.55, 4.66, 2.85, 0.36, "Softmax", sm_fc, ACCENT_OK)
-    up(dx + 1.975, 4.00, 4.18)
-    up(dx + 1.975, 4.54, 4.66)
-    ax.text(dx + 1.975, 5.22, "Output probabilities", ha="center", fontsize=9, color=MUTED)
-    ax.text(dx + dw + 0.02, 2.82, r"$N\times$", fontsize=12, color=PRIMARY, fontweight="bold", va="center")
-    ax.text(dx + 1.975, 5.52, "Decoder", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(dx + dw - 0.42, 2.72, r"$N\times$", fontsize=10, color=PRIMARY, fontweight="bold", ha="right")
+    layer(dx + 0.38, 1.00, 3.95, 0.26, "Masked Multi-Head Attention", attn_fc, fs=8)
+    layer(dx + 0.38, 1.30, 3.95, 0.22, "Add & Norm", norm_fc, ACCENT_WARN, fs=8)
+    skip(dx + 0.38, 1.13, 1.30)
+    layer(dx + 0.38, 1.56, 3.95, 0.26, "Multi-Head Attention", PRIMARY, PRIMARY, fs=8, color=WHITE)
+    layer(dx + 0.38, 1.86, 3.95, 0.22, "Add & Norm", norm_fc, ACCENT_WARN, fs=8)
+    skip(dx + 0.38, 1.69, 1.86)
+    layer(dx + 0.38, 2.12, 3.95, 0.26, "Feed Forward", ffn_fc, SECONDARY, fs=8)
+    layer(dx + 0.38, 2.42, 3.95, 0.22, "Add & Norm", norm_fc, ACCENT_WARN, fs=8)
+    skip(dx + 0.38, 2.25, 2.42)
+    arrow(ax, dcx, 2.64, dcx, 2.94, color=PRIMARY, lw=1.2)
+    arrow(ax, dcx, 3.22, dcx, 3.28, color=PRIMARY, lw=1.2)
+    layer(dx + 0.70, 0.42, 3.35, 0.34, "Output Embedding", emb_fc, ACCENT_WARN, fs=9)
+    ax.add_patch(Circle((dcx, 0.84), 0.10, fc=WHITE, ec=PRIMARY, lw=1.1, zorder=3))
+    ax.text(dcx, 0.84, "+", ha="center", va="center", fontsize=8, color=PRIMARY, fontweight="bold", zorder=4)
+    ax.text(dcx, 0.18, "Outputs (shifted right)", ha="center", fontsize=8, color=MUTED)
+    arrow(ax, dcx, 0.76, dcx, 0.92, color=PRIMARY, lw=1.2)
 
-    # Cross-attention from encoder output into decoder MHA
     ax.annotate(
         "",
-        xy=(dx + 0.32, 2.36),
-        xytext=(ex + ew, 3.26),
-        arrowprops=dict(arrowstyle="-|>", color=ACCENT_WARN, lw=2.0, mutation_scale=12),
+        xy=(dx + 0.38, 1.69),
+        xytext=(ex + ew - 0.02, 2.55),
+        arrowprops=dict(arrowstyle="-|>", color=ACCENT_WARN, lw=1.8, mutation_scale=11),
     )
-    ax.text(4.7, 3.55, "cross-attention", ha="center", fontsize=8.5, color=ACCENT_WARN, fontweight="bold")
+    ax.text(5.15, 3.00, "cross-attention", ha="center", fontsize=8, color=ACCENT_WARN, fontweight="bold")
     save(fig, "attention-architecture.png")
 
 
@@ -630,13 +641,13 @@ def diagram_seq2seq_attention() -> None:
     for i in range(4):
         x = start_x + i * (box_w + gap)
         rounded_box(ax, x, enc_y, box_w, box_h, "", fc=PRIMARY if i == 2 else SOFT, ec=PRIMARY)
-    ax.text(start_x + 2 * (box_w + gap) + box_w / 2, enc_y + box_h / 2, "encoder", ha="center", va="center", fontsize=12, color=WHITE, fontweight="bold")
+    ax.text(start_x + 2 * (box_w + gap) + box_w / 2, enc_y - 0.28, "encoder", ha="center", fontsize=11, color=MUTED)
 
     dec_x, dec_y, dec_w, dec_h = 7.35, 0.55, 2.05, 0.95
     rounded_box(ax, dec_x, dec_y, dec_w, dec_h, "decoder", fontsize=13, fc="#E8D9A8", ec=ACCENT_WARN, color=INK)
 
     src_x = start_x + 2 * (box_w + gap) + box_w / 2
-    src_y = enc_y
+    src_y = enc_y - 0.04
     dst_x, dst_y = dec_x, dec_y + dec_h * 0.55
     ax.add_patch(
         FancyArrowPatch(
