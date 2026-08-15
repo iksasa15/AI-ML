@@ -201,6 +201,12 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Use-Case Fit: When Deep Learning Shines — and When to Skip It",
                 "kicker": "Match Method to Data, Risk, and Budget",
+                "layout": "diagram",
+                "plot_path": "use-case-fit.png",
+            },
+            {
+                "title": "Use-Case Fit: When Deep Learning Shines — and When to Skip It",
+                "kicker": "Match Method to Data, Risk, and Budget",
                 "layout": "table",
                 "table": {
                     "headers": ["Situation", "Typical first choice", "Why"],
@@ -306,6 +312,12 @@ TOPIC_CONTENT: dict = {
                     "Random initialization makes each unit walk a different path in parameter space so they can specialize as feature detectors.",
                     "Frameworks use He (Kaiming) for ReLU and Xavier (Glorot) for Tanh to keep activation scale stable.",
                 ],
+            },
+            {
+                "title": "Weight Initialization: Why Zeros Break Training",
+                "kicker": "Symmetry Must Be Broken",
+                "layout": "diagram",
+                "plot_path": "weight-init.png",
             },
             {
                 "title": "Weight Initialization: Why Zeros Break Training",
@@ -547,6 +559,12 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Loss Functions: MSE vs Cross-Entropy",
                 "kicker": "Match the Loss to the Output and Task",
+                "layout": "diagram",
+                "plot_path": "loss-mse-ce.png",
+            },
+            {
+                "title": "Loss Functions: MSE vs Cross-Entropy",
+                "kicker": "Match the Loss to the Output and Task",
                 "layout": "table",
                 "table": {
                     "headers": ["Task", "Common head + loss"],
@@ -611,6 +629,12 @@ TOPIC_CONTENT: dict = {
                     "Phase 2 is about the art of training: diagnosing fit, controlling gradients, picking optimizers, normalizing, and regularizing.",
                     "Good models are not only “big”—they match capacity to data, monitor validation faithfully, and fail visibly when something is wrong.",
                 ],
+            },
+            {
+                "title": "Phase 2: Optimization & Training Strategy",
+                "kicker": "Stable Optimization + Generalization",
+                "layout": "diagram",
+                "plot_path": "four-phases.png",
             },
             {
                 "title": "Phase 2: Optimization & Training Strategy",
@@ -681,6 +705,12 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Vanishing and Exploding Gradients",
                 "kicker": "Depth Multiplies Jacobians Layer by Layer",
+                "layout": "diagram",
+                "plot_path": "vanishing-exploding.png",
+            },
+            {
+                "title": "Vanishing and Exploding Gradients",
+                "kicker": "Depth Multiplies Jacobians Layer by Layer",
                 "layout": "table",
                 "table": {
                     "headers": ["Symptom", "Likely cause", "Mitigation"],
@@ -712,6 +742,12 @@ TOPIC_CONTENT: dict = {
                     "SGD is often preferred in computer vision for generalization, while Adam is the default starting point for Transformers and general MLPs.",
                 ],
                 "note": "Learning rate (LR) is the single most important hyperparameter to tune (typically searched on a log grid, e.g., 1e-4, 1e-3, 1e-2).",
+            },
+            {
+                "title": "Optimizers: SGD and Adam",
+                "kicker": "Learning rate, Momentum, and Adaptive Steps",
+                "layout": "diagram",
+                "plot_path": "optimizers.png",
             },
             {
                 "title": "Optimizers: SGD and Adam",
@@ -769,6 +805,12 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Normalization: Batch Normalization",
                 "kicker": "Stabilize Activations and Speed Up Deep Training",
+                "layout": "diagram",
+                "plot_path": "bn-vs-ln.png",
+            },
+            {
+                "title": "Normalization: Batch Normalization",
+                "kicker": "Stabilize Activations and Speed Up Deep Training",
                 "layout": "table",
                 "table": {
                     "headers": ["Method", "Normalization dimension", "Typical use-case"],
@@ -802,6 +844,12 @@ TOPIC_CONTENT: dict = {
                     "Weight Decay (L2 regularization): adds a penalty to the loss proportional to the squared sum of weights to keep weights small and smooth.",
                     "Early stopping: monitor validation loss during training and stop when it ceases to improve for a certain number of epochs (patience).",
                 ],
+            },
+            {
+                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+                "kicker": "Constrain Capacity to Prevent Overfitting",
+                "layout": "diagram",
+                "plot_path": "early-stopping.png",
             },
             {
                 "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
@@ -842,6 +890,12 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Phase 3: Specialized Architectures (Vision & Sequences)",
                 "kicker": "Images vs Ordered Sequences",
+                "layout": "diagram",
+                "plot_path": "images-vs-sequences.png",
+            },
+            {
+                "title": "Phase 3: Specialized Architectures (Vision & Sequences)",
+                "kicker": "Images vs Ordered Sequences",
                 "layout": "table",
                 "table": {
                     "headers": ["Modality", "Core structure", "Representative layers"],
@@ -867,6 +921,12 @@ TOPIC_CONTENT: dict = {
                     "Meaning lives in local neighborhoods: small patches reveal edges; larger contexts reveal objects—hierarchical composition.",
                     "Augmentation (crop, flip, color jitter) teaches invariance; normalization (e.g., ImageNet mean/std) stabilizes optimization.",
                 ],
+            },
+            {
+                "title": "Image Data: How Computers “See” Pixels",
+                "kicker": "Tensors, Channels, and Local Structure",
+                "layout": "diagram",
+                "plot_path": "image-tensor.png",
             },
             {
                 "title": "Image Data: How Computers “See” Pixels",
@@ -916,6 +976,12 @@ TOPIC_CONTENT: dict = {
                 "kicker": "Sliding Linear Filters + Nonlinearity",
                 "layout": "diagram",
                 "plot_path": "sobel-y.png",
+            },
+            {
+                "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
+                "kicker": "Sliding Linear Filters + Nonlinearity",
+                "layout": "diagram",
+                "plot_path": "conv-hyperparams.png",
             },
             {
                 "title": "Convolution: Kernels, Edge Filters, and Feature Maps",

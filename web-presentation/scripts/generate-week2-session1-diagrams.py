@@ -1114,6 +1114,288 @@ def diagram_autoencoder() -> None:
     save(fig, "autoencoder.png")
 
 
+def diagram_use_case_fit() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.7))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.7)
+
+    rounded_box(ax, 0.35, 0.45, 4.75, 2.75, "", fc=SOFT)
+    ax.add_patch(Circle((0.85, 2.75), 0.18, fc=ACCENT_OK, ec=ACCENT_OK))
+    ax.text(0.85, 2.75, "✓", ha="center", va="center", fontsize=11, color=WHITE, fontweight="bold")
+    ax.text(2.85, 2.75, "DL shines", ha="center", va="center", fontsize=14, color=PRIMARY, fontweight="bold")
+    ax.text(
+        2.72,
+        1.45,
+        "Images · text · speech\nLarge data or pretraining\nHierarchical composition",
+        ha="center",
+        va="center",
+        fontsize=12,
+        color=INK,
+        linespacing=1.45,
+    )
+
+    rounded_box(ax, 5.5, 0.45, 4.75, 2.75, "", fc=SOFT_2, ec=ACCENT_WARN)
+    ax.add_patch(Circle((6.0, 2.75), 0.18, fc=ACCENT_WARN, ec=ACCENT_WARN))
+    ax.text(6.0, 2.75, "–", ha="center", va="center", fontsize=14, color=WHITE, fontweight="bold")
+    ax.text(7.95, 2.75, "Skip or delay DL", ha="center", va="center", fontsize=14, color=ACCENT_WARN, fontweight="bold")
+    ax.text(
+        7.88,
+        1.45,
+        "Tiny tabular sets\nNeed legal explanation\nSimple baseline already wins",
+        ha="center",
+        va="center",
+        fontsize=12,
+        color=INK,
+        linespacing=1.45,
+    )
+
+    ax.text(5.3, 3.42, "Match method to data, risk, and budget", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "use-case-fit.png")
+
+
+def diagram_weight_init() -> None:
+    fig, axes = plt.subplots(1, 2, figsize=(10.6, 3.7))
+    fig.patch.set_facecolor(SURFACE)
+
+    def net(ax, title, values, fills):
+        style_ax(ax)
+        ax.set_xlim(0, 5)
+        ax.set_ylim(0, 3.7)
+        ax.set_title(title, fontsize=12, color=PRIMARY, fontweight="bold", pad=8)
+        xs = [0.9, 2.5, 4.1]
+        counts = [2, 3, 1]
+        coords = []
+        for x, n, vals, fill in zip(xs, counts, values, fills):
+            ys = np.linspace(0.7, 2.7, n)
+            layer = []
+            for y, v in zip(ys, vals):
+                ax.add_patch(Circle((x, y), 0.28, fc=fill, ec=PRIMARY, lw=1.4, zorder=3))
+                ax.text(x, y, v, ha="center", va="center", fontsize=9, color=WHITE if fill == PRIMARY else PRIMARY, fontweight="bold", zorder=4)
+                layer.append((x, y))
+            coords.append(layer)
+        for a, b in zip(coords, coords[1:]):
+            for xa, ya in a:
+                for xb, yb in b:
+                    ax.plot([xa + 0.28, xb - 0.28], [ya, yb], color=SECONDARY, lw=0.8, alpha=0.55, zorder=0)
+
+    net(axes[0], "All zeros — units stay identical", [["x1", "x2"], ["0.2", "0.2", "0.2"], ["ŷ"]], [SOFT, PRIMARY, SOFT])
+    net(axes[1], "He / Xavier — units specialize", [["x1", "x2"], ["0.8", "−0.3", "0.1"], ["ŷ"]], [SOFT, PRIMARY, SOFT])
+    fig.suptitle("Random init breaks symmetry", fontsize=13, color=PRIMARY, fontweight="bold", y=1.02)
+    save(fig, "weight-init.png")
+
+
+def diagram_loss_mse_ce() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.6))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.6)
+
+    rounded_box(ax, 0.3, 0.45, 4.85, 2.65, "", fc=SOFT)
+    ax.text(2.72, 2.72, "MSE — regression", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.plot([0.9, 4.4], [1.15, 1.15], color=LINE, lw=1.4)
+    ax.add_patch(Circle((1.7, 1.15), 0.08, fc=MUTED, ec=MUTED))
+    ax.add_patch(Circle((3.55, 1.15), 0.08, fc=PRIMARY, ec=PRIMARY))
+    ax.annotate("", xy=(3.55, 1.55), xytext=(1.7, 1.55), arrowprops=dict(arrowstyle="<->", color=ACCENT_WARN, lw=1.8))
+    ax.text(2.62, 1.78, r"$(ŷ - y)^2$", ha="center", fontsize=12, color=ACCENT_WARN, fontweight="bold")
+    ax.text(1.7, 0.78, r"$y$", ha="center", fontsize=11, color=MUTED)
+    ax.text(3.55, 0.78, r"$ŷ$", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+
+    rounded_box(ax, 5.45, 0.45, 4.85, 2.65, "", fc=SOFT_2, ec=SECONDARY)
+    ax.text(7.88, 2.72, "Cross-entropy — classes", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    labels = ["cat", "dog", "bird"]
+    probs = [0.70, 0.22, 0.08]
+    for i, (lab, p) in enumerate(zip(labels, probs)):
+        y = 2.15 - i * 0.48
+        ax.add_patch(Rectangle((5.85, y - 0.14), 2.6 * p / 0.70, 0.28, fc=PRIMARY if i == 0 else SOFT, ec=PRIMARY, lw=1.1))
+        ax.text(8.7, y, f"{lab}  {p:.2f}", ha="left", va="center", fontsize=11, color=INK)
+    ax.text(7.88, 0.68, r"$-\log \hat p_y$  on the true class", ha="center", fontsize=11, color=MUTED)
+
+    ax.text(5.3, 3.35, "Loss matches the task head", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "loss-mse-ce.png")
+
+
+def diagram_vanishing_exploding() -> None:
+    fig, axes = plt.subplots(1, 2, figsize=(10.6, 3.7))
+    fig.patch.set_facecolor(SURFACE)
+    layers = np.arange(1, 7)
+    vanish = 1.0 * (0.45 ** (6 - layers))
+    explode = 0.08 * (2.1 ** (layers - 1))
+    panels = [
+        (axes[0], vanish, "Vanishing — signal dies", ACCENT_WARN, (0, 1.15)),
+        (axes[1], explode, "Exploding — updates blow up", PRIMARY, (0, 4.2)),
+    ]
+    for ax, vals, title, color, ylim in panels:
+        style_ax(ax, spines=True)
+        ax.set_facecolor(SURFACE)
+        for s in ("top", "right"):
+            ax.spines[s].set_visible(False)
+        ax.spines["left"].set_color(LINE)
+        ax.spines["bottom"].set_color(LINE)
+        ax.set_ylim(*ylim)
+        ax.set_xticks(layers)
+        ax.set_xticklabels([f"L{n}" for n in layers], fontsize=10, color=MUTED)
+        ax.set_yticks([])
+        ax.set_title(title, fontsize=12, color=PRIMARY, fontweight="bold", pad=8)
+        ax.bar(layers, vals, color=color, width=0.55, edgecolor=WHITE)
+        ax.set_xlabel("layer (early → late)", fontsize=10, color=MUTED, labelpad=6)
+    fig.suptitle(r"$|\mathrm{gradient}|$ through depth", fontsize=13, color=PRIMARY, fontweight="bold", y=1.03)
+    fig.tight_layout(rect=(0, 0, 1, 0.92))
+    save(fig, "vanishing-exploding.png")
+
+
+def diagram_optimizers() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.6))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.6)
+
+    # valley
+    xs = np.linspace(0.6, 4.9, 80)
+    ax.plot(xs, 1.55 + 0.9 * ((xs - 2.75) / 1.6) ** 2, color=LINE, lw=2.2)
+    path = np.array([[1.1, 2.55], [1.85, 2.35], [2.2, 1.95], [2.55, 1.72], [2.85, 1.58]])
+    ax.plot(path[:, 0], path[:, 1], color=SECONDARY, lw=2.0)
+    ax.annotate("", xy=path[-1], xytext=path[-2], arrowprops=dict(arrowstyle="-|>", color=PRIMARY, lw=1.8, mutation_scale=12))
+    ax.text(2.75, 3.05, "SGD + momentum", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax.text(2.75, 0.55, "velocity damps ravines", ha="center", fontsize=10, color=MUTED)
+
+    # adam bars
+    rounded_box(ax, 5.7, 0.7, 4.5, 2.4, "", fc=SOFT_2, ec=SECONDARY)
+    ax.text(7.95, 2.75, "Adam — per-parameter steps", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+    names = [r"$\theta_1$", r"$\theta_2$", r"$\theta_3$"]
+    steps = [0.9, 0.35, 0.6]
+    for i, (n, s) in enumerate(zip(names, steps)):
+        x = 6.2 + i * 1.35
+        ax.add_patch(Rectangle((x, 1.05), 0.7, 1.2 * s, fc=PRIMARY if i == 0 else SOFT, ec=PRIMARY, lw=1.2))
+        ax.text(x + 0.35, 0.88, n, ha="center", fontsize=11, color=INK, fontweight="bold")
+    ax.text(7.95, 0.45, "large grad → smaller η", ha="center", fontsize=10, color=MUTED)
+
+    ax.text(5.3, 3.35, "Same loss, different step rules", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "optimizers.png")
+
+
+def diagram_images_vs_sequences() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.7))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.7)
+
+    rounded_box(ax, 0.3, 0.45, 4.85, 2.7, "", fc=SOFT)
+    ax.text(2.72, 2.8, "Images — spatial grid", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    for i in range(4):
+        for j in range(4):
+            ax.add_patch(Rectangle((1.55 + j * 0.42, 0.85 + i * 0.42), 0.42, 0.42, fc=SOFT_2 if (i + j) % 2 else WHITE, ec=PRIMARY, lw=1.0))
+    ax.text(2.72, 0.58, "Conv2D · pooling · residual", ha="center", fontsize=10, color=MUTED)
+
+    rounded_box(ax, 5.45, 0.45, 4.85, 2.7, "", fc=SOFT_2, ec=SECONDARY)
+    ax.text(7.88, 2.8, "Sequences — order", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    toks = [r"$x_{t-1}$", r"$x_t$", r"$x_{t+1}$"]
+    for i, lab in enumerate(toks):
+        x = 6.05 + i * 1.35
+        rounded_box(ax, x, 1.35, 1.15, 0.85, lab, fontsize=12)
+        if i < 2:
+            arrow(ax, x + 1.18, 1.77, x + 1.32, 1.77, lw=1.6)
+    ax.text(7.88, 0.58, "RNN / GRU / LSTM · attention", ha="center", fontsize=10, color=MUTED)
+
+    ax.text(5.3, 3.4, "Inductive bias follows the data’s structure", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "images-vs-sequences.png")
+
+
+def diagram_image_tensor() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.7))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.7)
+    colors = [("#C45C26", "R"), ("#3D8B6E", "G"), ("#5234B7", "B")]
+    for i, (c, lab) in enumerate(colors):
+        x = 1.3 + i * 0.55
+        y = 0.85 + i * 0.28
+        ax.add_patch(Rectangle((x, y), 2.6, 1.7, facecolor=SOFT, edgecolor=c, lw=1.8, alpha=0.95))
+        ax.text(x + 2.72, y + 1.55, lab, fontsize=13, color=c, fontweight="bold")
+    ax.text(2.7, 3.15, r"$H \times W \times 3$", ha="center", fontsize=14, color=PRIMARY, fontweight="bold")
+    ax.text(2.7, 0.42, "intensities 0–255, then normalize", ha="center", fontsize=11, color=MUTED)
+
+    rounded_box(ax, 6.15, 0.7, 3.95, 2.35, "", fc=SOFT_2, ec=SECONDARY)
+    ax.text(8.12, 2.55, "Local neighborhoods", ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax.text(8.12, 1.55, "small patch → edges\nlarger context → objects", ha="center", fontsize=12, color=INK, linespacing=1.4)
+    ax.text(5.3, 3.4, "A color image is a tensor, not isolated pixels", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "image-tensor.png")
+
+
+def diagram_conv_hyperparams() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.6))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.6)
+    panels = [
+        (0.3, "Kernel 3×3", "neighborhood size"),
+        (3.75, "Stride 2", "downsample when >1"),
+        (7.2, "Same padding", "keep spatial size"),
+    ]
+    for x0, title, cap in panels:
+        rounded_box(ax, x0, 0.5, 3.15, 2.55, "", fc=SOFT if x0 < 4 else SOFT_2)
+        ax.text(x0 + 1.57, 2.72, title, ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+        cell = 0.32
+        for i in range(5):
+            for j in range(5):
+                x = x0 + 0.7 + j * cell
+                y = 0.95 + (4 - i) * cell
+                hi = (1 <= i <= 3 and 1 <= j <= 3) if "Kernel" in title else (i % 2 == 0 and j % 2 == 0) if "Stride" in title else True
+                ax.add_patch(Rectangle((x, y), cell, cell, fc=PRIMARY if hi else WHITE, ec=LINE, lw=0.9, alpha=0.85 if hi else 1))
+        ax.text(x0 + 1.57, 0.68, cap, ha="center", fontsize=10, color=MUTED)
+    ax.text(5.3, 3.3, "Convolution hyperparameters", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "conv-hyperparams.png")
+
+
+def diagram_bn_vs_ln() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.7))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.7)
+
+    def cube(x, highlight, title, cap):
+        ax.text(x + 1.7, 3.05, title, ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+        for i in range(4):
+            for d in range(3):
+                xx = x + 0.35 + i * 0.55 + d * 0.12
+                yy = 1.15 + d * 0.22
+                fc = PRIMARY if highlight(i, d) else SOFT
+                tc = WHITE if highlight(i, d) else INK
+                ax.add_patch(Rectangle((xx, yy), 0.48, 0.85, fc=fc, ec=PRIMARY, lw=1.05, alpha=0.9))
+        ax.text(x + 1.7, 0.55, cap, ha="center", fontsize=10, color=MUTED)
+
+    cube(0.4, lambda i, d: d == 1, "Batch Norm", "across batch (and space)")
+    cube(5.7, lambda i, d: i == 1, "Layer Norm", "across features, one example")
+    ax.text(5.3, 3.45, "Which axis you normalize changes the model class", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "bn-vs-ln.png")
+
+
+def diagram_early_stopping() -> None:
+    fig, ax = plt.subplots(figsize=(10.4, 3.6))
+    style_ax(ax, spines=True)
+    ax.set_facecolor(SURFACE)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.spines["left"].set_color(LINE)
+    ax.spines["bottom"].set_color(LINE)
+    ep = np.arange(0, 24)
+    train = 1.15 * np.exp(-ep / 6.5) + 0.08
+    val = 0.95 * np.exp(-ep / 7.2) + 0.18 + 0.012 * np.maximum(0, ep - 10) ** 1.35
+    stop = 10
+    ax.plot(ep, train, color=SECONDARY, lw=2.2, label="train")
+    ax.plot(ep, val, color=PRIMARY, lw=2.2, label="validation")
+    ax.axvline(stop, color=ACCENT_WARN, lw=1.4, ls="--")
+    ax.scatter([stop], [val[stop]], s=55, color=ACCENT_WARN, zorder=5)
+    ax.text(stop + 0.4, val[stop] + 0.12, "stop", color=ACCENT_WARN, fontsize=11, fontweight="bold")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_xlabel("epochs →", fontsize=11, color=MUTED)
+    ax.set_ylabel("loss", fontsize=11, color=MUTED)
+    ax.legend(frameon=False, fontsize=10, loc="upper right")
+    ax.set_title("Early stopping — checkpoint lowest validation loss", fontsize=13, color=PRIMARY, fontweight="bold", pad=10)
+    save(fig, "early-stopping.png")
+
+
 def main() -> None:
     print(f"Generating Week 2 Session 1 diagrams → {OUT}")
     diagram_ai_ml_dl()
@@ -1142,6 +1424,16 @@ def main() -> None:
     diagram_four_phases()
     diagram_hierarchical()
     diagram_autoencoder()
+    diagram_use_case_fit()
+    diagram_weight_init()
+    diagram_loss_mse_ce()
+    diagram_vanishing_exploding()
+    diagram_optimizers()
+    diagram_images_vs_sequences()
+    diagram_image_tensor()
+    diagram_conv_hyperparams()
+    diagram_bn_vs_ln()
+    diagram_early_stopping()
     print("Done.")
 
 
