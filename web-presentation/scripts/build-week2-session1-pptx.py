@@ -84,16 +84,80 @@ TOPIC_CONTENT: dict = {
                 "note": "Phase 1 focus: understand the “why” and the mathematical mechanics of a single neuron before scaling to layers and data.",
             },
             {
-                "title": "What Is Deep Learning?",
-                "kicker": "Stacked Nonlinear Transformations",
-                "body": "Deep learning learns a parameterized mapping from inputs to outputs by stacking nonlinear layers.",
+                "title": "Phase 1: Foundations & Neural Core",
+                "kicker": "Why depth, neurons, and forward pass",
+                "body": "Goal: understand what a neuron computes and why stacking layers enables hierarchical features.",
+                "formula": "z = w·x + b",
+                "formula_tex": r"z = w \cdot x + b",
+                "formula_note": "Exit check: explain this — and why nonlinearity is required between layers.",
+                "layout": "formula_example",
                 "bullets": [
-                    "“Deep” means several nonlinear transforms — hierarchical features, not one giant linear rule.",
-                    "Training picks a loss, then adjusts weights with gradients so average loss drops.",
-                    "The network learns representations tuned to the task instead of hand-crafted features.",
+                    "Topics: perceptron, activations, MLP, forward propagation, and loss functions.",
+                    "Stacking layers builds hierarchical features only if a nonlinearity sits between them.",
                 ],
-                "plot_path": "hierarchical-features.png",
+            },
+            {
+                "title": "Phase 1 Roadmap",
+                "kicker": "Why depth, neurons, and forward pass",
+                "layout": "table",
+                "table": {
+                    "headers": ["Block", "Question it answers"],
+                    "rows": [
+                        ["Perceptron & MLP", "What does one layer compute?"],
+                        ["Forward pass", "How does inference flow through the graph?"],
+                        ["Loss & gradients", "What are we optimizing?"],
+                    ],
+                },
+                "note": "Exit check: explain z = w·x + b and why nonlinearity is required between layers.",
+            },
+            {
+                "title": "What Is Deep Learning?",
+                "kicker": "Definition in One Sentence — Then the Details",
+                "body": "Deep learning learns a parameterized mapping from inputs to outputs by stacking nonlinear transformations (layers).",
+                "bullets": [
+                    "“Deep” means multiple such transformations — hierarchical features, not one giant linear rule.",
+                ],
+                "plot_path": "ann-intro.png",
+                "note": "Layers rewrite features step by step. Depth is composition, not one giant linear rule.",
+            },
+            {
+                "title": "What Is Deep Learning?",
+                "kicker": "Definition in One Sentence — Then the Details",
+                "bullets": [
+                    "Training = pick a loss that measures mistakes, then adjust weights with gradients so average loss drops on data (generalization to unseen data is the real goal).",
+                    "Unlike fixed pipelines of hand-crafted features, the network learns representations that are tuned to the task (edges → textures → parts → objects in vision, etc.).",
+                ],
                 "note": "Generalization to unseen data is the real goal — not memorizing the training set.",
+            },
+            {
+                "title": "Three Ingredients You Always Have",
+                "kicker": "Architecture · Loss · Optimizer + data",
+                "layout": "table",
+                "table": {
+                    "headers": ["Ingredient", "What it means"],
+                    "rows": [
+                        [
+                            "Architecture",
+                            "How signals flow (MLP, CNN, RNN, Transformer, …)",
+                        ],
+                        [
+                            "Loss / objective",
+                            "What “better” means for your task (MSE, cross-entropy, …)",
+                        ],
+                        [
+                            "Optimizer + data",
+                            "How you search parameters and what examples you show",
+                        ],
+                    ],
+                },
+                "note": "You always have these three. Change one, and the model’s behavior changes with it.",
+            },
+            {
+                "title": "Three Ingredients You Always Have",
+                "kicker": "Architecture · Loss · Optimizer + data",
+                "layout": "diagram",
+                "plot_path": "three-ingredients.png",
+                "note": "A strong architecture with the wrong loss still learns the wrong thing.",
             },
             {
                 "title": "AI, Machine Learning, and Deep Learning",
@@ -151,39 +215,17 @@ TOPIC_CONTENT: dict = {
         ],
     },
     "Neural Networks": {
-        "title": "Three Ingredients of Every Deep Model",
-        "kicker": "Architecture · Loss · Optimizer + Data",
-        "body": "Every neural network is the same three-part recipe, regardless of CNN vs RNN vs MLP.",
-        "layout": "diagram",
-        "plot_path": "three-ingredients.png",
-        "note": "Change one ingredient and the model’s behavior changes with it.",
+        "title": "Why Depth Works",
+        "kicker": "Hierarchical Representation Learning",
+        "body": "Each layer rewrites the previous layer’s features into a more useful space.",
+        "bullets": [
+            "Early layers detect simple patterns (edges, local tokens).",
+            "Middle layers compose those into textures, parts, phrases.",
+            "Late layers assemble task semantics (objects, intent, class scores).",
+        ],
+        "plot_path": "hierarchical-features.png",
+        "note": "Depth is composition. Width is how many features you keep at each level.",
         "extra_slides": [
-            {
-                "title": "Three Ingredients — What Each Means",
-                "kicker": "You always have these three",
-                "layout": "table",
-                "table": {
-                    "headers": ["Ingredient", "What it means"],
-                    "rows": [
-                        ["Architecture", "How signals flow (MLP, CNN, RNN, Transformer)"],
-                        ["Loss / objective", "What “better” means (MSE, cross-entropy, …)"],
-                        ["Optimizer + data", "How you search parameters and which examples you show"],
-                    ],
-                },
-                "note": "A beautiful architecture with the wrong loss still learns the wrong thing.",
-            },
-            {
-                "title": "Why Depth Works",
-                "kicker": "Hierarchical Representation Learning",
-                "body": "Each layer rewrites the previous layer’s features into a more useful space.",
-                "bullets": [
-                    "Early layers detect simple patterns (edges, local tokens).",
-                    "Middle layers compose those into textures, parts, phrases.",
-                    "Late layers assemble task semantics (objects, intent, class scores).",
-                ],
-                "plot_path": "hierarchical-features.png",
-                "note": "Depth is composition. Width is how many features you keep at each level.",
-            },
             {
                 "title": "Session Roadmap",
                 "kicker": "What we build today",
