@@ -317,7 +317,32 @@ def diagram_log_probs() -> None:
     save(fig, "log-probs.png")
 
 
-def diagram_static_contextual() -> None:
+def diagram_embedding_space() -> None:
+    """Words as vectors in embedding space (slide illustration)."""
+    fig, ax = plt.subplots(figsize=(7.2, 4.2))
+    style_ax(ax, spines=True)
+    ax.set_facecolor(SURFACE)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.spines["left"].set_color(LINE)
+    ax.spines["bottom"].set_color(LINE)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 6.2)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.plot([0.6, 9.5], [0.7, 0.7], color=LINE, lw=1.4)
+    ax.plot([0.6, 0.6], [0.7, 5.7], color=LINE, lw=1.4)
+    points = [
+        (3.1, 4.2, "king", PRIMARY),
+        (4.0, 4.85, "queen", SECONDARY),
+        (7.2, 2.15, "cat", ACCENT_OK),
+        (8.05, 2.75, "dog", ACCENT_WARN),
+    ]
+    for x, y, lab, col in points:
+        ax.add_patch(Circle((x, y), 0.18, fc=col, ec=col, zorder=3))
+        ax.text(x + 0.28, y + 0.12, lab, fontsize=12, color=INK, fontweight="bold")
+    ax.text(5.3, 5.9, "Words as vectors in embedding space", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "embedding-space.png")
     fig, ax = plt.subplots(figsize=(10.6, 3.7))
     style_ax(ax)
     ax.set_xlim(0, 10.6)

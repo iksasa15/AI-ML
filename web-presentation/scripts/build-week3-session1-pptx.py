@@ -342,7 +342,6 @@ TOPIC_CONTENT: dict = {
         "extra_slides": [
             {
                 "title": "Formal Language Modeling Objective",
-                "kicker": "Score a sentence, or predict the next word",
                 "formula": "P(w₁,…,w_T) = Π P(w_t | w₁,…,w_{t-1})",
                 "formula_tex": r"P(w_1,\ldots,w_T)=\prod_{t=1}^{T} P(w_t \mid w_1,\ldots,w_{t-1})",
                 "layout": "formula_example",
@@ -354,7 +353,6 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Worked Bigram Example",
-                "kicker": "Counts to a conditional probability",
                 "body": "Given counts: C(\"want to\") = 608, C(\"want\") = 927",
                 "formula": "P(\"to\" | \"want\") = 608 / 927 ≈ 0.656",
                 "formula_tex": r"P(\mathrm{to}\mid\mathrm{want})=\dfrac{608}{927}\approx 0.656",
@@ -366,7 +364,6 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Why Use Log Probabilities",
-                "kicker": "Underflow → stable sums",
                 "bullets": [
                     "Multiplying many small probabilities causes numerical underflow.",
                     "Log transform converts multiplication into stable addition.",
@@ -375,13 +372,6 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Why Use Log Probabilities",
-                "kicker": "Underflow → stable sums",
-                "layout": "diagram",
-                "plot_path": "log-probs.png",
-            },
-            {
-                "title": "Why Use Log Probabilities",
-                "kicker": "Underflow → stable sums",
                 "layout": "table",
                 "table": {
                     "headers": ["Original Space", "Log Space"],
@@ -393,7 +383,6 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Perplexity (PP): Interpretation",
-                "kicker": "Average branching uncertainty",
                 "formula": "PP(W) = P(w₁,…,w_T)^{-1/T}",
                 "formula_tex": r"\mathrm{PP}(W)=P(w_1,\ldots,w_T)^{-\frac{1}{T}}=\exp\left(-\frac{1}{T}\sum_{t=1}^{T}\log P(w_t\mid h_t)\right)",
                 "layout": "formula_example",
@@ -408,26 +397,18 @@ TOPIC_CONTENT: dict = {
     },
     "Embeddings & RNNs": {
         "title": "Static vs Contextualized Word Representations",
-        "kicker": "One vector per type vs a vector per context",
-        "layout": "diagram",
-        "plot_path": "static-vs-contextual.png",
+        "layout": "table",
+        "table": {
+            "headers": ["Property", "Static Embeddings (Word2Vec/GloVe)", "Contextualized Embeddings (ELMo/BERT/GPT)"],
+            "rows": [
+                ["Vector per word", "One fixed vector", "Different vectors per context"],
+                ["Polysemy handling", "Weak", "Strong"],
+                ["Context direction", "Usually local/global corpus only", "Bidirectional or autoregressive sequence context"],
+                ["Task transfer", "Moderate", "High with pretraining + fine-tuning"],
+            ],
+        },
         "note": "Contextualization is a core enabler for modern LLM quality.",
         "extra_slides": [
-            {
-                "title": "Static vs Contextualized Word Representations",
-                "kicker": "One vector per type vs a vector per context",
-                "layout": "table",
-                "table": {
-                    "headers": ["Property", "Static Embeddings (Word2Vec/GloVe)", "Contextualized Embeddings (ELMo/BERT/GPT)"],
-                    "rows": [
-                        ["Vector per word", "One fixed vector", "Different vectors per context"],
-                        ["Polysemy handling", "Weak", "Strong"],
-                        ["Context direction", "Usually local/global corpus only", "Bidirectional or autoregressive sequence context"],
-                        ["Task transfer", "Moderate", "High with pretraining + fine-tuning"],
-                    ],
-                },
-                "note": "Contextualization is a core enabler for modern LLM quality.",
-            },
             {
                 "title": "How Contextualized Embeddings Work",
                 "kicker": "Architecture Layers",
