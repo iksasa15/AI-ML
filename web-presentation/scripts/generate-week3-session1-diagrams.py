@@ -160,22 +160,22 @@ def diagram_cleaning() -> None:
 
 
 def diagram_tokenize() -> None:
+    """SentencePiece-style split of “Hello world” into 4 tokens."""
     fig, ax = plt.subplots(figsize=(10.6, 3.6))
     style_ax(ax)
     ax.set_xlim(0, 10.6)
     ax.set_ylim(0, 3.6)
-    panels = [
-        (0.3, "Word", "['running']", "readable · OOV risk"),
-        (3.75, "Character", "r u n n i n g", "no OOV · long seq"),
-        (7.2, "Subword", "run  ##ning", "compact · LLM default"),
-    ]
-    for x, title, mid, cap in panels:
-        rounded_box(ax, x, 0.5, 3.15, 2.55, "", fc=SOFT if x < 4 else SOFT_2)
-        ax.text(x + 1.57, 2.7, title, ha="center", fontsize=14, color=PRIMARY, fontweight="bold")
-        ax.text(x + 1.57, 1.7, mid, ha="center", fontsize=13, color=INK, fontweight="bold")
-        ax.text(x + 1.57, 0.85, cap, ha="center", fontsize=11, color=MUTED)
-    ax.text(5.3, 3.3, "Same word, three granularities", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
-    save(fig, "tokenize-granularity.png")
+    ax.text(5.3, 3.32, "Tokenization Flow", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 2.95, "Text  →  subword tokens", ha="center", fontsize=12, color=MUTED)
+    ax.text(5.3, 2.52, "Hello world", ha="center", fontsize=20, color=PRIMARY, fontweight="bold")
+    tokens = [r"▁Hel", "lo", r"▁wor", "ld"]
+    for i, tok in enumerate(tokens):
+        x = 0.55 + i * 2.5
+        rounded_box(ax, x, 0.95, 2.25, 1.05, tok, fontsize=18, fc=PRIMARY if i % 2 == 0 else SOFT, color=WHITE if i % 2 == 0 else PRIMARY)
+        if i < 3:
+            arrow(ax, x + 2.28, 1.47, x + 2.47, 1.47, lw=1.5)
+    ax.text(5.3, 0.38, '"Hello world"  →  4 tokens', ha="center", fontsize=13, color=INK, fontweight="bold")
+    save(fig, "hello-world-tokens.png")
 
 
 def diagram_bpe() -> None:
@@ -257,6 +257,35 @@ def diagram_spacy() -> None:
             arrow(ax, x + 1.88, 1.75, x + 2.02, 1.75, lw=1.6)
     ax.text(5.3, 3.1, "One SpaCy doc carries tokens, lemmas, POS, and entities", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
     save(fig, "spacy-pipeline.png")
+
+
+def diagram_google_ngram() -> None:
+    """Wikimedia-style Google Ngram (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(7.4, 4.2))
+    style_ax(ax, spines=True)
+    ax.set_facecolor(SURFACE)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.spines["left"].set_color(LINE)
+    ax.spines["bottom"].set_color(LINE)
+    years = np.linspace(1800, 2000, 220)
+    t = (years - 1800) / 200
+    series = [
+        ("data", 0.02 + 0.55 * (1 / (1 + np.exp(-12 * (t - 0.78)))), PRIMARY),
+        ("information", 0.08 + 0.28 * t + 0.12 * np.sin(2.2 * np.pi * t) ** 2, SECONDARY),
+        ("computer", 0.01 + 0.48 * np.clip((t - 0.72) / 0.28, 0, 1) ** 1.4, ACCENT_OK),
+    ]
+    for name, y, color in series:
+        ax.plot(years, y, color=color, lw=2.4, label=name)
+    ax.set_xlim(1800, 2000)
+    ax.set_ylim(0, 0.72)
+    ax.set_xticks([1800, 1850, 1900, 1950, 2000])
+    ax.tick_params(colors=MUTED, labelsize=9)
+    ax.set_yticks([])
+    ax.set_ylabel("relative frequency", fontsize=10, color=MUTED)
+    ax.legend(frameon=False, fontsize=10, loc="upper left")
+    ax.set_title("Google Books Ngram — counts over time", fontsize=12, color=PRIMARY, fontweight="bold", pad=10)
+    save(fig, "google-ngram.png")
 
 
 def diagram_ngram() -> None:
@@ -447,6 +476,7 @@ def main() -> None:
     diagram_pos()
     diagram_ner()
     diagram_spacy()
+    diagram_google_ngram()
     diagram_ngram()
     diagram_log_probs()
     diagram_static_contextual()

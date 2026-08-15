@@ -77,14 +77,6 @@ TOPIC_CONTENT: dict = {
         "extra_slides": [
             {
                 "title": "Ambiguity in Language: Practical Examples",
-                "kicker": "One String, Two Readings",
-                "layout": "diagram",
-                "plot_path": "ambiguity.png",
-                "note": "Robust NLP requires disambiguation using surrounding textual and situational context.",
-            },
-            {
-                "title": "Ambiguity in Language: Practical Examples",
-                "kicker": "One String, Two Readings",
                 "layout": "table",
                 "table": {
                     "headers": ["Expression", "Possible Interpretation A", "Possible Interpretation B"],
@@ -100,7 +92,6 @@ TOPIC_CONTENT: dict = {
     },
     "Regex & Cleaning": {
         "title": "Regular Expressions (Regex): Core Idea",
-        "kicker": "A Compact Pattern Language for Text",
         "bullets": [
             "Regex is a compact pattern language for matching and transforming text.",
             "Typical uses include validation, extraction, and rule-based cleanup.",
@@ -109,13 +100,6 @@ TOPIC_CONTENT: dict = {
         "extra_slides": [
             {
                 "title": "Regular Expressions (Regex): Core Idea",
-                "kicker": "A Compact Pattern Language for Text",
-                "layout": "diagram",
-                "plot_path": "regex-core.png",
-            },
-            {
-                "title": "Regular Expressions (Regex): Core Idea",
-                "kicker": "A Compact Pattern Language for Text",
                 "layout": "table",
                 "table": {
                     "headers": ["Pattern", "Meaning", "Example Match"],
@@ -126,13 +110,6 @@ TOPIC_CONTENT: dict = {
                         ["\\S+", "one or more non-space chars", "token123"],
                     ],
                 },
-            },
-            {
-                "title": "Text Cleaning — Conceptual Steps & Python Code",
-                "kicker": "Conceptual stages matched with Python regex implementations",
-                "layout": "diagram",
-                "plot_path": "cleaning-pipeline.png",
-                "note": "A regex-based cleaning function is usually the first stage in an NLP preprocessing pipeline.",
             },
             {
                 "title": "Text Cleaning — Conceptual Steps & Python Code",
@@ -159,8 +136,8 @@ TOPIC_CONTENT: dict = {
                     "rows": [
                         ["0. Raw Input", "Original raw string", "<p>John: \"AI is amazing!!!! 🤖🔥\" Visit: https://ai.com @john #AI</p>"],
                         ["1. Clean HTML", "Decode entities & remove tags", "John: \"AI is amazing!!!! 🤖🔥\" Visit: https://ai.com @john #AI"],
-                        ["2. Remove URLs", "Remove web addresses", "John: \"AI is amazing!!!! 🤖🔥\" Visit:  @john #AI"],
-                        ["3. Remove Socials", "Remove @mentions and #hashtags", "John: \"AI is amazing!!!! 🤖🔥\" Visit:  "],
+                        ["2. Remove URLs", "Remove web addresses", "John: \"AI is amazing!!!! 🤖🔥\" Visit: @john #AI"],
+                        ["3. Remove Socials", "Remove @mentions and #hashtags", "John: \"AI is amazing!!!! 🤖🔥\" Visit:"],
                         ["4. Drop Emoji/Symbols", "ASCII-only encoding & cleanup", "John AI is amazing!!!! Visit"],
                     ],
                 },
@@ -170,24 +147,22 @@ TOPIC_CONTENT: dict = {
     },
     "Tokenization": {
         "title": "Tokenization Granularities (Word, Char, Subword)",
-        "kicker": "Comparing different levels of text splitting",
-        "layout": "diagram",
-        "plot_path": "tokenize-granularity.png",
+        "layout": "table",
+        "table": {
+            "headers": ["Granularity", "Strength", "Tradeoff", "Example output (for 'running')"],
+            "rows": [
+                ["Word / Space-based", "Human-readable tokens", "Weak on rare/compound words (OOV)", "['running']"],
+                ["Character-based", "No unknown words (no OOV)", "Very long sequences, loss of meaning", "['r', 'u', 'n', 'n', 'i', 'n', 'g']"],
+                ["Subword-based", "Handles rare words, compact vocab", "Requires tokenizer training/tuning", "['run', '##ning']"],
+            ],
+        },
         "note": "Subword tokenization is the industry standard for modern LLMs and neural NLP models.",
         "extra_slides": [
             {
-                "title": "Tokenization Granularities (Word, Char, Subword)",
-                "kicker": "Comparing different levels of text splitting",
-                "layout": "table",
-                "table": {
-                    "headers": ["Granularity", "Strength", "Tradeoff", "Example output (for 'running')"],
-                    "rows": [
-                        ["Word / Space-based", "Human-readable tokens", "Weak on rare/compound words (OOV)", "['running']"],
-                        ["Character-based", "No unknown words (no OOV)", "Very long sequences, loss of meaning", "['r', 'u', 'n', 'n', 'i', 'n', 'g']"],
-                        ["Subword-based", "Handles rare words, compact vocab", "Requires tokenizer training/tuning", "['run', '##ning']"],
-                    ],
-                },
-                "note": "Subword tokenization is the industry standard for modern LLMs and neural NLP models.",
+                "title": "Tokenization Views (Code Examples)",
+                "kicker": "Same sentence, word / char / subword splits side by side",
+                "layout": "diagram",
+                "plot_path": "hello-world-tokens.png",
             },
             {
                 "title": "Tokenization Views (Code Examples)",
@@ -207,7 +182,7 @@ TOPIC_CONTENT: dict = {
                 "title": "Subword Tokenization (LLMs) — Why It Wins",
                 "kicker": "How subwords solve core vocabulary challenges",
                 "layout": "diagram",
-                "plot_path": "bpe-merge.png",
+                "plot_path": "hello-world-tokens.png",
             },
             {
                 "title": "Subword Tokenization (LLMs) — Why It Wins",
@@ -225,11 +200,16 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "BPE Walkthrough & Inference Example",
                 "kicker": "How Byte Pair Encoding learns merges and splits unseen words",
+                "layout": "diagram",
+                "plot_path": "hello-world-tokens.png",
+            },
+            {
+                "title": "BPE Walkthrough & Inference Example",
+                "kicker": "How Byte Pair Encoding learns merges and splits unseen words",
                 "bullets": [
                     "Walkthrough: start with chars (l, o, w, e, s, t, r) -> merge l+o (lo) -> merge lo+w (low) -> compact vocabulary.",
                     "Inference on 'lowered the lowest curtain': splits rare words to ['low', 'er', 'ed'] and ['low', 'est'] while keeping 'the' and 'curtain' whole.",
                 ],
-                "note": "BPE repeatedly merges frequent adjacent units until target vocabulary size is reached.",
             },
             {
                 "title": "BPE Walkthrough & Inference Example",
@@ -243,6 +223,12 @@ TOPIC_CONTENT: dict = {
                     ],
                 },
                 "note": "BPE repeatedly merges frequent adjacent units until target vocabulary size is reached.",
+            },
+            {
+                "title": "Stop Words: Purpose & Tradeoffs",
+                "kicker": "Filtering low-information tokens from texts",
+                "layout": "diagram",
+                "plot_path": "hello-world-tokens.png",
             },
             {
                 "title": "Stop Words: Purpose & Tradeoffs",
@@ -269,13 +255,6 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Stemming vs Lemmatization",
                 "kicker": "Normalizing words to their base forms",
-                "layout": "diagram",
-                "plot_path": "stem-lemma.png",
-                "note": "Lemmatization preserves semantics better than aggressive stemming.",
-            },
-            {
-                "title": "Stemming vs Lemmatization",
-                "kicker": "Normalizing words to their base forms",
                 "layout": "table",
                 "table": {
                     "headers": ["Aspect", "Stemming", "Lemmatization"],
@@ -293,17 +272,17 @@ TOPIC_CONTENT: dict = {
     "POS & NER": {
         "title": "Part-of-Speech (POS) Tagging",
         "kicker": "Grammar Labels per Token",
-        "bullets": [
-            "Universal categories include NOUN, VERB, ADJ, ADV, DET, ADP, PROPN, NUM, …",
-            "POS feeds lemmatization quality and downstream relation extraction.",
-            "SpaCy exposes coarse pos_ and fine-grained tag_ plus dependency dep_.",
-        ],
+        "layout": "diagram",
+        "plot_path": "hello-world-tokens.png",
         "extra_slides": [
             {
                 "title": "Part-of-Speech (POS) Tagging",
                 "kicker": "Grammar Labels per Token",
-                "layout": "diagram",
-                "plot_path": "pos-tags.png",
+                "bullets": [
+                    "Universal categories include NOUN, VERB, ADJ, ADV, DET, ADP, PROPN, NUM, …",
+                    "POS feeds lemmatization quality and downstream relation extraction.",
+                    "SpaCy exposes coarse pos_ and fine-grained tag_ plus dependency dep_.",
+                ],
             },
             {
                 "title": "Part-of-Speech (POS) Tagging",
@@ -331,12 +310,6 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Named Entity Recognition (NER)",
                 "kicker": "Typed Spans over Text",
-                "layout": "diagram",
-                "plot_path": "ner-spans.png",
-            },
-            {
-                "title": "Named Entity Recognition (NER)",
-                "kicker": "Typed Spans over Text",
                 "layout": "table",
                 "table": {
                     "headers": ["Label", "Examples"],
@@ -349,18 +322,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Full SpaCy Pipeline Functionally",
-                "kicker": "One Doc Object, Many Views",
                 "bullets": [
                     "One doc object: tokens, lemmas, POS, entities, noun_chunks, sents.",
                     "Typical export: clean token list, lemma bag, entity list, POS histogram.",
                     "Use length-based heuristics (e.g. longest sentence) only as weak importance cues.",
                 ],
-            },
-            {
-                "title": "Full SpaCy Pipeline Functionally",
-                "kicker": "One Doc Object, Many Views",
-                "layout": "diagram",
-                "plot_path": "spacy-pipeline.png",
             },
         ],
     },
@@ -372,13 +338,8 @@ TOPIC_CONTENT: dict = {
             "N-gram models predict the next token from a limited context window.",
             "This module connects N-gram intuition to modern LLM generation.",
         ],
+        "plot_path": "google-ngram.png",
         "extra_slides": [
-            {
-                "title": "NLP Language Modeling with N-grams",
-                "kicker": "From Count-Based Prediction to Evaluation",
-                "layout": "diagram",
-                "plot_path": "ngram-window.png",
-            },
             {
                 "title": "Formal Language Modeling Objective",
                 "kicker": "Score a sentence, or predict the next word",
