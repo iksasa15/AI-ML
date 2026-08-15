@@ -419,33 +419,30 @@ TOPIC_CONTENT: dict = {
                 "plot_path": "embedding-space.png",
             },
             {
-                "title": "RNN Mechanism and Weight Sharing",
-                "kicker": "Same cell, every time step",
-                "formula": "h_t = f(W_x x_t + W_h h_{t-1} + b)",
-                "formula_tex": r"h_t = f(W_x x_t + W_h h_{t-1} + b)",
-                "layout": "formula_example",
+                "title": "How Contextualized Embeddings Work",
+                "kicker": "Architecture Layers",
                 "bullets": [
-                    "At time t, the RNN consumes current input and previous hidden state.",
-                    "The same cell and weights are reused at every time step.",
-                    "This recurrence captures sequential information in variable-length text.",
+                    "Token/base embedding layer maps input ids to dense vectors.",
+                    "Context encoder layers (often Transformer blocks) enrich each token with sequence context.",
+                    "Task head uses contextual features for prediction.",
+                ],
+            },
+            {
+                "title": "How Contextualized Embeddings Work",
+                "kicker": "Layer Semantics",
+                "bullets": [
+                    "Lower layers capture local syntax/patterns.",
+                    "Middle layers improve sense disambiguation.",
                 ],
             },
             {
                 "title": "RNN Mechanism and Weight Sharing",
-                "kicker": "Same cell, every time step",
-                "layout": "diagram",
+                "formula": "h_t = f(W_x x_t + W_h h_{t-1} + b)",
+                "formula_tex": r"h_t = f(W_x x_t + W_h h_{t-1} + b)",
                 "plot_path": "rnn-unfold.png",
             },
             {
                 "title": "Common RNN Input/Output Patterns",
-                "kicker": "Where recurrence earns its keep",
-                "layout": "diagram",
-                "plot_path": "rnn-patterns.png",
-                "note": "Sequence-aware patterns are where recurrent models provide clear value.",
-            },
-            {
-                "title": "Common RNN Input/Output Patterns",
-                "kicker": "Where recurrence earns its keep",
                 "layout": "table",
                 "table": {
                     "headers": ["Pattern", "Mapping", "Example Task"],
@@ -460,7 +457,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "RNN Family: Vanilla, GRU, BiRNN, LSTM",
-                "kicker": "Gating and direction",
+                "layout": "diagram",
+                "plot_path": "gru-cell.png",
+            },
+            {
+                "title": "RNN Family: Vanilla, GRU, BiRNN, LSTM",
                 "layout": "table",
                 "table": {
                     "headers": ["Model", "Vanishing Gradient Risk", "Key Strength", "Typical Limitation"],
@@ -477,28 +478,25 @@ TOPIC_CONTENT: dict = {
     "Seq2Seq & Attention": {
         "title": "NLP Seq2Seq for Neural Machine Translation",
         "kicker": "Encoder-Decoder Modeling, Decoding Strategies, and Evaluation",
-        "bullets": [
-            "Seq2Seq maps variable-length input sequences to variable-length outputs.",
-            "Encoder-decoder models were foundational for neural machine translation.",
-            "This module covers training, decoding, bottlenecks, attention, and metrics.",
-        ],
+        "layout": "diagram",
+        "plot_path": "encoding-comparison.png",
         "extra_slides": [
             {
                 "title": "NLP Seq2Seq for Neural Machine Translation",
                 "kicker": "Encoder-Decoder Modeling, Decoding Strategies, and Evaluation",
-                "layout": "diagram",
-                "plot_path": "seq2seq.png",
+                "bullets": [
+                    "Seq2Seq maps variable-length input sequences to variable-length outputs.",
+                    "Encoder-decoder models were foundational for neural machine translation.",
+                    "This module covers training, decoding, bottlenecks, attention, and metrics.",
+                ],
             },
             {
                 "title": "Inference: Greedy Decoding vs Beam Search",
-                "kicker": "Local pick vs shortlist of hypotheses",
                 "layout": "diagram",
-                "plot_path": "greedy-vs-beam.png",
-                "note": "Typical beam sizes are moderate (e.g., 4-10) to balance quality and cost.",
+                "plot_path": "seq2seq-attention.png",
             },
             {
                 "title": "Inference: Greedy Decoding vs Beam Search",
-                "kicker": "Local pick vs shortlist of hypotheses",
                 "layout": "table",
                 "table": {
                     "headers": ["Method", "Decision Rule", "Strength", "Risk"],
@@ -511,7 +509,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Information Bottleneck in Basic Seq2Seq",
-                "kicker": "One vector cannot carry the whole source",
+                "layout": "diagram",
+                "plot_path": "seq2seq-attention.png",
+            },
+            {
+                "title": "Information Bottleneck in Basic Seq2Seq",
                 "bullets": [
                     "Compressing a full source sentence into one fixed vector can lose detail.",
                     "Longer/complex inputs worsen the bottleneck effect.",
@@ -521,13 +523,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Attention as the Bottleneck Solution",
-                "kicker": "Look at relevant encoder positions",
                 "layout": "diagram",
-                "plot_path": "bottleneck-attention.png",
+                "plot_path": "attention-architecture.png",
             },
             {
                 "title": "Attention as the Bottleneck Solution",
-                "kicker": "Look at relevant encoder positions",
                 "bullets": [
                     "Decoder attends to relevant encoder positions at each generation step.",
                     "Dynamic alignment improves translation adequacy and fluency.",
@@ -536,7 +536,6 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "NMT Evaluation Metrics: BLEU and ROUGE",
-                "kicker": "Overlap proxies, not meaning",
                 "layout": "table",
                 "table": {
                     "headers": ["Metric", "Orientation", "What It Measures", "Common Limitation"],
@@ -551,8 +550,13 @@ TOPIC_CONTENT: dict = {
                 "title": "Transformer Encoder-Decoder Overview",
                 "kicker": "Bridge to Week 4 GenAI — encoder-decoder intuition before BERT/GPT",
                 "layout": "diagram",
-                "plot_path": "transformer-encdec.png",
-                "note": "Attention mechanisms reduce reliance on recurrence for sequence modeling.",
+                "plot_path": "attention-architecture.png",
+            },
+            {
+                "title": "Transformer Encoder-Decoder Overview",
+                "kicker": "Bridge to Week 4 GenAI — encoder-decoder intuition before BERT/GPT",
+                "layout": "diagram",
+                "plot_path": "encoding-comparison.png",
             },
             {
                 "title": "Transformer Encoder-Decoder Overview",

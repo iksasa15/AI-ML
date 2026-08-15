@@ -7,7 +7,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Circle, FancyBboxPatch, Rectangle
+from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Rectangle
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "assets" / "session-w3s1-diagrams"
@@ -414,6 +414,26 @@ def diagram_rnn_patterns() -> None:
     save(fig, "rnn-patterns.png")
 
 
+def diagram_gru() -> None:
+    """Wikimedia GRU unit (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(10.6, 3.8))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.8)
+    ax.plot([0.4, 10.1], [2.85, 2.85], color=PRIMARY, lw=2.4)
+    ax.annotate("", xy=(10.25, 2.85), xytext=(10.05, 2.85), arrowprops=dict(arrowstyle="-|>", color=PRIMARY, lw=2.2, mutation_scale=12))
+    ax.text(0.45, 3.12, r"$h_{t-1}$", fontsize=12, color=PRIMARY, fontweight="bold")
+    ax.text(10.15, 3.12, r"$h_t$", fontsize=12, color=PRIMARY, fontweight="bold", ha="right")
+    ax.text(0.45, 0.55, r"$x_t$", fontsize=12, color=INK, fontweight="bold")
+    ax.plot([0.85, 2.2], [0.62, 0.62], color=MUTED, lw=1.4)
+    ax.plot([2.2, 2.2], [0.62, 2.2], color=MUTED, lw=1.4)
+    gates = [(3.15, r"$r$  reset", r"$\sigma$"), (5.35, r"$z$  update", r"$\sigma$"), (7.55, "candidate", r"$\tanh$")]
+    for x, name, op in gates:
+        rounded_box(ax, x, 1.15, 1.85, 1.35, f"{op}\n{name}", fontsize=12, fc=SOFT if "tanh" not in op else SOFT_2)
+    ax.text(5.3, 3.5, "GRU cell — fewer gates than LSTM, same shared-weight recurrence", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "gru-cell.png")
+
+
 def diagram_seq2seq() -> None:
     fig, ax = plt.subplots(figsize=(10.6, 3.7))
     style_ax(ax)
@@ -426,6 +446,24 @@ def diagram_seq2seq() -> None:
     rounded_box(ax, 6.95, 0.7, 3.3, 2.3, "Decoder\ntarget tokens", fontsize=14, fc=SOFT_2, ec=SECONDARY)
     ax.text(5.3, 3.35, "Seq2Seq maps variable length → variable length", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
     save(fig, "seq2seq.png")
+
+
+def diagram_encoding_comparison() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.5))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.5)
+    panels = [
+        (0.4, "One-Hot", "binary columns\nper category"),
+        (3.75, "Dummy", "one-hot minus\none baseline"),
+        (7.1, "Ordinal", "ordered integers\non a scale"),
+    ]
+    for i, (x, title, cap) in enumerate(panels):
+        rounded_box(ax, x, 0.55, 3.05, 2.3, "", fc=SOFT if i != 2 else SOFT_2, ec=PRIMARY if i != 2 else ACCENT_WARN)
+        ax.text(x + 1.52, 2.35, title, ha="center", fontsize=16, color=PRIMARY, fontweight="bold")
+        ax.text(x + 1.52, 1.35, cap, ha="center", fontsize=12, color=INK, linespacing=1.4)
+    ax.text(5.3, 3.2, "Encoding Comparison — three ways to encode categorical variables", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "encoding-comparison.png")
 
 
 def diagram_bottleneck_attention() -> None:
@@ -446,6 +484,104 @@ def diagram_bottleneck_attention() -> None:
     ax.text(7.88, 0.75, "decoder looks at relevant encoder states", ha="center", fontsize=11, color=MUTED)
     ax.text(5.3, 3.4, "Attention removes the fixed-vector bottleneck", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
     save(fig, "bottleneck-attention.png")
+
+
+def diagram_attention_architecture() -> None:
+    """Wikimedia Attention Is All You Need encoder-decoder (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(9.4, 5.8))
+    style_ax(ax)
+    ax.set_xlim(0, 9.4)
+    ax.set_ylim(0, 5.8)
+
+    attn_fc, ffn_fc, norm_fc = SOFT, SOFT_2, "#F6EBD4"
+    emb_fc, lin_fc, sm_fc = "#F3DCC8", "#E8D4F2", "#DCEBE4"
+
+    def layer(x, y, w, h, text, fc, ec=PRIMARY, fs=9.5, color=INK):
+        rounded_box(ax, x, y, w, h, text, fc=fc, ec=ec, fontsize=fs, color=color, lw=1.3)
+
+    def skip(x, y0, y1):
+        ax.annotate(
+            "",
+            xy=(x + 0.12, y1),
+            xytext=(x + 0.12, y0),
+            arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.15, mutation_scale=8, connectionstyle="arc3,rad=-0.55"),
+        )
+
+    def up(x, y0, y1):
+        arrow(ax, x, y0, x, y1, color=PRIMARY, lw=1.35)
+
+    # Encoder
+    ex, ew = 0.35, 3.85
+    layer(ex + 0.45, 0.22, 2.95, 0.38, "Input Embedding", emb_fc, ACCENT_WARN, fs=10)
+    ax.add_patch(Circle((ex + 1.925, 0.78), 0.13, fc=WHITE, ec=PRIMARY, lw=1.2, zorder=3))
+    ax.text(ex + 1.925, 0.78, "+", ha="center", va="center", fontsize=10, color=PRIMARY, fontweight="bold", zorder=4)
+    ax.text(ex + 2.45, 0.78, "positional encoding", fontsize=8, color=MUTED, va="center")
+    ax.text(ex + 1.925, 0.08, "Inputs", ha="center", fontsize=9, color=MUTED)
+
+    enc = FancyBboxPatch(
+        (ex, 1.05), ew, 2.55, boxstyle="round,pad=0.02,rounding_size=0.1",
+        linewidth=1.4, edgecolor=PRIMARY, facecolor=WHITE, linestyle="--",
+    )
+    ax.add_patch(enc)
+    layer(ex + 0.35, 1.22, 3.15, 0.42, "Multi-Head Attention", attn_fc)
+    layer(ex + 0.35, 1.78, 3.15, 0.38, "Add & Norm", norm_fc, ACCENT_WARN)
+    skip(ex + 0.35, 1.43, 1.78)
+    layer(ex + 0.35, 2.32, 3.15, 0.42, "Feed Forward", ffn_fc, SECONDARY)
+    layer(ex + 0.35, 2.88, 3.15, 0.38, "Add & Norm", norm_fc, ACCENT_WARN)
+    skip(ex + 0.35, 2.53, 2.88)
+    up(ex + 1.925, 0.60, 0.65)
+    up(ex + 1.925, 0.91, 1.22)
+    up(ex + 1.925, 1.64, 1.78)
+    up(ex + 1.925, 2.16, 2.32)
+    up(ex + 1.925, 2.74, 2.88)
+    ax.text(ex + ew + 0.08, 2.32, r"$N\times$", fontsize=12, color=PRIMARY, fontweight="bold", va="center")
+    ax.text(ex + 1.925, 3.48, "Encoder", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+
+    # Decoder
+    dx, dw = 5.15, 3.95
+    layer(dx + 0.5, 0.22, 2.95, 0.38, "Output Embedding", emb_fc, ACCENT_WARN, fs=10)
+    ax.add_patch(Circle((dx + 1.975, 0.78), 0.13, fc=WHITE, ec=PRIMARY, lw=1.2, zorder=3))
+    ax.text(dx + 1.975, 0.78, "+", ha="center", va="center", fontsize=10, color=PRIMARY, fontweight="bold", zorder=4)
+    ax.text(dx + 0.22, 0.08, "Outputs (shifted right)", ha="center", fontsize=8.5, color=MUTED)
+
+    dec = FancyBboxPatch(
+        (dx, 1.05), dw, 3.55, boxstyle="round,pad=0.02,rounding_size=0.1",
+        linewidth=1.4, edgecolor=PRIMARY, facecolor=WHITE, linestyle="--",
+    )
+    ax.add_patch(dec)
+    layer(dx + 0.32, 1.18, 3.3, 0.40, "Masked Multi-Head Attention", attn_fc)
+    layer(dx + 0.32, 1.70, 3.3, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
+    skip(dx + 0.32, 1.38, 1.70)
+    layer(dx + 0.32, 2.16, 3.3, 0.40, "Multi-Head Attention", PRIMARY, PRIMARY, fs=10, color=WHITE)
+    layer(dx + 0.32, 2.68, 3.3, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
+    skip(dx + 0.32, 2.36, 2.68)
+    layer(dx + 0.32, 3.14, 3.3, 0.40, "Feed Forward", ffn_fc, SECONDARY)
+    layer(dx + 0.32, 3.66, 3.3, 0.34, "Add & Norm", norm_fc, ACCENT_WARN)
+    skip(dx + 0.32, 3.34, 3.66)
+    up(dx + 1.975, 0.60, 0.65)
+    up(dx + 1.975, 0.91, 1.18)
+    up(dx + 1.975, 1.58, 1.70)
+    up(dx + 1.975, 2.04, 2.16)
+    up(dx + 1.975, 2.50, 2.68)
+    up(dx + 1.975, 3.02, 3.14)
+    up(dx + 1.975, 3.54, 3.66)
+    layer(dx + 0.55, 4.18, 2.85, 0.36, "Linear", lin_fc, SECONDARY)
+    layer(dx + 0.55, 4.66, 2.85, 0.36, "Softmax", sm_fc, ACCENT_OK)
+    up(dx + 1.975, 4.00, 4.18)
+    up(dx + 1.975, 4.54, 4.66)
+    ax.text(dx + 1.975, 5.22, "Output probabilities", ha="center", fontsize=9, color=MUTED)
+    ax.text(dx + dw + 0.02, 2.82, r"$N\times$", fontsize=12, color=PRIMARY, fontweight="bold", va="center")
+    ax.text(dx + 1.975, 5.52, "Decoder", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+
+    # Cross-attention from encoder output into decoder MHA
+    ax.annotate(
+        "",
+        xy=(dx + 0.32, 2.36),
+        xytext=(ex + ew, 3.26),
+        arrowprops=dict(arrowstyle="-|>", color=ACCENT_WARN, lw=2.0, mutation_scale=12),
+    )
+    ax.text(4.7, 3.55, "cross-attention", ha="center", fontsize=8.5, color=ACCENT_WARN, fontweight="bold")
+    save(fig, "attention-architecture.png")
 
 
 def diagram_greedy_beam() -> None:
@@ -480,6 +616,43 @@ def diagram_greedy_beam() -> None:
     save(fig, "greedy-vs-beam.png")
 
 
+def diagram_seq2seq_attention() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.8))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.8)
+    ax.text(5.3, 3.5, "Seq2Seq + Attention", ha="center", fontsize=15, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 3.12, "Decoder attends to encoder states", ha="center", fontsize=12, color=MUTED)
+
+    box_w, box_h, gap = 1.15, 0.72, 0.22
+    start_x = 1.15
+    enc_y = 1.95
+    for i in range(4):
+        x = start_x + i * (box_w + gap)
+        rounded_box(ax, x, enc_y, box_w, box_h, "", fc=PRIMARY if i == 2 else SOFT, ec=PRIMARY)
+    ax.text(start_x + 2 * (box_w + gap) + box_w / 2, enc_y + box_h / 2, "encoder", ha="center", va="center", fontsize=12, color=WHITE, fontweight="bold")
+
+    dec_x, dec_y, dec_w, dec_h = 7.35, 0.55, 2.05, 0.95
+    rounded_box(ax, dec_x, dec_y, dec_w, dec_h, "decoder", fontsize=13, fc="#E8D9A8", ec=ACCENT_WARN, color=INK)
+
+    src_x = start_x + 2 * (box_w + gap) + box_w / 2
+    src_y = enc_y
+    dst_x, dst_y = dec_x, dec_y + dec_h * 0.55
+    ax.add_patch(
+        FancyArrowPatch(
+            (src_x, src_y),
+            (dst_x, dst_y),
+            connectionstyle="arc3,rad=0.28",
+            arrowstyle="-|>",
+            mutation_scale=14,
+            lw=2.2,
+            color=ACCENT_WARN,
+        )
+    )
+    ax.text(5.3, 0.22, "Attention link from encoder step to decoder", ha="center", fontsize=12, color=MUTED)
+    save(fig, "seq2seq-attention.png")
+
+
 def diagram_transformer() -> None:
     fig, ax = plt.subplots(figsize=(10.6, 3.6))
     style_ax(ax)
@@ -511,9 +684,13 @@ def main() -> None:
     diagram_static_contextual()
     diagram_rnn_unfold()
     diagram_rnn_patterns()
+    diagram_gru()
     diagram_seq2seq()
+    diagram_encoding_comparison()
     diagram_bottleneck_attention()
+    diagram_attention_architecture()
     diagram_greedy_beam()
+    diagram_seq2seq_attention()
     diagram_transformer()
     print("Done.")
 
