@@ -38,6 +38,13 @@ def style_ax(ax, *, spines=False):
 def save(fig, name: str) -> None:
     path = OUT / name
     fig.savefig(path, dpi=160, bbox_inches="tight", facecolor=SURFACE, pad_inches=0.15)
+    from PIL import Image as PILImage
+
+    with PILImage.open(path) as im:
+        w, h = im.size
+    if h > 1200 or (w > 0 and h / w > 2.2):
+        print(f"  warning: {path.name} is {w}x{h} — retrying without tight bbox")
+        fig.savefig(path, dpi=160, bbox_inches=None, facecolor=SURFACE, pad_inches=0.15)
     plt.close(fig)
     print(f"  wrote {path.name}")
 
@@ -992,8 +999,9 @@ def diagram_feature_scaling() -> None:
                 color=INK,
                 fontweight="bold",
             )
-        ax.text(1, -0.18 if ylim[1] < 2 else -12, cap, ha="center", fontsize=10, color=MUTED, transform=ax.get_xaxis_transform())
+        ax.set_xlabel(cap, fontsize=10, color=MUTED, labelpad=8)
     fig.suptitle("Feature Scaling", fontsize=13, color=PRIMARY, fontweight="bold", y=1.04)
+    fig.tight_layout(rect=(0, 0, 1, 0.92))
     save(fig, "feature-scaling.png")
 
 

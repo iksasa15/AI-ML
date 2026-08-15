@@ -453,13 +453,6 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "From Perceptron to MLP (Multi-Layer Perceptron)",
                 "kicker": "Depth = Composed Nonlinear Features",
-                "layout": "diagram",
-                "plot_path": "mlp-architecture.png",
-                "note": "Every arrow is a weight. Training moves those arrows so the output matches the labels.",
-            },
-            {
-                "title": "From Perceptron to MLP (Multi-Layer Perceptron)",
-                "kicker": "Depth = Composed Nonlinear Features",
                 "bullets": [
                     "Each hidden layer applies an affine map followed by a nonlinearity, producing new features h as functions of the original inputs.",
                     "Width (units per layer) and depth (number of layers) trade off capacity, data needs, compute, and optimization difficulty.",
@@ -793,6 +786,48 @@ TOPIC_CONTENT: dict = {
                     ],
                 },
             },
+            {
+                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+                "kicker": "Constrain Capacity to Prevent Overfitting",
+                "bullets": [
+                    "Randomly zero out hidden units during training with probability p (e.g., 0.2-0.5) so neurons cannot co-adapt.",
+                ],
+                "plot_path": "dropout.png",
+            },
+            {
+                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+                "kicker": "Constrain Capacity to Prevent Overfitting",
+                "bullets": [
+                    "Dropout acts as a powerful implicit ensemble method; disabled during inference (evaluation mode).",
+                    "Weight Decay (L2 regularization): adds a penalty to the loss proportional to the squared sum of weights to keep weights small and smooth.",
+                    "Early stopping: monitor validation loss during training and stop when it ceases to improve for a certain number of epochs (patience).",
+                ],
+            },
+            {
+                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
+                "kicker": "Constrain Capacity to Prevent Overfitting",
+                "layout": "table",
+                "table": {
+                    "headers": ["Technique", "Primary action", "Inference behavior"],
+                    "rows": [
+                        [
+                            "Dropout",
+                            "Randomly drops connections",
+                            "Turned OFF (weights scaled)",
+                        ],
+                        [
+                            "L2 Weight Decay",
+                            "Shrinks weights toward zero",
+                            "Turned ON (weights are static)",
+                        ],
+                        [
+                            "Early Stopping",
+                            "Halts training at lowest val loss",
+                            "N/A (model is checkpointed)",
+                        ],
+                    ],
+                },
+            },
         ],
     },
     "CNNs": {
@@ -864,12 +899,6 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
                 "kicker": "Sliding Linear Filters + Nonlinearity",
-                "layout": "diagram",
-                "plot_path": "cnn-architecture.png",
-            },
-            {
-                "title": "Convolution: Kernels, Edge Filters, and Feature Maps",
-                "kicker": "Sliding Linear Filters + Nonlinearity",
                 "bullets": [
                     "A kernel is a small learnable matrix (e.g., 3×3) that responds to local patterns; multiple kernels produce a stack of feature maps.",
                     "Classical edge detectors (Sobel, shown) are fixed kernels; CNNs learn task-specific filters from data.",
@@ -913,7 +942,7 @@ TOPIC_CONTENT: dict = {
                 "title": "CNN Blocks: From Conv-Pool to ResNet",
                 "kicker": "Depth, Regularization, and Residual Learning",
                 "layout": "diagram",
-                "plot_path": "cnn-architecture.png",
+                "plot_path": "cnn-stack.png",
             },
             {
                 "title": "CNN Blocks: From Conv-Pool to ResNet",
@@ -992,55 +1021,12 @@ TOPIC_CONTENT: dict = {
         ],
     },
     "RNNs & regularization": {
-        "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
-        "kicker": "Constrain Capacity to Prevent Overfitting",
-        "body": "Dropout",
-        "bullets": [
-            "Randomly zero out hidden units during training with probability p (e.g., 0.2-0.5) so neurons cannot co-adapt.",
-        ],
-        "plot_path": "dropout.png",
+        "title": "Sequential Data & Vanilla RNNs",
+        "kicker": "One Transition, Unfolded Through Time",
+        "layout": "formula_example",
+        "formula": "hₜ = φ(W_hh hₜ₋₁ + W_xh xₜ + b)",
+        "formula_tex": r"h_t=\varphi(W_{hh}h_{t-1}+W_{xh}x_t+b)",
         "extra_slides": [
-            {
-                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
-                "kicker": "Constrain Capacity to Prevent Overfitting",
-                "bullets": [
-                    "Dropout acts as a powerful implicit ensemble method; disabled during inference (evaluation mode).",
-                    "Weight Decay (L2 regularization): adds a penalty to the loss proportional to the squared sum of weights to keep weights small and smooth.",
-                    "Early stopping: monitor validation loss during training and stop when it ceases to improve for a certain number of epochs (patience).",
-                ],
-            },
-            {
-                "title": "Regularization: Dropout, Weight Decay, and Early Stopping",
-                "kicker": "Constrain Capacity to Prevent Overfitting",
-                "layout": "table",
-                "table": {
-                    "headers": ["Technique", "Primary action", "Inference behavior"],
-                    "rows": [
-                        [
-                            "Dropout",
-                            "Randomly drops connections",
-                            "Turned OFF (weights scaled)",
-                        ],
-                        [
-                            "L2 Weight Decay",
-                            "Shrinks weights toward zero",
-                            "Turned ON (weights are static)",
-                        ],
-                        [
-                            "Early Stopping",
-                            "Halts training at lowest val loss",
-                            "N/A (model is checkpointed)",
-                        ],
-                    ],
-                },
-            },
-            {
-                "title": "Sequential Data & Vanilla RNNs",
-                "kicker": "One Transition, Unfolded Through Time",
-                "layout": "formula_example",
-                "formula": "hₜ = φ(W_hh hₜ₋₁ + W_xh xₜ + b)",
-                "formula_tex": r"h_t=\varphi(W_{hh}h_{t-1}+W_{xh}x_t+b)",
-            },
             {
                 "title": "Sequential Data & Vanilla RNNs",
                 "kicker": "One Transition, Unfolded Through Time",
@@ -1124,12 +1110,6 @@ TOPIC_CONTENT: dict = {
                         ],
                     ],
                 },
-            },
-            {
-                "title": "Autoencoders (AE): Compression and Reconstruction",
-                "kicker": "Encoder → Bottleneck → Decoder",
-                "layout": "diagram",
-                "plot_path": "ann-intro.png",
             },
             {
                 "title": "Autoencoders (AE): Compression and Reconstruction",
@@ -1356,6 +1336,65 @@ def slide_agenda(prs, total, index):
     content_footer(slide, index, total)
 
 
+def content_title(slide, title: str, subtitle: str | None = None):
+    """Title that shrinks on long headlines so it does not cover the kicker."""
+    long = len(title or "") > 46
+    size = 24 if long else 32
+    title_h = 0.80 if long else 0.62
+    add_text(
+        slide,
+        MARGIN,
+        Inches(1.12),
+        Inches(11.2),
+        Inches(title_h),
+        title,
+        size=size,
+        bold=True,
+        color=PRIMARY,
+    )
+    if subtitle:
+        add_text(
+            slide,
+            MARGIN,
+            Inches(1.12 + title_h),
+            Inches(11.2),
+            Inches(0.34),
+            subtitle,
+            size=14 if long else 15,
+            color=MUTED,
+        )
+
+
+def content_top(title: str) -> float:
+    return 2.42 if len(title or "") > 46 else 2.18
+
+
+def _chars_per_line(width_in: float, size: float) -> int:
+    return max(22, int(width_in * (108 / max(size, 10))))
+
+
+def _line_count(text: str, width_in: float, size: float) -> int:
+    cpl = _chars_per_line(width_in, size)
+    words = (text or "").split()
+    if not words:
+        return 1
+    lines, cur = 1, 0
+    for word in words:
+        need = len(word) + (1 if cur else 0)
+        if cur + need > cpl:
+            lines += 1
+            cur = len(word)
+        else:
+            cur += need
+    return lines
+
+
+def _bullet_box(items: list[str], width_in: float, size: float) -> tuple[float, float]:
+    lines = max((_line_count(t, width_in, size) for t in items), default=1)
+    item_h = max(0.42, min(1.15, lines * (size / 72) * 1.35 + 0.10))
+    return item_h, item_h + 0.10
+
+
 def _add_plot(slide, name, left, top, width, max_height, *, folder=None):
     from PIL import Image
 
@@ -1367,9 +1406,21 @@ def _add_plot(slide, name, left, top, width, max_height, *, folder=None):
         return None
     with Image.open(path) as im:
         px_w, px_h = im.size
-    if px_w <= 0 or px_h <= 0:
-        return None
-    aspect = px_w / px_h
+        if px_w <= 0 or px_h <= 0:
+            return None
+        aspect = px_w / px_h
+        src = path
+        if aspect < 0.5:
+            from io import BytesIO
+
+            crop_h = max(1, min(px_h, int(px_w / 2.4)))
+            cropped = im.crop((0, 0, px_w, crop_h))
+            buf = BytesIO()
+            cropped.save(buf, format="PNG")
+            buf.seek(0)
+            src = buf
+            px_w, px_h = cropped.size
+            aspect = px_w / max(px_h, 1)
     max_w_in = width.inches
     max_h_in = max_height.inches
     fit_w = min(max_w_in, max_h_in * aspect)
@@ -1379,7 +1430,7 @@ def _add_plot(slide, name, left, top, width, max_height, *, folder=None):
         fit_w = fit_h * aspect
     x = left.inches + (max_w_in - fit_w) / 2
     return slide.shapes.add_picture(
-        str(path),
+        str(src) if src is path else src,
         Inches(x),
         top,
         width=Inches(fit_w),
@@ -1393,31 +1444,33 @@ def slide_topic_rich(prs, total, index, content):
     paint_light(slide)
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
-    title_block(slide, content["title"], content.get("kicker"))
+    content_title(slide, content["title"], content.get("kicker"))
 
     items = content.get("bullets") or []
     has_note = bool(content.get("note"))
     dense = len(items) >= 4 or (len(items) >= 3 and has_note)
-    pitch = 0.50 if dense else 0.62
     bsize = 14 if dense else 16
 
     if content.get("body"):
-        soft_card(slide, MARGIN, Inches(2.25), Inches(12.0), Inches(1.15), fill=SOFT)
+        top = content_top(content["title"])
+        soft_card(slide, MARGIN, Inches(top), Inches(12.0), Inches(1.15), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.35),
-            Inches(2.45),
+            Inches(top + 0.20),
             Inches(11.3),
             Inches(0.8),
             content["body"],
             size=15,
             color=INK,
         )
-        bullet_top = Inches(3.6)
+        bullet_top = Inches(top + 1.35)
+        bsize = 14 if dense else 15
     else:
-        bullet_top = Inches(2.35)
-        bsize = 15 if dense else 17
+        bullet_top = Inches(content_top(content["title"]))
+        bsize = 14 if dense else 15
 
+    item_h, pitch = _bullet_box(items, 11.2, bsize)
     note_y = 6.35 if has_note else 6.7
     max_items = max(1, int((note_y - bullet_top.inches - 0.1) / pitch))
     bullets(
@@ -1427,6 +1480,7 @@ def slide_topic_rich(prs, total, index, content):
         size=bsize,
         pitch=pitch,
         width=Inches(11.2),
+        item_height=Inches(item_h),
     )
 
     if content.get("note"):
@@ -1450,13 +1504,14 @@ def slide_linear_intro(prs, total, index, content):
     paint_light(slide)
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
-    title_block(slide, content["title"], content.get("kicker"))
+    content_title(slide, content["title"], content.get("kicker"))
 
     items = content.get("bullets") or []
     plot_name = content.get("plot") or content.get("plot_path")
     has_plot = bool(plot_name)
     has_formula = bool(content.get("formula"))
     has_note = bool(content.get("note"))
+    has_body = bool((content.get("body") or "").strip())
     is_frac = has_formula and (
         is_fraction_formula(content["formula"]) or bool(content.get("formula_tex"))
     )
@@ -1465,26 +1520,29 @@ def slide_linear_intro(prs, total, index, content):
     text_w = Inches(5.8) if has_plot else Inches(11.3)
     bullet_w = Inches(5.6) if has_plot else Inches(11.2)
 
-    soft_card(slide, MARGIN, Inches(2.2), col_w, Inches(1.2), fill=SOFT)
-    add_text(
-        slide,
-        MARGIN + Inches(0.3),
-        Inches(2.35),
-        text_w,
-        Inches(0.95),
-        content.get("body") or "",
-        size=13,
-        color=INK,
-    )
+    y_after = content_top(content["title"])
+    if has_body:
+        soft_card(slide, MARGIN, Inches(y_after), col_w, Inches(1.2), fill=SOFT)
+        add_text(
+            slide,
+            MARGIN + Inches(0.3),
+            Inches(y_after + 0.15),
+            text_w,
+            Inches(0.95),
+            content.get("body") or "",
+            size=13,
+            color=INK,
+        )
+        y_after = y_after + 1.35
 
     if has_formula:
         formula_card_h = 1.65 if is_frac else 1.35
         formula_box_h = 0.95 if is_frac else 0.65
-        soft_card(slide, MARGIN, Inches(3.55), col_w, Inches(formula_card_h), fill=SOFT)
+        soft_card(slide, MARGIN, Inches(y_after), col_w, Inches(formula_card_h), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.3),
-            Inches(3.65),
+            Inches(y_after + 0.10),
             text_w,
             Inches(0.22),
             "Formula",
@@ -1495,7 +1553,7 @@ def slide_linear_intro(prs, total, index, content):
         add_formula(
             slide,
             Inches(MARGIN.inches + 0.3),
-            Inches(3.9),
+            Inches(y_after + 0.35),
             text_w,
             Inches(formula_box_h),
             content["formula"],
@@ -1505,39 +1563,38 @@ def slide_linear_intro(prs, total, index, content):
             formula_tex=content.get("formula_tex"),
         )
         if content.get("formula_note"):
-            note_y = 3.9 + formula_box_h + 0.05
             add_text(
                 slide,
                 Inches(MARGIN.inches + 0.3),
-                Inches(note_y),
+                Inches(y_after + 0.35 + formula_box_h + 0.02),
                 text_w,
-                Inches(0.3),
+                Inches(0.28),
                 content["formula_note"],
                 size=10,
                 color=MUTED,
             )
-        bullet_top = 3.55 + formula_card_h + 0.12
-        pitch = 0.46 if (has_note or len(items) >= 2) else 0.55
+        bullet_top = y_after + formula_card_h + 0.12
         bsize = 12
     else:
-        bullet_top = 3.55
-        pitch = 0.50 if (has_note or len(items) >= 3) else 0.58
+        bullet_top = y_after
         bsize = 13
 
+    item_h, pitch = _bullet_box(items, bullet_w.inches, bsize)
     note_band = 6.45 if has_note else 6.75
-    max_items = max(1, int((note_band - bullet_top - 0.05) / pitch))
+    max_items = max(1, int((note_band - bullet_top - 0.05) / pitch)) if items else 0
     if has_formula and has_plot:
         max_items = min(max_items, 2)
-    bullets(
-        slide,
-        items[:max_items],
-        top=Inches(bullet_top),
-        size=bsize,
-        left=MARGIN,
-        width=bullet_w,
-        pitch=pitch,
-        item_height=Inches(0.42),
-    )
+    if items:
+        bullets(
+            slide,
+            items[:max_items],
+            top=Inches(bullet_top),
+            size=bsize,
+            left=MARGIN,
+            width=bullet_w,
+            pitch=pitch,
+            item_height=Inches(item_h),
+        )
 
     plot_folder = DIAGRAMS if content.get("plot_path") else PLOTS
     if plot_name:
@@ -1573,7 +1630,7 @@ def slide_formula_example(prs, total, index, content):
     paint_light(slide)
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
-    title_block(slide, content["title"], content.get("kicker"))
+    content_title(slide, content["title"], content.get("kicker"))
 
     items = content.get("bullets") or []
     has_note = bool(content.get("note"))
@@ -1582,22 +1639,22 @@ def slide_formula_example(prs, total, index, content):
     )
     dense = len(items) >= 3 or (len(items) >= 2 and has_note)
 
-    body_top = Inches(2.15)
+    body_top = Inches(content_top(content["title"]))
     if content.get("body"):
         soft_card(slide, MARGIN, body_top, Inches(12.0), Inches(0.7), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.35),
-            Inches(2.28),
+            Inches(body_top.inches + 0.13),
             Inches(11.3),
             Inches(0.45),
             content["body"],
             size=14,
             color=INK,
         )
-        formula_top = Inches(3.0)
+        formula_top = Inches(body_top.inches + 0.85)
     else:
-        formula_top = Inches(2.25)
+        formula_top = body_top
 
     formula_h = 1.55 if is_frac else 1.25
     soft_card(slide, MARGIN, formula_top, Inches(12.0), Inches(formula_h), fill=SOFT)
@@ -1628,21 +1685,22 @@ def slide_formula_example(prs, total, index, content):
         )
 
     bullet_top = formula_top.inches + formula_h + 0.12
-    pitch = 0.46 if dense else 0.56
     bsize = 13 if dense else 15
+    item_h, pitch = _bullet_box(items, 11.2, bsize)
     note_band = 6.45 if has_note else 6.75
-    max_items = max(1, int((note_band - bullet_top - 0.05) / pitch))
+    max_items = max(1, int((note_band - bullet_top - 0.05) / pitch)) if items else 0
     if has_note:
         max_items = min(max_items, 3)
-    bullets(
-        slide,
-        items[:max_items],
-        top=Inches(bullet_top),
-        size=bsize,
-        pitch=pitch,
-        width=Inches(11.2),
-        item_height=Inches(0.42),
-    )
+    if items:
+        bullets(
+            slide,
+            items[:max_items],
+            top=Inches(bullet_top),
+            size=bsize,
+            pitch=pitch,
+            width=Inches(11.2),
+            item_height=Inches(item_h),
+        )
 
     if content.get("note"):
         add_text(
@@ -1668,7 +1726,7 @@ def slide_topic_table(prs, total, index, content):
     paint_light(slide)
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
-    title_block(slide, content["title"], content.get("kicker"))
+    content_title(slide, content["title"], content.get("kicker"))
 
     headers = table["headers"]
     rows = table["rows"]
@@ -1680,20 +1738,20 @@ def slide_topic_table(prs, total, index, content):
     body_size = 11 if compact else 13
     header_size = 10 if compact else 12
 
-    table_top = 2.25
+    table_top = content_top(content["title"])
     if show_body:
-        soft_card(slide, MARGIN, Inches(2.15), Inches(12.0), Inches(0.55), fill=SOFT)
+        soft_card(slide, MARGIN, Inches(table_top), Inches(12.0), Inches(0.55), fill=SOFT)
         add_text(
             slide,
             MARGIN + Inches(0.35),
-            Inches(2.25),
+            Inches(table_top + 0.10),
             Inches(11.3),
             Inches(0.38),
             content["body"],
             size=13,
             color=INK,
         )
-        table_top = 2.85
+        table_top = table_top + 0.70
 
     footer_limit = 6.55
     note_reserve = 0.55 if has_note else 0.0
@@ -1764,21 +1822,21 @@ def slide_full_diagram(prs, total, index, content):
     paint_light(slide)
     right_rail(slide)
     content_header(slide, f"{s['section_tag']}  ·  {s['section_title']}", f"{index:02d}")
-    title_block(slide, content["title"], content.get("kicker"))
+    content_title(slide, content["title"], content.get("kicker"))
 
-    diagram_top = Inches(2.15)
+    diagram_top = Inches(content_top(content["title"]))
     if content.get("body"):
         add_text(
             slide,
             MARGIN,
-            Inches(2.1),
+            Inches(diagram_top.inches - 0.05),
             Inches(12.0),
             Inches(0.35),
             content["body"],
             size=13,
             color=MUTED,
         )
-        diagram_top = Inches(2.45)
+        diagram_top = Inches(diagram_top.inches + 0.30)
 
     plot_name = content.get("plot_path") or content.get("plot")
     folder = DIAGRAMS if content.get("plot_path") else PLOTS
