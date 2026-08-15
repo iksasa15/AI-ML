@@ -680,6 +680,46 @@ def diagram_dropout() -> None:
     save(fig, "dropout.png")
 
 
+def diagram_feature_scaling() -> None:
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+    fig.patch.set_facecolor(SURFACE)
+    labels = ["Feat A", "Feat B", "Feat C"]
+    before = [90, 12, 48]
+    after = [0.90, 0.12, 0.48]
+    panels = [
+        (axes[0], "Before scaling", before, (0, 100), "Raw ranges dominate"),
+        (axes[1], "After scaling — heights are comparable", after, (0, 1.05), "Features in a comparable range"),
+    ]
+    colors = [PRIMARY, SECONDARY, PRIMARY]
+    for ax, title, vals, ylim, cap in panels:
+        style_ax(ax, spines=True)
+        ax.set_facecolor(SURFACE)
+        for s in ("top", "right"):
+            ax.spines[s].set_visible(False)
+        ax.spines["left"].set_color(LINE)
+        ax.spines["bottom"].set_color(LINE)
+        ax.set_ylim(*ylim)
+        ax.set_xticks(range(len(labels)))
+        ax.set_xticklabels(labels, fontsize=11, color=MUTED)
+        ax.set_yticks([])
+        ax.set_title(title, fontsize=11, color=PRIMARY, fontweight="bold", pad=8)
+        bars = ax.bar(labels, vals, color=colors, width=0.55, edgecolor=WHITE, linewidth=1)
+        for bar, v in zip(bars, vals):
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + (ylim[1] * 0.03),
+                f"{v:g}",
+                ha="center",
+                va="bottom",
+                fontsize=10,
+                color=INK,
+                fontweight="bold",
+            )
+        ax.text(1, -0.18 if ylim[1] < 2 else -12, cap, ha="center", fontsize=10, color=MUTED, transform=ax.get_xaxis_transform())
+    fig.suptitle("Feature Scaling", fontsize=13, color=PRIMARY, fontweight="bold", y=1.04)
+    save(fig, "feature-scaling.png")
+
+
 def diagram_ann_intro() -> None:
     """Wikimedia-style ANN (slide image 1), redrawn in ETRA colors."""
     fig, ax = plt.subplots(figsize=(8.8, 4.4))
@@ -774,6 +814,7 @@ def main() -> None:
     diagram_rnn_unfold()
     diagram_lstm()
     diagram_dropout()
+    diagram_feature_scaling()
     diagram_ann_intro()
     diagram_four_phases()
     diagram_hierarchical()

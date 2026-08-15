@@ -755,8 +755,15 @@ TOPIC_CONTENT: dict = {
                 "note": "Learning rate (LR) is the single most important hyperparameter to tune (typically searched on a log grid, e.g., 1e-4, 1e-3, 1e-2).",
             },
             {
-                "title": "Batch Normalization",
-                "kicker": "Stabilize Activations, Speed Up Training",
+                "title": "Normalization: Batch Normalization",
+                "kicker": "Stabilize Activations and Speed Up Deep Training",
+                "layout": "diagram",
+                "plot_path": "feature-scaling.png",
+                "note": "Feature scaling: features brought to a comparable range.",
+            },
+            {
+                "title": "Normalization: Batch Normalization",
+                "kicker": "Stabilize Activations and Speed Up Deep Training",
                 "body": "BN normalizes each channel across the mini-batch, then learns a scale γ and shift β.",
                 "formula": "x̂ = (x − μ_B) / √(σ²_B + ε),   y = γ x̂ + β",
                 "formula_tex": r"\hat{x}=\dfrac{x-\mu_B}{\sqrt{\sigma_B^2+\varepsilon}},\quad y=\gamma\hat{x}+\beta",
