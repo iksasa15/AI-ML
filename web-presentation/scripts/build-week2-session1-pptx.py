@@ -796,17 +796,48 @@ TOPIC_CONTENT: dict = {
         ],
     },
     "CNNs": {
-        "title": "Image Data: How Computers See Pixels",
-        "kicker": "Tensors, Channels, and Local Structure",
-        "body": "A color image is a tensor H×W×3 (RGB). Meaning lives in local neighborhoods, not isolated pixels.",
+        "title": "Phase 3: Specialized Architectures (Vision & Sequences)",
+        "kicker": "Images vs Ordered Sequences",
         "bullets": [
-            "Small patches reveal edges; larger context reveals objects — hierarchical composition.",
-            "Preprocess: resize, crop, normalize (often ImageNet mean/std), then augment.",
-            "Model input is typically Batch × C × H × W fed into stem convolutions.",
+            "Images have 2D locality and translation symmetry—convolutions exploit shared weights across space.",
+            "Sequences have order—recurrence, causal convolutions, or attention carry context across time or position.",
+            "Choosing the right inductive bias beats blindly scaling the wrong architecture.",
         ],
-        "plot_path": "convolution.png",
-        "note": "Augmentation (crop, flip, color jitter) teaches invariance the loss never states explicitly.",
         "extra_slides": [
+            {
+                "title": "Phase 3: Specialized Architectures (Vision & Sequences)",
+                "kicker": "Images vs Ordered Sequences",
+                "layout": "table",
+                "table": {
+                    "headers": ["Modality", "Core structure", "Representative layers"],
+                    "rows": [
+                        [
+                            "Image / video frames",
+                            "Spatial grids",
+                            "Conv2D, pooling, residual blocks",
+                        ],
+                        [
+                            "Text / speech / sensors",
+                            "Ordered tokens or time steps",
+                            "RNN/GRU/LSTM, causal conv, self-attention",
+                        ],
+                    ],
+                },
+            },
+            {
+                "title": "Image Data: How Computers “See” Pixels",
+                "kicker": "Tensors, Channels, and Local Structure",
+                "bullets": [
+                    "A color image is usually a tensor of shape H×W×3 (RGB); each entry is an intensity discretized into 8 bits (0–255) before normalization.",
+                    "Meaning lives in local neighborhoods: small patches reveal edges; larger contexts reveal objects—hierarchical composition.",
+                ],
+            },
+            {
+                "title": "Image Data: How Computers “See” Pixels",
+                "kicker": "Tensors, Channels, and Local Structure",
+                "layout": "diagram",
+                "plot_path": "cnn-architecture.png",
+            },
             {
                 "title": "Convolution: Kernels and Feature Maps",
                 "kicker": "Sliding Linear Filters + Nonlinearity",

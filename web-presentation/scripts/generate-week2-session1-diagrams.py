@@ -480,6 +480,134 @@ def diagram_fit_regimes() -> None:
     save(fig, "train-val-curves.png")
 
 
+def _offset_stack(ax, x, y, n, w, h, dx=0.07, dy=0.08, *, highlight=None):
+    """Draw n offset feature-map rectangles (Wikimedia CNN style)."""
+    for i in range(n - 1, -1, -1):
+        xi = x + i * dx
+        yi = y + i * dy
+        fc = PRIMARY if highlight is not None and i == highlight else (SOFT_2 if i % 2 else SOFT)
+        ec = PRIMARY
+        ax.add_patch(
+            Rectangle((xi, yi), w, h, facecolor=fc, edgecolor=ec, lw=1.15, zorder=2 + i)
+        )
+    return (x + (n - 1) * dx + w / 2, y + (n - 1) * dy + h / 2)
+
+
+def diagram_cnn_architecture() -> None:
+    """Wikimedia CNN (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(11.2, 4.15))
+    style_ax(ax)
+    ax.set_xlim(0, 11.2)
+    ax.set_ylim(0, 4.15)
+
+    # Input image as an H×W grid with a local patch
+    rng = np.random.default_rng(4)
+    grid = rng.integers(1, 9, size=(6, 5))
+    cell = 0.22
+    ox, oy = 0.28, 1.15
+    for i in range(6):
+        for j in range(5):
+            in_k = 1 <= i <= 3 and 1 <= j <= 3
+            ax.add_patch(
+                Rectangle(
+                    (ox + j * cell, oy + (5 - i) * cell),
+                    cell,
+                    cell,
+                    facecolor=SOFT_2 if in_k else SOFT,
+                    edgecolor=SECONDARY if in_k else LINE,
+                    lw=1.05,
+                )
+            )
+    ax.add_patch(
+        Rectangle(
+            (ox + cell, oy + 2 * cell),
+            3 * cell,
+            3 * cell,
+            fill=False,
+            edgecolor=PRIMARY,
+            lw=1.8,
+            zorder=5,
+        )
+    )
+    ax.text(ox + 2.5 * cell, 3.05, "Image", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+    ax.text(ox + 2.5 * cell, 0.88, "H×W×3", ha="center", fontsize=9, color=MUTED)
+
+    # Feature-map stacks (conv + pool)
+    stacks = [
+        (2.15, 1.35, 3, 0.72, 1.15),
+        (4.05, 1.55, 5, 0.58, 0.95),
+        (5.85, 1.70, 7, 0.46, 0.78),
+    ]
+    centers = []
+    for x, y, n, w, h in stacks:
+        c = _offset_stack(ax, x, y, n, w, h, highlight=0)
+        centers.append(c)
+
+    ax.annotate(
+        "",
+        xy=(stacks[0][0] + 0.08, stacks[0][1] + stacks[0][4] * 0.62),
+        xytext=(ox + 4 * cell, oy + 3.5 * cell),
+        arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.3, mutation_scale=10, linestyle="--"),
+    )
+    ax.annotate(
+        "",
+        xy=(stacks[1][0] + 0.06, stacks[1][1] + stacks[1][4] * 0.55),
+        xytext=(stacks[0][0] + stacks[0][3] * 0.55, stacks[0][1] + stacks[0][4] * 0.7),
+        arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.3, mutation_scale=10, linestyle="--"),
+    )
+    ax.annotate(
+        "",
+        xy=(stacks[2][0] + 0.05, stacks[2][1] + stacks[2][4] * 0.5),
+        xytext=(stacks[1][0] + stacks[1][3] * 0.55, stacks[1][1] + stacks[1][4] * 0.65),
+        arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.3, mutation_scale=10, linestyle="--"),
+    )
+
+    ax.text(4.55, 3.72, "Convolutional and pooling layers", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+    ax.text(4.55, 0.55, "Feature learning", ha="center", fontsize=10, color=MUTED)
+
+    # Flatten
+    for i in range(6):
+        ax.add_patch(
+            Rectangle((7.55, 1.15 + i * 0.28), 0.42, 0.24, facecolor=SOFT, edgecolor=PRIMARY, lw=1.1)
+        )
+    ax.annotate(
+        "",
+        xy=(7.52, 2.05),
+        xytext=(stacks[2][0] + stacks[2][3] + 0.42, centers[2][1]),
+        arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.6, mutation_scale=12),
+    )
+    ax.text(7.76, 3.72, "Vectorisation", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+    ax.text(7.76, 0.55, "Flatten", ha="center", fontsize=10, color=MUTED)
+
+    # Dense layers
+    ys1 = np.linspace(1.25, 2.95, 4)
+    ys2 = np.linspace(1.45, 2.75, 3)
+    for y in ys1:
+        ax.add_patch(Circle((8.85, y), 0.16, fc=SOFT_2, ec=PRIMARY, lw=1.3, zorder=3))
+    for y in ys2:
+        ax.add_patch(Circle((9.85, y), 0.16, fc=PRIMARY, ec=PRIMARY, lw=1.3, zorder=3))
+    for y1 in ys1:
+        for y2 in ys2:
+            ax.plot([9.01, 9.69], [y1, y2], color=SECONDARY, lw=0.7, alpha=0.55, zorder=0)
+    ax.annotate(
+        "",
+        xy=(8.68, 2.1),
+        xytext=(8.02, 2.05),
+        arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.6, mutation_scale=12),
+    )
+    ax.text(9.35, 3.72, "Connected layers", ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+    ax.text(9.35, 0.55, "Classification", ha="center", fontsize=10, color=MUTED)
+
+    # Output scores
+    labels = [("cat", "0.70"), ("dog", "0.22"), ("bird", "0.08")]
+    for y, (name, score) in zip(ys2, labels):
+        ax.plot([10.01, 10.22], [y, y], color=SECONDARY, lw=1.1)
+        ax.text(10.28, y, f"{name}  {score}", ha="left", va="center", fontsize=10, color=INK, fontweight="bold")
+
+    ax.text(5.6, 4.02, "Convolutional neural network", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "cnn-architecture.png")
+
+
 def diagram_convolution() -> None:
     fig, ax = plt.subplots(figsize=(10, 3.8))
     style_ax(ax)
@@ -807,6 +935,7 @@ def main() -> None:
     diagram_forward_pass()
     diagram_backprop()
     diagram_fit_regimes()
+    diagram_cnn_architecture()
     diagram_convolution()
     diagram_cnn_stack()
     diagram_residual()
