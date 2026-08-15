@@ -411,23 +411,12 @@ TOPIC_CONTENT: dict = {
         "extra_slides": [
             {
                 "title": "How Contextualized Embeddings Work",
-                "kicker": "Architecture Layers",
+                "kicker": "Words as vectors in embedding space",
                 "bullets": [
                     "Static embeddings: one vector per word type.",
                     "Contextual: vector depends on surrounding tokens (ELMo, BERT-style).",
-                    "Token/base embedding layer maps input ids to dense vectors.",
-                    "Context encoder layers (often Transformer blocks) enrich each token with sequence context.",
-                    "Task head uses contextual features for prediction.",
                 ],
-            },
-            {
-                "title": "How Contextualized Embeddings Work",
-                "kicker": "Layer Semantics",
-                "bullets": [
-                    "Lower layers capture local syntax/patterns.",
-                    "Middle layers improve sense disambiguation.",
-                    "Upper layers capture richer semantics and task-specific signals.",
-                ],
+                "plot_path": "embedding-space.png",
             },
             {
                 "title": "RNN Mechanism and Weight Sharing",

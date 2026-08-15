@@ -343,6 +343,9 @@ def diagram_embedding_space() -> None:
         ax.text(x + 0.28, y + 0.12, lab, fontsize=12, color=INK, fontweight="bold")
     ax.text(5.3, 5.9, "Words as vectors in embedding space", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
     save(fig, "embedding-space.png")
+
+
+def diagram_static_contextual() -> None:
     fig, ax = plt.subplots(figsize=(10.6, 3.7))
     style_ax(ax)
     ax.set_xlim(0, 10.6)
@@ -504,6 +507,7 @@ def main() -> None:
     diagram_google_ngram()
     diagram_ngram()
     diagram_log_probs()
+    diagram_embedding_space()
     diagram_static_contextual()
     diagram_rnn_unfold()
     diagram_rnn_patterns()
