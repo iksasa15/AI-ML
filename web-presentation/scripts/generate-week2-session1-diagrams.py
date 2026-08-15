@@ -187,6 +187,77 @@ def diagram_mlp() -> None:
     save(fig, "mlp-architecture.png")
 
 
+def diagram_nn_forward() -> None:
+    """Match the in-deck Neural Network visualizer: 3-4-2, weight thickness."""
+    fig, ax = plt.subplots(figsize=(10.2, 4.4))
+    style_ax(ax)
+    ax.set_xlim(0, 10.2)
+    ax.set_ylim(0, 4.4)
+
+    weights_ih = {
+        (0, 0): 0.6,
+        (0, 1): -0.3,
+        (0, 2): 0.45,
+        (0, 3): 0.2,
+        (1, 0): -0.5,
+        (1, 1): 0.7,
+        (1, 2): 0.15,
+        (1, 3): -0.4,
+        (2, 0): 0.35,
+        (2, 1): 0.55,
+        (2, 2): -0.25,
+        (2, 3): 0.65,
+    }
+    weights_ho = {
+        (0, 0): 0.5,
+        (0, 1): -0.35,
+        (1, 0): -0.2,
+        (1, 1): 0.6,
+        (2, 0): 0.4,
+        (2, 1): 0.3,
+        (3, 0): -0.45,
+        (3, 1): 0.55,
+    }
+
+    specs = [
+        (1.5, 3, "Input", ["x1", "x2", "x3"], SOFT),
+        (5.1, 4, "Hidden", ["h1", "h2", "h3", "h4"], PRIMARY),
+        (8.7, 2, "Output", ["y1", "y2"], SOFT),
+    ]
+    coords = []
+    for x, n, layer, labels, fill in specs:
+        ys = np.linspace(0.85, 3.15, n)
+        pts = []
+        tc = WHITE if fill == PRIMARY else PRIMARY
+        for y, lab in zip(ys, labels):
+            ax.add_patch(Circle((x, y), 0.28, fc=fill, ec=PRIMARY, lw=1.6, zorder=3))
+            ax.text(x, y, lab, ha="center", va="center", fontsize=10, color=tc, fontweight="bold", zorder=4)
+            pts.append((x, y))
+        coords.append(pts)
+        ax.text(x, 0.42, layer, ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+
+    def draw_edges(src, dst, wmap):
+        for i, (xa, ya) in enumerate(src):
+            for j, (xb, yb) in enumerate(dst):
+                w = abs(wmap.get((i, j), 0.3))
+                ax.plot(
+                    [xa + 0.28, xb - 0.28],
+                    [ya, yb],
+                    color=SECONDARY,
+                    lw=0.7 + w * 3.2,
+                    alpha=0.28 + w * 0.55,
+                    zorder=0,
+                    solid_capstyle="round",
+                )
+
+    draw_edges(coords[0], coords[1], weights_ih)
+    draw_edges(coords[1], coords[2], weights_ho)
+
+    ax.text(5.1, 4.1, "Neural Network", ha="center", fontsize=14, color=PRIMARY, fontweight="bold")
+    ax.text(5.1, 3.72, "Input → Hidden → Output (forward pass)", ha="center", fontsize=11, color=MUTED)
+    save(fig, "nn-forward.png")
+
+
 def diagram_xor() -> None:
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8))
     fig.patch.set_facecolor(SURFACE)
@@ -259,6 +330,80 @@ def diagram_activations() -> None:
         ax.set_title(name, fontsize=13, color=PRIMARY, fontweight="bold")
     fig.suptitle("Activation functions introduce nonlinearity", fontsize=13, color=PRIMARY, fontweight="bold", y=1.04)
     save(fig, "activations.png")
+
+
+def diagram_sigmoid_tanh() -> None:
+    """Wikimedia-style sigmoid (two steepness) + tanh, redrawn in ETRA colors."""
+    fig, axes = plt.subplots(2, 1, figsize=(8.8, 5.6), gridspec_kw={"height_ratios": [1.05, 1]})
+    fig.patch.set_facecolor(SURFACE)
+
+    ax = axes[0]
+    style_ax(ax, spines=True)
+    ax.set_facecolor(SURFACE)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.spines["left"].set_color(LINE)
+    ax.spines["bottom"].set_color(LINE)
+    ax.grid(True, color=LINE, lw=0.8, alpha=0.9)
+    x = np.linspace(-1.0, 1.0, 400)
+    ax.plot(x, 1 / (1 + np.exp(-5 * x)), color=SECONDARY, lw=2.4, label=r"$f(x)=1/(1+e^{-5x})$")
+    ax.plot(x, 1 / (1 + np.exp(-10 * x)), color=PRIMARY, lw=2.4, label=r"$g(x)=1/(1+e^{-10x})$")
+    ax.set_xlim(-1.0, 1.0)
+    ax.set_ylim(0.0, 1.0)
+    ax.set_xticks(np.round(np.arange(-1.0, 1.01, 0.2), 1))
+    ax.set_yticks(np.round(np.arange(0.0, 1.01, 0.2), 1))
+    ax.tick_params(colors=MUTED, labelsize=8)
+    ax.legend(frameon=False, fontsize=9, loc="upper left")
+    ax.set_title("Sigmoid — larger |w| makes a steeper cutoff", fontsize=12, color=PRIMARY, fontweight="bold")
+
+    ax = axes[1]
+    style_ax(ax, spines=True)
+    ax.set_facecolor(SURFACE)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.spines["left"].set_color(LINE)
+    ax.spines["bottom"].set_color(LINE)
+    ax.grid(True, color=LINE, lw=0.8, alpha=0.9)
+    x = np.linspace(-2.6, 2.6, 400)
+    ax.plot(x, np.tanh(x), color=SECONDARY, lw=2.6, label=r"$\tanh(x)$")
+    ax.axhline(0, color=LINE, lw=1)
+    ax.axvline(0, color=LINE, lw=1)
+    ax.set_xlim(-2.6, 2.6)
+    ax.set_ylim(-1.05, 1.05)
+    ax.set_xticks([-2, -1, 0, 1, 2])
+    ax.set_yticks([-1, 0, 1])
+    ax.tick_params(colors=MUTED, labelsize=8)
+    ax.legend(frameon=False, fontsize=10, loc="upper left")
+    ax.set_title("Tanh — zero-centered, range (−1, 1)", fontsize=12, color=PRIMARY, fontweight="bold")
+
+    fig.tight_layout(h_pad=0.8)
+    save(fig, "sigmoid-tanh.png")
+
+
+def diagram_sigmoid_threshold() -> None:
+    fig, ax = plt.subplots(figsize=(9.6, 3.6))
+    style_ax(ax, spines=True)
+    ax.set_facecolor(SURFACE)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.spines["left"].set_color(LINE)
+    ax.spines["bottom"].set_color(LINE)
+
+    z = np.linspace(-6, 6, 400)
+    s = 1 / (1 + np.exp(-z))
+    ax.plot(z, s, color=PRIMARY, lw=2.6)
+    ax.axhline(0.5, color=SECONDARY, lw=1.6, linestyle="--")
+    ax.axvline(0, color=LINE, lw=1)
+    ax.scatter([0], [0.5], s=70, color=SECONDARY, zorder=3)
+    ax.text(0.35, 0.58, r"$\tau = 0.5$", fontsize=12, color=SECONDARY, fontweight="bold")
+    ax.fill_between(z, 0.5, 1, where=s >= 0.5, color=SOFT, alpha=0.9)
+    ax.set_xlim(-6, 6)
+    ax.set_ylim(-0.05, 1.08)
+    ax.set_yticks([0, 0.5, 1])
+    ax.set_xticks([])
+    ax.set_ylabel(r"$\sigma(z)$", fontsize=11, color=MUTED)
+    ax.set_title("Sigmoid & threshold — probability cutoff for classification", fontsize=12, color=PRIMARY, fontweight="bold")
+    save(fig, "sigmoid-threshold.png")
 
 
 def diagram_forward_pass() -> None:
@@ -614,8 +759,11 @@ def main() -> None:
     diagram_three_ingredients()
     diagram_perceptron()
     diagram_mlp()
+    diagram_nn_forward()
     diagram_xor()
     diagram_activations()
+    diagram_sigmoid_tanh()
+    diagram_sigmoid_threshold()
     diagram_forward_pass()
     diagram_backprop()
     diagram_fit_regimes()
