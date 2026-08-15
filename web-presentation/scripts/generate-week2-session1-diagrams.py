@@ -535,6 +535,64 @@ def diagram_dropout() -> None:
     save(fig, "dropout.png")
 
 
+def diagram_ann_intro() -> None:
+    """Wikimedia-style ANN (slide image 1), redrawn in ETRA colors."""
+    fig, ax = plt.subplots(figsize=(8.8, 4.4))
+    style_ax(ax)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 4.4)
+
+    layers = [
+        (1.15, 4, "Input"),
+        (3.7, 6, "Hidden"),
+        (6.3, 6, "Hidden"),
+        (8.85, 3, "Output"),
+    ]
+    coords = []
+    for li, (x, n, label) in enumerate(layers):
+        ys = np.linspace(0.55, 3.35, n)
+        pts = []
+        fill = PRIMARY if li in (1, 2) else SOFT
+        for y in ys:
+            ax.add_patch(Circle((x, y), 0.20, fc=fill, ec=PRIMARY, lw=1.5, zorder=3))
+            pts.append((x, y))
+        coords.append(pts)
+        ax.text(x, 3.85, label, ha="center", fontsize=11, color=PRIMARY, fontweight="bold")
+
+    for a, b in zip(coords, coords[1:]):
+        for xa, ya in a:
+            for xb, yb in b:
+                ax.plot([xa + 0.20, xb - 0.20], [ya, yb], color=SECONDARY, lw=0.7, alpha=0.55, zorder=0)
+
+    ax.text(5, 4.2, "Artificial neural network", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "ann-intro.png")
+
+
+def diagram_four_phases() -> None:
+    fig, ax = plt.subplots(figsize=(10.4, 3.6))
+    style_ax(ax)
+    ax.set_xlim(0, 10.4)
+    ax.set_ylim(0, 3.6)
+
+    phases = [
+        ("1", "Foundations", "Why depth?\nWhat does a\nneuron compute?"),
+        ("2", "Optimization", "How does training\nstay stable and\ngeneralize?"),
+        ("3", "Architectures", "Images vs\nsequences —\nwhich structure?"),
+        ("4", "Autoencoders", "Generation and\nreconstruction"),
+    ]
+    for i, (n, title, q) in enumerate(phases):
+        x = 0.25 + i * 2.55
+        rounded_box(ax, x, 0.45, 2.35, 2.55, "", fc=SOFT if i % 2 == 0 else SOFT_2)
+        ax.add_patch(Circle((x + 0.38, 2.58), 0.20, fc=PRIMARY, ec=PRIMARY))
+        ax.text(x + 0.38, 2.58, n, ha="center", va="center", fontsize=11, color=WHITE, fontweight="bold")
+        ax.text(x + 1.35, 2.58, title, ha="center", va="center", fontsize=12, color=PRIMARY, fontweight="bold")
+        ax.text(x + 1.17, 1.35, q, ha="center", va="center", fontsize=10, color=INK, linespacing=1.35)
+        if i < 3:
+            arrow(ax, x + 2.38, 1.7, x + 2.52, 1.7, lw=1.8)
+    ax.text(5.2, 3.3, "Four phases of this Deep Learning block", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "four-phases.png")
+
+
 def diagram_hierarchical() -> None:
     fig, ax = plt.subplots(figsize=(10, 3.2))
     style_ax(ax)
@@ -568,6 +626,8 @@ def main() -> None:
     diagram_rnn_unfold()
     diagram_lstm()
     diagram_dropout()
+    diagram_ann_intro()
+    diagram_four_phases()
     diagram_hierarchical()
     print("Done.")
 

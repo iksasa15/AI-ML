@@ -64,17 +64,37 @@ SESSION = {
 
 TOPIC_CONTENT: dict = {
     "Deep Learning": {
-        "title": "What Is Deep Learning?",
-        "kicker": "Stacked Nonlinear Transformations",
-        "body": "Deep learning learns a parameterized mapping from inputs to outputs by stacking nonlinear layers.",
+        "title": "Deep Learning: Introduction",
+        "kicker": "Foundations → Optimization → Architectures → Autoencoders",
+        "body": "Each phase answers a different question.",
         "bullets": [
-            "“Deep” means several nonlinear transforms — hierarchical features, not one giant linear rule.",
-            "Training picks a loss, then adjusts weights with gradients so average loss drops.",
-            "The network learns representations tuned to the task instead of hand-crafted features.",
+            "Four phases: foundations → optimization → architectures → autoencoders.",
+            "Each phase has a lab-style checkpoint — pause at phase boundaries.",
+            "Focus on deep learning basics — phase breaks are intentional.",
         ],
-        "plot_path": "hierarchical-features.png",
-        "note": "Generalization to unseen data is the real goal — not memorizing the training set.",
+        "plot_path": "ann-intro.png",
+        "note": "Phase 1 focus: understand the “why” and the mathematical mechanics of a single neuron before scaling to layers and data.",
         "extra_slides": [
+            {
+                "title": "Deep Learning: Introduction",
+                "kicker": "Four phases, four questions",
+                "body": "Foundations → optimization → architectures → autoencoders. Pause at each boundary.",
+                "layout": "diagram",
+                "plot_path": "four-phases.png",
+                "note": "Phase 1 focus: understand the “why” and the mathematical mechanics of a single neuron before scaling to layers and data.",
+            },
+            {
+                "title": "What Is Deep Learning?",
+                "kicker": "Stacked Nonlinear Transformations",
+                "body": "Deep learning learns a parameterized mapping from inputs to outputs by stacking nonlinear layers.",
+                "bullets": [
+                    "“Deep” means several nonlinear transforms — hierarchical features, not one giant linear rule.",
+                    "Training picks a loss, then adjusts weights with gradients so average loss drops.",
+                    "The network learns representations tuned to the task instead of hand-crafted features.",
+                ],
+                "plot_path": "hierarchical-features.png",
+                "note": "Generalization to unseen data is the real goal — not memorizing the training set.",
+            },
             {
                 "title": "AI, Machine Learning, and Deep Learning",
                 "kicker": "Subset Relationships — Not Interchangeable Labels",
