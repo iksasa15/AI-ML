@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import io
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -59,10 +60,45 @@ ACCENT_OK = "#3D8B6E"
 ACCENT_WARN = "#C45C26"
 
 
-def _http_get(url: str) -> bytes:
+def _http_get(url: str, retries: int = 4) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": WIKI_UA})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return resp.read()
+    delay = 1.5
+    last_err: Exception | None = None
+    for _ in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as exc:
+            last_err = exc
+            if exc.code in (429, 503):
+                import time
+
+                time.sleep(delay)
+                delay *= 2
+                continue
+            raise
+    assert last_err is not None
+    raise last_err
+
+
+def fetch_wikimedia_originals() -> None:
+    """Download the workshop Wikimedia figures students will recognize elsewhere."""
+    import time
+
+    from PIL import Image as PILImage
+
+    for i, (name, url) in enumerate(WIKI_ORIGINALS):
+        dest = OUT / name
+        print(f"  fetching {name}")
+        if i:
+            time.sleep(1.2)
+        data = _http_get(url)
+        if url.lower().endswith(".svg"):
+            _svg_to_png(data, dest)
+        else:
+            _raster_to_png(data, dest)
+        with PILImage.open(dest) as im:
+            print(f"  wrote {name} ({im.size[0]}x{im.size[1]})")
 
 
 def _svg_to_png(data: bytes, dest: Path, width: int = 1600) -> None:
@@ -88,23 +124,6 @@ def _raster_to_png(data: bytes, dest: Path, *, gif_frame: float = 0.65) -> None:
         h = int(h * (1800 / w))
         im = im.resize((1800, max(1, h)), PILImage.Resampling.LANCZOS)
     im.save(dest, format="PNG")
-
-
-def fetch_wikimedia_originals() -> None:
-    """Download the workshop Wikimedia figures students will recognize elsewhere."""
-    for name, url in WIKI_ORIGINALS:
-        dest = OUT / name
-        print(f"  fetching {name}")
-        data = _http_get(url)
-        lower = url.lower()
-        if lower.endswith(".svg"):
-            _svg_to_png(data, dest)
-        else:
-            _raster_to_png(data, dest)
-        from PIL import Image as PILImage
-
-        with PILImage.open(dest) as im:
-            print(f"  wrote {name} ({im.size[0]}x{im.size[1]})")
 
 
 def style_ax(ax, *, spines=False):
