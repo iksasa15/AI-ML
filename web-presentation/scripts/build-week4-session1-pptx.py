@@ -67,25 +67,43 @@ TOPIC_CONTENT: dict = {
     "Core Concepts": {
         "title": "Generative AI: Core Concepts",
         "kicker": "BERT, T5, GPT, LLMs, and Attention (Focused Edition)",
-        "bullets": [
-            "This section extracts the most important ideas into a compact teaching flow.",
-            "Focus areas: transfer learning, model families, attention mechanics, scaling, and practical deployment.",
-            "Designed for bootcamp delivery within roughly 20 slides.",
+        "layout": "diagram",
+        "plot_path": "model-families.png",
+        "extra_slides": [
+            {
+                "title": "Generative AI: Core Concepts",
+                "kicker": "BERT, T5, GPT, LLMs, and Attention (Focused Edition)",
+                "bullets": [
+                    "This section extracts the most important ideas into a compact teaching flow.",
+                    "Focus areas: transfer learning, model families, attention mechanics, scaling, and practical deployment.",
+                    "Designed for bootcamp delivery within roughly 20 slides.",
+                ],
+            },
         ],
     },
     "Transfer Learning": {
         "title": "Transfer Learning in Generative AI",
-        "layout": "table",
-        "table": {
-            "headers": ["Stage", "Data Type", "Goal"],
-            "rows": [
-                ["Pretraining", "Large mostly unlabeled corpora", "Learn general language representations"],
-                ["Fine-tuning", "Task-labeled dataset", "Adapt model to specific downstream objective"],
-                ["Inference", "User prompt/context", "Generate or classify outputs for real tasks"],
-            ],
-        },
-        "note": "Transfer learning reduces labeled data needs and accelerates convergence.",
+        "layout": "diagram",
+        "plot_path": "transfer-stages.png",
         "extra_slides": [
+            {
+                "title": "Transfer Learning in Generative AI",
+                "layout": "table",
+                "table": {
+                    "headers": ["Stage", "Data Type", "Goal"],
+                    "rows": [
+                        ["Pretraining", "Large mostly unlabeled corpora", "Learn general language representations"],
+                        ["Fine-tuning", "Task-labeled dataset", "Adapt model to specific downstream objective"],
+                        ["Inference", "User prompt/context", "Generate or classify outputs for real tasks"],
+                    ],
+                },
+                "note": "Transfer learning reduces labeled data needs and accelerates convergence.",
+            },
+            {
+                "title": "Feature-Based Transfer vs Fine-Tuning",
+                "layout": "diagram",
+                "plot_path": "feature-vs-finetune.png",
+            },
             {
                 "title": "Feature-Based Transfer vs Fine-Tuning",
                 "layout": "table",
@@ -144,6 +162,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "BERT Special Tokens: [CLS] and [SEP]",
+                "layout": "diagram",
+                "plot_path": "cls-sep-tokens.png",
+            },
+            {
+                "title": "BERT Special Tokens: [CLS] and [SEP]",
                 "bullets": [
                     "[CLS] is prepended and its final embedding is used as a sequence-level summary.",
                     "[SEP] separates sentence segments and marks boundaries.",
@@ -184,13 +207,23 @@ TOPIC_CONTENT: dict = {
     },
     "T5": {
         "title": "T5: Unified Text-to-Text Framework",
-        "bullets": [
-            "T5 reframes every NLP task as text input -> text output.",
-            "Task instruction is included as a prefix (e.g., \"summarize:\", \"translate:\").",
-            "One shared architecture/training recipe serves multiple tasks.",
-        ],
-        "note": "This design strongly influenced modern prompt-based LLM usage.",
+        "layout": "diagram",
+        "plot_path": "t5-text-to-text.png",
         "extra_slides": [
+            {
+                "title": "T5: Unified Text-to-Text Framework",
+                "bullets": [
+                    "T5 reframes every NLP task as text input -> text output.",
+                    "Task instruction is included as a prefix (e.g., \"summarize:\", \"translate:\").",
+                    "One shared architecture/training recipe serves multiple tasks.",
+                ],
+                "note": "This design strongly influenced modern prompt-based LLM usage.",
+            },
+            {
+                "title": "T5 Pretraining Objective: Span Corruption",
+                "layout": "diagram",
+                "plot_path": "span-corruption.png",
+            },
             {
                 "title": "T5 Pretraining Objective: Span Corruption",
                 "bullets": [
@@ -221,7 +254,7 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "T5 Attention Strategies (Encoder/Decoder)",
                 "layout": "diagram",
-                "plot_path": "encoding-comparison.png",
+                "plot_path": "t5-attention-masks.png",
             },
             {
                 "title": "T5 Attention Strategies (Encoder/Decoder)",
@@ -350,7 +383,7 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Masked Self-Attention in Decoders",
                 "layout": "diagram",
-                "plot_path": "transformer-block.png",
+                "plot_path": "causal-mask.png",
             },
             {
                 "title": "Masked Self-Attention in Decoders",
@@ -363,7 +396,7 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Long-Sequence Challenge in Transformers",
                 "layout": "diagram",
-                "plot_path": "transformer-block.png",
+                "plot_path": "long-context.png",
             },
             {
                 "title": "Long-Sequence Challenge in Transformers",

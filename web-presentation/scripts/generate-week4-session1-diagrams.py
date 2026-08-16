@@ -27,6 +27,9 @@ SURFACE = "#FAF8FF"
 INK = "#121018"
 MUTED = "#5A5470"
 WHITE = "#FFFFFF"
+LINE = "#E4DCF4"
+ACCENT_OK = "#3D8B6E"
+ACCENT_WARN = "#C45C26"
 
 WIKI_UA = "ETRA-GenAI-Slides/1.0 (educational classroom deck; Week 4 Session 1)"
 WIKI_ORIGINALS = [
@@ -118,6 +121,222 @@ def arrow(ax, x1, y1, x2, y2, *, color=SECONDARY, lw=2.0) -> None:
             color=color,
         )
     )
+
+
+def diagram_model_families() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.7))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.7)
+    panels = [
+        (0.3, "BERT", "encoder-only", "bidirectional\nunderstanding"),
+        (3.75, "T5", "encoder-decoder", "text-to-text\nmultitask"),
+        (7.2, "GPT", "decoder-only", "causal\ngeneration"),
+    ]
+    for i, (x, name, kind, cap) in enumerate(panels):
+        rounded_box(ax, x, 0.45, 3.1, 2.55, "", fc=SOFT if i != 1 else SOFT_2)
+        ax.text(x + 1.55, 2.5, name, ha="center", fontsize=18, color=PRIMARY, fontweight="bold")
+        ax.text(x + 1.55, 1.95, kind, ha="center", fontsize=13, color=SECONDARY, fontweight="bold")
+        ax.text(x + 1.55, 1.15, cap, ha="center", fontsize=12, color=INK, linespacing=1.35)
+    ax.text(5.3, 3.35, "Choose architecture by task family", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "model-families.png")
+
+
+def diagram_transfer_stages() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.5))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.5)
+    stages = ["Pretraining", "Fine-tuning", "Inference"]
+    for i, lab in enumerate(stages):
+        x = 0.4 + i * 3.4
+        fc = PRIMARY if i == 0 else (SOFT_2 if i == 1 else SOFT)
+        tc = WHITE if i == 0 else PRIMARY
+        rounded_box(ax, x, 1.05, 3.05, 1.45, lab, fontsize=16, fc=fc, color=tc)
+        if i < 2:
+            arrow(ax, x + 3.1, 1.77, x + 3.35, 1.77)
+    ax.text(5.3, 3.15, "Transfer learning stages", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 0.45, "unlabeled corpora  →  task labels  →  user prompt", ha="center", fontsize=12, color=MUTED)
+    save(fig, "transfer-stages.png")
+
+
+def diagram_feature_vs_finetune() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.6))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.6)
+    rounded_box(ax, 0.3, 0.5, 4.85, 2.5, "", fc=SOFT)
+    ax.text(2.72, 2.6, "Feature-based", ha="center", fontsize=14, color=PRIMARY, fontweight="bold")
+    rounded_box(ax, 0.7, 1.35, 4.05, 0.7, "frozen backbone", fontsize=13, fc=SOFT_2)
+    ax.text(2.72, 0.75, "embeddings as features", ha="center", fontsize=12, color=MUTED)
+
+    rounded_box(ax, 5.45, 0.5, 4.85, 2.5, "", fc=SOFT_2, ec=SECONDARY)
+    ax.text(7.88, 2.6, "Fine-tuning", ha="center", fontsize=14, color=PRIMARY, fontweight="bold")
+    rounded_box(ax, 5.85, 1.35, 4.05, 0.7, "update weights + task head", fontsize=13, fc=PRIMARY, color=WHITE)
+    ax.text(7.88, 0.75, "more adaptation, more compute", ha="center", fontsize=12, color=MUTED)
+    ax.text(5.3, 3.3, "What changes in the pretrained model", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "feature-vs-finetune.png")
+
+
+def diagram_cls_sep_tokens() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.5))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.5)
+    toks = [("[CLS]", PRIMARY, WHITE), ("tokens", SOFT, PRIMARY), ("[SEP]", SECONDARY, WHITE), ("tokens", SOFT, PRIMARY), ("[SEP]", SECONDARY, WHITE)]
+    for i, (lab, fc, tc) in enumerate(toks):
+        x = 0.35 + i * 2.05
+        rounded_box(ax, x, 1.15, 1.9, 1.15, lab, fontsize=14, fc=fc, color=tc)
+        if i < 4:
+            arrow(ax, x + 1.93, 1.72, x + 2.02, 1.72, lw=1.4)
+    ax.text(5.3, 3.15, "[CLS] and [SEP] unify single- and pair-sentence inputs", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 0.5, "[CLS] = sequence summary   ·   [SEP] = segment boundary", ha="center", fontsize=12, color=MUTED)
+    save(fig, "cls-sep-tokens.png")
+
+
+def diagram_t5_text_to_text() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.6))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.6)
+    rounded_box(ax, 0.35, 1.85, 3.5, 0.95, "summarize:  article", fontsize=14)
+    rounded_box(ax, 0.35, 0.6, 3.5, 0.95, "translate:  English", fontsize=14, fc=SOFT_2)
+    arrow(ax, 4.0, 2.05, 5.15, 1.55)
+    arrow(ax, 4.0, 1.05, 5.15, 1.45)
+    rounded_box(ax, 5.25, 1.05, 2.3, 1.3, "T5", fontsize=22, fc=PRIMARY, color=WHITE)
+    arrow(ax, 7.7, 1.7, 8.2, 1.7)
+    rounded_box(ax, 8.3, 1.05, 2.0, 1.3, "text\nout", fontsize=15, fc=SOFT_2, ec=SECONDARY)
+    ax.text(5.3, 3.25, "Every NLP task is text input → text output", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "t5-text-to-text.png")
+
+
+def diagram_span_corruption() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.7))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.7)
+    rounded_box(ax, 0.3, 0.5, 4.85, 2.55, "", fc=SOFT)
+    ax.text(2.72, 2.7, "BERT  ·  token mask", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    for i, lab in enumerate(["the", "[M]", "cat", "[M]", "mat"]):
+        x = 0.55 + i * 0.88
+        fc = ACCENT_WARN if "[M]" in lab else SOFT_2
+        tc = WHITE if "[M]" in lab else INK
+        rounded_box(ax, x, 1.2, 0.8, 0.85, lab, fontsize=11, fc=fc, color=tc, ec=ACCENT_WARN if "[M]" in lab else PRIMARY)
+    ax.text(2.72, 0.75, "random individual tokens", ha="center", fontsize=11, color=MUTED)
+
+    rounded_box(ax, 5.45, 0.5, 4.85, 2.55, "", fc=SOFT_2, ec=SECONDARY)
+    ax.text(7.88, 2.7, "T5  ·  span corruption", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    for i, lab in enumerate(["the", "<X>", "on", "mat"]):
+        x = 5.7 + i * 1.1
+        fc = PRIMARY if "<X>" in lab else SOFT
+        tc = WHITE if "<X>" in lab else INK
+        rounded_box(ax, x, 1.2, 1.0, 0.85, lab, fontsize=11, fc=fc, color=tc)
+    ax.text(7.88, 0.75, "contiguous span + sentinel", ha="center", fontsize=11, color=MUTED)
+    ax.text(5.3, 3.4, "Corruption style: tokens vs spans", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "span-corruption.png")
+
+
+def _mask_grid(ax, ox, oy, n, kind: str) -> None:
+    cell = 0.32
+    for i in range(n):
+        for j in range(n):
+            if kind == "full":
+                on = True
+            elif kind == "causal":
+                on = j <= i
+            else:
+                src = n // 2
+                on = True if i < src else j <= i
+            ax.add_patch(
+                Rectangle(
+                    (ox + j * cell, oy + (n - 1 - i) * cell),
+                    cell - 0.03,
+                    cell - 0.03,
+                    facecolor=PRIMARY if on else SOFT,
+                    edgecolor=LINE,
+                    lw=0.5,
+                    alpha=0.9 if on else 0.7,
+                )
+            )
+
+
+def diagram_t5_attention_masks() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.8))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.8)
+    specs = [
+        (0.55, "Fully visible", "full"),
+        (3.9, "Causal", "causal"),
+        (7.25, "Prefix-causal", "prefix"),
+    ]
+    for x, title, kind in specs:
+        rounded_box(ax, x, 0.4, 2.95, 2.7, "", fc=SOFT_2 if kind != "causal" else SOFT)
+        ax.text(x + 1.47, 2.8, title, ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+        _mask_grid(ax, x + 0.55, 0.65, 6, kind)
+    ax.text(5.3, 3.5, "T5 attention visibility", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "t5-attention-masks.png")
+
+
+def diagram_causal_mask() -> None:
+    fig, ax = plt.subplots(figsize=(8.4, 4.6))
+    style_ax(ax)
+    ax.set_xlim(0, 8.4)
+    ax.set_ylim(0, 4.6)
+    ax.text(4.2, 4.3, "Causal mask — no lookahead", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    n = 6
+    cell = 0.48
+    ox, oy = 2.55, 0.55
+    labels = ["t1", "t2", "t3", "t4", "t5", "t6"]
+    for j, lab in enumerate(labels):
+        ax.text(ox + (j + 0.5) * cell, oy + n * cell + 0.18, lab, ha="center", fontsize=10, color=MUTED)
+        ax.text(ox - 0.12, oy + (n - 1 - j + 0.5) * cell, lab, ha="right", va="center", fontsize=10, color=MUTED)
+    for i in range(n):
+        for j in range(n):
+            on = j <= i
+            ax.add_patch(
+                Rectangle(
+                    (ox + j * cell, oy + (n - 1 - i) * cell),
+                    cell - 0.04,
+                    cell - 0.04,
+                    facecolor=PRIMARY if on else SURFACE,
+                    edgecolor=PRIMARY if on else LINE,
+                    lw=0.8,
+                    alpha=0.85 if on else 1.0,
+                )
+            )
+    ax.text(4.2, 0.22, "token attends to past only", ha="center", fontsize=12, color=MUTED)
+    save(fig, "causal-mask.png")
+
+
+def diagram_long_context() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.7))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.7)
+
+    def grid(ox, oy, n, title, cost):
+        cell = 1.7 / n
+        ax.text(ox + 0.85, oy + 2.05, title, ha="center", fontsize=12, color=PRIMARY, fontweight="bold")
+        for i in range(n):
+            for j in range(n):
+                ax.add_patch(
+                    Rectangle(
+                        (ox + j * cell, oy + i * cell),
+                        cell - 0.02,
+                        cell - 0.02,
+                        facecolor=PRIMARY,
+                        edgecolor=WHITE,
+                        lw=0.4,
+                        alpha=0.25 + 0.55 * ((i + j) / (2 * max(n - 1, 1))),
+                    )
+                )
+        ax.text(ox + 0.85, oy - 0.28, cost, ha="center", fontsize=12, color=ACCENT_WARN, fontweight="bold")
+
+    grid(1.1, 0.7, 4, "short L", "O(L²)")
+    grid(6.7, 0.55, 8, "long L", "O(L²) explodes")
+    ax.text(5.3, 3.4, "Attention map grows with sequence length", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    save(fig, "long-context.png")
 
 
 def diagram_encoding_comparison() -> None:
@@ -294,10 +513,16 @@ def fetch_wikimedia_originals() -> None:
 def main() -> None:
     print(f"Week 4 Session 1 diagrams → {OUT}")
     fetch_wikimedia_originals()
-    diagram_tokenization_flow()
-    diagram_encoding_comparison()
+    diagram_model_families()
+    diagram_transfer_stages()
+    diagram_feature_vs_finetune()
+    diagram_cls_sep_tokens()
+    diagram_t5_text_to_text()
+    diagram_span_corruption()
+    diagram_t5_attention_masks()
+    diagram_causal_mask()
+    diagram_long_context()
     diagram_attention_heatmap()
-    diagram_transformer_block()
     print("Done.")
 
 
