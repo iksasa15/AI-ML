@@ -352,6 +352,19 @@ TOPIC_CONTENT: dict = {
                 ],
                 "note": "Different heads can specialize in syntax, agreement, locality, or semantics.",
             },
+            {
+                "title": "Masked Self-Attention in Decoders",
+                "layout": "diagram",
+                "plot_path": "transformer-block.png",
+            },
+            {
+                "title": "Masked Self-Attention in Decoders",
+                "bullets": [
+                    "Decoder cannot access future tokens during generation.",
+                    "Causal mask enforces left-to-right consistency and prevents information leakage.",
+                    "Enables parallel training over full target sequence while preserving autoregressive objective.",
+                ],
+            },
         ],
     },
 }
