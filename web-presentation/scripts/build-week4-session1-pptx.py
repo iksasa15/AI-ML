@@ -187,6 +187,173 @@ TOPIC_CONTENT: dict = {
             },
         ],
     },
+    "T5": {
+        "title": "T5: Unified Text-to-Text Framework",
+        "bullets": [
+            "T5 reframes every NLP task as text input -> text output.",
+            "Task instruction is included as a prefix (e.g., \"summarize:\", \"translate:\").",
+            "One shared architecture/training recipe serves multiple tasks.",
+        ],
+        "note": "This design strongly influenced modern prompt-based LLM usage.",
+        "extra_slides": [
+            {
+                "title": "T5 Pretraining Objective: Span Corruption",
+                "bullets": [
+                    "Remove contiguous text spans from input and replace with sentinel tokens.",
+                    "Train model to reconstruct missing spans autoregressively.",
+                    "Encourages stronger generative behavior than token-only masking.",
+                ],
+            },
+            {
+                "title": "T5 Pretraining Objective: Span Corruption",
+                "layout": "table",
+                "table": {
+                    "headers": ["Model", "Corruption Style", "Typical Strength"],
+                    "rows": [
+                        [
+                            "BERT",
+                            "Random masked individual tokens",
+                            "Language understanding tasks",
+                        ],
+                        [
+                            "T5",
+                            "Contiguous span corruption",
+                            "Generation + multitask transfer",
+                        ],
+                    ],
+                },
+            },
+            {
+                "title": "T5 Attention Strategies (Encoder/Decoder)",
+                "layout": "diagram",
+                "plot_path": "encoding-comparison.png",
+            },
+            {
+                "title": "T5 Attention Strategies (Encoder/Decoder)",
+                "layout": "table",
+                "table": {
+                    "headers": ["Attention Type", "Visibility", "Used In"],
+                    "rows": [
+                        [
+                            "Fully visible",
+                            "All tokens attend to all tokens",
+                            "Encoder representations",
+                        ],
+                        [
+                            "Causal",
+                            "Token attends to past only",
+                            "Autoregressive generation",
+                        ],
+                        [
+                            "Prefix-causal hybrid",
+                            "Full source access + causal target decoding",
+                            "Seq2Seq decoding in T5",
+                        ],
+                    ],
+                },
+            },
+        ],
+    },
+    "GPT": {
+        "title": "GPT: Decoder-Only Autoregressive Generation",
+        "layout": "diagram",
+        "plot_path": "gpt-architecture.png",
+        "extra_slides": [
+            {
+                "title": "GPT: Decoder-Only Autoregressive Generation",
+                "bullets": [
+                    "GPT predicts next token from left context only (causal modeling).",
+                    "Uses masked self-attention in decoder stack for no-lookahead generation.",
+                    "Excellent for open-ended completion, instruction following, and synthesis.",
+                ],
+            },
+            {
+                "title": "GPT Evolution and Foundation Model Scale",
+                "layout": "table",
+                "table": {
+                    "headers": ["Generation", "Approx. Parameters", "Key Theme"],
+                    "rows": [
+                        [
+                            "GPT-1",
+                            "117M",
+                            "Proof of transfer-learning viability",
+                        ],
+                        [
+                            "GPT-2",
+                            "1.5B",
+                            "Large-scale web pretraining for generation",
+                        ],
+                        [
+                            "GPT-3",
+                            "175B",
+                            "Few-shot in-context capabilities at scale",
+                        ],
+                    ],
+                },
+                "note": "Model utility scales with data, architecture, and training compute quality.",
+            },
+        ],
+    },
+    "Attention": {
+        "title": "Attention: Why It Was a Breakthrough",
+        "layout": "diagram",
+        "plot_path": "attention-architecture.png",
+        "extra_slides": [
+            {
+                "title": "Attention: Why It Was a Breakthrough",
+                "bullets": [
+                    "Attention solves fixed-vector bottlenecks in sequence transduction.",
+                    "At each step, model dynamically focuses on most relevant source positions.",
+                    "Entire mechanism is differentiable and learned end-to-end.",
+                ],
+            },
+            {
+                "title": "Attention Computation Pipeline",
+                "layout": "formula_example",
+                "formula": "Attention(Q,K,V)=softmax(QK⊤ / √d_k)V",
+                "formula_tex": r"\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\left(\frac{QK^{\top}}{\sqrt{d_k}}\right)V",
+                "bullets": [
+                    "Compute relevance scores between query state and source states.",
+                    "Apply softmax to obtain attention weights (probability distribution).",
+                    "Return weighted sum of value/source states as contextual output.",
+                ],
+            },
+            {
+                "title": "Bahdanau vs Luong Attention (Classic RNN Era)",
+                "layout": "table",
+                "table": {
+                    "headers": ["Variant", "Scoring Function", "Typical Placement"],
+                    "rows": [
+                        [
+                            "Luong",
+                            "Bilinear/dot-style",
+                            "Attention after decoder state update",
+                        ],
+                        [
+                            "Bahdanau",
+                            "MLP/additive score",
+                            "Attention integrated before decoder update",
+                        ],
+                    ],
+                },
+                "note": "Both approximate alignment; design choice affects speed and accuracy tradeoffs.",
+            },
+            {
+                "title": "Self-Attention, Q/K/V, and Multi-Head",
+                "layout": "diagram",
+                "plot_path": "attention-heatmap.png",
+            },
+            {
+                "title": "Self-Attention, Q/K/V, and Multi-Head",
+                "bullets": [
+                    "Query asks for relevant context; Key indexes available context; Value carries content.",
+                    "Self-attention lets each token aggregate information from other tokens in sequence.",
+                    "Multi-head attention captures different linguistic relations in parallel.",
+                ],
+                "note": "Different heads can specialize in syntax, agreement, locality, or semantics.",
+            },
+        ],
+    },
 }
 
 TAKEAWAYS = [

@@ -13,7 +13,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "assets" / "session-w4s1-diagrams"
@@ -33,6 +33,14 @@ WIKI_ORIGINALS = [
     (
         "transformer-full.png",
         "https://upload.wikimedia.org/wikipedia/commons/3/34/Transformer%2C_full_architecture.png",
+    ),
+    (
+        "gpt-architecture.png",
+        "https://upload.wikimedia.org/wikipedia/commons/5/51/Full_GPT_architecture.svg",
+    ),
+    (
+        "attention-architecture.png",
+        "https://upload.wikimedia.org/wikipedia/commons/4/49/Attention_Is_All_You_Need_-_Encoder-decoder_Architecture.png",
     ),
 ]
 
@@ -112,6 +120,75 @@ def arrow(ax, x1, y1, x2, y2, *, color=SECONDARY, lw=2.0) -> None:
     )
 
 
+def diagram_encoding_comparison() -> None:
+    fig, ax = plt.subplots(figsize=(10.6, 3.5))
+    style_ax(ax)
+    ax.set_xlim(0, 10.6)
+    ax.set_ylim(0, 3.5)
+    ax.text(5.3, 3.2, "Encoding Comparison", ha="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    ax.text(5.3, 2.82, "Three ways to encode categorical variables", ha="center", fontsize=12, color=MUTED)
+    panels = ["One-Hot", "Dummy", "Ordinal"]
+    for i, title in enumerate(panels):
+        x = 0.4 + i * 3.4
+        rounded_box(ax, x, 0.45, 3.05, 2.05, "", fc=SOFT if i != 2 else SOFT_2)
+        ax.text(x + 1.52, 1.95, title, ha="center", fontsize=16, color=PRIMARY, fontweight="bold")
+        for j in range(3):
+            ax.add_patch(
+                plt.Rectangle(
+                    (x + 0.55 + j * 0.7, 0.75),
+                    0.5,
+                    0.7,
+                    facecolor=PRIMARY if j == i else SOFT_2,
+                    edgecolor=PRIMARY,
+                    lw=1.1,
+                    alpha=0.9 if j == i else 0.45,
+                )
+            )
+    save(fig, "encoding-comparison.png")
+
+
+def _hex_to_rgb(hex_color: str) -> tuple[float, float, float]:
+    h = hex_color.lstrip("#")
+    return tuple(int(h[i : i + 2], 16) / 255 for i in (0, 2, 4))
+
+
+def diagram_attention_heatmap() -> None:
+    tokens = ["The", "cat", "sat", "on", "mat"]
+    weights = [
+        [55, 20, 10, 8, 7],
+        [15, 50, 15, 10, 10],
+        [8, 22, 45, 15, 10],
+        [5, 10, 20, 25, 40],
+        [10, 15, 10, 20, 45],
+    ]
+    fig, ax = plt.subplots(figsize=(8.4, 5.4))
+    style_ax(ax)
+    ax.set_xlim(0, 8.4)
+    ax.set_ylim(0, 5.4)
+    ax.text(4.2, 5.12, "Attention Heatmap", ha="center", fontsize=14, color=PRIMARY, fontweight="bold")
+    ax.text(4.2, 4.72, "How each token attends to others", ha="center", fontsize=12, color=MUTED)
+
+    origin_x, origin_y = 1.55, 0.72
+    cell = 1.12
+    pr, pg, pb = _hex_to_rgb(PRIMARY)
+    sr, sg, sb = _hex_to_rgb(SURFACE)
+    for j, tok in enumerate(tokens):
+        ax.text(origin_x + (j + 0.5) * cell, origin_y + 5.15 * cell, tok, ha="center", va="center", fontsize=13, color=PRIMARY, fontweight="bold")
+    for i, row in enumerate(weights):
+        y = origin_y + (4 - i) * cell
+        ax.text(origin_x - 0.12, y + 0.5 * cell, tokens[i], ha="right", va="center", fontsize=13, color=PRIMARY, fontweight="bold")
+        peak = max(row)
+        for j, val in enumerate(row):
+            x = origin_x + j * cell
+            t = 0.12 + (val / 100) * 0.75
+            fc = (sr * (1 - t) + pr * t, sg * (1 - t) + pg * t, sb * (1 - t) + pb * t)
+            ax.add_patch(Rectangle((x, y), cell - 0.06, cell - 0.06, facecolor=fc, edgecolor=PRIMARY, lw=1.15 if val == peak else 0.6))
+            tc = WHITE if val >= 40 else INK
+            ax.text(x + (cell - 0.06) / 2, y + (cell - 0.06) / 2, str(val), ha="center", va="center", fontsize=13, color=tc, fontweight="bold")
+    ax.text(4.2, 0.28, "Darker cells = stronger attention weight", ha="center", fontsize=12, color=MUTED)
+    save(fig, "attention-heatmap.png")
+
+
 def diagram_tokenization_flow() -> None:
     """SentencePiece-style split of “Hello world” into 4 tokens."""
     fig, ax = plt.subplots(figsize=(10.6, 3.6))
@@ -167,6 +244,8 @@ def main() -> None:
     print(f"Week 4 Session 1 diagrams → {OUT}")
     fetch_wikimedia_originals()
     diagram_tokenization_flow()
+    diagram_encoding_comparison()
+    diagram_attention_heatmap()
     print("Done.")
 
 
