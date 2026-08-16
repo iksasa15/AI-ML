@@ -82,6 +82,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Ambiguity in Language: Practical Examples",
+                "layout": "diagram",
+                "plot_path": "ambiguity.png",
+            },
+            {
+                "title": "Ambiguity in Language: Practical Examples",
                 "layout": "table",
                 "table": {
                     "headers": ["Expression", "Possible Interpretation A", "Possible Interpretation B"],
@@ -97,12 +102,17 @@ TOPIC_CONTENT: dict = {
     },
     "Regex & Cleaning": {
         "title": "Regular Expressions (Regex): Core Idea",
-        "bullets": [
-            "Regex is a compact pattern language for matching and transforming text.",
-            "Typical uses include validation, extraction, and rule-based cleanup.",
-            "Useful for emails, phone numbers, logs, and normalization pipelines.",
-        ],
+        "layout": "diagram",
+        "plot_path": "regex-core.png",
         "extra_slides": [
+            {
+                "title": "Regular Expressions (Regex): Core Idea",
+                "bullets": [
+                    "Regex is a compact pattern language for matching and transforming text.",
+                    "Typical uses include validation, extraction, and rule-based cleanup.",
+                    "Useful for emails, phone numbers, logs, and normalization pipelines.",
+                ],
+            },
             {
                 "title": "Regular Expressions (Regex): Core Idea",
                 "layout": "table",
@@ -115,6 +125,12 @@ TOPIC_CONTENT: dict = {
                         ["\\S+", "one or more non-space chars", "token123"],
                     ],
                 },
+            },
+            {
+                "title": "Text Cleaning — Conceptual Steps & Python Code",
+                "kicker": "Conceptual stages matched with Python regex implementations",
+                "layout": "diagram",
+                "plot_path": "cleaning-pipeline.png",
             },
             {
                 "title": "Text Cleaning — Conceptual Steps & Python Code",
@@ -242,6 +258,12 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Stemming vs Lemmatization",
                 "kicker": "Normalizing words to their base forms",
+                "layout": "diagram",
+                "plot_path": "stem-lemma.png",
+            },
+            {
+                "title": "Stemming vs Lemmatization",
+                "kicker": "Normalizing words to their base forms",
                 "layout": "table",
                 "table": {
                     "headers": ["Aspect", "Stemming", "Lemmatization"],
@@ -288,6 +310,12 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Named Entity Recognition (NER)",
                 "kicker": "Typed Spans over Text",
+                "layout": "diagram",
+                "plot_path": "ner-spans.png",
+            },
+            {
+                "title": "Named Entity Recognition (NER)",
+                "kicker": "Typed Spans over Text",
                 "bullets": [
                     "Labels include PERSON, ORG, GPE, DATE, MONEY, PERCENT, PRODUCT, EVENT, …",
                     "Useful for indexing, compliance redaction, financial news graphs, and search facets.",
@@ -306,6 +334,11 @@ TOPIC_CONTENT: dict = {
                         ["MONEY / PERCENT", "$430 billion, 3.5%"],
                     ],
                 },
+            },
+            {
+                "title": "Full SpaCy Pipeline Functionally",
+                "layout": "diagram",
+                "plot_path": "spacy-pipeline.png",
             },
             {
                 "title": "Full SpaCy Pipeline Functionally",
@@ -334,6 +367,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Formal Language Modeling Objective",
+                "layout": "diagram",
+                "plot_path": "ngram-window.png",
+            },
+            {
+                "title": "Formal Language Modeling Objective",
                 "formula": "P(w₁,…,w_T) = Π P(w_t | w₁,…,w_{t-1})",
                 "formula_tex": r"P(w_1,\ldots,w_T)=\prod_{t=1}^{T} P(w_t \mid w_1,\ldots,w_{t-1})",
                 "layout": "formula_example",
@@ -353,6 +391,11 @@ TOPIC_CONTENT: dict = {
                     "Interpretation: in this corpus, \"to\" follows \"want\" about 65.6% of the time.",
                     "Count quality depends strongly on corpus domain and size.",
                 ],
+            },
+            {
+                "title": "Why Use Log Probabilities",
+                "layout": "diagram",
+                "plot_path": "log-probs.png",
             },
             {
                 "title": "Why Use Log Probabilities",
@@ -389,18 +432,23 @@ TOPIC_CONTENT: dict = {
     },
     "Embeddings & RNNs": {
         "title": "Static vs Contextualized Word Representations",
-        "layout": "table",
-        "table": {
-            "headers": ["Property", "Static Embeddings (Word2Vec/GloVe)", "Contextualized Embeddings (ELMo/BERT/GPT)"],
-            "rows": [
-                ["Vector per word", "One fixed vector", "Different vectors per context"],
-                ["Polysemy handling", "Weak", "Strong"],
-                ["Context direction", "Usually local/global corpus only", "Bidirectional or autoregressive sequence context"],
-                ["Task transfer", "Moderate", "High with pretraining + fine-tuning"],
-            ],
-        },
-        "note": "Contextualization is a core enabler for modern LLM quality.",
+        "layout": "diagram",
+        "plot_path": "static-vs-contextual.png",
         "extra_slides": [
+            {
+                "title": "Static vs Contextualized Word Representations",
+                "layout": "table",
+                "table": {
+                    "headers": ["Property", "Static Embeddings (Word2Vec/GloVe)", "Contextualized Embeddings (ELMo/BERT/GPT)"],
+                    "rows": [
+                        ["Vector per word", "One fixed vector", "Different vectors per context"],
+                        ["Polysemy handling", "Weak", "Strong"],
+                        ["Context direction", "Usually local/global corpus only", "Bidirectional or autoregressive sequence context"],
+                        ["Task transfer", "Moderate", "High with pretraining + fine-tuning"],
+                    ],
+                },
+                "note": "Contextualization is a core enabler for modern LLM quality.",
+            },
             {
                 "title": "How Contextualized Embeddings Work",
                 "kicker": "Words as vectors in embedding space",
@@ -445,6 +493,11 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "Common RNN Input/Output Patterns",
+                "layout": "diagram",
+                "plot_path": "rnn-patterns.png",
+            },
+            {
+                "title": "Common RNN Input/Output Patterns",
                 "layout": "table",
                 "table": {
                     "headers": ["Pattern", "Mapping", "Example Task"],
@@ -481,7 +534,7 @@ TOPIC_CONTENT: dict = {
         "title": "NLP Seq2Seq for Neural Machine Translation",
         "kicker": "Encoder-Decoder Modeling, Decoding Strategies, and Evaluation",
         "layout": "diagram",
-        "plot_path": "encoding-comparison.png",
+        "plot_path": "seq2seq.png",
         "extra_slides": [
             {
                 "title": "NLP Seq2Seq for Neural Machine Translation",
@@ -495,7 +548,7 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Inference: Greedy Decoding vs Beam Search",
                 "layout": "diagram",
-                "plot_path": "seq2seq-attention.png",
+                "plot_path": "greedy-vs-beam.png",
             },
             {
                 "title": "Inference: Greedy Decoding vs Beam Search",
@@ -512,7 +565,7 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Information Bottleneck in Basic Seq2Seq",
                 "layout": "diagram",
-                "plot_path": "seq2seq-attention.png",
+                "plot_path": "bottleneck-attention.png",
             },
             {
                 "title": "Information Bottleneck in Basic Seq2Seq",
@@ -552,13 +605,7 @@ TOPIC_CONTENT: dict = {
                 "title": "Transformer Encoder-Decoder Overview",
                 "kicker": "Bridge to Week 4 GenAI — encoder-decoder intuition before BERT/GPT",
                 "layout": "diagram",
-                "plot_path": "attention-architecture.png",
-            },
-            {
-                "title": "Transformer Encoder-Decoder Overview",
-                "kicker": "Bridge to Week 4 GenAI — encoder-decoder intuition before BERT/GPT",
-                "layout": "diagram",
-                "plot_path": "encoding-comparison.png",
+                "plot_path": "transformer-encdec.png",
             },
             {
                 "title": "Transformer Encoder-Decoder Overview",
