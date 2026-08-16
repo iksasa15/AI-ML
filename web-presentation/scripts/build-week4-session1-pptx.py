@@ -365,6 +365,73 @@ TOPIC_CONTENT: dict = {
                     "Enables parallel training over full target sequence while preserving autoregressive objective.",
                 ],
             },
+            {
+                "title": "Long-Sequence Challenge in Transformers",
+                "layout": "diagram",
+                "plot_path": "transformer-block.png",
+            },
+            {
+                "title": "Long-Sequence Challenge in Transformers",
+                "layout": "table",
+                "table": {
+                    "headers": ["Bottleneck", "Complexity", "Practical Impact"],
+                    "rows": [
+                        [
+                            "Attention map computation",
+                            "O(L²)",
+                            "Time/memory explode as context grows",
+                        ],
+                        [
+                            "Activation storage (training)",
+                            "O(N*L*d_model)",
+                            "High VRAM demand for deep long-context models",
+                        ],
+                    ],
+                },
+                "note": "Long-context efficiency is now a central LLM engineering topic.",
+            },
+        ],
+    },
+    "Scaling & Practice": {
+        "title": "Scaling Laws and Compute-Optimal Training",
+        "bullets": [
+            "Performance improves with data, model size, and compute, but with diminishing returns.",
+            "Compute-optimal training balances parameter count and token budget.",
+            "Chinchilla-style insight: many large models are under-trained relative to their size.",
+        ],
+        "extra_slides": [
+            {
+                "title": "Scaling Laws and Compute-Optimal Training",
+                "layout": "table",
+                "table": {
+                    "headers": ["Principle", "Implication"],
+                    "rows": [
+                        [
+                            "Fixed compute budget",
+                            "Tune model size and data volume jointly",
+                        ],
+                        [
+                            "Data-quality filtering",
+                            "Small fraction of tokens may dominate useful learning",
+                        ],
+                        [
+                            "Chinchilla ratio (rule of thumb)",
+                            "Roughly ~20 training tokens per parameter",
+                        ],
+                    ],
+                },
+            },
+            {
+                "title": "Generative AI Practical Takeaways",
+                "bullets": [
+                    "Choose architecture by task type: encoder-only, encoder-decoder, or decoder-only.",
+                    "Prefer transfer learning and fine-tuning over training from scratch when possible.",
+                    "Use attention-aware designs and decoding strategy (greedy/beam) based on product constraints.",
+                    "Plan for memory/compute early: quantization, context limits, and deployment targets.",
+                    "For domain-heavy use cases, adapt with specialized corpora and evaluation protocols.",
+                ],
+                "note": "Strong GenAI systems come from balanced choices across data, architecture, compute, and evaluation.",
+            },
         ],
     },
 }
