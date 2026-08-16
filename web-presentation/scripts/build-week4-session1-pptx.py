@@ -144,11 +144,6 @@ TOPIC_CONTENT: dict = {
             },
             {
                 "title": "BERT Special Tokens: [CLS] and [SEP]",
-                "layout": "diagram",
-                "plot_path": "tokenization-flow.png",
-            },
-            {
-                "title": "BERT Special Tokens: [CLS] and [SEP]",
                 "bullets": [
                     "[CLS] is prepended and its final embedding is used as a sequence-level summary.",
                     "[SEP] separates sentence segments and marks boundaries.",

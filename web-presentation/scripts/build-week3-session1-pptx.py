@@ -166,12 +166,6 @@ TOPIC_CONTENT: dict = {
             {
                 "title": "Tokenization Views (Code Examples)",
                 "kicker": "Same sentence, word / char / subword splits side by side",
-                "layout": "diagram",
-                "plot_path": "hello-world-tokens.png",
-            },
-            {
-                "title": "Tokenization Views (Code Examples)",
-                "kicker": "Same sentence, word / char / subword splits side by side",
                 "layout": "table",
                 "table": {
                     "headers": ["Tokenizer Type", "Python Implementation", "Result on \"I'm running to the store!\""],
@@ -182,12 +176,6 @@ TOPIC_CONTENT: dict = {
                         ["Sentence", "sent_tokenize(text)", "[\"I'm running to the store!\"]"],
                     ],
                 },
-            },
-            {
-                "title": "Subword Tokenization (LLMs) — Why It Wins",
-                "kicker": "How subwords solve core vocabulary challenges",
-                "layout": "diagram",
-                "plot_path": "hello-world-tokens.png",
             },
             {
                 "title": "Subword Tokenization (LLMs) — Why It Wins",
@@ -206,7 +194,7 @@ TOPIC_CONTENT: dict = {
                 "title": "BPE Walkthrough & Inference Example",
                 "kicker": "How Byte Pair Encoding learns merges and splits unseen words",
                 "layout": "diagram",
-                "plot_path": "hello-world-tokens.png",
+                "plot_path": "bpe-merge.png",
             },
             {
                 "title": "BPE Walkthrough & Inference Example",
@@ -228,12 +216,6 @@ TOPIC_CONTENT: dict = {
                     ],
                 },
                 "note": "BPE repeatedly merges frequent adjacent units until target vocabulary size is reached.",
-            },
-            {
-                "title": "Stop Words: Purpose & Tradeoffs",
-                "kicker": "Filtering low-information tokens from texts",
-                "layout": "diagram",
-                "plot_path": "hello-world-tokens.png",
             },
             {
                 "title": "Stop Words: Purpose & Tradeoffs",
@@ -278,7 +260,7 @@ TOPIC_CONTENT: dict = {
         "title": "Part-of-Speech (POS) Tagging",
         "kicker": "Grammar Labels per Token",
         "layout": "diagram",
-        "plot_path": "hello-world-tokens.png",
+        "plot_path": "pos-tags.png",
         "extra_slides": [
             {
                 "title": "Part-of-Speech (POS) Tagging",
