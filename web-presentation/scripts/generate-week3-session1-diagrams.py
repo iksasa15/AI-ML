@@ -81,6 +81,19 @@ def _http_get(url: str, retries: int = 4) -> bytes:
     raise last_err
 
 
+def _commons_svg_thumb_url(svg_url: str, width: int = 1920) -> str:
+    """Wikimedia PNG thumbnail — librsvg on Commons, not local cairosvg (broken text)."""
+    from urllib.parse import unquote, urlparse
+
+    filename = unquote(urlparse(svg_url).path.rsplit("/", 1)[-1])
+    parts = urlparse(svg_url).path.strip("/").split("/")
+    md5_a, md5_b = parts[-3], parts[-2]
+    return (
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/"
+        f"{md5_a}/{md5_b}/{filename}/{width}px-{filename}.png"
+    )
+
+
 def fetch_wikimedia_originals() -> None:
     """Download the workshop Wikimedia figures students will recognize elsewhere."""
     import time
@@ -92,11 +105,20 @@ def fetch_wikimedia_originals() -> None:
         print(f"  fetching {name}")
         if i:
             time.sleep(1.2)
-        data = _http_get(url)
         if url.lower().endswith(".svg"):
-            _svg_to_png(data, dest)
-        else:
+            data = None
+            last_err: Exception | None = None
+            for width in (1920, 1280, 960):
+                try:
+                    data = _http_get(_commons_svg_thumb_url(url, width))
+                    break
+                except Exception as exc:
+                    last_err = exc
+            if data is None:
+                raise last_err if last_err else RuntimeError(f"no thumbnail for {name}")
             _raster_to_png(data, dest)
+        else:
+            _raster_to_png(_http_get(url), dest)
         with PILImage.open(dest) as im:
             print(f"  wrote {name} ({im.size[0]}x{im.size[1]})")
 
