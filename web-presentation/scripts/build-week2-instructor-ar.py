@@ -173,7 +173,7 @@ def add_rtl_text(
         p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p.alignment = PP_ALIGN.RIGHT
         set_paragraph_rtl(p)
-        p.space_after = Pt(6)
+        p.space_after = Pt(4)
         run = p.add_run()
         run.text = chunk
         set_run(run, size, bold=bold, color=color, font=face)
@@ -203,7 +203,7 @@ def rtl_card(slide, left, top, width, height, label: str, body: str, *, fill=SOF
         width - pad * 2,
         height - Inches(0.62),
         body,
-        size=16,
+        size=15,
         color=INK,
     )
 
@@ -264,7 +264,7 @@ def slide_instructor(prs, page: int, total: int, meta: dict, script: dict) -> No
     footer_y = 7.05
     available = footer_y - cards_top - 0.08
     gap = 0.14
-    say_h = available * 0.54
+    say_h = available * 0.58
     clarify_h = available - say_h - gap
     card_w = 12.0
 
