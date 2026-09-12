@@ -20,13 +20,20 @@ FONT_REG = ROOT / "public" / "font" / "IBMPlexSansArabic-Regular.ttf"
 FONT_BOLD = ROOT / "public" / "font" / "IBMPlexSansArabic-Bold.ttf"
 
 
+_TASHKEEL = dict.fromkeys(
+    map(ord, "ًٌٍَُِّْٰٕٖٜٟۣٓٔٗ٘ٙٚٛٝٞۖۗۘۙۚۛۜ۟۠ۡۢۤۥۦۧۨ۩۪ۭ۫۬"),
+    None,
+)
+
+
 def ar(text: str) -> str:
-    """Shape Arabic + apply BiDi so matplotlib renders connected RTL glyphs."""
+    """Strip tashkeel, shape Arabic, apply BiDi for matplotlib."""
     if not text:
         return text
     lines = []
     for line in text.split("\n"):
-        reshaped = arabic_reshaper.reshape(line)
+        clean = line.translate(_TASHKEEL)
+        reshaped = arabic_reshaper.reshape(clean)
         lines.append(get_display(reshaped))
     return "\n".join(lines)
 
