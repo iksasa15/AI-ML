@@ -509,7 +509,7 @@ def build_registry() -> None:
         "diagram",
         kicker="اليوم 1  ·  تطبيق عملي",
         title="تمرين: المساعد الإداري الذكي",
-        subtitle="30 دقيقة — من PDF إلى إيميل وتغريدات",
+        subtitle="من PDF إلى إيميل وتغريدات",
         image="admin-assistant-flow.png",
     )
     register(
@@ -744,7 +744,7 @@ def build_registry() -> None:
         "diagram",
         kicker="اليوم 2  ·  تطبيق عملي",
         title="تمرين: المصمم الشامل",
-        subtitle="30 دقيقة — هوية إعلان متكاملة",
+        subtitle="هوية إعلان متكاملة",
         image="designer-exercise.png",
     )
     register(
@@ -961,7 +961,7 @@ def build_registry() -> None:
         "diagram",
         kicker="اليوم 3  ·  مشروع التخرج",
         title="مشروع التخرج النهائي",
-        subtitle="45 دقيقة — فرق مصغّرة وحل متكامل",
+        subtitle="فرق مصغرة وحل متكامل",
         image="capstone-project.png",
     )
     register(
@@ -1067,26 +1067,25 @@ def paint_cover(prs, page: int, total: int):
     right_rail(s)
     logo(s, height=Inches(0.42))
     add_rtl_text(
-        s, Inches(6.4), Inches(1.7), Inches(6.2), Inches(0.4),
-        "ورشة عملية  ·  ثلاثة أيام", size=15, bold=True, color=SECONDARY,
+        s, MARGIN, Inches(2.05), Inches(12), Inches(0.4),
+        "ورشة عملية  ·  ثلاثة أيام", size=16, bold=True, color=SECONDARY,
     )
     add_rtl_text(
-        s, Inches(6.4), Inches(2.2), Inches(6.2), Inches(1.4),
+        s, MARGIN, Inches(2.55), Inches(12), Inches(1.1),
         "الذكاء الاصطناعي التوليدي\nللأعمال والمحتوى والأتمتة",
-        size=28, bold=True, color=PRIMARY,
+        size=36, bold=True, color=PRIMARY,
     )
-    bar = rect(s, Inches(11.1), Inches(3.85), Inches(1.4), Inches(0.07), PRIMARY)
+    bar = rect(s, Inches(10.3), Inches(4.85), Inches(1.5), Inches(0.07), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
     add_rtl_text(
-        s, Inches(6.4), Inches(4.15), Inches(6.2), Inches(0.7),
+        s, MARGIN, Inches(5.1), Inches(12), Inches(0.5),
         "هندسة الأوامر · الوسائط · البيانات · المساعد الشخصي",
-        size=14, color=MUTED,
+        size=16, color=MUTED,
     )
     add_rtl_text(
         s, MARGIN, Inches(6.55), Inches(4), Inches(0.3),
         "ETRA", size=13, bold=True, color=PRIMARY,
     )
-    embed_diagram(s, "cover-hero.png", MARGIN, Inches(1.5), Inches(5.6), Inches(4.6))
 
 
 def paint_agenda(prs, page: int, total: int):
@@ -1111,11 +1110,12 @@ def paint_day_divider(prs, spec: dict, page: int, total: int):
     )
     bar = rect(s, Inches(10.5), Inches(3.25), Inches(1.3), Inches(0.06), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
-    for i, (label, name, dur) in enumerate(spec["sessions"]):
+    for i, session in enumerate(spec["sessions"]):
+        label, name = session[0], session[1]
         x = MARGIN + Inches(i * 4.05)
         rtl_card(
             s, x, Inches(3.7), Inches(3.85), Inches(2.2),
-            f"{label}  ·  {dur}", name, fill=SOFT if i % 2 == 0 else SOFT_2,
+            label, name, fill=SOFT if i % 2 == 0 else SOFT_2,
         )
     content_footer(s, page, total)
 
@@ -1123,7 +1123,7 @@ def paint_day_divider(prs, spec: dict, page: int, total: int):
 def paint_session_open(prs, spec: dict, page: int, total: int):
     s = new_slide(prs)
     chrome(s, spec["kicker"], page, total)
-    rtl_title(s, spec["title"], f"المدة: {spec['duration']}")
+    rtl_title(s, spec["title"])
     soft_card(s, MARGIN, Inches(2.5), Inches(12.1), Inches(3.5), fill=SOFT)
     add_rtl_text(
         s, MARGIN + Inches(0.4), Inches(2.8), Inches(11.3), Inches(0.4),

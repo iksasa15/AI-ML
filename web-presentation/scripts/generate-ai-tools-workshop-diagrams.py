@@ -197,7 +197,7 @@ def diagram_admin_exercise() -> None:
         _text(ax, x + 1.1, y + 0.7, s, size=12, color=MUTED)
         if i < 3:
             _arrow(ax, x + 2.25, y + 1.0, x + 3.4, y + 1.0)
-    _footer(ax, "المدة المقترحة: 30 دقيقة · الأدوات: Claude / ChatPDF + نموذج لغوي")
+    _footer(ax, "الأدوات: Claude / ChatPDF + نموذج لغوي")
     save(fig, "admin-assistant-flow.png")
 
 
@@ -232,7 +232,7 @@ def diagram_designer_exercise() -> None:
         _text(ax, x + 1.5, 3.9, n, size=20, bold=True, color=WHITE)
         _rounded(ax, x, 2.1, 3.0, 1.2, fc=SOFT, ec=LINE)
         _text(ax, x + 1.5, 2.7, label, size=14, bold=True, color=INK)
-    _footer(ax, "هوية إعلان متكاملة في جلسة واحدة · 30 دقيقة")
+    _footer(ax, "هوية إعلان متكاملة في جلسة واحدة")
     save(fig, "designer-exercise.png")
 
 
@@ -267,7 +267,7 @@ def diagram_capstone() -> None:
         _rounded(ax, x, 2.1, 3.0, 2.4, fc=WHITE, ec=SECONDARY, lw=2)
         _text(ax, x + 1.5, 3.7, t, size=15, bold=True, color=PRIMARY)
         _text(ax, x + 1.5, 2.9, s, size=12, color=MUTED)
-    _footer(ax, "فرق مصغرة · 45 دقيقة · عرض سريع وتقييم")
+    _footer(ax, "فرق مصغرة · عرض سريع وتقييم")
     save(fig, "capstone-project.png")
 
 
