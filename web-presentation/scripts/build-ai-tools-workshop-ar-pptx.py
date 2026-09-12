@@ -1213,7 +1213,8 @@ def paint_diagram(prs, spec: dict, page: int, total: int):
     s = new_slide(prs)
     chrome(s, spec["kicker"], page, total)
     rtl_title(s, spec["title"], spec.get("subtitle"))
-    embed_diagram(s, spec["image"], MARGIN, Inches(2.15), Inches(12.1), Inches(4.5))
+    # More vertical room so diagram titles don't collide with slide chrome
+    embed_diagram(s, spec["image"], MARGIN, Inches(2.05), Inches(12.1), Inches(4.65))
 
 
 def paint_steps(prs, spec: dict, page: int, total: int):
