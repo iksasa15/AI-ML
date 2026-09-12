@@ -11,11 +11,11 @@ from pathlib import Path
 
 from pptx import Presentation
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.oxml.ns import qn
 from pptx.util import Inches, Pt
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from etra_brand import (  # noqa: E402
-    FONT,
     INK,
     LINE,
     MARGIN,
@@ -29,7 +29,6 @@ from etra_brand import (  # noqa: E402
     WHITE,
     add_text,
     content_footer,
-    content_header,
     gradient_fill,
     logo,
     paint_light,
@@ -42,17 +41,13 @@ from etra_brand import (  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "pdf-exports" / "ETRA-AI-Tools-Workshop-3Days-AR.pptx"
 DIAGRAMS = ROOT / "public" / "assets" / "workshop-ai-tools-diagrams"
-AR_FONT = FONT
+AR_FONT = "IBM Plex Sans Arabic"
+AR_LANG = "ar-SA"
 
-# Built slide registry for page numbers
 _SLIDES: list[dict] = []
 
-# Arabic combining marks / tashkeel — DIN Next often misplaces these in PPTX
 _TASHKEEL = dict.fromkeys(
-    map(
-        ord,
-        "ًٌٍَُِّْٰٕٖٜٟۣٓٔٗ٘ٙٚٛٝٞۖۗۘۙۚۛۜ۟۠ۡۢۤۥۦۧۨ۩۪ۭ۫۬",
-    ),
+    map(ord, "ًٌٍَُِّْٰٕٖٜٟۣٓٔٗ٘ٙٚٛٝٞۖۗۘۙۚۛۜ۟۠ۡۢۤۥۦۧۨ۩۪ۭ۫۬"),
     None,
 )
 
@@ -67,6 +62,21 @@ def set_paragraph_rtl(paragraph) -> None:
     pPr = paragraph._p.get_or_add_pPr()
     pPr.set("rtl", "1")
     pPr.set("algn", "r")
+
+
+def _set_run_ar(run, size, *, bold=False, color=INK, font=None):
+    face = font or AR_FONT
+    set_run(run, size, bold=bold, color=color, font=face)
+    rPr = run._r.get_or_add_rPr()
+    rPr.set("rtl", "1")
+    rPr.set("lang", AR_LANG)
+    rPr.set("altLang", "en-US")
+    for tag in ("latin", "ea", "cs"):
+        el = rPr.find(qn(f"a:{tag}"))
+        if el is None:
+            el = rPr.makeelement(qn(f"a:{tag}"), {})
+            rPr.append(el)
+        el.set("typeface", face)
 
 
 def add_rtl_text(
@@ -88,56 +98,65 @@ def add_rtl_text(
     tf = box.text_frame
     tf.word_wrap = True
     try:
-        tf._txBody.bodyPr.set(
+        body_pr = tf._txBody.bodyPr
+        body_pr.set(
             "anchor",
             {MSO_ANCHOR.TOP: "t", MSO_ANCHOR.MIDDLE: "ctr", MSO_ANCHOR.BOTTOM: "b"}[anchor],
         )
     except Exception:
         pass
     cleaned = strip_tashkeel(value or "")
-    chunks = [part for part in cleaned.split("\n")]
+    chunks = cleaned.split("\n") if cleaned is not None else [""]
     if not chunks:
         chunks = [""]
-    face = font or AR_FONT
     for i, chunk in enumerate(chunks):
         p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p.alignment = align
         set_paragraph_rtl(p)
-        p.space_after = Pt(4)
+        p.space_after = Pt(6 if size >= 18 else 4)
         run = p.add_run()
         run.text = chunk
-        set_run(run, size, bold=bold, color=color, font=face)
-        rPr = run._r.get_or_add_rPr()
-        rPr.set("rtl", "1")
+        _set_run_ar(run, size, bold=bold, color=color, font=font)
     return box
 
 
-def rtl_bullets(slide, items: list[str], *, top=Inches(2.2), size=17, pitch=0.58, left=None, width=None):
+def rtl_bullets(slide, items: list[str], *, top=Inches(2.2), size=15, pitch=0.72, left=None, width=None):
     left = MARGIN if left is None else left
-    width = Inches(11.5) if width is None else width
+    width = Inches(12.1) if width is None else width
+    row_h = Inches(0.62)
     for i, item in enumerate(items):
         y = top + Inches(i * pitch)
-        # dash on the right (RTL start); text stops before it
-        add_rtl_text(
+        soft_card(slide, left, y, width, row_h, fill=SOFT if i % 2 == 0 else SOFT_2)
+        soft_card(
             slide,
-            left + width - Inches(0.35),
-            y,
-            Inches(0.35),
-            Inches(0.45),
-            "–",
-            size=size,
-            color=SECONDARY,
+            left + width - Inches(0.48),
+            y + Inches(0.12),
+            Inches(0.36),
+            Inches(0.36),
+            fill=PRIMARY,
+        )
+        add_text(
+            slide,
+            left + width - Inches(0.48),
+            y + Inches(0.14),
+            Inches(0.36),
+            Inches(0.34),
+            str(i + 1) if len(items) <= 7 else "•",
+            size=12,
+            bold=True,
+            color=WHITE,
             align=PP_ALIGN.CENTER,
         )
         add_rtl_text(
             slide,
-            left,
-            y,
-            width - Inches(0.55),
-            Inches(0.5),
+            left + Inches(0.22),
+            y + Inches(0.1),
+            width - Inches(0.82),
+            Inches(0.45),
             item,
             size=size,
             color=INK,
+            anchor=MSO_ANCHOR.MIDDLE,
         )
 
 
@@ -147,20 +166,20 @@ def rtl_card(slide, left, top, width, height, title: str, body: str, *, fill=SOF
     add_rtl_text(
         slide,
         left + pad,
-        top + Inches(0.14),
+        top + Inches(0.16),
         width - pad * 2,
-        Inches(0.36),
+        Inches(0.4),
         title,
-        size=14,
+        size=15,
         bold=True,
         color=PRIMARY,
     )
     add_rtl_text(
         slide,
         left + pad,
-        top + Inches(0.52),
+        top + Inches(0.58),
         width - pad * 2,
-        height - Inches(0.66),
+        height - Inches(0.75),
         body,
         size=13,
         color=INK,
@@ -197,10 +216,26 @@ def new_slide(prs) -> object:
     return prs.slides.add_slide(prs.slide_layouts[6])
 
 
+def ar_header(slide, kicker: str) -> None:
+    logo(slide)
+    add_rtl_text(
+        slide,
+        MARGIN,
+        Inches(0.42),
+        Inches(10.7),
+        Inches(0.34),
+        kicker,
+        size=13,
+        bold=True,
+        color=MUTED,
+    )
+    rect(slide, MARGIN, Inches(0.9), Inches(12.1), Inches(0.012), LINE)
+
+
 def chrome(slide, kicker: str, page: int, total: int):
     paint_light(slide)
     right_rail(slide)
-    content_header(slide, kicker, f"{page:02d}")
+    ar_header(slide, kicker)
     content_footer(slide, page, total)
 
 
@@ -295,6 +330,7 @@ def build_registry() -> None:
         subtitle="السياق · الدور · الجمهور · الشكل",
         image="prompt-structure.png",
     )
+    # visual already covered; keep structure
     register(
         "bullets",
         kicker="اليوم 1  ·  الجلسة 1",
@@ -343,16 +379,24 @@ def build_registry() -> None:
             "القيود: الطول [X]، اللهجة [رسمية]، قل لا اعرف إن لم تكن متاكدا",
             "المهمة: [اكتب المطلوب النهائي بجملة واضحة]",
         ],
+        image="prompt-structure.png",
+    )
+    register(
+        "diagram",
+        kicker="اليوم 1  ·  الجلسة 1",
+        title="قبل وبعد: امر ضعيف مقابل قوي",
+        subtitle="فرق الجودة يبدأ من صياغة الطلب",
+        image="weak-vs-strong.png",
     )
     register(
         "cards",
         kicker="اليوم 1  ·  الجلسة 1",
-        title="قبل وبعد: امر ضعيف مقابل قوي",
-        subtitle="فرق الجودة يبدأ من صياغة الطلب",
+        title="Few-Shot و Chain-of-Thought",
+        subtitle="امثلة داخل الأمر + تفكير خطوة بخطوة",
         cards=[
-            ("امر ضعيف", "اكتب لي عن التقرير.\nنتيجة عامة، بلا جمهور، وبلا شكل."),
-            ("امر قوي", "انت محلل اداري. لخص تقرير المبيعات لمدير تنفيذي في 5 نقاط + توصية واحدة. لا تخترع ارقاما."),
-            ("Few-Shot / CoT", "اعط مثالين للنبرة المطلوبة، واطلب التفكير خطوة بخطوة قبل الإجابة النهائية."),
+            ("Few-Shot", "اعط مثالين او ثلاثة للنبرة والشكل المطلوبين داخل الأمر."),
+            ("Chain-of-Thought", "اطلب التفكير خطوة بخطوة قبل الإجابة النهائية للمهام المعقدة."),
+            ("قيد الدقة", "قل: لا تخترع ارقاما، وقل لا اعرف إن لم تكن متأكدا."),
         ],
     )
     register(
@@ -441,10 +485,17 @@ def build_registry() -> None:
         ],
     )
     register(
-        "bullets",
+        "diagram",
         kicker="اليوم 1  ·  الجلسة 3",
         title="قائمة تحقق جودة البحث",
         subtitle="قبل ارسال اي ملخص او تقرير",
+        image="research-checklist.png",
+    )
+    register(
+        "bullets",
+        kicker="اليوم 1  ·  الجلسة 3",
+        title="اسئلة التحقق السريعة",
+        subtitle="طبقها على كل ملخص",
         items=[
             "هل توجد مصادر قابلة للفتح والمراجعة؟",
             "هل قارنت بين مصدرين على الاقل للادعاءات المهمة؟",
@@ -452,6 +503,7 @@ def build_registry() -> None:
             "هل فصلت بين الحقائق وبين توصيات النموذج؟",
             "هل حددت ما هو غير مؤكد بدل اختراعه؟",
         ],
+        image="research-checklist.png",
     )
     register(
         "diagram",
@@ -555,10 +607,17 @@ def build_registry() -> None:
         ],
     )
     register(
-        "bullets",
+        "diagram",
         kicker="اليوم 2  ·  الجلسة 1",
         title="هيكل امر صورة احترافي",
-        subtitle="موضوع + اسلوب + اضاءة + زاوية + نسبة + قيود",
+        subtitle="موضوع + اسلوب + اضاءة + زاوية + نسبة",
+        image="image-prompt-anatomy.png",
+    )
+    register(
+        "bullets",
+        kicker="اليوم 2  ·  الجلسة 1",
+        title="تفاصيل امر الصورة",
+        subtitle="انسخ العناصر وعدّل حسب المنتج",
         items=[
             "الموضوع: ماذا يظهر؟ منتج، شخص، مشهد، خلفية",
             "الاسلوب: واقعي / مسطح / ثلاثي ابعاد / هوية العلامة",
@@ -566,6 +625,7 @@ def build_registry() -> None:
             "النسبة: 1:1 للمنصات، 16:9 للعروض، 9:16 للقصص",
             "ما يتجنب: نصوص مشوهة، شعارات محمية، وجوه عشوائية ان لم تطلب",
         ],
+        image="image-prompt-anatomy.png",
     )
     register(
         "cards",
@@ -650,9 +710,16 @@ def build_registry() -> None:
         ],
     )
     register(
-        "steps",
+        "diagram",
         kicker="اليوم 2  ·  الجلسة 3",
         title="سكربت فيديو 30 ثانية",
+        subtitle="Hook ثم قيمة ثم CTA",
+        image="video-script-flow.png",
+    )
+    register(
+        "steps",
+        kicker="اليوم 2  ·  الجلسة 3",
+        title="تفاصيل السكربت للنسخ",
         subtitle="Hook ثم قيمة ثم CTA — جاهز للنسخ",
         steps=[
             "Hook (0-5 ث): سؤال او مشكلة تمس الجمهور فورا",
@@ -736,15 +803,23 @@ def build_registry() -> None:
         goal="رفع Excel/CSV والسؤال بلغة بشرية دون معادلات يدوية",
     )
     register(
-        "bullets",
+        "diagram",
         kicker="اليوم 3  ·  الجلسة 1",
         title="من الجدول إلى القرار",
+        subtitle="رفع → سؤال → رسم → توصية",
+        image="data-to-decision.png",
+    )
+    register(
+        "bullets",
+        kicker="اليوم 3  ·  الجلسة 1",
+        title="ممارسات تحليل البيانات",
         items=[
-            "رفع ملفات Excel وCSV المعقّدة وتحليلها بلغة بسيطة",
-            "استخراج إحصاءات متقدمة وتوليد رسوم بيانية وخرائط حرارية فورًا",
+            "رفع ملفات Excel وCSV المعقدة وتحليلها بلغة بسيطة",
+            "استخراج إحصاءات متقدمة وتوليد رسوم بيانية وخرائط حرارية فورا",
             "التنبؤ بالاتجاهات واستنتاج توصيات تشغيلية ومالية",
             "التحقق من الافتراضات: اطلب المنهجية وحدود التحليل",
         ],
+        image="data-to-decision.png",
     )
     register(
         "tools",
@@ -836,10 +911,17 @@ def build_registry() -> None:
         ],
     )
     register(
-        "steps",
+        "diagram",
         kicker="اليوم 3  ·  الجلسة 3",
         title="خطوات بناء Custom GPT",
         subtitle="من الهدف الى الاختبار",
+        image="gpt-builder-steps.png",
+    )
+    register(
+        "steps",
+        kicker="اليوم 3  ·  الجلسة 3",
+        title="تفاصيل بناء المساعد",
+        subtitle="نفّذ بالترتيب",
         steps=[
             "حدد الهدف: لمن يخدم المساعد وما المهام المسموحة",
             "ارفع الملفات الداخلية المعتمدة فقط (سياسات / ادلة / اسعار عامة)",
@@ -848,15 +930,23 @@ def build_registry() -> None:
         ],
     )
     register(
-        "bullets",
+        "diagram",
         kicker="اليوم 3  ·  الجلسة 3",
         title="أخلاقيات وأمن البيانات",
+        subtitle="قواعد لا تتجاوزها في العمل",
+        image="ethics-security.png",
+    )
+    register(
+        "bullets",
+        kicker="اليوم 3  ·  الجلسة 3",
+        title="قواعد أمن البيانات عمليا",
         items=[
-            "ملكية المحتوى المُولَّد وسياسات الاستخدام المؤسسي",
+            "ملكية المحتوى المولد وسياسات الاستخدام المؤسسي",
             "عدم رفع بيانات سرية إلى أدوات غير معتمدة",
             "التحقق البشري قبل نشر أو إرسال مخرجات حساسة",
             "الشفافية مع العملاء عند استخدام الذكاء الاصطناعي",
         ],
+        image="ethics-security.png",
     )
     register(
         "tools",
@@ -977,25 +1067,26 @@ def paint_cover(prs, page: int, total: int):
     right_rail(s)
     logo(s, height=Inches(0.42))
     add_rtl_text(
-        s, MARGIN, Inches(2.05), Inches(12), Inches(0.4),
-        "ورشة عملية  ·  ثلاثة أيام", size=16, bold=True, color=SECONDARY,
+        s, Inches(6.4), Inches(1.7), Inches(6.2), Inches(0.4),
+        "ورشة عملية  ·  ثلاثة أيام", size=15, bold=True, color=SECONDARY,
     )
     add_rtl_text(
-        s, MARGIN, Inches(2.55), Inches(12), Inches(1.1),
+        s, Inches(6.4), Inches(2.2), Inches(6.2), Inches(1.4),
         "الذكاء الاصطناعي التوليدي\nللأعمال والمحتوى والأتمتة",
-        size=36, bold=True, color=PRIMARY,
+        size=28, bold=True, color=PRIMARY,
     )
-    bar = rect(s, Inches(10.3), Inches(4.85), Inches(1.5), Inches(0.07), PRIMARY)
+    bar = rect(s, Inches(11.1), Inches(3.85), Inches(1.4), Inches(0.07), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
     add_rtl_text(
-        s, MARGIN, Inches(5.1), Inches(12), Inches(0.5),
+        s, Inches(6.4), Inches(4.15), Inches(6.2), Inches(0.7),
         "هندسة الأوامر · الوسائط · البيانات · المساعد الشخصي",
-        size=16, color=MUTED,
+        size=14, color=MUTED,
     )
     add_rtl_text(
         s, MARGIN, Inches(6.55), Inches(4), Inches(0.3),
         "ETRA", size=13, bold=True, color=PRIMARY,
     )
+    embed_diagram(s, "cover-hero.png", MARGIN, Inches(1.5), Inches(5.6), Inches(4.6))
 
 
 def paint_agenda(prs, page: int, total: int):
@@ -1016,7 +1107,7 @@ def paint_day_divider(prs, spec: dict, page: int, total: int):
     )
     add_rtl_text(
         s, MARGIN, Inches(2.15), Inches(12), Inches(1.0),
-        spec["title"], size=30, bold=True, color=PRIMARY,
+        spec["title"], size=28 if len(spec["title"]) > 40 else 30, bold=True, color=PRIMARY,
     )
     bar = rect(s, Inches(10.5), Inches(3.25), Inches(1.3), Inches(0.06), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
@@ -1048,7 +1139,27 @@ def paint_bullets(prs, spec: dict, page: int, total: int):
     s = new_slide(prs)
     chrome(s, spec["kicker"], page, total)
     top = rtl_title(s, spec["title"], spec.get("subtitle"))
-    rtl_bullets(s, spec["items"], top=top + Inches(0.15), size=17, pitch=0.62)
+    image = spec.get("image")
+    items = spec["items"]
+    if image:
+        # text on the right, diagram on the left (RTL visual balance)
+        n = len(items)
+        pitch = 0.58 if n <= 5 else 0.5
+        rtl_bullets(
+            s,
+            items,
+            top=top + Inches(0.1),
+            size=14,
+            pitch=pitch,
+            left=Inches(6.55),
+            width=Inches(6.15),
+        )
+        embed_diagram(s, image, MARGIN, top + Inches(0.05), Inches(5.7), Inches(4.4))
+    else:
+        n = len(items)
+        pitch = 0.72 if n <= 5 else 0.62
+        size = 15 if n <= 5 else 14
+        rtl_bullets(s, items, top=top + Inches(0.12), size=size, pitch=pitch)
 
 
 def paint_cards(prs, spec: dict, page: int, total: int):
@@ -1087,7 +1198,6 @@ def paint_tools(prs, spec: dict, page: int, total: int):
     for i, (name, desc) in enumerate(tools):
         x = MARGIN + Inches(i * (card_w + gap))
         soft_card(s, x, Inches(2.4), Inches(card_w), Inches(3.8), fill=SOFT if i % 2 == 0 else SOFT_2)
-        # accent bar
         rect(s, x, Inches(2.4), Inches(card_w), Inches(0.08), PRIMARY if i % 2 == 0 else SECONDARY)
         add_rtl_text(
             s, x + Inches(0.3), Inches(2.8), Inches(card_w - 0.6), Inches(0.7),
@@ -1118,7 +1228,6 @@ def paint_steps(prs, spec: dict, page: int, total: int):
     for i, text in enumerate(steps):
         y = Inches(2.25) + Inches(i * 1.05)
         soft_card(s, MARGIN, y, card_w, Inches(0.9), fill=SOFT if i % 2 == 0 else SOFT_2)
-        # Number on the right (RTL start) with clear gap from text
         badge_x = MARGIN + card_w - pad - badge
         soft_card(s, badge_x, y + Inches(0.19), badge, badge, fill=PRIMARY)
         add_text(
@@ -1155,11 +1264,11 @@ def paint_closing(prs, page: int, total: int):
     logo(s, height=Inches(0.42))
     add_rtl_text(
         s, MARGIN, Inches(2.6), Inches(12), Inches(0.9),
-        "شكرًا لكم", size=40, bold=True, color=PRIMARY, align=PP_ALIGN.CENTER,
+        "شكرا لكم", size=40, bold=True, color=PRIMARY, align=PP_ALIGN.CENTER,
     )
     add_rtl_text(
         s, MARGIN, Inches(3.6), Inches(12), Inches(0.5),
-        "ابدأوا بالتمرين الصغير… ثم ابنوا حلّكم المتكامل",
+        "ابدأوا بالتمرين الصغير… ثم ابنوا حلكم المتكامل",
         size=18, color=MUTED, align=PP_ALIGN.CENTER,
     )
     add_rtl_text(
