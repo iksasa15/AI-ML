@@ -268,37 +268,80 @@ def rtl_card(slide, left, top, width, height, title: str, body: str, *, fill=SOF
     )
 
 
-def _fit_picture(path: Path, slide, left, top, width, max_height):
+def _as_inches(val) -> float:
+    """Convert pptx Length / EMU int / plain inches float to inches.
+
+    NOTE: summing two Length values (e.g. MARGIN + Inches(0.18)) often yields a
+    plain int in EMUs — which has no `.inches` and must NOT be passed to Inches().
+    """
+    if hasattr(val, "inches"):
+        return float(val.inches)
+    v = float(val)
+    # Slide is ~13.3" wide; anything larger is almost certainly EMUs
+    if isinstance(val, int) and abs(v) > 50:
+        return v / 914400.0
+    return v
+
+
+def _fit_picture(path: Path, slide, left, top, width, max_height, *, cover: bool = True):
+    """Embed image into a box. cover=True center-crops to fill; else letterbox."""
     if not path.is_file():
         return None
     from PIL import Image
 
-    with Image.open(path) as im:
-        px_w, px_h = im.size
-    if px_w <= 0 or px_h <= 0:
+    max_w = _as_inches(width)
+    max_h = _as_inches(max_height)
+    left_in = _as_inches(left)
+    top_in = _as_inches(top)
+    if max_w <= 0 or max_h <= 0:
         return None
-    aspect = px_w / px_h
-    max_w = width.inches if hasattr(width, "inches") else float(width)
-    max_h = max_height.inches if hasattr(max_height, "inches") else float(max_height)
-    left_in = left.inches if hasattr(left, "inches") else float(left)
-    top_in = top.inches if hasattr(top, "inches") else float(top)
-    fit_w = min(max_w, max_h * aspect)
-    fit_h = fit_w / aspect
-    if fit_h > max_h:
-        fit_h = max_h
-        fit_w = fit_h * aspect
-    x = left_in + (max_w - fit_w) / 2
-    return slide.shapes.add_picture(
-        str(path), Inches(x), Inches(top_in), width=Inches(fit_w), height=Inches(fit_h)
-    )
+
+    with Image.open(path) as src:
+        im = src.convert("RGB")
+        px_w, px_h = im.size
+        if px_w <= 0 or px_h <= 0:
+            return None
+        aspect = px_w / px_h
+        box_aspect = max_w / max_h
+
+        if cover:
+            if aspect > box_aspect:
+                new_w = max(1, int(round(px_h * box_aspect)))
+                x0 = max(0, (px_w - new_w) // 2)
+                im = im.crop((x0, 0, x0 + new_w, px_h))
+            elif aspect < box_aspect:
+                new_h = max(1, int(round(px_w / box_aspect)))
+                y0 = max(0, (px_h - new_h) // 2)
+                im = im.crop((0, y0, px_w, y0 + new_h))
+            tmp = path.parent / f".crop-{path.stem}.jpg"
+            im.save(tmp, format="JPEG", quality=90, optimize=True, progressive=False)
+            return slide.shapes.add_picture(
+                str(tmp),
+                Inches(left_in),
+                Inches(top_in),
+                width=Inches(max_w),
+                height=Inches(max_h),
+            )
+
+        # contain / letterbox
+        fit_w = min(max_w, max_h * aspect)
+        fit_h = fit_w / aspect
+        if fit_h > max_h:
+            fit_h = max_h
+            fit_w = fit_h * aspect
+        x = left_in + (max_w - fit_w) / 2
+        y = top_in + (max_h - fit_h) / 2
+        return slide.shapes.add_picture(
+            str(path), Inches(x), Inches(y), width=Inches(fit_w), height=Inches(fit_h)
+        )
 
 
 def embed_diagram(slide, name: str, left, top, width, max_height):
-    return _fit_picture(DIAGRAMS / name, slide, left, top, width, max_height)
+    return _fit_picture(DIAGRAMS / name, slide, left, top, width, max_height, cover=False)
 
 
 def embed_photo(slide, name: str, left, top, width, max_height):
-    return _fit_picture(PHOTOS / name, slide, left, top, width, max_height)
+    return _fit_picture(PHOTOS / name, slide, left, top, width, max_height, cover=True)
 
 
 def resolve_tool_icon(tool_name: str) -> str | None:
@@ -317,10 +360,29 @@ def resolve_tool_icon(tool_name: str) -> str | None:
 
 
 def embed_icon(slide, name: str, left, top, size=Inches(0.55)):
+    """Embed a real logo on a white rounded pad so transparent SVGs stay visible."""
     path = PHOTOS / name
     if not path.is_file():
         return None
-    return slide.shapes.add_picture(str(path), left, top, width=size, height=size)
+    from PIL import Image, ImageDraw
+
+    size_in = _as_inches(size)
+    left_in = _as_inches(left)
+    top_in = _as_inches(top)
+    px = 256
+    canvas = Image.new("RGBA", (px, px), (255, 255, 255, 255))
+    draw = ImageDraw.Draw(canvas)
+    draw.rounded_rectangle((0, 0, px - 1, px - 1), radius=48, fill=(255, 255, 255, 255))
+    logo = Image.open(path).convert("RGBA")
+    logo.thumbnail((200, 200), Image.Resampling.LANCZOS)
+    ox = (px - logo.size[0]) // 2
+    oy = (px - logo.size[1]) // 2
+    canvas.paste(logo, (ox, oy), logo)
+    tmp = PHOTOS / f".pad-{path.stem}.png"
+    canvas.save(tmp)
+    return slide.shapes.add_picture(
+        str(tmp), Inches(left_in), Inches(top_in), width=Inches(size_in), height=Inches(size_in)
+    )
 
 def new_slide(prs) -> object:
     return prs.slides.add_slide(prs.slide_layouts[6])
@@ -545,6 +607,7 @@ def build_registry() -> None:
         title="إنتاج المحتوى الاحترافي وتطبيقات العمل اليومي",
         duration="ساعة",
         goal="تحويل الأفكار الخام إلى مراسلات وتقارير ومحتوى تسويقي جاهز",
+        photo="hero-day1.jpg",
     )
     register(
         "bullets",
@@ -588,6 +651,7 @@ def build_registry() -> None:
         title="البحث الموثّق والتعامل مع الملفات الضخمة",
         duration="ساعة ونصف",
         goal="البحث بمصادر حية وتلخيص PDF المعقّدة ثم تحويلها لمخرجات عمل",
+        photo="hero-research.jpg",
     )
     register(
         "bullets",
@@ -784,6 +848,7 @@ def build_registry() -> None:
         title="تصميم العروض التقديمية التفاعلية بالكامل",
         duration="ساعة",
         goal="تحويل فكرة أو مستند إلى شرائح متكاملة في دقائق",
+        photo="hero-day2.jpg",
     )
     register(
         "bullets",
@@ -827,6 +892,7 @@ def build_registry() -> None:
         title="إنتاج وتعديل الفيديو والأصوات بالذكاء الاصطناعي",
         duration="ساعة ونصف",
         goal="أفاتار ناطق، فيديوهات توضيحية، وصوت واقعي من النص",
+        photo="hero-media.jpg",
     )
     register(
         "cards",
@@ -1001,6 +1067,7 @@ def build_registry() -> None:
         title="أتمتة المهام اليومية والربط بين الأدوات",
         duration="ساعة",
         goal="بناء Workflow يربط البريد والجداول والردود الذكية",
+        photo="hero-automation.jpg",
     )
     register(
         "diagram",
@@ -1051,6 +1118,7 @@ def build_registry() -> None:
         title="بناء مساعد شخصي مخصص بدون برمجة ومستقبل العمل",
         duration="ساعة ونصف",
         goal="Custom GPT/Bot على ملفات داخلية + أخلاقيات وأمن البيانات",
+        photo="hero-team.jpg",
     )
     register(
         "cards",
