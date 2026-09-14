@@ -50,26 +50,36 @@ _TASHKEEL = dict.fromkeys(
     None,
 )
 
-# Map tool display names → local icon files
+# Map tool display names → local real logo files (1:1, no shared wrong brands)
 TOOL_ICONS = {
     "ChatGPT": "icon-openai.png",
     "Claude": "icon-anthropic.png",
-    "Google Gemini": "icon-google.png",
-    "Gemini": "icon-google.png",
+    "Google Gemini": "icon-gemini.png",
+    "Gemini": "icon-gemini.png",
     "Perplexity AI": "icon-perplexity.png",
     "Perplexity": "icon-perplexity.png",
+    "ChatPDF / Claude": "icon-chatpdf.png",
+    "ChatPDF": "icon-chatpdf.png",
     "Midjourney": "icon-midjourney.png",
     "DALL·E 3": "icon-openai.png",
-    "Gamma App": "icon-canva.png",
-    "Beautiful.ai": "icon-canva.png",
+    "Leonardo.ai": "icon-leonardo.png",
+    "Gamma App": "icon-gamma.png",
+    "Gamma": "icon-gamma.png",
+    "Beautiful.ai": "icon-beautifulai.png",
+    "HeyGen": "icon-heygen.png",
+    "ElevenLabs": "icon-elevenlabs.png",
+    "Runway / Pika": "icon-runway.png",
+    "Runway": "icon-runway.png",
     "Zapier AI": "icon-zapier.png",
     "Zapier": "icon-zapier.png",
-    "Make": "icon-zapier.png",
+    "Make": "icon-make.png",
     "Notion": "icon-notion.png",
     "GPT Builder": "icon-openai.png",
+    "Poe": "icon-poe.png",
+    "Advanced Data Analysis": "icon-openai.png",
     "ChatGPT / Claude / Gemini": "icon-openai.png",
     "Perplexity · Midjourney · Gamma": "icon-perplexity.png",
-    "HeyGen · Zapier / Make · GPT Builder": "icon-zapier.png",
+    "HeyGen · Zapier / Make · GPT Builder": "icon-heygen.png",
 }
 
 
@@ -291,21 +301,26 @@ def embed_photo(slide, name: str, left, top, width, max_height):
     return _fit_picture(PHOTOS / name, slide, left, top, width, max_height)
 
 
+def resolve_tool_icon(tool_name: str) -> str | None:
+    """Return icon filename only if the real logo file exists on disk."""
+    name = TOOL_ICONS.get(tool_name)
+    if not name:
+        for key, icon in TOOL_ICONS.items():
+            if key.lower() in tool_name.lower() or tool_name.lower() in key.lower():
+                name = icon
+                break
+    if not name:
+        return None
+    if not (PHOTOS / name).is_file():
+        return None
+    return name
+
+
 def embed_icon(slide, name: str, left, top, size=Inches(0.55)):
     path = PHOTOS / name
     if not path.is_file():
         return None
     return slide.shapes.add_picture(str(path), left, top, width=size, height=size)
-
-
-def resolve_tool_icon(tool_name: str) -> str | None:
-    if tool_name in TOOL_ICONS:
-        return TOOL_ICONS[tool_name]
-    for key, icon in TOOL_ICONS.items():
-        if key.lower() in tool_name.lower() or tool_name.lower() in key.lower():
-            return icon
-    return None
-
 
 def new_slide(prs) -> object:
     return prs.slides.add_slide(prs.slide_layouts[6])

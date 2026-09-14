@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
 """
-Download licensed section heroes + tool icons for the Arabic AI Tools workshop.
+Download real tool logos + hero photos for the Arabic AI Tools workshop.
 
-Sources (cached under public/assets/workshop-ai-tools-photos/):
-  - Unsplash photos via images.unsplash.com
-  - Simple Icons CDN (https://simpleicons.org) when available
-  - Branded letter placeholders for icons not on Simple Icons
+Rules:
+  - NEVER invent letter placeholders
+  - Prefer official site favicons + Simple Icons / Wikimedia SVGs
+  - On failure: print FAIL and skip (do not fabricate a mark)
 
-Uses curl for reliable downloads (urllib can hang on some networks).
+Cached under: public/assets/workshop-ai-tools-photos/
 """
 
 from __future__ import annotations
 
+import io
 import subprocess
 from pathlib import Path
 
+from PIL import Image
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public" / "assets" / "workshop-ai-tools-photos"
-UA = "ETRA-WorkshopAssetFetcher/1.0"
+UA = "ETRA-WorkshopAssetFetcher/1.1"
 
 PHOTOS: dict[str, str] = {
     "hero-cover.jpg": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80",
@@ -32,102 +35,203 @@ PHOTOS: dict[str, str] = {
     "hero-laptop.jpg": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80",
 }
 
-# (filename, simpleicons slug, hex color, fallback letter)
-ICONS: list[tuple[str, str, str, str]] = [
-    ("icon-openai.png", "openai", "412991", "O"),
-    ("icon-anthropic.png", "anthropic", "191919", "A"),
-    ("icon-google.png", "google", "4285F4", "G"),
-    ("icon-perplexity.png", "perplexity", "1FB8CD", "P"),
-    ("icon-midjourney.png", "midjourney", "000000", "M"),
-    ("icon-canva.png", "canva", "00C4CC", "C"),
-    ("icon-zapier.png", "zapier", "FF4A00", "Z"),
-    ("icon-notion.png", "notion", "000000", "N"),
-]
+# filename → ordered list of real sources (SVG or PNG)
+# First successful fetch wins.
+ICON_SOURCES: dict[str, list[str]] = {
+    "icon-openai.png": [
+        "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg",
+        "https://www.google.com/s2/favicons?domain=openai.com&sz=128",
+        "https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128",
+    ],
+    "icon-anthropic.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/anthropic.svg",
+        "https://www.google.com/s2/favicons?domain=claude.ai&sz=128",
+        "https://www.google.com/s2/favicons?domain=anthropic.com&sz=128",
+    ],
+    "icon-gemini.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlegemini.svg",
+        "https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128",
+    ],
+    "icon-perplexity.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/perplexity.svg",
+        "https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128",
+    ],
+    "icon-midjourney.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/midjourney.svg",
+        "https://www.google.com/s2/favicons?domain=midjourney.com&sz=128",
+    ],
+    "icon-leonardo.png": [
+        "https://www.google.com/s2/favicons?domain=leonardo.ai&sz=128",
+        "https://www.google.com/s2/favicons?domain=app.leonardo.ai&sz=128",
+    ],
+    "icon-gamma.png": [
+        "https://www.google.com/s2/favicons?domain=gamma.app&sz=128",
+    ],
+    "icon-beautifulai.png": [
+        "https://www.google.com/s2/favicons?domain=www.beautiful.ai&sz=128",
+        "https://www.google.com/s2/favicons?domain=beautiful.ai&sz=128",
+    ],
+    "icon-heygen.png": [
+        "https://www.google.com/s2/favicons?domain=heygen.com&sz=128",
+    ],
+    "icon-elevenlabs.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/elevenlabs.svg",
+        "https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=128",
+    ],
+    "icon-runway.png": [
+        "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128",
+        "https://www.google.com/s2/favicons?domain=runway.com&sz=128",
+    ],
+    "icon-zapier.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/zapier.svg",
+        "https://www.google.com/s2/favicons?domain=zapier.com&sz=128",
+    ],
+    "icon-make.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/make.svg",
+        "https://www.google.com/s2/favicons?domain=www.make.com&sz=128",
+        "https://www.google.com/s2/favicons?domain=make.com&sz=128",
+    ],
+    "icon-notion.png": [
+        "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/notion.svg",
+        "https://www.google.com/s2/favicons?domain=notion.so&sz=128",
+    ],
+    "icon-poe.png": [
+        "https://www.google.com/s2/favicons?domain=poe.com&sz=128",
+    ],
+    "icon-chatpdf.png": [
+        "https://www.google.com/s2/favicons?domain=www.chatpdf.com&sz=128",
+        "https://www.google.com/s2/favicons?domain=chatpdf.com&sz=128",
+    ],
+}
 
 
-def curl_download(url: str, dest: Path) -> bool:
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    if dest.is_file() and dest.stat().st_size > 500:
-        print(f"  skip {dest.name}")
-        return True
+def curl_bytes(url: str) -> bytes | None:
     cmd = [
         "curl", "-fsSL", "--max-time", "45",
-        "-A", UA, "-o", str(dest), url,
+        "-A", UA, url,
     ]
     try:
-        subprocess.run(cmd, check=True, capture_output=True)
-    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
-        print(f"  FAIL {dest.name}: {exc}")
-        if dest.exists():
-            dest.unlink()
+        proc = subprocess.run(cmd, check=True, capture_output=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+    data = proc.stdout or b""
+    if len(data) < 80:
+        return None
+    return data
+
+
+def to_png_256(data: bytes, dest: Path) -> bool:
+    """Rasterize SVG or normalize raster to 256×256 PNG on transparent/white pad."""
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    head = data.lstrip()[:200]
+    is_svg = head.startswith(b"<svg") or head.startswith(b"<?xml") or b"<svg" in head[:500]
+
+    if is_svg:
+        try:
+            import cairosvg
+
+            png = cairosvg.svg2png(bytestring=data, output_width=256, output_height=256)
+            Image.open(io.BytesIO(png)).convert("RGBA").save(dest, format="PNG")
+            return True
+        except Exception as exc:
+            print(f"    SVG raster fail: {exc}")
+            return False
+
+    try:
+        im = Image.open(io.BytesIO(data)).convert("RGBA")
+    except Exception as exc:
+        print(f"    image open fail: {exc}")
         return False
-    if not dest.is_file() or dest.stat().st_size < 200:
-        print(f"  FAIL {dest.name}: empty")
-        if dest.exists():
-            dest.unlink()
+
+    # Reject tiny / empty / near-blank images
+    if im.size[0] < 16 or im.size[1] < 16:
         return False
-    print(f"  ok {dest.name} ({dest.stat().st_size // 1024} KB)")
+    # Upscale small favicons with nearest/bilinear to 256 canvas
+    im.thumbnail((220, 220), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (256, 256), (255, 255, 255, 0))
+    x = (256 - im.size[0]) // 2
+    y = (256 - im.size[1]) // 2
+    canvas.paste(im, (x, y), im)
+    canvas.save(dest, format="PNG")
     return True
 
 
-def placeholder_icon(dest: Path, color: str, letter: str) -> None:
-    from PIL import Image, ImageDraw, ImageFont
-
-    im = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
-    d = ImageDraw.Draw(im)
-    d.rounded_rectangle((8, 8, 248, 248), 48, fill=f"#{color}")
-    d.rounded_rectangle((48, 48, 208, 208), 36, fill="#FFFFFF")
-    try:
-        font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 96)
-    except Exception:
-        font = ImageFont.load_default()
-    bbox = d.textbbox((0, 0), letter, font=font)
-    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    d.text(((256 - tw) / 2, (256 - th) / 2 - 8), letter, fill=f"#{color}", font=font)
-    im.save(dest)
-
-
-def rasterize_svg(svg_bytes: bytes, dest: Path, color: str, letter: str) -> None:
-    try:
-        import cairosvg
-        from io import BytesIO
-        from PIL import Image
-
-        png = cairosvg.svg2png(bytestring=svg_bytes, output_width=256, output_height=256)
-        Image.open(BytesIO(png)).save(dest)
-    except Exception:
-        placeholder_icon(dest, color, letter)
-
-
-def fetch_icon(name: str, slug: str, color: str, letter: str) -> bool:
+def fetch_icon(name: str, urls: list[str], *, force: bool = False) -> bool:
     dest = OUT / name
-    if dest.is_file() and dest.stat().st_size > 500:
+    if dest.is_file() and dest.stat().st_size > 500 and not force:
+        # Still refresh if it looks like an old letter-placeholder (tiny unique palette
+        # is OK for real SVGs; we force-refresh known fakes by deleting them in main)
         print(f"  skip {name}")
         return True
-    svg_path = OUT / f"{Path(name).stem}.svg"
-    url = f"https://cdn.simpleicons.org/{slug}/{color}"
-    if curl_download(url, svg_path):
-        data = svg_path.read_bytes()
-        if data.lstrip().startswith(b"<svg") or data[:5] == b"<?xml":
-            rasterize_svg(data, dest, color, letter)
-            print(f"  ok {name} (from SVG)")
+
+    for url in urls:
+        print(f"  try {name} ← {url[:70]}…")
+        data = curl_bytes(url)
+        if not data:
+            continue
+        if to_png_256(data, dest):
+            print(f"  ok {name} ({dest.stat().st_size} B)")
             return True
-    placeholder_icon(dest, color, letter)
-    print(f"  ok {name} (placeholder)")
-    return True
+    print(f"  FAIL {name}: no real logo source succeeded")
+    if dest.exists():
+        dest.unlink()
+    return False
+
+
+def fetch_photo(name: str, url: str, *, force: bool = False) -> bool:
+    dest = OUT / name
+    if dest.is_file() and dest.stat().st_size > 1000 and not force:
+        print(f"  skip {name}")
+        return True
+    data = curl_bytes(url)
+    if not data:
+        print(f"  FAIL {name}")
+        return False
+    try:
+        im = Image.open(io.BytesIO(data)).convert("RGB")
+        # Baseline JPEG — avoids progressive JPEG issues in some PowerPoint builds
+        im.save(dest, format="JPEG", quality=88, optimize=True, progressive=False)
+        print(f"  ok {name} ({dest.stat().st_size // 1024} KB baseline)")
+        return True
+    except Exception as exc:
+        print(f"  FAIL {name}: {exc}")
+        return False
+
+
+def recompress_heroes_baseline() -> int:
+    """Re-save existing hero-*.jpg as baseline JPEG in place."""
+    n = 0
+    for path in sorted(OUT.glob("hero-*.jpg")):
+        try:
+            im = Image.open(path).convert("RGB")
+            im.save(path, format="JPEG", quality=88, optimize=True, progressive=False)
+            print(f"  baseline {path.name}")
+            n += 1
+        except Exception as exc:
+            print(f"  FAIL baseline {path.name}: {exc}")
+    return n
 
 
 def main() -> None:
-    print(f"Fetching workshop photos → {OUT}")
-    ok = 0
-    for name, url in PHOTOS.items():
-        if curl_download(url, OUT / name):
-            ok += 1
-    for name, slug, color, letter in ICONS:
-        if fetch_icon(name, slug, color, letter):
-            ok += 1
-    total = len(PHOTOS) + len(ICONS)
-    print(f"Done: {ok}/{total} assets")
+    OUT.mkdir(parents=True, exist_ok=True)
+    # Remove known invented letter placeholders so they are never reused
+    fake_markers = ("icon-openai.png", "icon-midjourney.png", "icon-canva.png", "icon-google.png")
+    for name in fake_markers:
+        p = OUT / name
+        if p.exists():
+            p.unlink()
+            print(f"  removed fake {name}")
+
+    print(f"Fetching heroes → {OUT}")
+    ok_photo = sum(1 for n, u in PHOTOS.items() if fetch_photo(n, u))
+    # Always baseline-recompress whatever is on disk
+    recompress_heroes_baseline()
+
+    print("Fetching real tool logos…")
+    ok_icon = sum(1 for n, urls in ICON_SOURCES.items() if fetch_icon(n, urls, force=True))
+
+    print(f"Done photos {ok_photo}/{len(PHOTOS)} · icons {ok_icon}/{len(ICON_SOURCES)}")
 
 
 if __name__ == "__main__":
