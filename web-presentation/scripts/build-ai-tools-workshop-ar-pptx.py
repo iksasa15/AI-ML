@@ -27,8 +27,6 @@ from etra_brand import (  # noqa: E402
     SOFT,
     SOFT_2,
     WHITE,
-    add_text,
-    content_footer,
     gradient_fill,
     logo,
     paint_light,
@@ -41,6 +39,7 @@ from etra_brand import (  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "pdf-exports" / "ETRA-AI-Tools-Workshop-3Days-AR.pptx"
 DIAGRAMS = ROOT / "public" / "assets" / "workshop-ai-tools-diagrams"
+PHOTOS = ROOT / "public" / "assets" / "workshop-ai-tools-photos"
 AR_FONT = "IBM Plex Sans Arabic"
 AR_LANG = "ar-SA"
 
@@ -51,6 +50,28 @@ _TASHKEEL = dict.fromkeys(
     None,
 )
 
+# Map tool display names → local icon files
+TOOL_ICONS = {
+    "ChatGPT": "icon-openai.png",
+    "Claude": "icon-anthropic.png",
+    "Google Gemini": "icon-google.png",
+    "Gemini": "icon-google.png",
+    "Perplexity AI": "icon-perplexity.png",
+    "Perplexity": "icon-perplexity.png",
+    "Midjourney": "icon-midjourney.png",
+    "DALL·E 3": "icon-openai.png",
+    "Gamma App": "icon-canva.png",
+    "Beautiful.ai": "icon-canva.png",
+    "Zapier AI": "icon-zapier.png",
+    "Zapier": "icon-zapier.png",
+    "Make": "icon-zapier.png",
+    "Notion": "icon-notion.png",
+    "GPT Builder": "icon-openai.png",
+    "ChatGPT / Claude / Gemini": "icon-openai.png",
+    "Perplexity · Midjourney · Gamma": "icon-perplexity.png",
+    "HeyGen · Zapier / Make · GPT Builder": "icon-zapier.png",
+}
+
 
 def strip_tashkeel(value: str) -> str:
     if not value:
@@ -58,19 +79,20 @@ def strip_tashkeel(value: str) -> str:
     return value.translate(_TASHKEEL)
 
 
-def set_paragraph_rtl(paragraph) -> None:
+def set_paragraph_rtl(paragraph, *, align_right=True) -> None:
     pPr = paragraph._p.get_or_add_pPr()
     pPr.set("rtl", "1")
-    pPr.set("algn", "r")
+    if align_right:
+        pPr.set("algn", "r")
 
 
-def _set_run_ar(run, size, *, bold=False, color=INK, font=None):
+def _set_run_ar(run, size, *, bold=False, color=INK, font=None, rtl=True):
     face = font or AR_FONT
     set_run(run, size, bold=bold, color=color, font=face)
     rPr = run._r.get_or_add_rPr()
-    rPr.set("rtl", "1")
-    rPr.set("lang", AR_LANG)
-    rPr.set("altLang", "en-US")
+    rPr.set("rtl", "1" if rtl else "0")
+    rPr.set("lang", AR_LANG if rtl else "en-US")
+    rPr.set("altLang", "en-US" if rtl else AR_LANG)
     for tag in ("latin", "ea", "cs"):
         el = rPr.find(qn(f"a:{tag}"))
         if el is None:
@@ -112,7 +134,7 @@ def add_rtl_text(
     for i, chunk in enumerate(chunks):
         p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p.alignment = align
-        set_paragraph_rtl(p)
+        set_paragraph_rtl(p, align_right=(align == PP_ALIGN.RIGHT))
         p.space_after = Pt(6 if size >= 18 else 4)
         run = p.add_run()
         run.text = chunk
@@ -120,25 +142,74 @@ def add_rtl_text(
     return box
 
 
-def rtl_bullets(slide, items: list[str], *, top=Inches(2.2), size=15, pitch=0.72, left=None, width=None):
+def content_footer_ar(slide, page: int, total: int) -> None:
+    """Arabic footer: page number left · ETRA right (mirrors LTR brand footer)."""
+    y = Inches(7.05)
+    rect(slide, MARGIN, y, Inches(12.1), Inches(0.012), PRIMARY)
+    add_rtl_text(
+        slide,
+        Inches(10.0),
+        Inches(7.12),
+        Inches(2.7),
+        Inches(0.28),
+        "ETRA",
+        size=11,
+        bold=True,
+        color=PRIMARY,
+        align=PP_ALIGN.RIGHT,
+    )
+    add_rtl_text(
+        slide,
+        MARGIN,
+        Inches(7.12),
+        Inches(2.5),
+        Inches(0.28),
+        f"{page:02d}  /  {total:02d}",
+        size=11,
+        color=MUTED,
+        align=PP_ALIGN.LEFT,
+    )
+
+
+def rtl_column_xs(n: int, *, left=None, total=12.1, gap=0.25) -> tuple[list, list[float]]:
+    """Return (xs, widths) with item 0 placed on the right (RTL)."""
+    left = MARGIN if left is None else left
+    left_in = left.inches if hasattr(left, "inches") else float(left)
+    if n <= 1:
+        return [Inches(left_in)], [total]
+    card_w = (total - gap * (n - 1)) / n
+    xs = [Inches(left_in + (n - 1 - i) * (card_w + gap)) for i in range(n)]
+    return xs, [card_w] * n
+
+
+def rtl_bullets(
+    slide,
+    items: list[str],
+    *,
+    top=Inches(2.2),
+    size=15,
+    pitch=0.72,
+    left=None,
+    width=None,
+    plain=False,
+):
     left = MARGIN if left is None else left
     width = Inches(12.1) if width is None else width
-    row_h = Inches(0.62)
+    row_h = Inches(0.58 if plain else 0.62)
     for i, item in enumerate(items):
         y = top + Inches(i * pitch)
-        soft_card(slide, left, y, width, row_h, fill=SOFT if i % 2 == 0 else SOFT_2)
-        soft_card(
+        if not plain:
+            soft_card(slide, left, y, width, row_h, fill=SOFT if i % 2 == 0 else SOFT_2)
+        else:
+            # light hairline rows — less card density for checklists
+            if i % 2 == 0:
+                soft_card(slide, left, y, width, row_h, fill=SOFT_2)
+        badge_x = left + width - Inches(0.48)
+        soft_card(slide, badge_x, y + Inches(0.11), Inches(0.36), Inches(0.36), fill=PRIMARY)
+        add_rtl_text(
             slide,
-            left + width - Inches(0.48),
+            badge_x,
             y + Inches(0.12),
-            Inches(0.36),
-            Inches(0.36),
-            fill=PRIMARY,
-        )
-        add_text(
-            slide,
-            left + width - Inches(0.48),
-            y + Inches(0.14),
             Inches(0.36),
             Inches(0.34),
             str(i + 1) if len(items) <= 7 else "•",
@@ -146,11 +217,12 @@ def rtl_bullets(slide, items: list[str], *, top=Inches(2.2), size=15, pitch=0.72
             bold=True,
             color=WHITE,
             align=PP_ALIGN.CENTER,
+            anchor=MSO_ANCHOR.MIDDLE,
         )
         add_rtl_text(
             slide,
             left + Inches(0.22),
-            y + Inches(0.1),
+            y + Inches(0.08),
             width - Inches(0.82),
             Inches(0.45),
             item,
@@ -186,8 +258,7 @@ def rtl_card(slide, left, top, width, height, title: str, body: str, *, fill=SOF
     )
 
 
-def embed_diagram(slide, name: str, left, top, width, max_height):
-    path = DIAGRAMS / name
+def _fit_picture(path: Path, slide, left, top, width, max_height):
     if not path.is_file():
         return None
     from PIL import Image
@@ -210,6 +281,30 @@ def embed_diagram(slide, name: str, left, top, width, max_height):
     return slide.shapes.add_picture(
         str(path), Inches(x), Inches(top_in), width=Inches(fit_w), height=Inches(fit_h)
     )
+
+
+def embed_diagram(slide, name: str, left, top, width, max_height):
+    return _fit_picture(DIAGRAMS / name, slide, left, top, width, max_height)
+
+
+def embed_photo(slide, name: str, left, top, width, max_height):
+    return _fit_picture(PHOTOS / name, slide, left, top, width, max_height)
+
+
+def embed_icon(slide, name: str, left, top, size=Inches(0.55)):
+    path = PHOTOS / name
+    if not path.is_file():
+        return None
+    return slide.shapes.add_picture(str(path), left, top, width=size, height=size)
+
+
+def resolve_tool_icon(tool_name: str) -> str | None:
+    if tool_name in TOOL_ICONS:
+        return TOOL_ICONS[tool_name]
+    for key, icon in TOOL_ICONS.items():
+        if key.lower() in tool_name.lower() or tool_name.lower() in key.lower():
+            return icon
+    return None
 
 
 def new_slide(prs) -> object:
@@ -236,15 +331,15 @@ def chrome(slide, kicker: str, page: int, total: int):
     paint_light(slide)
     right_rail(slide)
     ar_header(slide, kicker)
-    content_footer(slide, page, total)
+    content_footer_ar(slide, page, total)
 
 
-def rtl_title(slide, title: str, subtitle: str | None = None, *, top=Inches(1.12)):
+def rtl_title(slide, title: str, subtitle: str | None = None, *, top=Inches(1.12), width=Inches(12.0)):
     add_rtl_text(
         slide,
         MARGIN,
         top,
-        Inches(12.0),
+        width,
         Inches(0.7),
         title,
         size=28 if len(title) > 42 else 32,
@@ -256,7 +351,7 @@ def rtl_title(slide, title: str, subtitle: str | None = None, *, top=Inches(1.12
             slide,
             MARGIN,
             top + Inches(0.62),
-            Inches(12.0),
+            width,
             Inches(0.4),
             subtitle,
             size=14,
@@ -297,6 +392,7 @@ def build_registry() -> None:
         "day_divider",
         day="اليوم الأول",
         title="هندسة الأوامر وصناعة المحتوى والبحث الذكي",
+        photo="hero-day1.jpg",
         sessions=[
             ("الجلسة 1", "مدخل GenAI وهندسة الأوامر", "ساعة ونصف"),
             ("الجلسة 2", "المحتوى الاحترافي والعمل اليومي", "ساعة"),
@@ -311,6 +407,7 @@ def build_registry() -> None:
         title="مدخل إلى الذكاء الاصطناعي التوليدي وهندسة الأوامر",
         duration="ساعة ونصف",
         goal="فهم كيف تعمل النماذج اللغوية وصياغة أوامر دقيقة قابلة للتكرار",
+        photo="hero-laptop.jpg",
     )
     register(
         "cards",
@@ -510,6 +607,7 @@ def build_registry() -> None:
         kicker="اليوم 1  ·  الجلسة 3",
         title="اسئلة التحقق السريعة",
         subtitle="طبقها على كل ملخص",
+        plain=True,
         items=[
             "هل توجد مصادر قابلة للفتح والمراجعة؟",
             "هل قارنت بين مصدرين على الاقل للادعاءات المهمة؟",
@@ -577,6 +675,7 @@ def build_registry() -> None:
         "day_divider",
         day="اليوم الثاني",
         title="الوسائط المتعددة: الصور والعروض والفيديو",
+        photo="hero-day2.jpg",
         sessions=[
             ("الجلسة 1", "توليد الصور والرسومات", "ساعة ونصف"),
             ("الجلسة 2", "تصميم العروض التقديمية", "ساعة"),
@@ -598,6 +697,7 @@ def build_registry() -> None:
         title="توليد الصور والرسومات الاحترافية",
         duration="ساعة ونصف",
         goal="صياغة أوامر صور قوية وتعديل العناصر للاستخدام التسويقي",
+        photo="hero-media.jpg",
     )
     register(
         "bullets",
@@ -695,6 +795,7 @@ def build_registry() -> None:
         kicker="اليوم 2  ·  الجلسة 2",
         title="قائمة تحقق عرض Gamma",
         subtitle="قبل مشاركة الرابط او التصدير",
+        plain=True,
         items=[
             "عنوان كل شريحة واضح في 6 كلمات او اقل",
             "شريحة واحدة = فكرة واحدة فقط",
@@ -821,6 +922,7 @@ def build_registry() -> None:
         "day_divider",
         day="اليوم الثالث",
         title="تحليل البيانات والأتمتة وبناء مساعد شخصي",
+        photo="hero-day3.jpg",
         sessions=[
             ("الجلسة 1", "تحليل البيانات والقرارات", "ساعة ونصف"),
             ("الجلسة 2", "أتمتة المهام وربط الأدوات", "ساعة"),
@@ -835,6 +937,7 @@ def build_registry() -> None:
         title="تحليل البيانات واتخاذ القرارات الذكية",
         duration="ساعة ونصف",
         goal="رفع Excel/CSV والسؤال بلغة بشرية دون معادلات يدوية",
+        photo="hero-data.jpg",
     )
     register(
         "diagram",
@@ -916,6 +1019,7 @@ def build_registry() -> None:
         kicker="اليوم 3  ·  الجلسة 2",
         title="قائمة تحقق قبل تشغيل الأتمتة",
         subtitle="لا تفعّل المسار قبل هذه النقاط",
+        plain=True,
         items=[
             "ما المحفز بالضبط؟ (إيميل جديد / نموذج / رسالة Slack)",
             "هل توجد بيانات حساسة يجب حجبها قبل ارسالها للنموذج؟",
@@ -1085,26 +1189,27 @@ def paint_cover(prs, page: int, total: int):
     paint_light(s)
     right_rail(s)
     logo(s, height=Inches(0.42))
+    # Text on the right, hero photo on the left
     add_rtl_text(
-        s, MARGIN, Inches(2.05), Inches(12), Inches(0.4),
+        s, Inches(5.6), Inches(1.9), Inches(7.0), Inches(0.4),
         "ورشة عملية  ·  ثلاثة أيام", size=16, bold=True, color=SECONDARY,
     )
     add_rtl_text(
-        s, MARGIN, Inches(2.55), Inches(12), Inches(1.1),
+        s, Inches(5.6), Inches(2.4), Inches(7.0), Inches(1.3),
         "الذكاء الاصطناعي التوليدي\nللأعمال والمحتوى والأتمتة",
-        size=36, bold=True, color=PRIMARY,
+        size=32, bold=True, color=PRIMARY,
     )
-    bar = rect(s, Inches(10.3), Inches(4.85), Inches(1.5), Inches(0.07), PRIMARY)
+    bar = rect(s, Inches(11.0), Inches(4.0), Inches(1.5), Inches(0.07), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
     add_rtl_text(
-        s, MARGIN, Inches(5.1), Inches(12), Inches(0.5),
+        s, Inches(5.6), Inches(4.25), Inches(7.0), Inches(0.6),
         "هندسة الأوامر · الوسائط · البيانات · المساعد الشخصي",
-        size=16, color=MUTED,
+        size=14, color=MUTED,
     )
-    add_rtl_text(
-        s, MARGIN, Inches(6.55), Inches(4), Inches(0.3),
-        "ETRA", size=13, bold=True, color=PRIMARY,
-    )
+    soft_card(s, MARGIN, Inches(1.7), Inches(4.7), Inches(4.5), fill=SOFT)
+    if not embed_photo(s, "hero-cover.jpg", MARGIN + Inches(0.18), Inches(1.88), Inches(4.35), Inches(4.15)):
+        embed_diagram(s, "cover-hero.png", MARGIN + Inches(0.18), Inches(1.88), Inches(4.35), Inches(4.15))
+    content_footer_ar(s, page, total)
 
 
 def paint_agenda(prs, page: int, total: int):
@@ -1119,39 +1224,59 @@ def paint_day_divider(prs, spec: dict, page: int, total: int):
     paint_light(s)
     right_rail(s)
     logo(s, height=Inches(0.4))
+    photo = spec.get("photo")
+    text_left = Inches(5.5) if photo else MARGIN
+    text_w = Inches(7.1) if photo else Inches(12.0)
     add_rtl_text(
-        s, MARGIN, Inches(1.6), Inches(12), Inches(0.4),
+        s, text_left, Inches(1.35), text_w, Inches(0.4),
         spec["day"], size=18, bold=True, color=SECONDARY,
     )
     add_rtl_text(
-        s, MARGIN, Inches(2.15), Inches(12), Inches(1.0),
-        spec["title"], size=28 if len(spec["title"]) > 40 else 30, bold=True, color=PRIMARY,
+        s, text_left, Inches(1.85), text_w, Inches(1.0),
+        spec["title"], size=26 if len(spec["title"]) > 40 else 28, bold=True, color=PRIMARY,
     )
-    bar = rect(s, Inches(10.5), Inches(3.25), Inches(1.3), Inches(0.06), PRIMARY)
-    gradient_fill(bar, PRIMARY, SECONDARY, 0)
-    for i, session in enumerate(spec["sessions"]):
+    if photo:
+        soft_card(s, MARGIN, Inches(1.35), Inches(4.6), Inches(2.35), fill=SOFT)
+        embed_photo(s, photo, MARGIN + Inches(0.15), Inches(1.5), Inches(4.3), Inches(2.05))
+    sessions = spec["sessions"]
+    xs, widths = rtl_column_xs(len(sessions), gap=0.2)
+    for i, (session, x, w) in enumerate(zip(sessions, xs, widths)):
         label, name = session[0], session[1]
-        x = MARGIN + Inches(i * 4.05)
         rtl_card(
-            s, x, Inches(3.7), Inches(3.85), Inches(2.2),
+            s, x, Inches(4.0), Inches(w), Inches(2.35),
             label, name, fill=SOFT if i % 2 == 0 else SOFT_2,
         )
-    content_footer(s, page, total)
+    content_footer_ar(s, page, total)
 
 
 def paint_session_open(prs, spec: dict, page: int, total: int):
     s = new_slide(prs)
     chrome(s, spec["kicker"], page, total)
-    rtl_title(s, spec["title"])
-    soft_card(s, MARGIN, Inches(2.5), Inches(12.1), Inches(3.5), fill=SOFT)
-    add_rtl_text(
-        s, MARGIN + Inches(0.4), Inches(2.8), Inches(11.3), Inches(0.4),
-        "هدف الجلسة", size=15, bold=True, color=PRIMARY,
-    )
-    add_rtl_text(
-        s, MARGIN + Inches(0.4), Inches(3.4), Inches(11.3), Inches(2.0),
-        spec["goal"], size=20, color=INK,
-    )
+    photo = spec.get("photo")
+    if photo:
+        rtl_title(s, spec["title"], width=Inches(7.0))
+        soft_card(s, Inches(5.85), Inches(2.35), Inches(6.8), Inches(3.9), fill=SOFT)
+        add_rtl_text(
+            s, Inches(6.15), Inches(2.6), Inches(6.2), Inches(0.4),
+            "هدف الجلسة", size=15, bold=True, color=PRIMARY,
+        )
+        add_rtl_text(
+            s, Inches(6.15), Inches(3.15), Inches(6.2), Inches(2.6),
+            spec["goal"], size=18, color=INK,
+        )
+        soft_card(s, MARGIN, Inches(2.35), Inches(4.9), Inches(3.9), fill=SOFT_2)
+        embed_photo(s, photo, MARGIN + Inches(0.18), Inches(2.55), Inches(4.55), Inches(3.5))
+    else:
+        rtl_title(s, spec["title"])
+        soft_card(s, MARGIN, Inches(2.5), Inches(12.1), Inches(3.5), fill=SOFT)
+        add_rtl_text(
+            s, MARGIN + Inches(0.4), Inches(2.8), Inches(11.3), Inches(0.4),
+            "هدف الجلسة", size=15, bold=True, color=PRIMARY,
+        )
+        add_rtl_text(
+            s, MARGIN + Inches(0.4), Inches(3.4), Inches(11.3), Inches(2.0),
+            spec["goal"], size=20, color=INK,
+        )
 
 
 def paint_bullets(prs, spec: dict, page: int, total: int):
@@ -1160,8 +1285,8 @@ def paint_bullets(prs, spec: dict, page: int, total: int):
     top = rtl_title(s, spec["title"], spec.get("subtitle"))
     image = spec.get("image")
     items = spec["items"]
+    plain = bool(spec.get("plain"))
     if image:
-        # text on the right, diagram on the left (RTL visual balance)
         n = len(items)
         pitch = 0.58 if n <= 5 else 0.5
         rtl_bullets(
@@ -1172,13 +1297,14 @@ def paint_bullets(prs, spec: dict, page: int, total: int):
             pitch=pitch,
             left=Inches(6.55),
             width=Inches(6.15),
+            plain=plain,
         )
         embed_diagram(s, image, MARGIN, top + Inches(0.05), Inches(5.7), Inches(4.4))
     else:
         n = len(items)
-        pitch = 0.72 if n <= 5 else 0.62
+        pitch = 0.68 if n <= 5 else 0.58
         size = 15 if n <= 5 else 14
-        rtl_bullets(s, items, top=top + Inches(0.12), size=size, pitch=pitch)
+        rtl_bullets(s, items, top=top + Inches(0.12), size=size, pitch=pitch, plain=plain)
 
 
 def paint_cards(prs, spec: dict, page: int, total: int):
@@ -1187,15 +1313,8 @@ def paint_cards(prs, spec: dict, page: int, total: int):
     rtl_title(s, spec["title"], spec.get("subtitle"))
     cards = spec["cards"]
     n = len(cards)
-    if n == 1:
-        widths = [12.1]
-        xs = [MARGIN]
-    elif n == 2:
-        widths = [5.9, 5.9]
-        xs = [MARGIN, Inches(7.0)]
-    else:
-        widths = [3.9, 3.9, 3.9]
-        xs = [MARGIN, Inches(4.75), Inches(8.85)]
+    gap = 0.3 if n == 2 else 0.25
+    xs, widths = rtl_column_xs(n, gap=gap)
     for i, ((title, body), w, x) in enumerate(zip(cards, widths, xs)):
         rtl_card(
             s, x, Inches(2.35), Inches(w), Inches(4.0),
@@ -1210,21 +1329,25 @@ def paint_tools(prs, spec: dict, page: int, total: int):
     tools = spec["tools"]
     n = len(tools)
     gap = 0.25
-    if n == 1:
-        card_w = 12.1
-    else:
-        card_w = (12.1 - gap * (n - 1)) / n
-    for i, (name, desc) in enumerate(tools):
-        x = MARGIN + Inches(i * (card_w + gap))
+    xs, widths = rtl_column_xs(n, gap=gap)
+    for i, ((name, desc), x, card_w) in enumerate(zip(tools, xs, widths)):
         soft_card(s, x, Inches(2.4), Inches(card_w), Inches(3.8), fill=SOFT if i % 2 == 0 else SOFT_2)
         rect(s, x, Inches(2.4), Inches(card_w), Inches(0.08), PRIMARY if i % 2 == 0 else SECONDARY)
+        icon = resolve_tool_icon(name)
+        icon_y = Inches(2.7)
+        if icon:
+            icon_x = x + Inches(card_w / 2 - 0.28)
+            embed_icon(s, icon, icon_x, icon_y, size=Inches(0.55))
+            title_top = Inches(3.4)
+        else:
+            title_top = Inches(2.85)
         add_rtl_text(
-            s, x + Inches(0.3), Inches(2.8), Inches(card_w - 0.6), Inches(0.7),
-            name, size=20, bold=True, color=PRIMARY, align=PP_ALIGN.CENTER,
+            s, x + Inches(0.25), title_top, Inches(card_w - 0.5), Inches(0.7),
+            name, size=18 if n > 2 else 20, bold=True, color=PRIMARY, align=PP_ALIGN.CENTER,
         )
         add_rtl_text(
-            s, x + Inches(0.3), Inches(3.7), Inches(card_w - 0.6), Inches(2.0),
-            desc, size=15, color=INK, align=PP_ALIGN.CENTER,
+            s, x + Inches(0.25), Inches(4.2), Inches(card_w - 0.5), Inches(1.6),
+            desc, size=14, color=INK, align=PP_ALIGN.CENTER,
         )
 
 
@@ -1232,7 +1355,6 @@ def paint_diagram(prs, spec: dict, page: int, total: int):
     s = new_slide(prs)
     chrome(s, spec["kicker"], page, total)
     rtl_title(s, spec["title"], spec.get("subtitle"))
-    # More vertical room so diagram titles don't collide with slide chrome
     embed_diagram(s, spec["image"], MARGIN, Inches(2.05), Inches(12.1), Inches(4.65))
 
 
@@ -1250,7 +1372,7 @@ def paint_steps(prs, spec: dict, page: int, total: int):
         soft_card(s, MARGIN, y, card_w, Inches(0.9), fill=SOFT if i % 2 == 0 else SOFT_2)
         badge_x = MARGIN + card_w - pad - badge
         soft_card(s, badge_x, y + Inches(0.19), badge, badge, fill=PRIMARY)
-        add_text(
+        add_rtl_text(
             s,
             badge_x,
             y + Inches(0.22),
@@ -1261,6 +1383,7 @@ def paint_steps(prs, spec: dict, page: int, total: int):
             bold=True,
             color=WHITE,
             align=PP_ALIGN.CENTER,
+            anchor=MSO_ANCHOR.MIDDLE,
         )
         text_left = MARGIN + pad
         text_w = badge_x - text_left - gap
@@ -1283,20 +1406,22 @@ def paint_closing(prs, page: int, total: int):
     right_rail(s)
     logo(s, height=Inches(0.42))
     add_rtl_text(
-        s, MARGIN, Inches(2.6), Inches(12), Inches(0.9),
+        s, MARGIN, Inches(2.4), Inches(12), Inches(0.9),
         "شكرا لكم", size=40, bold=True, color=PRIMARY, align=PP_ALIGN.CENTER,
     )
     add_rtl_text(
-        s, MARGIN, Inches(3.6), Inches(12), Inches(0.5),
+        s, MARGIN, Inches(3.4), Inches(12), Inches(0.5),
         "ابدأوا بالتمرين الصغير… ثم ابنوا حلكم المتكامل",
         size=18, color=MUTED, align=PP_ALIGN.CENTER,
     )
     add_rtl_text(
-        s, MARGIN, Inches(4.4), Inches(12), Inches(0.4),
+        s, MARGIN, Inches(4.2), Inches(12), Inches(0.4),
         "ETRA  ·  ورشة أدوات الذكاء الاصطناعي",
         size=15, bold=True, color=SECONDARY, align=PP_ALIGN.CENTER,
     )
-    content_footer(s, page, total)
+    soft_card(s, Inches(4.4), Inches(5.0), Inches(4.5), Inches(1.5), fill=SOFT)
+    embed_photo(s, "hero-team.jpg", Inches(4.55), Inches(5.1), Inches(4.2), Inches(1.3))
+    content_footer_ar(s, page, total)
 
 
 PAINTERS = {
