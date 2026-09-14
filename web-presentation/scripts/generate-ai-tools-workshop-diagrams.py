@@ -394,6 +394,42 @@ def diagram_ethics() -> None:
     save(fig, "ethics-security.png")
 
 
+def diagram_filled_prompt() -> None:
+    fig, ax = _fig()
+    _title(ax, "مثال امر جاهز للنسخ")
+    _rounded(ax, 0.8, 1.2, 10.4, 4.3, fc=WHITE, ec=PRIMARY, lw=2)
+    lines = [
+        "الدور: انت محرر اداري محترف",
+        "الجمهور: مدير تنفيذي مشغول",
+        "المهمة: لخص تقرير المبيعات الشهري",
+        "الشكل: 5 نقاط + توصية واحدة",
+        "القيد: لا تخترع ارقاما غير موجودة في الملف",
+    ]
+    for i, line in enumerate(lines):
+        _text(ax, 6, 4.7 - i * 0.55, line, size=15, bold=(i == 0), color=PRIMARY if i == 0 else INK)
+    save(fig, "filled-prompt-example.png")
+
+
+def diagram_practice_flow() -> None:
+    fig, ax = _fig()
+    _title(ax, "مسار التمرين العملي")
+    steps = [
+        (0.5, "1", "افتح الاداة"),
+        (3.5, "2", "الصق القالب"),
+        (6.5, "3", "راجع الناتج"),
+        (9.5, "4", "سلّم المخرج"),
+    ]
+    for i, (x, n, label) in enumerate(steps):
+        ax.add_patch(Circle((x + 1.2, 3.7), 0.42, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 1.2, 3.7, n, size=16, bold=True, color=WHITE)
+        _rounded(ax, x, 2.0, 2.4, 1.2, fc=SOFT, ec=LINE)
+        _text(ax, x + 1.2, 2.6, label, size=14, bold=True, color=INK)
+        if i < 3:
+            _arrow(ax, x + 2.5, 3.7, x + 3.4, 3.7)
+    _footer(ax, "كرر نفس المسار في كل تمرين خلال الورشة")
+    save(fig, "practice-flow.png")
+
+
 def main() -> None:
     print("Generating workshop diagrams…")
     diagram_three_days()
@@ -403,7 +439,6 @@ def main() -> None:
     diagram_designer_exercise()
     diagram_automation()
     diagram_capstone()
-    diagram_cover_hero()
     diagram_weak_vs_strong()
     diagram_image_prompt()
     diagram_data_decision()
@@ -411,6 +446,8 @@ def main() -> None:
     diagram_video_script()
     diagram_gpt_steps()
     diagram_ethics()
+    diagram_filled_prompt()
+    diagram_practice_flow()
     print(f"Done → {OUT}")
 
 
