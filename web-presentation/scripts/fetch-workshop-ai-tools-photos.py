@@ -2,24 +2,24 @@
 """
 Download licensed section heroes + tool icons for the Arabic AI Tools workshop.
 
-Sources (cached locally under public/assets/workshop-ai-tools-photos/):
-  - Unsplash photos (free license) via images.unsplash.com
-  - Simple Icons CDN for brand marks (https://simpleicons.org)
+Sources (cached under public/assets/workshop-ai-tools-photos/):
+  - Unsplash photos via images.unsplash.com
+  - Simple Icons CDN (https://simpleicons.org) when available
+  - Branded letter placeholders for icons not on Simple Icons
+
+Uses curl for reliable downloads (urllib can hang on some networks).
 """
 
 from __future__ import annotations
 
-import urllib.error
-import urllib.request
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public" / "assets" / "workshop-ai-tools-photos"
-UA = "ETRA-WorkshopAssetFetcher/1.0 (educational; local cache)"
+UA = "ETRA-WorkshopAssetFetcher/1.0"
 
-# name → (url, kind)  kind helps when converting SVG→PNG later
 PHOTOS: dict[str, str] = {
-    # Heroes / section photos
     "hero-cover.jpg": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80",
     "hero-day1.jpg": "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1400&q=80",
     "hero-day2.jpg": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1400&q=80",
@@ -32,69 +32,102 @@ PHOTOS: dict[str, str] = {
     "hero-laptop.jpg": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80",
 }
 
-# Simple Icons CDN returns PNG for these paths
-ICONS: dict[str, str] = {
-    "icon-openai.png": "https://cdn.simpleicons.org/openai/412991",
-    "icon-anthropic.png": "https://cdn.simpleicons.org/anthropic/191919",
-    "icon-google.png": "https://cdn.simpleicons.org/google/4285F4",
-    "icon-perplexity.png": "https://cdn.simpleicons.org/perplexity/1FB8CD",
-    "icon-midjourney.png": "https://cdn.simpleicons.org/midjourney/000000",
-    "icon-canva.png": "https://cdn.simpleicons.org/canva/00C4CC",
-    "icon-zapier.png": "https://cdn.simpleicons.org/zapier/FF4A00",
-    "icon-notion.png": "https://cdn.simpleicons.org/notion/000000",
-}
+# (filename, simpleicons slug, hex color, fallback letter)
+ICONS: list[tuple[str, str, str, str]] = [
+    ("icon-openai.png", "openai", "412991", "O"),
+    ("icon-anthropic.png", "anthropic", "191919", "A"),
+    ("icon-google.png", "google", "4285F4", "G"),
+    ("icon-perplexity.png", "perplexity", "1FB8CD", "P"),
+    ("icon-midjourney.png", "midjourney", "000000", "M"),
+    ("icon-canva.png", "canva", "00C4CC", "C"),
+    ("icon-zapier.png", "zapier", "FF4A00", "Z"),
+    ("icon-notion.png", "notion", "000000", "N"),
+]
 
 
-def download(url: str, dest: Path) -> bool:
+def curl_download(url: str, dest: Path) -> bool:
     dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.is_file() and dest.stat().st_size > 500:
         print(f"  skip {dest.name}")
         return True
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    cmd = [
+        "curl", "-fsSL", "--max-time", "45",
+        "-A", UA, "-o", str(dest), url,
+    ]
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            data = resp.read()
-    except (urllib.error.URLError, TimeoutError) as exc:
+        subprocess.run(cmd, check=True, capture_output=True)
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
         print(f"  FAIL {dest.name}: {exc}")
+        if dest.exists():
+            dest.unlink()
         return False
-    if not data or len(data) < 200:
-        print(f"  FAIL {dest.name}: empty/short response")
+    if not dest.is_file() or dest.stat().st_size < 200:
+        print(f"  FAIL {dest.name}: empty")
+        if dest.exists():
+            dest.unlink()
         return False
-    # Simple Icons may return SVG — rasterize if needed
-    if data[:200].lstrip().startswith(b"<svg") or data[:5] == b"<?xml":
-        try:
-            from io import BytesIO
-
-            import cairosvg
-            from PIL import Image
-
-            png = cairosvg.svg2png(bytestring=data, output_width=256, output_height=256)
-            Image.open(BytesIO(png)).save(dest)
-        except Exception:
-            # fallback: write SVG bytes with .svg and also try PIL/resvg-less path
-            svg_path = dest.with_suffix(".svg")
-            svg_path.write_bytes(data)
-            # create a simple colored square placeholder PNG via PIL
-            from PIL import Image, ImageDraw
-
-            im = Image.new("RGBA", (256, 256), (82, 52, 183, 255))
-            ImageDraw.Draw(im).rounded_rectangle((24, 24, 232, 232), 40, fill=(255, 255, 255, 255))
-            im.save(dest)
-            print(f"  placeholder {dest.name} (svg cached as {svg_path.name})")
-            return True
-    else:
-        dest.write_bytes(data)
     print(f"  ok {dest.name} ({dest.stat().st_size // 1024} KB)")
+    return True
+
+
+def placeholder_icon(dest: Path, color: str, letter: str) -> None:
+    from PIL import Image, ImageDraw, ImageFont
+
+    im = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((8, 8, 248, 248), 48, fill=f"#{color}")
+    d.rounded_rectangle((48, 48, 208, 208), 36, fill="#FFFFFF")
+    try:
+        font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 96)
+    except Exception:
+        font = ImageFont.load_default()
+    bbox = d.textbbox((0, 0), letter, font=font)
+    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    d.text(((256 - tw) / 2, (256 - th) / 2 - 8), letter, fill=f"#{color}", font=font)
+    im.save(dest)
+
+
+def rasterize_svg(svg_bytes: bytes, dest: Path, color: str, letter: str) -> None:
+    try:
+        import cairosvg
+        from io import BytesIO
+        from PIL import Image
+
+        png = cairosvg.svg2png(bytestring=svg_bytes, output_width=256, output_height=256)
+        Image.open(BytesIO(png)).save(dest)
+    except Exception:
+        placeholder_icon(dest, color, letter)
+
+
+def fetch_icon(name: str, slug: str, color: str, letter: str) -> bool:
+    dest = OUT / name
+    if dest.is_file() and dest.stat().st_size > 500:
+        print(f"  skip {name}")
+        return True
+    svg_path = OUT / f"{Path(name).stem}.svg"
+    url = f"https://cdn.simpleicons.org/{slug}/{color}"
+    if curl_download(url, svg_path):
+        data = svg_path.read_bytes()
+        if data.lstrip().startswith(b"<svg") or data[:5] == b"<?xml":
+            rasterize_svg(data, dest, color, letter)
+            print(f"  ok {name} (from SVG)")
+            return True
+    placeholder_icon(dest, color, letter)
+    print(f"  ok {name} (placeholder)")
     return True
 
 
 def main() -> None:
     print(f"Fetching workshop photos → {OUT}")
     ok = 0
-    for name, url in {**PHOTOS, **ICONS}.items():
-        if download(url, OUT / name):
+    for name, url in PHOTOS.items():
+        if curl_download(url, OUT / name):
             ok += 1
-    print(f"Done: {ok}/{len(PHOTOS) + len(ICONS)} assets")
+    for name, slug, color, letter in ICONS:
+        if fetch_icon(name, slug, color, letter):
+            ok += 1
+    total = len(PHOTOS) + len(ICONS)
+    print(f"Done: {ok}/{total} assets")
 
 
 if __name__ == "__main__":
