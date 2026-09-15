@@ -423,18 +423,62 @@ def diagram_ethics() -> None:
 
 def diagram_filled_prompt() -> None:
     fig, ax = _fig()
-    _title(ax, "مثال امر جاهز للنسخ")
-    _rounded(ax, 0.8, 1.2, 10.4, 4.3, fc=WHITE, ec=PRIMARY, lw=2)
+    _title(ax, "مثال فرع الرياض — جاهز للنسخ")
+    _rounded(ax, 0.8, 1.05, 10.4, 4.6, fc=WHITE, ec=PRIMARY, lw=2)
     lines = [
-        "الدور: انت محرر اداري محترف",
+        "السياق: مبيعات اغسطس · فرع الرياض · هدف 1.2م · متحقق 980 الف",
+        "الدور: انت محلل اداري محترف",
         "الجمهور: مدير تنفيذي مشغول",
-        "المهمة: لخص تقرير المبيعات الشهري",
-        "الشكل: 5 نقاط + توصية واحدة",
-        "القيد: لا تخترع ارقاما غير موجودة في الملف",
+        "الشكل: 5 نقاط + توصية واحدة في سطرين",
+        "القيود: لا تخترع ارقاما · قل غير متوفر إن نقص",
+        "المهمة: لخص اسباب الفجوة واقترح اجراء واحد للاسبوع القادم",
     ]
     for i, line in enumerate(lines):
-        _text(ax, 6, 4.7 - i * 0.55, line, size=15, bold=(i == 0), color=PRIMARY if i == 0 else INK)
+        _text(ax, 6, 4.95 - i * 0.55, line, size=14, bold=(i == 0), color=PRIMARY if i == 0 else INK)
     save(fig, "filled-prompt-example.png")
+
+
+def diagram_one_idea_three_audiences() -> None:
+    fig, ax = _fig()
+    _title(ax, "فكرة واحدة → ثلاثة جماهير")
+    _rounded(ax, 4.35, 4.55, 3.3, 1.0, fc=PRIMARY, ec=PRIMARY, lw=2)
+    _text(ax, 6.0, 5.05, "نفس الحقيقة / الملف", size=14, bold=True, color=WHITE)
+    cards = [
+        ("مدير تنفيذي", "مختصر + قرار"),
+        ("فريق تشغيلي", "تفاصيل تنفيذ"),
+        ("منشور عام", "قيمة بلا ارقام سرية"),
+    ]
+    box_w = 3.0
+    xs = _rtl_row_xs(len(cards), box_w, left=0.7, right=11.3)
+    for x, (title, sub) in zip(xs, cards):
+        _rounded(ax, x, 1.7, box_w, 2.2, fc=WHITE, ec=SECONDARY, lw=2)
+        _text(ax, x + 1.5, 3.15, title, size=15, bold=True, color=PRIMARY)
+        _text(ax, x + 1.5, 2.45, sub, size=13, color=INK)
+        _arrow(ax, 6.0, 4.55, x + 1.5, 3.95)
+    _footer(ax, "لا تنسخ نفس النص حرفيًا لكل منصة")
+    save(fig, "one-idea-three-audiences.png")
+
+
+def diagram_research_quality_gate() -> None:
+    fig, ax = _fig()
+    _title(ax, "بوابة جودة البحث")
+    checks = [
+        ("1", ["مصادر", "قابلة للفتح"]),
+        ("2", ["مقارنة", "ادعاءات"]),
+        ("3", ["مراجعة", "الارقام"]),
+        ("4", ["فصل الحقائق", "عن التوصيات"]),
+        ("5", ["وسم", "غير المؤكد"]),
+    ]
+    box_w = 1.9
+    xs = _rtl_row_xs(len(checks), box_w, left=0.45, right=11.55)
+    for x, (n, lines) in zip(xs, checks):
+        ax.add_patch(Circle((x + 0.95, 4.4), 0.34, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 0.95, 4.4, n, size=15, bold=True, color=WHITE)
+        _rounded(ax, x, 1.85, box_w, 1.9, fc=SOFT, ec=LINE)
+        _text(ax, x + 0.95, 3.05, lines[0], size=11, bold=True, color=INK)
+        _text(ax, x + 0.95, 2.45, lines[1], size=11, bold=True, color=INK)
+    _footer(ax, "اي «لا» = لا ترسل بعد")
+    save(fig, "research-quality-gate.png")
 
 
 def diagram_practice_flow() -> None:
@@ -472,6 +516,8 @@ def main() -> None:
     diagram_ethics()
     diagram_filled_prompt()
     diagram_practice_flow()
+    diagram_one_idea_three_audiences()
+    diagram_research_quality_gate()
     print(f"Done → {OUT}")
 
 
