@@ -19,6 +19,7 @@ _FORMULA_SUB = re.compile(r"_\{([^}]+)\}")
 ROOT = Path(__file__).resolve().parents[1]
 LOGO = ROOT / "public" / "assets" / "etra-wordmark.png"
 LOGO_FALLBACK = ROOT / "public" / "assets" / "etra-logo.png"
+MAIA_LOGO = ROOT / "public" / "assets" / "maia-logo-mark-color.png"
 DIAGRAMS = ROOT / "public" / "assets" / "session1-diagrams"
 FONT_DIR = ROOT / "public" / "font" / "din-next"
 
@@ -581,13 +582,46 @@ def right_rail(slide, *, dark=False):
     return rect(slide, SLIDE_W - RAIL_W, 0, RAIL_W, SLIDE_H, color)
 
 
+def _picture_width_for_height(path: Path, height) -> float:
+    """Return width in inches for a picture locked to `height` (preserves aspect)."""
+    from PIL import Image
+
+    h_in = height.inches if hasattr(height, "inches") else float(height)
+    with Image.open(path) as im:
+        px_w, px_h = im.size
+    if px_h <= 0:
+        return h_in
+    return h_in * (px_w / px_h)
+
+
 def logo(slide, *, dark=False, height=Inches(0.35)):
+    """
+    Top-right co-brand: MAIA mark + ETRA wordmark side by side.
+    Returns the left edge (inches) of the logo cluster so headers can clear it.
+    """
     path = LOGO if LOGO.is_file() else LOGO_FALLBACK
     if not path.is_file():
-        return
-    # Keep logo in top-right safe area (page 13)
-    pic = slide.shapes.add_picture(str(path), Inches(11.55), Inches(0.45), height=height)
-    return pic
+        return 12.0
+
+    top = Inches(0.38)
+    gap = Inches(0.14)
+    right_edge = Inches(12.72)
+
+    etra_w = _picture_width_for_height(path, height)
+    etra_left = right_edge - Inches(etra_w)
+    cluster_left = etra_left
+
+    if MAIA_LOGO.is_file():
+        # Slightly taller mark so it balances the wide ETRA wordmark
+        maia_h = Inches(min(height.inches + 0.06, 0.48))
+        maia_w = _picture_width_for_height(MAIA_LOGO, maia_h)
+        maia_left = etra_left - gap - Inches(maia_w)
+        maia_top = top - Inches((maia_h.inches - height.inches) / 2)
+        slide.shapes.add_picture(str(MAIA_LOGO), maia_left, maia_top, height=maia_h)
+        cluster_left = maia_left
+
+    slide.shapes.add_picture(str(path), etra_left, top, height=height)
+    return cluster_left.inches if hasattr(cluster_left, "inches") else float(cluster_left)
 
 
 def add_diagram(slide, name, left, top, width, max_height):
@@ -632,8 +666,10 @@ def add_diagram(slide, name, left, top, width, max_height):
 
 def content_header(slide, kicker: str, slide_num: str):
     """Light content chrome: logo, kicker, hairline — no heavy bars."""
-    logo(slide)
-    add_text(slide, MARGIN, Inches(0.48), Inches(8.5), Inches(0.3), kicker, size=12, color=MUTED)
+    cluster_left = logo(slide)
+    # Keep kicker clear of the MAIA + ETRA cluster on the right
+    kicker_w = max(6.0, cluster_left - 0.28 - MARGIN.inches)
+    add_text(slide, MARGIN, Inches(0.48), Inches(kicker_w), Inches(0.3), kicker, size=12, color=MUTED)
     rect(slide, MARGIN, Inches(0.9), Inches(12.1), Inches(0.012), LINE)
 
 

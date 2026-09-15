@@ -16,6 +16,7 @@
 .is-canvas-fitted .slide-content-logo {
   top: 1.75rem;
   inset-inline-end: 3.5rem;
+  gap: 14px;
 }
 
 .is-canvas-fitted .slide-content-logo-img {
@@ -23,9 +24,19 @@
   max-width: 360px;
 }
 
+.is-canvas-fitted .slide-content-logo-img--partner {
+  height: 112px;
+  max-width: 140px;
+}
+
 .is-canvas-fitted .slide-frame-logo--divider {
   height: 128px;
   max-width: 340px;
+}
+
+.is-canvas-fitted .slide-frame-logo--partner {
+  height: 104px;
+  max-width: 128px;
 }
 
 .is-canvas-fitted .slide-frame-footer {

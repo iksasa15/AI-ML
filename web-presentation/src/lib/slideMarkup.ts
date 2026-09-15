@@ -1,7 +1,7 @@
 import katex from "katex";
 import { formatAmpersandHTML } from "./ampersandText";
 import { normalizeBullets } from "./bulletItems";
-import { ETRA_LOGO_URL } from "./brandAssets";
+import { ETRA_LOGO_URL, MAIA_LOGO_URL } from "./brandAssets";
 import { buildConceptPrintMarkup, buildIllustrationPrintMarkup } from "./printVisuals";
 import { isSlideIconId } from "./slideIconKeys";
 import { BOOTCAMP_MAP_SECTIONS } from "./bootcampMap";
@@ -503,6 +503,7 @@ export function buildSlideFrameMarkup(meta: SlideFrameMeta, innerHTML: string, i
     return `
       <div class="slide-frame slide-frame--divider">
         <div class="slide-frame-logo-wrap" aria-hidden="true">
+          <img src="${escapeHTML(MAIA_LOGO_URL)}" alt="" class="slide-frame-logo slide-frame-logo--partner slide-frame-logo--divider" />
           <img src="${escapeHTML(ETRA_LOGO_URL)}" alt="" class="slide-frame-logo slide-frame-logo--divider" />
         </div>
         <div class="slide-frame-divider-body">${innerHTML}</div>
@@ -531,6 +532,7 @@ export function buildSlideFrameMarkup(meta: SlideFrameMeta, innerHTML: string, i
       </header>
       <div class="slide-frame-content">
         <div class="slide-content-logo" aria-hidden="true">
+          <img src="${escapeHTML(MAIA_LOGO_URL)}" alt="" class="slide-content-logo-img slide-content-logo-img--partner" />
           <img src="${escapeHTML(ETRA_LOGO_URL)}" alt="" class="slide-content-logo-img" />
         </div>
         ${innerHTML}

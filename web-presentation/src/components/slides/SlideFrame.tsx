@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ETRA_LOGO_URL } from "../../lib/brandAssets";
+import { ETRA_LOGO_URL, MAIA_LOGO_URL } from "../../lib/brandAssets";
 
 type SlideFrameVariant = "default" | "divider";
 
@@ -26,6 +26,7 @@ export function SlideFrame({
     return (
       <div className="slide-frame slide-frame--divider">
         <div className="slide-frame-logo-wrap" aria-hidden="true">
+          <img src={MAIA_LOGO_URL} alt="" className="slide-frame-logo slide-frame-logo--partner" />
           <img src={ETRA_LOGO_URL} alt="" className="slide-frame-logo slide-frame-logo--divider" />
         </div>
         <div className="slide-frame-divider-body">{children}</div>
@@ -64,6 +65,7 @@ export function SlideFrame({
 
       <div className="slide-frame-content">
         <div className="slide-content-logo" aria-hidden="true">
+          <img src={MAIA_LOGO_URL} alt="" className="slide-content-logo-img slide-content-logo-img--partner" />
           <img src={ETRA_LOGO_URL} alt="" className="slide-content-logo-img" />
         </div>
         {children}

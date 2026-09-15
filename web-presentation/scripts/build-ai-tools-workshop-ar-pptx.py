@@ -403,12 +403,14 @@ def new_slide(prs) -> object:
 
 
 def ar_header(slide, kicker: str) -> None:
-    logo(slide)
+    cluster_left = logo(slide)
+    # Right-aligned kicker must stop before the MAIA + ETRA logos
+    kicker_w = max(6.0, cluster_left - 0.28 - MARGIN.inches)
     add_rtl_text(
         slide,
         MARGIN,
         Inches(0.42),
-        Inches(10.7),
+        Inches(kicker_w),
         Inches(0.34),
         kicker,
         size=13,
