@@ -158,10 +158,9 @@ def save(fig, name: str) -> Path:
 
 def diagram_three_days() -> None:
     fig, ax = _fig()
-    _title(ax, "خريطة الورشة · 3 أيام", size=22)
-    # RTL: يوم 1 يمينًا
+    _title(ax, "خريطة الورشة · ثلاثة أيام", size=22)
     days = [
-        (8.0, "اليوم 1", ["هندسة الأوامر", "والمحتوى والبحث"], "#5234B7"),
+        (8.0, "اليوم 1", ["هندسة الأوامر", "بتعمّق"], "#5234B7"),
         (4.25, "اليوم 2", ["الوسائط المتعددة", "صور · عروض · فيديو"], "#7A45C2"),
         (0.5, "اليوم 3", ["البيانات والأتمتة", "ومساعد شخصي"], "#9E59CD"),
     ]
@@ -177,13 +176,13 @@ def diagram_three_days() -> None:
 
 def diagram_prompt_flow() -> None:
     fig, ax = _fig()
-    _title(ax, "هيكل الأمر الاحترافي")
+    _title(ax, "مكوّنات الأمر الاحترافي")
     labels = [
         ("السياق", "Context"),
         ("الدور", "Persona"),
         ("الجمهور", "Audience"),
         ("الشكل", "Format"),
-        ("المخرج", "Output"),
+        ("القيود", "Constraints"),
     ]
     box_w = 2.0
     xs = _rtl_row_xs(len(labels), box_w)
@@ -192,9 +191,8 @@ def diagram_prompt_flow() -> None:
         _text(ax, x + 1.0, 3.5, ar_label, size=15, bold=True, color=PRIMARY)
         _text(ax, x + 1.0, 2.9, en, size=12, color=MUTED)
         if i < len(labels) - 1:
-            # arrow toward the next step (further left)
             _arrow(ax, x - 0.05, 3.3, xs[i + 1] + box_w + 0.05, 3.3)
-    _footer(ax, "ثم أضف: أمثلة (Few-Shot) · خطوات التفكير (CoT) · قيود الدقة")
+    _footer(ax, "ثم يُضاف عند الحاجة: أمثلة (Few-Shot) · توجيه متسلسل (CoT)")
     save(fig, "prompt-structure.png")
 
 
@@ -423,19 +421,36 @@ def diagram_ethics() -> None:
 
 def diagram_filled_prompt() -> None:
     fig, ax = _fig()
-    _title(ax, "مثال فرع الرياض — جاهز للنسخ")
+    _title(ax, "مثال تطبيقي — فرع الرياض")
     _rounded(ax, 0.8, 1.05, 10.4, 4.6, fc=WHITE, ec=PRIMARY, lw=2)
     lines = [
-        "السياق: مبيعات اغسطس · فرع الرياض · هدف 1.2م · متحقق 980 الف",
-        "الدور: انت محلل اداري محترف",
-        "الجمهور: مدير تنفيذي مشغول",
-        "الشكل: 5 نقاط + توصية واحدة في سطرين",
-        "القيود: لا تخترع ارقاما · قل غير متوفر إن نقص",
-        "المهمة: لخص اسباب الفجوة واقترح اجراء واحد للاسبوع القادم",
+        "السياق: مبيعات أغسطس · فرع الرياض · هدف 1.2م · متحقق 980 ألف",
+        "الدور: أنت محلل إداري متخصص في مبيعات التجزئة",
+        "الجمهور: مدير تنفيذي يحتاج قرارًا سريعًا",
+        "الشكل: خمس نقاط مرقّمة + توصية واحدة في سطرين",
+        "القيود: لا تختلق أرقامًا · اذكر غير المتوفر صراحة",
+        "المهمة: استخرج أسباب الفجوة واقترح إجراءً واحدًا للأسبوع القادم",
     ]
     for i, line in enumerate(lines):
-        _text(ax, 6, 4.95 - i * 0.55, line, size=14, bold=(i == 0), color=PRIMARY if i == 0 else INK)
+        _text(ax, 6, 4.95 - i * 0.55, line, size=13, bold=(i == 0), color=PRIMARY if i == 0 else INK)
     save(fig, "filled-prompt-example.png")
+
+
+def diagram_practice_flow() -> None:
+    fig, ax = _fig()
+    _title(ax, "مسار العمل المهني")
+    steps = [("1", "إعداد الأمر"), ("2", "التنفيذ"), ("3", "المراجعة"), ("4", "الاعتماد")]
+    box_w = 2.4
+    xs = _rtl_row_xs(len(steps), box_w, left=0.5, right=11.5)
+    for i, (x, (n, label)) in enumerate(zip(xs, steps)):
+        ax.add_patch(Circle((x + 1.2, 3.7), 0.42, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 1.2, 3.7, n, size=16, bold=True, color=WHITE)
+        _rounded(ax, x, 2.0, box_w, 1.2, fc=SOFT, ec=LINE)
+        _text(ax, x + 1.2, 2.6, label, size=14, bold=True, color=INK)
+        if i < len(steps) - 1:
+            _arrow(ax, x - 0.05, 3.7, xs[i + 1] + box_w + 0.05, 3.7)
+    _footer(ax, "لا اعتماد لمخرج حسّاس دون مراجعة بشرية")
+    save(fig, "practice-flow.png")
 
 
 def diagram_one_idea_three_audiences() -> None:
@@ -479,23 +494,6 @@ def diagram_research_quality_gate() -> None:
         _text(ax, x + 0.95, 2.45, lines[1], size=11, bold=True, color=INK)
     _footer(ax, "اي «لا» = لا ترسل بعد")
     save(fig, "research-quality-gate.png")
-
-
-def diagram_practice_flow() -> None:
-    fig, ax = _fig()
-    _title(ax, "مسار التمرين العملي")
-    steps = [("1", "افتح الاداة"), ("2", "الصق القالب"), ("3", "راجع الناتج"), ("4", "سلّم المخرج")]
-    box_w = 2.4
-    xs = _rtl_row_xs(len(steps), box_w, left=0.5, right=11.5)
-    for i, (x, (n, label)) in enumerate(zip(xs, steps)):
-        ax.add_patch(Circle((x + 1.2, 3.7), 0.42, facecolor=PRIMARY, edgecolor="none", zorder=3))
-        _text(ax, x + 1.2, 3.7, n, size=16, bold=True, color=WHITE)
-        _rounded(ax, x, 2.0, box_w, 1.2, fc=SOFT, ec=LINE)
-        _text(ax, x + 1.2, 2.6, label, size=14, bold=True, color=INK)
-        if i < len(steps) - 1:
-            _arrow(ax, x - 0.05, 3.7, xs[i + 1] + box_w + 0.05, 3.7)
-    _footer(ax, "كرر نفس المسار في كل تمرين خلال الورشة")
-    save(fig, "practice-flow.png")
 
 
 def main() -> None:
