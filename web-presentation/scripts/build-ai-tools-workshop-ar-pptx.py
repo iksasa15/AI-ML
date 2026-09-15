@@ -93,8 +93,8 @@ def strip_tashkeel(value: str) -> str:
 def set_paragraph_rtl(paragraph, *, align_right=True) -> None:
     pPr = paragraph._p.get_or_add_pPr()
     pPr.set("rtl", "1")
-    if align_right:
-        pPr.set("algn", "r")
+    # Keep OOXML align in sync with python-pptx alignment
+    pPr.set("algn", "r" if align_right else pPr.get("algn", "r"))
 
 
 def _set_run_ar(run, size, *, bold=False, color=INK, font=None, rtl=True):
@@ -142,14 +142,24 @@ def add_rtl_text(
     chunks = cleaned.split("\n") if cleaned is not None else [""]
     if not chunks:
         chunks = [""]
+    align_map = {
+        PP_ALIGN.RIGHT: "r",
+        PP_ALIGN.LEFT: "l",
+        PP_ALIGN.CENTER: "ctr",
+        PP_ALIGN.JUSTIFY: "just",
+    }
     for i, chunk in enumerate(chunks):
         p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p.alignment = align
-        set_paragraph_rtl(p, align_right=(align == PP_ALIGN.RIGHT))
+        pPr = p._p.get_or_add_pPr()
+        # Force RTL reading order for Arabic; keep visual align as requested
+        if align != PP_ALIGN.CENTER:
+            pPr.set("rtl", "1")
+        pPr.set("algn", align_map.get(align, "r"))
         p.space_after = Pt(6 if size >= 18 else 4)
         run = p.add_run()
         run.text = chunk
-        _set_run_ar(run, size, bold=bold, color=color, font=font)
+        _set_run_ar(run, size, bold=bold, color=color, font=font, rtl=(align != PP_ALIGN.LEFT))
     return box
 
 
@@ -239,6 +249,7 @@ def rtl_bullets(
             item,
             size=size,
             color=INK,
+            align=PP_ALIGN.RIGHT,
             anchor=MSO_ANCHOR.MIDDLE,
         )
 
@@ -256,6 +267,7 @@ def rtl_card(slide, left, top, width, height, title: str, body: str, *, fill=SOF
         size=15,
         bold=True,
         color=PRIMARY,
+        align=PP_ALIGN.RIGHT,
     )
     add_rtl_text(
         slide,
@@ -266,6 +278,7 @@ def rtl_card(slide, left, top, width, height, title: str, body: str, *, fill=SOF
         body,
         size=13,
         color=INK,
+        align=PP_ALIGN.RIGHT,
     )
 
 
@@ -401,6 +414,7 @@ def ar_header(slide, kicker: str) -> None:
         size=13,
         bold=True,
         color=MUTED,
+        align=PP_ALIGN.RIGHT,
     )
     rect(slide, MARGIN, Inches(0.9), Inches(12.1), Inches(0.012), LINE)
 
@@ -412,28 +426,40 @@ def chrome(slide, kicker: str, page: int, total: int):
     content_footer_ar(slide, page, total)
 
 
-def rtl_title(slide, title: str, subtitle: str | None = None, *, top=Inches(1.12), width=Inches(12.0)):
+def rtl_title(
+    slide,
+    title: str,
+    subtitle: str | None = None,
+    *,
+    top=Inches(1.12),
+    left=None,
+    width=Inches(12.0),
+):
+    """Place title (and optional subtitle) RTL-aligned within [left, left+width]."""
+    left = MARGIN if left is None else left
     add_rtl_text(
         slide,
-        MARGIN,
+        left,
         top,
         width,
         Inches(0.7),
         title,
-        size=28 if len(title) > 42 else 32,
+        size=26 if len(title) > 36 else (28 if len(title) > 28 else 32),
         bold=True,
         color=PRIMARY,
+        align=PP_ALIGN.RIGHT,
     )
     if subtitle:
         add_rtl_text(
             slide,
-            MARGIN,
+            left,
             top + Inches(0.62),
             width,
             Inches(0.4),
             subtitle,
             size=14,
             color=MUTED,
+            align=PP_ALIGN.RIGHT,
         )
         return top + Inches(1.05)
     return top + Inches(0.78)
@@ -725,7 +751,7 @@ def build_registry() -> None:
         kicker="اليوم 1  ·  الجلسة 3",
         title="البحث الموثّق والملفات",
         duration="ساعة ونصف",
-        goal="مسار موثوق: مصادر → تلخيص ملف → مخرج عمل — بلا اختلاق",
+        goal="مسار موثوق: من المصادر، إلى تلخيص الملف، إلى مخرج عمل — بلا اختلاق",
         photo="hero-research.jpg",
     )
     register(
@@ -1285,19 +1311,19 @@ def paint_cover(prs, page: int, total: int):
     # Text on the right, hero photo on the left
     add_rtl_text(
         s, Inches(5.6), Inches(1.9), Inches(7.0), Inches(0.4),
-        "ورشة عملية  ·  ثلاثة أيام", size=16, bold=True, color=SECONDARY,
+        "ورشة عملية  ·  ثلاثة أيام", size=16, bold=True, color=SECONDARY, align=PP_ALIGN.RIGHT,
     )
     add_rtl_text(
         s, Inches(5.6), Inches(2.4), Inches(7.0), Inches(1.3),
         "الذكاء الاصطناعي التوليدي\nللأعمال والمحتوى والأتمتة",
-        size=32, bold=True, color=PRIMARY,
+        size=32, bold=True, color=PRIMARY, align=PP_ALIGN.RIGHT,
     )
     bar = rect(s, Inches(11.0), Inches(4.0), Inches(1.5), Inches(0.07), PRIMARY)
     gradient_fill(bar, PRIMARY, SECONDARY, 0)
     add_rtl_text(
         s, Inches(5.6), Inches(4.25), Inches(7.0), Inches(0.6),
         "هندسة الأوامر · الوسائط · البيانات · المساعد الشخصي",
-        size=14, color=MUTED,
+        size=14, color=MUTED, align=PP_ALIGN.RIGHT,
     )
     soft_card(s, MARGIN, Inches(1.7), Inches(4.7), Inches(4.5), fill=SOFT)
     if not embed_photo(s, "hero-cover.jpg", MARGIN + Inches(0.18), Inches(1.88), Inches(4.35), Inches(4.15)):
@@ -1322,11 +1348,12 @@ def paint_day_divider(prs, spec: dict, page: int, total: int):
     text_w = Inches(7.1) if photo else Inches(12.0)
     add_rtl_text(
         s, text_left, Inches(1.35), text_w, Inches(0.4),
-        spec["day"], size=18, bold=True, color=SECONDARY,
+        spec["day"], size=18, bold=True, color=SECONDARY, align=PP_ALIGN.RIGHT,
     )
     add_rtl_text(
         s, text_left, Inches(1.85), text_w, Inches(1.0),
         spec["title"], size=26 if len(spec["title"]) > 40 else 28, bold=True, color=PRIMARY,
+        align=PP_ALIGN.RIGHT,
     )
     if photo:
         soft_card(s, MARGIN, Inches(1.35), Inches(4.6), Inches(2.35), fill=SOFT)
@@ -1347,15 +1374,34 @@ def paint_session_open(prs, spec: dict, page: int, total: int):
     chrome(s, spec["kicker"], page, total)
     photo = spec.get("photo")
     if photo:
-        rtl_title(s, spec["title"], width=Inches(7.0))
-        soft_card(s, Inches(5.85), Inches(2.35), Inches(6.8), Inches(3.9), fill=SOFT)
+        # Photo left · title + goal card right (RTL reading order)
+        card_left = Inches(5.85)
+        card_w = Inches(6.8)
+        pad = Inches(0.35)
+        rtl_title(s, spec["title"], left=card_left, width=card_w)
+        soft_card(s, card_left, Inches(2.35), card_w, Inches(3.9), fill=SOFT)
         add_rtl_text(
-            s, Inches(6.15), Inches(2.6), Inches(6.2), Inches(0.4),
-            "هدف الجلسة", size=15, bold=True, color=PRIMARY,
+            s,
+            card_left + pad,
+            Inches(2.6),
+            card_w - pad * 2,
+            Inches(0.4),
+            "هدف الجلسة",
+            size=15,
+            bold=True,
+            color=PRIMARY,
+            align=PP_ALIGN.RIGHT,
         )
         add_rtl_text(
-            s, Inches(6.15), Inches(3.15), Inches(6.2), Inches(2.6),
-            spec["goal"], size=18, color=INK,
+            s,
+            card_left + pad,
+            Inches(3.15),
+            card_w - pad * 2,
+            Inches(2.6),
+            spec["goal"],
+            size=18,
+            color=INK,
+            align=PP_ALIGN.RIGHT,
         )
         soft_card(s, MARGIN, Inches(2.35), Inches(4.9), Inches(3.9), fill=SOFT_2)
         embed_photo(s, photo, MARGIN + Inches(0.18), Inches(2.55), Inches(4.55), Inches(3.5))
@@ -1363,12 +1409,27 @@ def paint_session_open(prs, spec: dict, page: int, total: int):
         rtl_title(s, spec["title"])
         soft_card(s, MARGIN, Inches(2.5), Inches(12.1), Inches(3.5), fill=SOFT)
         add_rtl_text(
-            s, MARGIN + Inches(0.4), Inches(2.8), Inches(11.3), Inches(0.4),
-            "هدف الجلسة", size=15, bold=True, color=PRIMARY,
+            s,
+            MARGIN + Inches(0.4),
+            Inches(2.8),
+            Inches(11.3),
+            Inches(0.4),
+            "هدف الجلسة",
+            size=15,
+            bold=True,
+            color=PRIMARY,
+            align=PP_ALIGN.RIGHT,
         )
         add_rtl_text(
-            s, MARGIN + Inches(0.4), Inches(3.4), Inches(11.3), Inches(2.0),
-            spec["goal"], size=20, color=INK,
+            s,
+            MARGIN + Inches(0.4),
+            Inches(3.4),
+            Inches(11.3),
+            Inches(2.0),
+            spec["goal"],
+            size=20,
+            color=INK,
+            align=PP_ALIGN.RIGHT,
         )
 
 
@@ -1489,6 +1550,7 @@ def paint_steps(prs, spec: dict, page: int, total: int):
             text,
             size=16,
             color=INK,
+            align=PP_ALIGN.RIGHT,
             anchor=MSO_ANCHOR.MIDDLE,
         )
 
