@@ -594,34 +594,40 @@ def _picture_width_for_height(path: Path, height) -> float:
     return h_in * (px_w / px_h)
 
 
-def logo(slide, *, dark=False, height=Inches(0.35)):
+def logo(slide, *, dark=False, height=Inches(0.35)) -> float:
     """
     Top-right co-brand: MAIA mark + ETRA wordmark side by side.
-    Returns the left edge (inches) of the logo cluster so headers can clear it.
+    Returns the left edge of the logo cluster in inches so headers can clear it.
     """
     path = LOGO if LOGO.is_file() else LOGO_FALLBACK
     if not path.is_file():
         return 12.0
 
-    top = Inches(0.38)
-    gap = Inches(0.14)
-    right_edge = Inches(12.72)
+    h_in = height.inches if hasattr(height, "inches") else float(height)
+    top_in = 0.38
+    gap_in = 0.14
+    right_edge_in = 12.72
 
     etra_w = _picture_width_for_height(path, height)
-    etra_left = right_edge - Inches(etra_w)
-    cluster_left = etra_left
+    etra_left_in = right_edge_in - etra_w
+    cluster_left_in = etra_left_in
 
     if MAIA_LOGO.is_file():
         # Slightly taller mark so it balances the wide ETRA wordmark
-        maia_h = Inches(min(height.inches + 0.06, 0.48))
-        maia_w = _picture_width_for_height(MAIA_LOGO, maia_h)
-        maia_left = etra_left - gap - Inches(maia_w)
-        maia_top = top - Inches((maia_h.inches - height.inches) / 2)
-        slide.shapes.add_picture(str(MAIA_LOGO), maia_left, maia_top, height=maia_h)
-        cluster_left = maia_left
+        maia_h_in = min(h_in + 0.06, 0.48)
+        maia_w = _picture_width_for_height(MAIA_LOGO, Inches(maia_h_in))
+        maia_left_in = etra_left_in - gap_in - maia_w
+        maia_top_in = top_in - (maia_h_in - h_in) / 2
+        slide.shapes.add_picture(
+            str(MAIA_LOGO),
+            Inches(maia_left_in),
+            Inches(maia_top_in),
+            height=Inches(maia_h_in),
+        )
+        cluster_left_in = maia_left_in
 
-    slide.shapes.add_picture(str(path), etra_left, top, height=height)
-    return cluster_left.inches if hasattr(cluster_left, "inches") else float(cluster_left)
+    slide.shapes.add_picture(str(path), Inches(etra_left_in), Inches(top_in), height=height)
+    return float(cluster_left_in)
 
 
 def add_diagram(slide, name, left, top, width, max_height):
