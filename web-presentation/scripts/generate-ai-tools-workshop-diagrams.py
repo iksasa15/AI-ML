@@ -161,7 +161,7 @@ def diagram_three_days() -> None:
     _title(ax, "خريطة الورشة · ثلاثة أيام", size=22)
     days = [
         (8.0, "اليوم 1", ["هندسة الأوامر", "بتعمّق"], "#5234B7"),
-        (4.25, "اليوم 2", ["الوسائط المتعددة", "صور · عروض · فيديو"], "#7A45C2"),
+        (4.25, "اليوم 2", ["الوسائط بتعمّق", "صور · عروض · فيديو"], "#7A45C2"),
         (0.5, "اليوم 3", ["البيانات والأتمتة", "ومساعد شخصي"], "#9E59CD"),
     ]
     for x, title, body_lines, color in days:
@@ -219,8 +219,7 @@ def diagram_admin_exercise() -> None:
 
 def diagram_media_stack() -> None:
     fig, ax = _fig()
-    _title(ax, "مسار الوسائط المتعددة")
-    # Keep clear gap under title (title ~6.15) — top of first box <= 5.2
+    _title(ax, "مسار إنتاج الوسائط")
     layers = [
         (4.05, "صورة منتج", "Midjourney · DALL·E · Leonardo"),
         (2.75, "عرض تقديمي", "Gamma · Beautiful.ai"),
@@ -229,9 +228,9 @@ def diagram_media_stack() -> None:
     colors = [PRIMARY, "#7A45C2", SECONDARY]
     for (y, title, tools), c in zip(layers, colors):
         _rounded(ax, 1.5, y, 9.0, 1.1, fc=WHITE, ec=c, lw=2)
-        # Arabic on the right (RTL), tools toward the left
         _text(ax, 9.2, y + 0.55, title, size=16, bold=True, color=c, ha="center")
         _text(ax, 4.2, y + 0.55, tools, size=13, color=MUTED, ha="center")
+    _footer(ax, "سلسلة واحدة · هوية بصرية متسقة · مراجعة بشرية قبل الاعتماد")
     save(fig, "media-stack.png")
 
 
@@ -246,7 +245,7 @@ def diagram_designer_exercise() -> None:
         _text(ax, x + 1.5, 3.9, n, size=20, bold=True, color=WHITE)
         _rounded(ax, x, 2.1, box_w, 1.2, fc=SOFT, ec=LINE)
         _text(ax, x + 1.5, 2.7, label, size=14, bold=True, color=INK)
-    _footer(ax, "هوية إعلان متكاملة في جلسة واحدة")
+    _footer(ax, "حزمة إعلان متسقة الهوية في جلسة واحدة")
     save(fig, "designer-exercise.png")
 
 
@@ -329,8 +328,8 @@ def diagram_weak_vs_strong() -> None:
 
 def diagram_image_prompt() -> None:
     fig, ax = _fig()
-    _title(ax, "تشريح امر الصورة")
-    parts = ["موضوع", "اسلوب", "اضاءة", "زاوية", "نسبة"]
+    _title(ax, "المكوّنات الخمسة لأمر الصورة")
+    parts = ["موضوع", "أسلوب", "إضاءة", "زاوية", "نسبة"]
     box_w = 1.9
     xs = _rtl_row_xs(len(parts), box_w, left=0.4, right=11.6)
     for i, (x, label) in enumerate(zip(xs, parts)):
@@ -338,8 +337,67 @@ def diagram_image_prompt() -> None:
         _text(ax, x + 0.95, 3.4, label, size=14, bold=True, color=PRIMARY)
         if i < len(parts) - 1:
             _arrow(ax, x - 0.05, 3.4, xs[i + 1] + box_w + 0.05, 3.4)
-    _footer(ax, "ثم اضف: ما يتجنب + هوية العلامة + جودة الاخراج")
+    _footer(ax, "ثم أضف: القيود · هوية العلامة · ما يُتجنّب")
     save(fig, "image-prompt-anatomy.png")
+
+
+def diagram_filled_image_prompt() -> None:
+    fig, ax = _fig()
+    _title(ax, "مثال أمر صورة مكتمل")
+    lines = [
+        "الموضوع: سماعة لاسلكية على خلفية بيضاء نظيفة",
+        "الأسلوب: واقعي · هوية تقنية حديثة",
+        "الإضاءة: استوديو ناعمة من الأمام بظل خفيف",
+        "الزاوية: عين المستوى · قريبة للمنتج",
+        "النسبة: 1:1 للمنصات",
+        "القيود: بلا نص مشوّه · بلا شعارات محمية · جاهز لإعلان داخلي",
+    ]
+    for i, line in enumerate(lines):
+        _text(ax, 6, 4.95 - i * 0.55, line, size=13, bold=(i == 0), color=PRIMARY if i == 0 else INK)
+    save(fig, "filled-image-prompt-example.png")
+
+
+def diagram_deck_prompt() -> None:
+    fig, ax = _fig()
+    _title(ax, "هيكل أمر العرض")
+    parts = [
+        ("1", "مشكلة"),
+        ("2", "حل"),
+        ("3", "مميزات"),
+        ("4", "دعوة لإجراء"),
+    ]
+    box_w = 2.4
+    xs = _rtl_row_xs(len(parts), box_w, left=0.5, right=11.5)
+    for i, (x, (n, label)) in enumerate(zip(xs, parts)):
+        ax.add_patch(Circle((x + 1.2, 4.0), 0.4, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 1.2, 4.0, n, size=16, bold=True, color=WHITE)
+        _rounded(ax, x, 2.1, box_w, 1.3, fc=SOFT if i % 2 == 0 else SOFT_2, ec=LINE)
+        _text(ax, x + 1.2, 2.75, label, size=14, bold=True, color=INK)
+        if i < len(parts) - 1:
+            _arrow(ax, x - 0.05, 4.0, xs[i + 1] + box_w + 0.05, 4.0)
+    _footer(ax, "حدد الجمهور وعدد الشرائح والقيود قبل التوليد")
+    save(fig, "deck-prompt-anatomy.png")
+
+
+def diagram_media_quality_gate() -> None:
+    fig, ax = _fig()
+    _title(ax, "بوابة جودة الحزمة")
+    checks = [
+        ("1", ["اتساق", "الهوية"]),
+        ("2", ["النسبة", "والأسلوب"]),
+        ("3", ["دعوة", "إجراء واحدة"]),
+        ("4", ["مراجعة", "بشرية"]),
+    ]
+    box_w = 2.2
+    xs = _rtl_row_xs(len(checks), box_w, left=0.6, right=11.4)
+    for x, (n, lines) in zip(xs, checks):
+        ax.add_patch(Circle((x + 1.1, 4.35), 0.38, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 1.1, 4.35, n, size=16, bold=True, color=WHITE)
+        _rounded(ax, x, 1.9, box_w, 1.8, fc=SOFT, ec=LINE)
+        _text(ax, x + 1.1, 2.95, lines[0], size=12, bold=True, color=INK)
+        _text(ax, x + 1.1, 2.4, lines[1], size=12, bold=True, color=INK)
+    _footer(ax, "صورة + عرض + فيديو — لا اعتماد دون اجتياز البوابة")
+    save(fig, "media-quality-gate.png")
 
 
 def diagram_data_decision() -> None:
@@ -380,13 +438,13 @@ def diagram_research_check() -> None:
 def diagram_video_script() -> None:
     fig, ax = _fig()
     _title(ax, "سكربت فيديو 30 ثانية")
-    parts = [("0-5ث", "Hook"), ("5-20ث", "قيمة"), ("20-30ث", "CTA")]
+    parts = [("0–5 ث", "جذب الانتباه"), ("5–20 ث", "القيمة"), ("20–30 ث", "دعوة لإجراء")]
     box_w = 3.0
     xs = _rtl_row_xs(len(parts), box_w, left=0.8, right=11.2)
     for x, (t, s) in zip(xs, parts):
         _rounded(ax, x, 2.0, box_w, 2.5, fc=WHITE, ec=SECONDARY, lw=2)
         _text(ax, x + 1.5, 3.8, t, size=14, bold=True, color=SECONDARY)
-        _text(ax, x + 1.5, 3.0, s, size=18, bold=True, color=PRIMARY)
+        _text(ax, x + 1.5, 3.0, s, size=16, bold=True, color=PRIMARY)
     save(fig, "video-script-flow.png")
 
 
@@ -507,6 +565,9 @@ def main() -> None:
     diagram_capstone()
     diagram_weak_vs_strong()
     diagram_image_prompt()
+    diagram_filled_image_prompt()
+    diagram_deck_prompt()
+    diagram_media_quality_gate()
     diagram_data_decision()
     diagram_research_check()
     diagram_video_script()
