@@ -162,7 +162,7 @@ def diagram_three_days() -> None:
     days = [
         (8.0, "اليوم 1", ["هندسة الأوامر", "بتعمّق"], "#5234B7"),
         (4.25, "اليوم 2", ["الوسائط بتعمّق", "صور · عروض · فيديو"], "#7A45C2"),
-        (0.5, "اليوم 3", ["البيانات والأتمتة", "ومساعد شخصي"], "#9E59CD"),
+        (0.5, "اليوم 3", ["بيانات وأتمتة", "ومساعد بتعمّق"], "#9E59CD"),
     ]
     for x, title, body_lines, color in days:
         _rounded(ax, x, 1.2, 3.5, 3.5, fc=WHITE, ec=color, lw=2.2)
@@ -253,10 +253,10 @@ def diagram_automation() -> None:
     fig, ax = _fig()
     _title(ax, "مسار أتمتة يومي")
     nodes = [
-        ["إيميل عميل", "Gmail"],
-        ["تلخيص", "بالذكاء الاصطناعي"],
+        ["إيميل عميل", "محفّز"],
+        ["تلخيص", "ذكاء اصطناعي"],
         ["تخزين", "جدول بيانات"],
-        ["مسودة رد", "جاهزة"],
+        ["مسودة رد", "للموافقة البشرية"],
     ]
     box_w = 2.5
     xs = _rtl_row_xs(len(nodes), box_w, left=0.4, right=11.6)
@@ -266,7 +266,7 @@ def diagram_automation() -> None:
         _text(ax, x + 1.25, 2.9, lines[1], size=12, color=MUTED)
         if i < len(nodes) - 1:
             _arrow(ax, x - 0.05, 3.3, xs[i + 1] + box_w + 0.05, 3.3)
-    _footer(ax, "Zapier AI · Make — ربط الأدوات دون برمجة")
+    _footer(ax, "Zapier AI · Make — موافقة بشرية قبل الإرسال")
     save(fig, "automation-flow.png")
 
 
@@ -274,9 +274,9 @@ def diagram_capstone() -> None:
     fig, ax = _fig()
     _title(ax, "مشروع التخرج النهائي")
     cards = [
-        ("بحث ذكي", "أداة بحث موثق"),
-        ("تصميم", "صورة / عرض / فيديو"),
-        ("أتمتة أو بوت", "مسار عمل أو Custom GPT"),
+        ("أمر قوي", "هندسة أوامر يوم 1"),
+        ("وسائط", "صورة / عرض / فيديو"),
+        ("بيانات أو مسار", "تحليل · أتمتة · مساعد"),
     ]
     box_w = 3.0
     xs = _rtl_row_xs(len(cards), box_w, left=0.6, right=11.4)
@@ -284,8 +284,83 @@ def diagram_capstone() -> None:
         _rounded(ax, x, 2.1, box_w, 2.4, fc=WHITE, ec=SECONDARY, lw=2)
         _text(ax, x + 1.5, 3.7, t, size=15, bold=True, color=PRIMARY)
         _text(ax, x + 1.5, 2.9, s, size=12, color=MUTED)
-    _footer(ax, "فرق مصغرة · عرض سريع وتقييم")
+    _footer(ax, "فرق مصغّرة · عرض سريع · معايير قبول")
     save(fig, "capstone-project.png")
+
+
+def diagram_day3_stack() -> None:
+    fig, ax = _fig()
+    _title(ax, "مسار اليوم الثالث")
+    layers = [
+        (4.05, "تحليل البيانات", "جدول → سؤال قوي → توصية"),
+        (2.75, "الأتمتة", "محفّز → ذكاء → موافقة بشرية"),
+        (1.45, "المساعد المخصص", "ملفات معتمدة · حدود معرفة · اختبار"),
+    ]
+    colors = [PRIMARY, "#7A45C2", SECONDARY]
+    for (y, title, tools), c in zip(layers, colors):
+        _rounded(ax, 1.5, y, 9.0, 1.1, fc=WHITE, ec=c, lw=2)
+        _text(ax, 9.0, y + 0.55, title, size=15, bold=True, color=c, ha="center")
+        _text(ax, 4.0, y + 0.55, tools, size=12, color=MUTED, ha="center")
+    _footer(ax, "سلسلة واحدة · مصدر واضح · مراجعة بشرية قبل الاعتماد")
+    save(fig, "day3-stack.png")
+
+
+def diagram_filled_data_questions() -> None:
+    fig, ax = _fig()
+    _title(ax, "مثال أسئلة تحليل مكتملة")
+    lines = [
+        "1) لخّص أعمدة الملف وأبرز 5 مؤشرات رئيسية",
+        "2) اكتشف القيم الشاذة والصفوف الناقصة واشرح أثرها",
+        "3) قارن الأداء حسب المنتج / الأسبوع / القطاع في جدول",
+        "4) اقترح 3 توصيات تشغيلية مبنية على البيانات فقط",
+        "5) ارسم رسمًا بيانيًا مناسبًا واشرح معناه للإدارة",
+        "القيود: لا تختلق أرقامًا · اذكر غير المتوفر · افصل الحقيقة عن الرأي",
+    ]
+    for i, line in enumerate(lines):
+        _text(ax, 6, 4.95 - i * 0.55, line, size=12, bold=(i == 0), color=PRIMARY if i == 0 else INK)
+    save(fig, "filled-data-questions-example.png")
+
+
+def diagram_data_quality_gate() -> None:
+    fig, ax = _fig()
+    _title(ax, "بوابة تحقق التحليل")
+    checks = [
+        ("1", ["مصدر", "الملف"]),
+        ("2", ["لا اختلاق", "أرقام"]),
+        ("3", ["فصل حقيقة", "عن رأي"]),
+        ("4", ["مراجعة", "بشرية"]),
+    ]
+    box_w = 2.2
+    xs = _rtl_row_xs(len(checks), box_w, left=0.6, right=11.4)
+    for x, (n, lines) in zip(xs, checks):
+        ax.add_patch(Circle((x + 1.1, 4.35), 0.38, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 1.1, 4.35, n, size=16, bold=True, color=WHITE)
+        _rounded(ax, x, 1.9, box_w, 1.8, fc=SOFT, ec=LINE)
+        _text(ax, x + 1.1, 2.95, lines[0], size=12, bold=True, color=INK)
+        _text(ax, x + 1.1, 2.4, lines[1], size=12, bold=True, color=INK)
+    _footer(ax, "لا اعتماد لتوصية إدارية دون اجتياز البوابة")
+    save(fig, "data-quality-gate.png")
+
+
+def diagram_capstone_quality_gate() -> None:
+    fig, ax = _fig()
+    _title(ax, "بوابة جودة المشروع")
+    checks = [
+        ("1", ["أمر", "قوي"]),
+        ("2", ["مخرج", "واضح"]),
+        ("3", ["مراجعة", "بشرية"]),
+        ("4", ["قابل", "للتشغيل"]),
+    ]
+    box_w = 2.2
+    xs = _rtl_row_xs(len(checks), box_w, left=0.6, right=11.4)
+    for x, (n, lines) in zip(xs, checks):
+        ax.add_patch(Circle((x + 1.1, 4.35), 0.38, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 1.1, 4.35, n, size=16, bold=True, color=WHITE)
+        _rounded(ax, x, 1.9, box_w, 1.8, fc=SOFT, ec=LINE)
+        _text(ax, x + 1.1, 2.95, lines[0], size=12, bold=True, color=INK)
+        _text(ax, x + 1.1, 2.4, lines[1], size=12, bold=True, color=INK)
+    _footer(ax, "مهارات الأيام الثلاثة · لا عرض دون اجتياز البوابة")
+    save(fig, "capstone-quality-gate.png")
 
 
 def diagram_cover_hero() -> None:
@@ -402,8 +477,8 @@ def diagram_media_quality_gate() -> None:
 
 def diagram_data_decision() -> None:
     fig, ax = _fig()
-    _title(ax, "من الجدول الى القرار")
-    nodes = ["رفع Excel/CSV", "اسئلة بلغة بشرية", "رسوم واحصاءات", "توصيات عملية"]
+    _title(ax, "من الجدول إلى القرار")
+    nodes = ["رفع Excel/CSV", "أسئلة بلغة بشرية", "رسوم وإحصاءات", "توصيات عملية"]
     box_w = 2.4
     xs = _rtl_row_xs(len(nodes), box_w, left=0.5, right=11.5)
     for i, (x, label) in enumerate(zip(xs, nodes)):
@@ -411,7 +486,7 @@ def diagram_data_decision() -> None:
         _text(ax, x + 1.2, 3.3, label, size=13, bold=True, color=PRIMARY)
         if i < len(nodes) - 1:
             _arrow(ax, x - 0.05, 3.3, xs[i + 1] + box_w + 0.05, 3.3)
-    _footer(ax, "Advanced Data Analysis داخل ChatGPT")
+    _footer(ax, "سؤال قوي · مصدر الملف · مراجعة بشرية")
     save(fig, "data-to-decision.png")
 
 
@@ -421,7 +496,7 @@ def diagram_research_check() -> None:
     checks = [
         ("1", ["مصادر قابلة", "للمراجعة"]),
         ("2", ["مقارنة", "ادعاءات"]),
-        ("3", ["مراجعة", "الارقام"]),
+        ("3", ["مراجعة", "الأرقام"]),
         ("4", ["فصل الحقائق", "عن التوصيات"]),
     ]
     box_w = 2.2
@@ -435,6 +510,36 @@ def diagram_research_check() -> None:
     save(fig, "research-checklist.png")
 
 
+def diagram_gpt_steps() -> None:
+    fig, ax = _fig()
+    _title(ax, "خطوات بناء المساعد المخصص")
+    steps = [("1", "الهدف"), ("2", "الملفات"), ("3", "التعليمات"), ("4", "الاختبار")]
+    box_w = 2.4
+    xs = _rtl_row_xs(len(steps), box_w, left=0.5, right=11.5)
+    for i, (x, (n, label)) in enumerate(zip(xs, steps)):
+        ax.add_patch(Circle((x + 1.2, 3.95), 0.42, facecolor=PRIMARY, edgecolor="none", zorder=3))
+        _text(ax, x + 1.2, 3.95, n, size=16, bold=True, color=WHITE)
+        _rounded(ax, x, 2.1, box_w, 1.2, fc=SOFT, ec=LINE)
+        _text(ax, x + 1.2, 2.7, label, size=14, bold=True, color=INK)
+        if i < len(steps) - 1:
+            _arrow(ax, x - 0.05, 3.95, xs[i + 1] + box_w + 0.05, 3.95)
+    _footer(ax, "لا نشر قبل اختبار بخمس أسئلة حقيقية")
+    save(fig, "gpt-builder-steps.png")
+
+
+def diagram_ethics() -> None:
+    fig, ax = _fig()
+    _title(ax, "أخلاقيات وأمن البيانات")
+    cards = ["ملكية المحتوى", "لا ترفع أسرارًا", "مراجعة بشرية"]
+    box_w = 3.0
+    xs = _rtl_row_xs(len(cards), box_w, left=0.6, right=11.4)
+    for x, t in zip(xs, cards):
+        _rounded(ax, x, 2.1, box_w, 2.4, fc=WHITE, ec=PRIMARY, lw=2)
+        _text(ax, x + 1.5, 3.3, t, size=15, bold=True, color=PRIMARY)
+    _footer(ax, "الشفافية مع العملاء عند استخدام الذكاء الاصطناعي")
+    save(fig, "ethics-security.png")
+
+
 def diagram_video_script() -> None:
     fig, ax = _fig()
     _title(ax, "سكربت فيديو 30 ثانية")
@@ -446,35 +551,6 @@ def diagram_video_script() -> None:
         _text(ax, x + 1.5, 3.8, t, size=14, bold=True, color=SECONDARY)
         _text(ax, x + 1.5, 3.0, s, size=16, bold=True, color=PRIMARY)
     save(fig, "video-script-flow.png")
-
-
-def diagram_gpt_steps() -> None:
-    fig, ax = _fig()
-    _title(ax, "بناء Custom GPT")
-    steps = [("1", "الهدف"), ("2", "الملفات"), ("3", "التعليمات"), ("4", "الاختبار")]
-    box_w = 2.4
-    xs = _rtl_row_xs(len(steps), box_w, left=0.5, right=11.5)
-    for i, (x, (n, label)) in enumerate(zip(xs, steps)):
-        ax.add_patch(Circle((x + 1.2, 3.95), 0.42, facecolor=PRIMARY, edgecolor="none", zorder=3))
-        _text(ax, x + 1.2, 3.95, n, size=16, bold=True, color=WHITE)
-        _rounded(ax, x, 2.1, box_w, 1.2, fc=SOFT, ec=LINE)
-        _text(ax, x + 1.2, 2.7, label, size=14, bold=True, color=INK)
-        if i < len(steps) - 1:
-            _arrow(ax, x - 0.05, 3.95, xs[i + 1] + box_w + 0.05, 3.95)
-    save(fig, "gpt-builder-steps.png")
-
-
-def diagram_ethics() -> None:
-    fig, ax = _fig()
-    _title(ax, "اخلاقيات وامن البيانات")
-    cards = ["ملكية المحتوى", "لا ترفع اسرارا", "مراجعة بشرية"]
-    box_w = 3.0
-    xs = _rtl_row_xs(len(cards), box_w, left=0.6, right=11.4)
-    for x, t in zip(xs, cards):
-        _rounded(ax, x, 2.1, box_w, 2.4, fc=WHITE, ec=PRIMARY, lw=2)
-        _text(ax, x + 1.5, 3.3, t, size=15, bold=True, color=PRIMARY)
-    _footer(ax, "الشفافية مع العملاء عند استخدام الذكاء الاصطناعي")
-    save(fig, "ethics-security.png")
 
 
 def diagram_filled_prompt() -> None:
@@ -568,11 +644,15 @@ def main() -> None:
     diagram_filled_image_prompt()
     diagram_deck_prompt()
     diagram_media_quality_gate()
+    diagram_day3_stack()
     diagram_data_decision()
+    diagram_filled_data_questions()
+    diagram_data_quality_gate()
     diagram_research_check()
     diagram_video_script()
     diagram_gpt_steps()
     diagram_ethics()
+    diagram_capstone_quality_gate()
     diagram_filled_prompt()
     diagram_practice_flow()
     diagram_one_idea_three_audiences()
